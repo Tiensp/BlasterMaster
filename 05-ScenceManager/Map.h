@@ -14,9 +14,9 @@ private:
 	int TileCols, TileRows;
 	int MapCols, MapRows;
 	int TileSize;
-	int **Matrix;
+	int Matrix[200][200];
 public:
-	CMap(int id, string fileMatrix , string fileTileSet);
+	CMap(int id, string fileMatrix, string fileTileSet);
 	~CMap();
 	void LoadMatrix(string filePath);
 	void LoadTileSet(string filePath);

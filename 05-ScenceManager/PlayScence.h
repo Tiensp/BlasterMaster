@@ -7,12 +7,14 @@
 #include "Sophia.h"
 #include "Goomba.h"
 #include "Koopas.h"
+#include "Map.h"
 
 
 class CPlayScene: public CScene
 {
 protected: 
-	CSophia *player;					// A play scene has to have player, right? 
+	CSophia *player;	
+	CMap* Map;// A play scene has to have player, right? 
 
 	vector<LPGAMEOBJECT> objects;
 
@@ -21,6 +23,8 @@ protected:
 	void _ParseSection_ANIMATIONS(string line);
 	void _ParseSection_ANIMATION_SETS(string line);
 	void _ParseSection_OBJECTS(string line);
+	void LoadMap();
+
 
 	
 public: 

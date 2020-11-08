@@ -178,10 +178,16 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	objects.push_back(obj);
 }
 
+void CPlayScene::LoadMap()
+{
+	Map = new CMap(1, "mapArea.txt", "mapArea.png");
+	Map->LoadTileSet("mapArea.png");
+}
+
 void CPlayScene::Load()
 {
 	DebugOut(L"[INFO] Start loading scene resources from : %s \n", sceneFilePath);
-
+	LoadMap();
 	ifstream f;
 	f.open(sceneFilePath);
 
@@ -258,6 +264,7 @@ void CPlayScene::Update(DWORD dt)
 
 void CPlayScene::Render()
 {
+	Map->DrawMap();
 	for (int i = 0; i < objects.size(); i++)
 		objects[i]->Render();
 }
