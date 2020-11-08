@@ -34,7 +34,7 @@ void CMap::LoadTileSet(string filePath)
 	
 	CTextures::GetInstance()->Add(static_cast<ObjectType>(id + MAPID), ToLPCWSTR(filePath), D3DCOLOR_XRGB(255, 255, 255));
 	TileTexture = CTextures::GetInstance()->Get(static_cast<ObjectType>(id + MAPID));
-
+	DebugOut(L"00");
 }
 
 void CMap::DrawMap()
