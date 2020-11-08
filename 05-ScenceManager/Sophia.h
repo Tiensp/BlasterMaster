@@ -29,6 +29,8 @@
 #define SOPHIA_ANI_SMALL_WALKING_LEFT		7
 #define SOPHIA_ANI_TURN_RIGHT				10
 #define SOPHIA_ANI_TURN_LEFT				11
+#define SOPHIA_ANI_JUMP_RIGHT				12
+#define SOPHIA_ANI_JUMP_LEFT				13
 #define SOPHIA_ANI_GUN_UP_RIGHT				16
 #define SOPHIA_ANI_GUN_UP_LEFT				17
 #define SOPHIA_ANI_IDLE_GUN_UP_RIGHT		18
@@ -50,29 +52,29 @@
 #define SOPHIA_UNTOUCHABLE_TIME 5000
 
 
-class CMario : public CGameObject
+class CSophia : public CGameObject
 {
 	int level;
 	int untouchable;
 	DWORD untouchable_start;
 
-	float start_x;			// initial position of Mario at scene
+	float start_x;			// initial position of Sophia at scene
 	float start_y; 
 
-	bool isRight;
-	bool isLeft;
 	bool raisedGun;
 	bool isTurning;
+	bool isJumping;
 
 	bool DoneTurn;
 	bool DoneGunUp;		
 	bool DoneGunDown;
 
+	DWORD lifeTimeJump;
 	DWORD lifeTimeGunUp;
 	DWORD lifeTimeGunDown;
 	DWORD lifeTimeTurn;
 public: 
-	CMario(float x = 0.0f, float y = 0.0f);
+	CSophia(float x = 0.0f, float y = 0.0f);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT> *colliable_objects = NULL);
 	virtual void Render();
 
@@ -80,12 +82,12 @@ public:
 	void SetState(int state);
 	void SetLevel(int l) { level = l; }
 	void SetIsTurning(bool turn) { isTurning = turn; }
-	void SetIsRight(bool right) { isRight = right; }
-	void SetIsLeft(bool left) { isLeft = left; }
+	void SetIsJumping(bool jump) { isJumping = jump; }
 	void SetDoneGunUp(bool done) { DoneGunUp = done; }
 	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount64(); }
 
 	/* Actions */
+
 
 	void Reset();
 
