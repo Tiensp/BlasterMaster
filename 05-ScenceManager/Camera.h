@@ -9,6 +9,8 @@ class CCamera
 	int xCam;
 	int yCam;
 
+	D3DXVECTOR2 camPos;
+
 	int width;
 	int height;
 
@@ -21,7 +23,8 @@ public:
 	static CCamera* GetInstance();
 	CCamera(int w, int h);
 	~CCamera();
-	D3DXVECTOR2 Transform(float x, float y);
+	D3DXVECTOR2 World2Render(const D3DXVECTOR2 &pos);
+	D3DXVECTOR2 Render2World(const D3DXVECTOR2& pos);
 	void SetPosition(float x, float y);
 	void SetDefaultCam();
 	float GetXCam();

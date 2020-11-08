@@ -19,6 +19,7 @@ void CMap::LoadMatrix(string filePath)
 	//Đọc hàng đầu tiên: kích thước tile, số cột, số dòng Matrix
 	f >> TileSize >> TileCols >> TileRows >> MapCols >> MapRows;
 	//Đọc matrix
+	Matrix = new int* [MapRows];
 	for (int i = 0; i <MapRows; i++) {
 		Matrix[i] = new int[MapCols];
 	}
