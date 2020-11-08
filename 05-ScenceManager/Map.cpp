@@ -36,9 +36,12 @@ void CMap::LoadTileSet(string filePath)
 
 void CMap::DrawMap()
 {
+	CCamera* camera = CCamera::GetInstance();
+	D3DXVECTOR2 camPos = camera->GetCamPos();
+	DebugOut(L"CamX: %d, CamY: %d\n", camPos.x, camPos.y);
 	RECT rectCam;
-	rectCam.left = 0;
-	rectCam.top = 0;
+	rectCam.left = camPos.x;
+	rectCam.top = camPos.y;
 	rectCam.right = rectCam.left + SCREEN_WIDTH;
 	rectCam.bottom = rectCam.top + SCREEN_HEIGHT;
 

@@ -13,9 +13,9 @@
 
 #include "Utils.h"
 
-#define SCREEN_WIDTH 720
-#define SCREEN_HEIGHT 770
-
+#define SCREEN_WIDTH 320
+#define SCREEN_HEIGHT 240
+#define W_CAM_BOUND 150
 enum ObjectType
 {
 	MAPID = 10000

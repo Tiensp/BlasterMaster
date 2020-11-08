@@ -255,11 +255,11 @@ void CPlayScene::Update(DWORD dt)
 	float cx, cy;
 	player->GetPosition(cx, cy);
 
-	CGame *game = CGame::GetInstance();
-	cx -= game->GetScreenWidth() / 2;
-	cy -= game->GetScreenHeight() / 2;
+	//CGame *game = CGame::GetInstance();
+	//cx -= game->GetScreenWidth() / 2;
+	//cy -= game->GetScreenHeight() / 2;
 
-	CGame::GetInstance()->SetCamPos(cx, 0.0f /*cy*/);
+	CCamera::GetInstance()->SetPosition(D3DXVECTOR2(cx, cy ));
 }
 
 void CPlayScene::Render()

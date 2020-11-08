@@ -25,8 +25,9 @@ public:
 	~CCamera();
 	D3DXVECTOR2 World2Render(const D3DXVECTOR2 &pos);
 	D3DXVECTOR2 Render2World(const D3DXVECTOR2& pos);
-	void SetPosition(float x, float y);
+	void SetPosition(D3DXVECTOR2 pos);
 	void SetDefaultCam();
+	D3DXVECTOR2 GetCamPos() { return camPos; }
 	float GetXCam();
 	float GetYCam();
 	int GetCurrentFloor();
