@@ -28,6 +28,9 @@
     <Filter Include="GameDefine">
       <UniqueIdentifier>{183570da-78ad-4454-9f57-f498c6a0a68a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameGraphics">
+      <UniqueIdentifier>{c79f6e6b-5182-4f07-9f60-4c17cbc81ff6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Brick.cpp">
@@ -45,19 +48,10 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Sprites.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Textures.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Scence.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="PlayScence.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Animations.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Koopas.cpp">
@@ -78,6 +72,15 @@
     <ClCompile Include="Utils.cpp">
       <Filter>GameDefine</Filter>
     </ClCompile>
+    <ClCompile Include="Animations.cpp">
+      <Filter>GameGraphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Sprites.cpp">
+      <Filter>GameGraphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Textures.cpp">
+      <Filter>GameGraphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Brick.h">
@@ -92,19 +95,10 @@
     <ClInclude Include="Goomba.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Sprites.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Textures.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Scence.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="PlayScence.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Animations.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="KeyEventHandler.h">
@@ -130,6 +124,15 @@
     </ClInclude>
     <ClInclude Include="Utils.h">
       <Filter>GameDefine</Filter>
+    </ClInclude>
+    <ClInclude Include="Sprites.h">
+      <Filter>GameGraphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Textures.h">
+      <Filter>GameGraphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Animations.h">
+      <Filter>GameGraphics</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
