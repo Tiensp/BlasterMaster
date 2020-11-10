@@ -1,49 +1,47 @@
-#pragma once
+﻿#pragma once
 #include "GameDefine.h"
+#include "GameObject.h"
 
 
 class CCamera
 {
 	static CCamera* __intance;
 
-	int xCam;
-	int yCam;
-
 	D3DXVECTOR2 camPos;
 
-	int width;
+	int width;		
 	int height;
 
-	float boundWidth;
-	float boundHeight;
-	float boundLeft;
-	float boundRight;
+	RECT camBound;		  //Set biên giới hạn camera dựa vào kích thước map
+	
+	LPGAMEOBJECT gameObj; //Lưu gameObj camera follow
 
 public:
 	static CCamera* GetInstance();
 	CCamera(int w, int h);
 	~CCamera();
-	D3DXVECTOR2 World2Render(const D3DXVECTOR2 &pos);
-	D3DXVECTOR2 Render2World(const D3DXVECTOR2& pos);
-	void SetPosition(float x, float y);
+	D3DXVECTOR2 World2Cam(const D3DXVECTOR2& pos);
+	D3DXVECTOR2 Cam2World(const D3DXVECTOR2& pos);
+
+	void SetPosition(D3DXVECTOR2 pos);
 	void SetDefaultCam();
-	float GetXCam();
-	float GetYCam();
-	int GetCurrentFloor();
-	int GetWidth();
-	int GetHeight();
-	RECT GetRectCam();
+	D3DXVECTOR2 GetCamPos() { return camPos; }
+
+	bool isContain(RECT rect);
+
+	int GetWidth() { return this->width; }
+	int GetHeight() { return this->height; }
+	RECT GetCamBound();
 	void SetBoundSize(float _w, float _h);
-	float GetBoundHeight();
-	float GetBoundWidth();
-	void SetBoundLeftRight(float _l, float _r);
-	void GetBoundLeftRight(float& _l, float& _r);
-	bool IsContainCam(RECT rect);
+
+	void SetGameObject(LPGAMEOBJECT gameObj) { this->gameObj = gameObj; }
+
 	bool IsAutoCam();
 	void AutoCamX(float _distance, int direct);
 	void UpdateAutoCam(DWORD dt);
 	void LockCam();
 	void UnlockCam();
+	void Update();
 };
 
 

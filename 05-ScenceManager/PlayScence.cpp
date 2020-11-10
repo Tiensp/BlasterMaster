@@ -178,10 +178,16 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	objects.push_back(obj);
 }
 
+void CPlayScene::LoadMap()
+{
+	Map = new CMap(1, "mapArea.txt", "mapArea.png");
+	Map->LoadTileSet("mapArea.png");
+}
+
 void CPlayScene::Load()
 {
 	DebugOut(L"[INFO] Start loading scene resources from : %s \n", sceneFilePath);
-
+	LoadMap();
 	ifstream f;
 	f.open(sceneFilePath);
 
@@ -248,16 +254,22 @@ void CPlayScene::Update(DWORD dt)
 	// Update camera to follow sophia
 	float cx, cy;
 	player->GetPosition(cx, cy);
-
+	DebugOut(L"PlayerX: %f, Player: %f\n", cx, cy);
 	CGame *game = CGame::GetInstance();
 	cx -= game->GetScreenWidth() / 2;
 	cy -= game->GetScreenHeight() / 2;
 
-	CGame::GetInstance()->SetCamPos(cx, 0.0f /*cy*/);
+	CCamera* camera = CCamera::GetInstance();
+	camera->SetPosition(D3DXVECTOR2(cx, cy));
+	D3DXVECTOR2 cPos = camera->GetCamPos();
+	game->SetCamPos(cPos.x, cPos.y);
+
+
 }
 
 void CPlayScene::Render()
 {
+	Map->DrawMap();
 	for (int i = 0; i < objects.size(); i++)
 		objects[i]->Render();
 }
@@ -328,11 +340,11 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 	}
 	else if (game->IsKeyDown(DIK_UP))
 		sophia->SetState(SOPHIA_STATE_GUN_UP);
-	else if (game->IsKeyDown(DIK_SPACE))
+	/*else if (game->IsKeyDown(DIK_SPACE))
 	{
 		
 		sophia->SetState(SOPHIA_STATE_JUMP);
-	}
+	}*/
 	else
 		sophia->SetState(SOPHIA_STATE_IDLE);
 }
