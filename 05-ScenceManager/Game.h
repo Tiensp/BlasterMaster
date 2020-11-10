@@ -51,8 +51,8 @@ public:
 	void InitKeyboard();
 	void SetKeyHandler(LPKEYEVENTHANDLER handler) { keyHandler = handler; }
 	void Init(HWND hWnd);
-	void Draw(float x, float y, LPDIRECT3DTEXTURE9 texture, int left, int top, int right, int bottom, int alpha = 255);
-
+	void Draw(D3DXVECTOR2 pos, D3DXVECTOR2 pointCenter, LPDIRECT3DTEXTURE9 texture, RECT rect, D3DXCOLOR transcolor = D3DCOLOR_XRGB(255, 0, 255));
+	void Draw(D3DXVECTOR2 pos, LPDIRECT3DTEXTURE9 texture, RECT rect, int alpha = 255);
 	int IsKeyDown(int KeyCode);
 	void ProcessKeyboard();
 

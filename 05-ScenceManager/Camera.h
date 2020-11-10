@@ -33,11 +33,9 @@ public:
 	int GetHeight() { return this->height; }
 	RECT GetCamBound();
 	void SetBoundSize(float _w, float _h);
-	float GetBoundHeight();
-	float GetBoundWidth();
-	void SetBoundLeftRight(float _l, float _r);
-	void GetBoundLeftRight(float& _l, float& _r);
-	bool IsContainCam(RECT rect);
+
+	void SetGameObject(LPGAMEOBJECT gameObj) { this->gameObj = gameObj; }
+
 	bool IsAutoCam();
 	void AutoCamX(float _distance, int direct);
 	void UpdateAutoCam(DWORD dt);

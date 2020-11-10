@@ -29,7 +29,7 @@ void CSprite::Draw(float x, float y, int alpha, int R, int G, int B)
 	r.right = right;
 	r.bottom = bottom;
 	//game->GetSpriteHandler()->Draw(texture, r, )
-	game->Draw(x, y, texture, left, top, right, bottom, alpha);
+	game->Draw(D3DXVECTOR2(x,y), texture, r, alpha);
 }
 
 RECT CSprite::GetRECT()

@@ -1,4 +1,4 @@
-#include <iostream>
+﻿#include <iostream>
 #include <fstream>
 
 #include "Game.h"
@@ -60,18 +60,20 @@ void CGame::Init(HWND hWnd)
 	OutputDebugString(L"[INFO] InitGame done;\n");
 }
 
+void CGame::Draw(D3DXVECTOR2 pos, D3DXVECTOR2 pointCenter, LPDIRECT3DTEXTURE9 texture, RECT rect, D3DXCOLOR transcolor)
+{
+	D3DXVECTOR3 pCenter((int)pointCenter.x, (int)pointCenter.y, 0);
+	D3DXVECTOR3 pInt((int)(pos.x), (int)(pos.y), 0); // Giúp không bị viền
+	spriteHandler->Draw(texture, &rect, &pCenter, &pInt, transcolor);
+}
+
 /*
 	Utility function to wrap LPD3DXSPRITE::Draw 
 */
-void CGame::Draw(float x, float y, LPDIRECT3DTEXTURE9 texture, int left, int top, int right, int bottom, int alpha)
+void CGame::Draw(D3DXVECTOR2 pos, LPDIRECT3DTEXTURE9 texture, RECT rect, int alpha)
 {
-	D3DXVECTOR3 p(x - cam_x, y - cam_y, 0);
-	RECT r; 
-	r.left = left;
-	r.top = top;
-	r.right = right;
-	r.bottom = bottom;
-	spriteHandler->Draw(texture, &r, NULL, &p, D3DCOLOR_ARGB(alpha, 255, 255, 255));
+	D3DXVECTOR3 pInt((int)(pos.x), (int)(pos.y), 0); // Giúp không bị viền
+	spriteHandler->Draw(texture, &rect, NULL, &pInt, D3DCOLOR_ARGB(alpha, 255, 255, 255));
 }
 
 int CGame::IsKeyDown(int KeyCode)

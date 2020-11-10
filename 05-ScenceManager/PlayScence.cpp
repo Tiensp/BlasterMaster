@@ -259,10 +259,10 @@ void CPlayScene::Update(DWORD dt)
 	cx -= game->GetScreenWidth() / 2;
 	cy -= game->GetScreenHeight() / 2;
 
-	/*CCamera* camera = CCamera::GetInstance();
+	CCamera* camera = CCamera::GetInstance();
 	camera->SetPosition(D3DXVECTOR2(cx, cy));
-	D3DXVECTOR2 cPos = camera->GetCamPos();*/
-	game->SetCamPos(cx, cy);
+	D3DXVECTOR2 cPos = camera->GetCamPos();
+	game->SetCamPos(cPos.x, cPos.y);
 
 
 }
