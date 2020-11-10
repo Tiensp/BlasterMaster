@@ -7,6 +7,7 @@
 #include "Sophia.h"
 #include "Goomba.h"
 #include "Koopas.h"
+#include "Golem.h"
 #include "Map.h"
 
 

@@ -66,6 +66,9 @@ void CGame::Init(HWND hWnd)
 void CGame::Draw(float x, float y, LPDIRECT3DTEXTURE9 texture, int left, int top, int right, int bottom, int alpha)
 {
 	D3DXVECTOR3 p(x - cam_x, y - cam_y, 0);
+	//DebugOut(L"X: %f, Y: %f\n", x, y);
+	//DebugOut(L"cam_x: %f, cam_y: %f\n", cam_x, cam_y);
+
 	RECT r; 
 	r.left = left;
 	r.top = top;
@@ -303,6 +306,15 @@ void CGame::SweptAABB(
 		nx = 0.0f;
 		dy > 0?ny = -1.0f:ny = 1.0f;
 	}
+
+}
+
+void CGame::SetCamPos(float x,float y)
+{
+	
+	cam_x = x;
+	cam_y = y;
+
 
 }
 

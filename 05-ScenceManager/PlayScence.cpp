@@ -30,7 +30,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):
 #define OBJECT_TYPE_SOPHIA	0
 #define OBJECT_TYPE_BRICK	1
 #define OBJECT_TYPE_GOOMBA	2
-#define OBJECT_TYPE_KOOPAS	3
+#define OBJECT_TYPE_GOLEM	3
 
 #define OBJECT_TYPE_PORTAL	50
 
@@ -154,8 +154,15 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		DebugOut(L"[INFO] Player object created!\n");
 		break;
 	case OBJECT_TYPE_GOOMBA: obj = new CGoomba(); break;
-	case OBJECT_TYPE_BRICK: obj = new CBrick(); break;
-	case OBJECT_TYPE_KOOPAS: obj = new CKoopas(); break;
+	case OBJECT_TYPE_BRICK:	
+		{
+			float w = atof(tokens[4].c_str());
+			float h = atof(tokens[5].c_str());
+			obj = new CBrick(x, y, w, h);
+		}
+		break;
+	
+	case OBJECT_TYPE_GOLEM: obj = new CGolem(); break;
 	case OBJECT_TYPE_PORTAL:
 		{	
 			float r = atof(tokens[4].c_str());
@@ -255,11 +262,14 @@ void CPlayScene::Update(DWORD dt)
 	float cx, cy;
 	player->GetPosition(cx, cy);
 
-	//CGame *game = CGame::GetInstance();
 	//cx -= game->GetScreenWidth() / 2;
 	//cy -= game->GetScreenHeight() / 2;
+	CCamera::GetInstance()->SetPosition(D3DXVECTOR2(cx - 160, cy - 130));
+	DebugOut(L"playerX: %f, playerY: %f\n", cx, cy);
 
-	CCamera::GetInstance()->SetPosition(D3DXVECTOR2(cx, cy ));
+	D3DXVECTOR2 camPos = CCamera::GetInstance()->GetCamPos();
+	CGame::GetInstance()->SetCamPos(camPos.x,camPos.y);
+
 }
 
 void CPlayScene::Render()
@@ -335,11 +345,11 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 	}
 	else if (game->IsKeyDown(DIK_UP))
 		sophia->SetState(SOPHIA_STATE_GUN_UP);
-	else if (game->IsKeyDown(DIK_SPACE))
+	/*else if (game->IsKeyDown(DIK_SPACE))
 	{
 		
 		sophia->SetState(SOPHIA_STATE_JUMP);
-	}
+	}*/
 	else
 		sophia->SetState(SOPHIA_STATE_IDLE);
 }

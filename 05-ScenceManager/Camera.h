@@ -16,14 +16,17 @@ class CCamera
 
 	float boundWidth;
 	float boundHeight;
-	float boundLeft;
-	float boundRight;
+	float boundLeft = 160;
+	float boundRight = 160;
 
 public:
 	static CCamera* GetInstance();
 	CCamera(int w, int h);
 	~CCamera();
 	D3DXVECTOR2 World2Render(const D3DXVECTOR2 &pos);
+	D3DXVECTOR2 Transform(D3DXVECTOR2 pos);
+	RECT GetBound();
+
 	D3DXVECTOR2 Render2World(const D3DXVECTOR2& pos);
 	void SetPosition(D3DXVECTOR2 pos);
 	void SetDefaultCam();

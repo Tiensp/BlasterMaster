@@ -185,28 +185,28 @@ void CSophia::Render()
 		}
 
 	}
-	else if (state == SOPHIA_STATE_JUMP)
-	{
-		if (lifeTimeJump == 0)
-			lifeTimeJump = GetTickCount64();
+	//else if (state == SOPHIA_STATE_JUMP)
+	//{
+	//	if (lifeTimeJump == 0)
+	//		lifeTimeJump = GetTickCount64();
 
-		if (nx > 0)
-			ani = SOPHIA_ANI_JUMP_RIGHT;
-		else
-			ani = SOPHIA_ANI_JUMP_LEFT;
+	//	if (nx > 0)
+	//		ani = SOPHIA_ANI_JUMP_RIGHT;
+	//	else
+	//		ani = SOPHIA_ANI_JUMP_LEFT;
 
-		//Ngăn không cho render ani khác khi ani hiện tại chưa render đủ thời gian
-		if (GetTickCount64() - lifeTimeJump >= animation_set->at(ani)->GetAniTime())
-		{
-			lifeTimeJump = 0;		//Reset lifeTimeJump
+	//	//Ngăn không cho render ani khác khi ani hiện tại chưa render đủ thời gian
+	//	if (GetTickCount64() - lifeTimeJump >= animation_set->at(ani)->GetAniTime())
+	//	{
+	//		lifeTimeJump = 0;		//Reset lifeTimeJump
 
-			if (nx > 0)
-				ani = SOPHIA_ANI_IDLE_RIGHT;
-			else
-				ani = SOPHIA_ANI_IDLE_LEFT;
+	//		if (nx > 0)
+	//			ani = SOPHIA_ANI_IDLE_RIGHT;
+	//		else
+	//			ani = SOPHIA_ANI_IDLE_LEFT;
 
-		}
-	}
+	//	}
+	//}
 	else if (level == SOPHIA_LEVEL_BIG)
 	{
 		//Reset lifeTimeGunUp nếu chuyển trạng thái khác nhưng chưa reset time
@@ -304,7 +304,7 @@ void CSophia::SetState(int state)
 		break;
 	case SOPHIA_STATE_JUMP:
 		// TODO: need to check if Sophia is *current* on a platform before allowing to jump again
-		if (vy == 0)
+		//if (vy == 0)
 			vy = -SOPHIA_JUMP_SPEED_Y;
 		break; 
 	case SOPHIA_STATE_GUN_UP:

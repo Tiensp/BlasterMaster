@@ -31,6 +31,9 @@
     <Filter Include="GameGraphics">
       <UniqueIdentifier>{c79f6e6b-5182-4f07-9f60-4c17cbc81ff6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Enemy">
+      <UniqueIdentifier>{ee16d4d7-cb2a-4efa-9690-c2843a12f447}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Brick.cpp">
@@ -80,6 +83,12 @@
     </ClCompile>
     <ClCompile Include="Textures.cpp">
       <Filter>GameGraphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Golem.cpp">
+      <Filter>Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>Enemy</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -133,6 +142,12 @@
     </ClInclude>
     <ClInclude Include="Animations.h">
       <Filter>GameGraphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Golem.h">
+      <Filter>Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>Enemy</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

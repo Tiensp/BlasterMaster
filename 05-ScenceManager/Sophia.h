@@ -74,7 +74,7 @@ class CSophia : public CGameObject
 	DWORD lifeTimeGunDown;
 	DWORD lifeTimeTurn;
 public: 
-	CSophia(float x = 0.0f, float y = 0.0f);
+	CSophia(float x = 100.0f, float y = 0.0f);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT> *colliable_objects = NULL);
 	virtual void Render();
 
