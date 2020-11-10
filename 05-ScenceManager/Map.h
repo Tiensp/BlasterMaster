@@ -9,7 +9,6 @@ class CMap
 private:
 	int id;
 	LPDIRECT3DTEXTURE9 TileTexture;
-	LPSPRITE TileSet;
 
 	int TileCols, TileRows;
 	int MapCols, MapRows;
