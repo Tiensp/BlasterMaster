@@ -15,6 +15,7 @@ private:
 	int MapCols, MapRows;
 	int TileSize;
 	int Matrix[200][200];
+
 public:
 	CMap(int id, string fileMatrix, string fileTileSet);
 	~CMap();

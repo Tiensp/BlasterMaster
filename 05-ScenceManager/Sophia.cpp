@@ -185,7 +185,7 @@ void CSophia::Render()
 		}
 
 	}
-	else if (state == SOPHIA_STATE_JUMP)
+	/*else if (state == SOPHIA_STATE_JUMP)
 	{
 		if (lifeTimeJump == 0)
 			lifeTimeJump = GetTickCount64();
@@ -206,7 +206,7 @@ void CSophia::Render()
 				ani = SOPHIA_ANI_IDLE_LEFT;
 
 		}
-	}
+	}*/
 	else if (level == SOPHIA_LEVEL_BIG)
 	{
 		//Reset lifeTimeGunUp nếu chuyển trạng thái khác nhưng chưa reset time
@@ -304,7 +304,7 @@ void CSophia::SetState(int state)
 		break;
 	case SOPHIA_STATE_JUMP:
 		// TODO: need to check if Sophia is *current* on a platform before allowing to jump again
-		if (vy == 0)
+		//if (vy == 0)
 			vy = -SOPHIA_JUMP_SPEED_Y;
 		break; 
 	case SOPHIA_STATE_GUN_UP:

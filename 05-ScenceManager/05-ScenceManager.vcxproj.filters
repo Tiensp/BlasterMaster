@@ -31,27 +31,21 @@
     <Filter Include="GameGraphics">
       <UniqueIdentifier>{c79f6e6b-5182-4f07-9f60-4c17cbc81ff6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Scence">
+      <UniqueIdentifier>{4ef561ba-0058-4368-82cc-7175539f1ff4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game">
+      <UniqueIdentifier>{85600d58-6777-4cd2-a691-77f77f4f8a62}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\GameObject">
+      <UniqueIdentifier>{037eda8a-4994-4fe9-8d04-2d8e2cb0d81d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Brick.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Game.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GameObject.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Goomba.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Scence.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayScence.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Koopas.cpp">
@@ -81,27 +75,27 @@
     <ClCompile Include="Textures.cpp">
       <Filter>GameGraphics</Filter>
     </ClCompile>
+    <ClCompile Include="PlayScence.cpp">
+      <Filter>Scence</Filter>
+    </ClCompile>
+    <ClCompile Include="Scence.cpp">
+      <Filter>Scence</Filter>
+    </ClCompile>
+    <ClCompile Include="Game.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject.cpp">
+      <Filter>GameObject\GameObject</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Brick.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Game.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GameObject.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Goomba.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Scence.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayScence.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="KeyEventHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Koopas.h">
@@ -133,6 +127,21 @@
     </ClInclude>
     <ClInclude Include="Animations.h">
       <Filter>GameGraphics</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayScence.h">
+      <Filter>Scence</Filter>
+    </ClInclude>
+    <ClInclude Include="Scence.h">
+      <Filter>Scence</Filter>
+    </ClInclude>
+    <ClInclude Include="Game.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="KeyEventHandler.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject.h">
+      <Filter>GameObject\GameObject</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

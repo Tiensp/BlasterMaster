@@ -254,17 +254,22 @@ void CPlayScene::Update(DWORD dt)
 	// Update camera to follow sophia
 	float cx, cy;
 	player->GetPosition(cx, cy);
+	DebugOut(L"PlayerX: %f, Player: %f\n", cx, cy);
+	CGame *game = CGame::GetInstance();
+	cx -= game->GetScreenWidth() / 2;
+	cy -= game->GetScreenHeight() / 2;
 
-	//CGame *game = CGame::GetInstance();
-	//cx -= game->GetScreenWidth() / 2;
-	//cy -= game->GetScreenHeight() / 2;
+	/*CCamera* camera = CCamera::GetInstance();
+	camera->SetPosition(D3DXVECTOR2(cx, cy));
+	D3DXVECTOR2 cPos = camera->GetCamPos();*/
+	game->SetCamPos(cx, cy);
 
-	CCamera::GetInstance()->SetPosition(D3DXVECTOR2(cx, cy ));
+
 }
 
 void CPlayScene::Render()
 {
-	Map->DrawMap();
+	//Map->DrawMap();
 	for (int i = 0; i < objects.size(); i++)
 		objects[i]->Render();
 }
@@ -335,11 +340,11 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 	}
 	else if (game->IsKeyDown(DIK_UP))
 		sophia->SetState(SOPHIA_STATE_GUN_UP);
-	else if (game->IsKeyDown(DIK_SPACE))
+	/*else if (game->IsKeyDown(DIK_SPACE))
 	{
 		
 		sophia->SetState(SOPHIA_STATE_JUMP);
-	}
+	}*/
 	else
 		sophia->SetState(SOPHIA_STATE_IDLE);
 }
