@@ -14,7 +14,7 @@ class CPlayScene: public CScene
 {
 protected: 
 	CSophia *player;	
-	CMap* Map;// A play scene has to have player, right? 
+	CMap* map;// A play scene has to have player, right? 
 
 	vector<LPGAMEOBJECT> objects;
 
@@ -23,6 +23,7 @@ protected:
 	void _ParseSection_ANIMATIONS(string line);
 	void _ParseSection_ANIMATION_SETS(string line);
 	void _ParseSection_OBJECTS(string line);
+	void _ParseSection_MAP(string line);
 	void LoadMap();
 
 

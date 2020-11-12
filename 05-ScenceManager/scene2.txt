@@ -299,3 +299,7 @@
 # type	l	t	ani_set_id	r	b	scene_id
 #50	300	98	0	380	150	1
 
+[MAP]
+#id		pathMatrix		pathTileSet
+1	mapArea.txt	mapArea.png
+
