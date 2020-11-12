@@ -22,5 +22,8 @@ public:
 	void LoadTileSet(string filePath);
 	void DrawMap();
 
+	int GetMapWidth() { return MapCols * TileSize; }
+	int GetMapHeight() { return MapRows * TileSize; }
+
 };
 

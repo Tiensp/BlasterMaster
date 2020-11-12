@@ -14,7 +14,7 @@ class CCamera
 
 	RECT camBound;		  //Set biên giới hạn camera dựa vào kích thước map
 	
-	LPGAMEOBJECT gameObj; //Lưu gameObj camera follow
+	//LPGAMEOBJECT gameObj; //Lưu gameObj camera follow
 
 public:
 	static CCamera* GetInstance();
@@ -34,14 +34,15 @@ public:
 	RECT GetCamBound();
 	void SetBoundSize(float _w, float _h);
 
-	void SetGameObject(LPGAMEOBJECT gameObj) { this->gameObj = gameObj; }
+	//void SetGameObject(LPGAMEOBJECT gameObj) { this->gameObj = gameObj; }
 
 	bool IsAutoCam();
 	void AutoCamX(float _distance, int direct);
 	void UpdateAutoCam(DWORD dt);
 	void LockCam();
 	void UnlockCam();
-	void Update();
+	void SetCamBound(float mapWidth, float mapHeight);
+	void Update(CGameObject* gameObj);
 };
 
 

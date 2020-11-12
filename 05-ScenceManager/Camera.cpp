@@ -15,6 +15,8 @@ CCamera::CCamera(int width, int height)
 	this->width = width;
 	this->height = height;
 	
+	camBound.left = 0;
+	camBound.top = 0;
 }
 
 CCamera::~CCamera()
@@ -74,11 +76,6 @@ bool CCamera::isContain(RECT rect)
 	return true;
 }
 
-void CCamera::Update()
-{
-	
-}
-
 RECT CCamera::GetCamBound()
 {
 	camBound.left = camPos.x;
@@ -86,4 +83,37 @@ RECT CCamera::GetCamBound()
 	camBound.right = camPos.x + width;
 	camBound.bottom = camPos.y + height;
 	return camBound;
+}
+
+void CCamera::Update(CGameObject* gameObj)
+{
+	/*
+		Kiểm tra xem Camera có bị vượt ra ngoài map không
+		Vượt quá giới hạn thì đặt lại vị trí Camera
+
+		Tọa độ biên trái và biên trên chắc chắn là tọa độ pos(0,0) 
+		Cách xét tọa độ biên phải và biên dưới là tùy theo mỗi người
+		Ở đây, tọa độ giới hạn của cam được tính theo:
+			+ Tọa độ Biên phải - Độ dài Camera
+			+ Tọa độ Biên dưới - Chiều cao Camera
+	*/
+	if (camPos.x < camBound.left)
+		camPos.x = camBound.left;
+
+	if (camPos.y < camBound.top)
+		camPos.y = camBound.top;
+
+	if (camPos.x > camBound.right - width + 14)
+		camPos.x = camBound.right - width + 14;
+
+	if (camPos.y > camBound.bottom - height + 35)
+		camPos.y = camBound.bottom - height + 35;
+}
+
+void CCamera::SetCamBound(float mapWidth, float mapHeight)
+{
+	camBound.left = 0;
+	camBound.top = 0;
+	camBound.right = mapWidth;
+	camBound.bottom = mapHeight;
 }

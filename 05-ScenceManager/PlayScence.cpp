@@ -282,8 +282,9 @@ void CPlayScene::Update(DWORD dt)
 
 	CCamera* camera = CCamera::GetInstance();
 	camera->SetPosition(D3DXVECTOR2(cx, cy));
-	D3DXVECTOR2 cPos = camera->GetCamPos();
-	game->SetCamPos(cPos.x, cPos.y);
+
+	camera->SetCamBound(map->GetMapWidth(), map->GetMapHeight());
+	camera->Update(player);
 
 
 }
