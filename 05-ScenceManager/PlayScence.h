@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "Game.h"
 #include "Textures.h"
 #include "Scence.h"
@@ -13,19 +13,19 @@
 class CPlayScene: public CScene
 {
 protected: 
-	CSophia *player;	
-	CMap* map;// A play scene has to have player, right? 
+	CSophia *player;	// A play scene has to have player, right? 
+	CMap* map;			//Cần một đối tượng lưu trữ MAP
+	CCamera* camera;	//Và một đối tượng lưu trữ camera của Play Scene
 
-	vector<LPGAMEOBJECT> objects;
+	vector<LPGAMEOBJECT> objects;	//một list obj lưu trữ các GameObj có trong Play Scene
 
+	/* Các hàm ParsSection dùng để đọc file */
 	void _ParseSection_TEXTURES(string line);
 	void _ParseSection_SPRITES(string line);
 	void _ParseSection_ANIMATIONS(string line);
 	void _ParseSection_ANIMATION_SETS(string line);
 	void _ParseSection_OBJECTS(string line);
 	void _ParseSection_MAP(string line);
-	void LoadMap();
-
 
 	
 public: 
@@ -37,8 +37,9 @@ public:
 	virtual void Unload();
 
 
-	CSophia * GetPlayer() { return player; } 
-
+	CSophia * GetPlayer() { return this->player; } 
+	CCamera* GetCamera() { return this->camera; }
+	CMap* GetMap() { return this->map; }
 	//friend class CPlayScenceKeyHandler;
 };
 

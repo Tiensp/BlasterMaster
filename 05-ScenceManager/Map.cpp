@@ -17,6 +17,8 @@ CMap::~CMap()
 
 void CMap::LoadMatrix(string filePath)
 {
+	DebugOut(L"[INFO] Start loading matrix map: %s\n", ToLPCWSTR(filePath));
+
 	ifstream f(filePath, ios::in);
 	//Đọc dòng đầu tiên: kích thước tile, số cột tile, số hàng tile, số cột matrix, số hàng matrix
 	f >> TileSize >> TileCols >> TileRows >> MapCols >> MapRows;
@@ -27,13 +29,17 @@ void CMap::LoadMatrix(string filePath)
 			f >> Matrix[i][j];
 		}
 	f.close();
+
+	DebugOut(L"[INFO] Done loading matrix map\n");
 }
 
 void CMap::LoadTileSet(string filePath)
 {
+	DebugOut(L"[INFO] Start loading tile set map: %s\n", ToLPCWSTR(filePath));
 	//Add Texture TileMap từ path file ảnh (.PNG,...)
 	CTextures::GetInstance()->Add(static_cast<ObjectType>(id + MAPID), ToLPCWSTR(filePath), D3DCOLOR_XRGB(255, 255, 255)); 
 	TileTexture = CTextures::GetInstance()->Get(static_cast<ObjectType>(id + MAPID));
+	DebugOut(L"[INFO] Done loading tile set map\n");
 }
 
 
