@@ -1,4 +1,4 @@
-#include <iostream>
+﻿#include <iostream>
 #include <fstream>
 
 #include "PlayScence.h"
@@ -183,10 +183,8 @@ void CPlayScene::_ParseSection_MAP(string line)
 {
 	vector<string> tokens = split(line);
 
-	if (tokens.size() != 3) {
-		DebugOut(L"Something wrong with path file MAP!");
-		return; // skip invalid lines
-	}
+	if (tokens.size() < 3) return; // skip invalid lines
+
 	int map_id = atoi(tokens[0].c_str());
 	string pathMatrix = tokens[1];
 	string pathTileSet = tokens[2];
@@ -251,6 +249,10 @@ void CPlayScene::Load()
 	CTextures::GetInstance()->Add(ID_TEX_BBOX, L"textures\\bbox.png", D3DCOLOR_XRGB(255, 255, 255));
 
 	DebugOut(L"[INFO] Done loading scene resources %s\n", sceneFilePath);
+	
+	// Khởi tạo camera
+	camera = CCamera::GetInstance();
+	camera->SetCamBound(map->GetMapWidth(), map->GetMapHeight());
 }
 
 void CPlayScene::Update(DWORD dt)
@@ -270,20 +272,9 @@ void CPlayScene::Update(DWORD dt)
 	}
 
 	// skip the rest if scene was already unloaded (Sophia::Update might trigger PlayScene::Unload)
-	if (player == NULL) return; 
+	if (player == NULL) return;
 
 	// Update camera to follow sophia
-	float cx, cy;
-	player->GetPosition(cx, cy);
-	DebugOut(L"PlayerX: %f, Player: %f\n", cx, cy);
-	CGame *game = CGame::GetInstance();
-	cx -= game->GetScreenWidth() / 2;
-	cy -= game->GetScreenHeight() / 2;
-
-	CCamera* camera = CCamera::GetInstance();
-	camera->SetPosition(D3DXVECTOR2(cx, cy));
-
-	camera->SetCamBound(map->GetMapWidth(), map->GetMapHeight());
 	camera->Update(player);
 
 
@@ -306,6 +297,8 @@ void CPlayScene::Unload()
 
 	objects.clear();
 	player = NULL;
+	map = NULL;
+	camera = NULL;
 
 	DebugOut(L"[INFO] Scene %s unloaded! \n", sceneFilePath);
 }

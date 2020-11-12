@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Game.h"
 #include "GameDefine.h"
 #include "GameObject.h"
 
@@ -23,7 +24,7 @@ public:
 	D3DXVECTOR2 World2Cam(const D3DXVECTOR2& pos);
 	D3DXVECTOR2 Cam2World(const D3DXVECTOR2& pos);
 
-	void SetPosition(D3DXVECTOR2 pos);
+	void SetPosition(const D3DXVECTOR2& pos);
 	void SetDefaultCam();
 	D3DXVECTOR2 GetCamPos() { return camPos; }
 
