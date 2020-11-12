@@ -73,7 +73,8 @@ void CGame::Draw(D3DXVECTOR2 pos, D3DXVECTOR2 pointCenter, LPDIRECT3DTEXTURE9 te
 */
 void CGame::Draw(D3DXVECTOR2 pos, LPDIRECT3DTEXTURE9 texture, RECT rect, int alpha)
 {
-	D3DXVECTOR2 posTrans = D3DXVECTOR2(pos.x - cam_x, pos.y - cam_y);
+	//Transform tọa độ World về tọa độ Camera trước khi vẽ
+	D3DXVECTOR2 posTrans = CCamera::GetInstance()->World2Cam(pos);
 	D3DXVECTOR3 pInt((int)(posTrans.x), (int)(posTrans.y), 0); // Giúp không bị viền
 	spriteHandler->Draw(texture, &rect, NULL, &pInt, D3DCOLOR_ARGB(alpha, 255, 255, 255));
 }
