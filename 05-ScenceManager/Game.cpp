@@ -1,4 +1,4 @@
-#include <iostream>
+﻿#include <iostream>
 #include <fstream>
 
 #include "Game.h"
@@ -218,8 +218,13 @@ void CGame::SweptAABB(
 	float &t, float &nx, float &ny)
 {
 
-	float dx_entry, dx_exit, tx_entry, tx_exit;
+	float dx_entry, dx_exit, tx_entry, tx_exit;  
 	float dy_entry, dy_exit, ty_entry, ty_exit;
+
+	//dx_entry, dy_entry khoảng cách cần đi để bắt đầy va chạm
+	//dx_exit, dy_exit khoảng cách cần đi kể từ lúc bắt đầu đến lúc hết va chạm
+	//tx_entry, ty_entry thời gian cần để bắt đầu va chạm.
+	//tx_exit, ty_exit thời gian cần từ lúc bắt đầu đến lúc hết va chạm.
 
 	float t_entry; 
 	float t_exit; 
