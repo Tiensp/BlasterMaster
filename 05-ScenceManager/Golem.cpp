@@ -30,7 +30,7 @@ void CGolem::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	CGameObject::Update(dt, coObjects);
 	vy += 0.002f * dt;
-	DebugOut(L"golumnvX: %f, golumnvY: %f\n", vx, vy);
+	//DebugOut(L"golumnvX: %f, golumnvY: %f\n", vx, vy);
 
 	//x += dx;
 	//y += dy;
@@ -78,7 +78,21 @@ void CGolem::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		if (nx != 0)
 		{
 			this->nx = -this->nx;
+			DebugOut(L"golumnvX: %f, golumnvY: %f\n", this->nx, vy);
 
+		}
+		if (ny != 0)
+		{
+
+			vy = 0;
+			for (int i = 0; i < coEventsResult.size(); i++)
+			{
+				LPCOLLISIONEVENT e = coEventsResult.at(i);
+				if (e->ny != 0)
+				{
+
+				}
+			}
 		}
 
 

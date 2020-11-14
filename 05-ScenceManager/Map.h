@@ -9,12 +9,12 @@ class CMap
 private:
 	int id;
 	LPDIRECT3DTEXTURE9 TileTexture;
-	LPSPRITE TileSet;
 
 	int TileCols, TileRows;
 	int MapCols, MapRows;
 	int TileSize;
 	int Matrix[200][200];
+
 public:
 	CMap(int id, string fileMatrix, string fileTileSet);
 	~CMap();
@@ -24,5 +24,7 @@ public:
 	bool isContain(RECT rect1, RECT rect2);
 
 
-};
+	int GetMapWidth() { return MapCols * TileSize; }
+	int GetMapHeight() { return MapRows * TileSize; }
 
+};
