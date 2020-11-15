@@ -137,7 +137,6 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 void CSophia::Render()
 {
-	DebugOut(L"Render: %d\n", state);
 	int alpha = 255;
 	if (untouchable) alpha = 128;
 
@@ -185,7 +184,7 @@ void CSophia::Render()
 		}
 
 	}
-	/*else if (state == SOPHIA_STATE_JUMP)
+	else if (state == SOPHIA_STATE_JUMP)
 	{
 		if (lifeTimeJump == 0)
 			lifeTimeJump = GetTickCount64();
@@ -201,12 +200,12 @@ void CSophia::Render()
 			lifeTimeJump = 0;		//Reset lifeTimeJump
 
 			if (nx > 0)
-				ani = SOPHIA_ANI_IDLE_RIGHT;
+				ani = SOPHIA_ANI_JUMP_RIGHT;
 			else
-				ani = SOPHIA_ANI_IDLE_LEFT;
+				ani = SOPHIA_ANI_JUMP_LEFT;
 
 		}
-	}*/
+	}
 	else if (level == SOPHIA_LEVEL_BIG)
 	{
 		//Reset lifeTimeGunUp nếu chuyển trạng thái khác nhưng chưa reset time

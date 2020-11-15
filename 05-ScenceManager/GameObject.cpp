@@ -15,6 +15,18 @@ CGameObject::CGameObject()
 	nx = 1;	
 }
 
+void CGameObject::KeyState()
+{
+}
+
+void CGameObject::OnKeyDown(int keycode)
+{
+}
+
+void CGameObject::OnKeyUp(int keycode)
+{
+}
+
 void CGameObject::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
 	this->dt = dt;
