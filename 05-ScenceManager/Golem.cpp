@@ -1,4 +1,4 @@
-#include "Golem.h"
+﻿#include "Golem.h"
 #include <algorithm>
 #include <assert.h>
 #include "Utils.h"
@@ -8,9 +8,13 @@
 
 #include "Goomba.h"
 #include "Portal.h"
-CGolem::CGolem()
+#include "Brick.h"
+CGolem::CGolem(float x, float y, LPGAMEOBJECT player)
 {
 	SetState(GOLEM_STATE_WALKING);
+	this->x = x;
+	this->y = y;
+	this->target = player;
 
 }
 
@@ -28,102 +32,130 @@ void CGolem::GetBoundingBox(float& left, float& top, float& right, float& bottom
 
 void CGolem::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	CGameObject::Update(dt, coObjects);
-	vy += 0.002f * dt;
+
+	vy += 0.0005f * dt;
 	//DebugOut(L"golumnvX: %f, golumnvY: %f\n", vx, vy);
+	CGameObject::Update(dt, coObjects);
+	//DebugOut(L"golumnvX: %f, golumnvY: %f\n", vx, vy);
+	
+	//DebugOut(L"golumnvX: %f, golumnvY: %f\n", target->nx, this->nx);
 
-	//x += dx;
-	//y += dy;
-
-	//if (vx < 0 && x < 0) {
-	//	x = 0; vx = -vx;
-	//}
-
-	//if (vx > 0 && x > 290) {
-	//	x = 290; vx = -vx;
-	//}
 
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
 
 	coEvents.clear();
+
+	// turn off collision when die 
+	//nếu không chết thì kiểm tra toàn bộ va chạm với các đối tượng khác
 	CalcPotentialCollisions(coObjects, coEvents);
 
+	// reset untouchable timer if untouchable time has passed
 
 	// No collision occured, proceed normally
-	if (coEvents.size() == 0)
+
+	if (coEvents.size() == 0)  //nếu không có va chạm, update bình thường
 	{
 		x += dx;
 		y += dy;
 	}
-	else
+	else //có va chạm
 	{
-		float min_tx, min_ty, nx = 0, ny;
+		float min_tx, min_ty, nx = 0, ny=0;
 		float rdx = 0;
 		float rdy = 0;
 
 		// TODO: This is a very ugly designed function!!!!
-		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
+		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);  // sắp xếp lại các sự kiện va chạm đầu tiên theo trục x, y 
 
 		// how to push back Sophia if collides with a moving objects, what if Sophia is pushed this way into another object?
 		//if (rdx != 0 && rdx!=dx)
 		//	x += nx*abs(rdx); 
 
 		// block every object first!
-		x += min_tx * dx + nx * 0.4f;
-		y += min_ty * dy + ny * 0.4f;
+		x += min_tx * dx + nx * 0.4f;  //cập nhật lại vị trí x
+		y += min_ty * dy + ny * 0.4f;	// cập nhật lại vị trí y  để tránh bị hụt xuống
 
-	/*	if (nx != 0) vx = 0;
-		if (ny != 0) vy = 0;*/
-		if (nx != 0)
-		{
-			this->nx = -this->nx;
-			DebugOut(L"golumnvX: %f, golumnvY: %f\n", this->nx, vy);
-
-		}
-		if (ny != 0)
-		{
-
-			vy = 0;
-			for (int i = 0; i < coEventsResult.size(); i++)
-			{
-				LPCOLLISIONEVENT e = coEventsResult.at(i);
-				if (e->ny != 0)
-				{
-
-				}
-			}
-		}
+		if (nx != 0) vx = 0;
+		if (ny != 0) vy = 0;
 
 
 		//
 		// Collision logic with other objects
 		//
-		//for (UINT i = 0; i < coEventsResult.size(); i++)
-		//{
-		//	LPCOLLISIONEVENT e = coEventsResult[i];
-
-		//	if (dynamic_cast<CGoomba*>(e->obj)) // if e->obj is Goomba 
-		//	{
-		//		CGoomba* goomba = dynamic_cast<CGoomba*>(e->obj);
-
-		//		// jump on top >> kill Goomba and deflect a bit 
-		//		if (e->ny < 0)
-		//		{
-		//			if (goomba->GetState() != GOOMBA_STATE_DIE)
-		//			{
-		//				goomba->SetState(GOOMBA_STATE_DIE);
-		//				vy = -SOPHIA_JUMP_DEFLECT_SPEED;
-		//			}
-		//		}
-		//		
-		//		}
-		//	} // if Goomba
+		if (abs(this->x - target->x) <= 300 && abs(this->y - target->y)<=20)
+		{
+			if (this->x - target->x <= 0)
+			{
+				this->nx = 1;
+			}	
+			else
+			{
+				this->nx = -1;
+			}
+			if (abs(this->x - target->x) <= 70)
+			{
+				this->SetState(GOLEM_STATE_JUMPING);
+			}
+			else
+			{
+				this->SetState(GOLEM_STATE_WALKING);
+			}
 			
-		}
-	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
 
+		}
+		else
+		{
+			for (UINT i = 0; i < coEventsResult.size(); i++)
+			{
+				LPCOLLISIONEVENT e = coEventsResult[i];
+
+				if (dynamic_cast<CBrick*>(e->obj)) // if e->obj is Goomba 
+				{
+					CBrick* brick = dynamic_cast<CBrick*>(e->obj);
+
+					// jump on top >> kill Goomba and deflect a bit 
+					if (e->nx < 0)
+					{
+						this->SetState(GOLEM_STATE_WALKING);
+
+
+					}
+					else if (e->nx > 0)
+					{
+						this->SetState(GOLEM_STATE_WALKING);
+
+					}
+					this->nx = e->nx;
+
+				}
+				//	else if (e->nx != 0)
+				//	{
+				//		if (untouchable==0)
+				//		{
+				//			if (goomba->GetState()!=GOOMBA_STATE_DIE)
+				//			{
+				//				if (level > SOPHIA_LEVEL_SMALL)
+				//				{
+				//					level = SOPHIA_LEVEL_SMALL;
+				//					StartUntouchable();
+				//				}
+				//				else 
+				//					SetState(SOPHIA_STATE_DIE);
+				//			}
+				//		}
+				//	}
+				//} // if Goomba
+				/*else if (dynamic_cast<CPortal *>(e->obj))
+				{
+					CPortal *p = dynamic_cast<CPortal *>(e->obj);
+					CGame::GetInstance()->SwitchScene(p->GetSceneId());
+				}*/
+			}
+
+		}
 	}
+}
 
 
 
@@ -136,6 +168,22 @@ void CGolem::Render()
 	animation_set->at(ani)->Render(x, y);
 
 	RenderBoundingBox();
+}
+
+void CGolem::flowPlayer(LPGAMEOBJECT player)
+{
+	if (abs(this->x - player->x) <= 100)
+	{
+		if (this->x - player->x <= 0)
+		{
+			this->nx = -1;
+		}
+		else
+		{
+			this->nx = 1;
+		}
+	}
+	
 }
 
 
@@ -158,7 +206,21 @@ void CGolem::SetState(int state)
 		else
 		{
 			vx = -GOLEM_WALKING_SPEED;
-		}		
+		}
 		break;
+	case GOLEM_STATE_JUMPING:
+		if (nx > 0)
+		{
+			vx = GOLEM_WALKING_SPEED+0.09f;
+		}
+		else
+		{
+			vx = -GOLEM_WALKING_SPEED - 0.09f;
+		}
+		vy = -GOLEM_JUMPING_SPEED;
+		break;
+
+
+		
 	}
 }

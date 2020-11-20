@@ -7,9 +7,10 @@
 #include "Sprites.h"
 #include "Portal.h"
 
+
 using namespace std;
 
-CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
+CPlayScene::CPlayScene(int id, LPCWSTR filePath):
 	CScene(id, filePath)
 {
 	key_handler = new CPlayScenceKeyHandler(this);
@@ -32,6 +33,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
 #define OBJECT_TYPE_BRICK	1
 #define OBJECT_TYPE_GOOMBA	2
 #define OBJECT_TYPE_GOLEM	3
+#define	OBJECT_TYPE_DOMES	4
 
 #define OBJECT_TYPE_PORTAL	50
 
@@ -70,7 +72,7 @@ void CPlayScene::_ParseSection_SPRITES(string line)
 	if (tex == NULL)
 	{
 		DebugOut(L"[ERROR] Texture ID %d not found!\n", texID);
-		return;
+		return; 
 	}
 
 	CSprites::GetInstance()->Add(ID, l, t, r, b, tex);
@@ -90,7 +92,7 @@ void CPlayScene::_ParseSection_ANIMATIONS(string line)
 	for (int i = 1; i < tokens.size(); i += 2)	// why i+=2 ?  sprite_id | frame_time  
 	{
 		int sprite_id = atoi(tokens[i].c_str());
-		int frame_time = atoi(tokens[i + 1].c_str());
+		int frame_time = atoi(tokens[i+1].c_str());
 		ani->Add(sprite_id, frame_time);
 	}
 
@@ -107,12 +109,12 @@ void CPlayScene::_ParseSection_ANIMATION_SETS(string line)
 
 	LPANIMATION_SET s = new CAnimationSet();
 
-	CAnimations* animations = CAnimations::GetInstance();
+	CAnimations *animations = CAnimations::GetInstance();
 
 	for (int i = 1; i < tokens.size(); i++)
 	{
 		int ani_id = atoi(tokens[i].c_str());
-
+		
 		LPANIMATION ani = animations->Get(ani_id);
 		s->push_back(ani);
 	}
@@ -121,7 +123,7 @@ void CPlayScene::_ParseSection_ANIMATION_SETS(string line)
 }
 
 /*
-	Parse a line in section [OBJECTS]
+	Parse a line in section [OBJECTS] 
 */
 void CPlayScene::_ParseSection_OBJECTS(string line)
 {
@@ -137,20 +139,20 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 
 	int ani_set_id = atoi(tokens[3].c_str());
 
-	CAnimationSets* animation_sets = CAnimationSets::GetInstance();
+	CAnimationSets * animation_sets = CAnimationSets::GetInstance();
 
-	CGameObject* obj = NULL;
+	CGameObject *obj = NULL;
 
 	switch (object_type)
 	{
 	case OBJECT_TYPE_SOPHIA:
-		if (player != NULL)
+		if (player!=NULL) 
 		{
 			DebugOut(L"[ERROR] SOPHIA object was created before!\n");
 			return;
 		}
-		obj = new CSophia(x, y);
-		player = (CSophia*)obj;
+		obj = new CSophia(x,y); 
+		player = (CSophia*)obj;  
 
 		DebugOut(L"[INFO] Player object created!\n");
 		break;
@@ -162,16 +164,17 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj = new CBrick(x, y, w, h);
 	}
 	break;
+	case OBJECT_TYPE_GOLEM: obj = new CGolem(x,y, player); break;
+	case OBJECT_TYPE_DOMES: obj = new CDomes(x, y, player); break;
 
-	case OBJECT_TYPE_GOLEM: obj = new CGolem(); break;
 	case OBJECT_TYPE_PORTAL:
-	{
-		float r = atof(tokens[4].c_str());
-		float b = atof(tokens[5].c_str());
-		int scene_id = atoi(tokens[6].c_str());
-		obj = new CPortal(x, y, r, b, scene_id);
-	}
-	break;
+		{	
+			float r = atof(tokens[4].c_str());
+			float b = atof(tokens[5].c_str());
+			int scene_id = atoi(tokens[6].c_str());
+			obj = new CPortal(x, y, r, b, scene_id);
+		}
+		break;
 	default:
 		DebugOut(L"[ERR] Invalid object type: %d\n", object_type);
 		return;
@@ -256,7 +259,7 @@ void CPlayScene::Load()
 	CTextures::GetInstance()->Add(ID_TEX_BBOX, L"textures\\bbox.png", D3DCOLOR_XRGB(255, 255, 255));
 
 	DebugOut(L"[INFO] Done loading scene resources %s\n", sceneFilePath);
-
+	
 	// Khởi tạo camera
 	camera = CCamera::GetInstance();
 	camera->SetCamBound(map->GetMapWidth(), map->GetMapHeight());
@@ -314,16 +317,16 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 {
 	DebugOut(L"[INFO] KeyDown: %d\n", KeyCode);
 
-	CSophia* sophia = ((CPlayScene*)scence)->GetPlayer();
+	CSophia *sophia = ((CPlayScene*)scence)->GetPlayer();
 	switch (KeyCode)
 	{
-	case DIK_SPACE:
+	/*case DIK_SPACE:
 		sophia->SetState(SOPHIA_STATE_JUMP);
-		break;
-		/*case DIK_UP:
-			sophia->SetState(SOPHIA_STATE_GUN_UP);
-			break;*/
-	case DIK_A:
+		break;*/
+	/*case DIK_UP:
+		sophia->SetState(SOPHIA_STATE_GUN_UP);
+		break;*/
+	case DIK_A: 
 		sophia->Reset();
 		break;
 	}
@@ -340,15 +343,15 @@ void CPlayScenceKeyHandler::OnKeyUp(int KeyCode)
 	}*/
 }
 
-void CPlayScenceKeyHandler::KeyState(BYTE* states)
+void CPlayScenceKeyHandler::KeyState(BYTE *states)
 {
-	CGame* game = CGame::GetInstance();
-	CSophia* sophia = ((CPlayScene*)scence)->GetPlayer();
+	CGame *game = CGame::GetInstance();
+	CSophia *sophia = ((CPlayScene*)scence)->GetPlayer();
 
 	// disable control key when Sophia die 
 	if (sophia->GetState() == SOPHIA_STATE_DIE) return;
 	if (game->IsKeyDown(DIK_RIGHT))
-	{
+	{	
 		if (sophia->GetDirection() < 0)
 			sophia->SetIsTurning(true);
 
@@ -362,11 +365,11 @@ void CPlayScenceKeyHandler::KeyState(BYTE* states)
 	}
 	else if (game->IsKeyDown(DIK_UP))
 		sophia->SetState(SOPHIA_STATE_GUN_UP);
-	/*else if (game->IsKeyDown(DIK_SPACE))
+	else if (game->IsKeyDown(DIK_SPACE))
 	{
-
+		
 		sophia->SetState(SOPHIA_STATE_JUMP);
-	}*/
+	}
 	else
 		sophia->SetState(SOPHIA_STATE_IDLE);
 }

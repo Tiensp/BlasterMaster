@@ -7,6 +7,7 @@
 
 #include "Goomba.h"
 #include "Portal.h"
+#include "Brick.h"
 
 CSophia::CSophia(float x, float y) : CGameObject()
 {
@@ -73,7 +74,7 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		
 		// block every object first!
 		x += min_tx*dx + nx*0.4f;
-		y += min_ty*dy + ny*0.4f;
+		//y += min_ty*dy + ny*0.4f;
 
 		if (nx!=0) vx = 0;
 		if (ny!=0) vy = 0;
@@ -84,42 +85,22 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		//
 		for (UINT i = 0; i < coEventsResult.size(); i++)
 		{
-			LPCOLLISIONEVENT e = coEventsResult[i];
-
-			if (dynamic_cast<CGoomba *>(e->obj)) // if e->obj is Goomba 
+			LPCOLLISIONEVENT e = coEventsResult[i];	
+			if (dynamic_cast<CBrick*>(e->obj)) // if e->obj is Goomba 
 			{
-				CGoomba *goomba = dynamic_cast<CGoomba *>(e->obj);
+				CBrick* brick = dynamic_cast<CBrick*>(e->obj);
 
 				// jump on top >> kill Goomba and deflect a bit 
-				if (e->ny < 0)
+				if (e->nx < 0)
 				{
-					if (goomba->GetState()!= GOOMBA_STATE_DIE)
-					{
-						goomba->SetState(GOOMBA_STATE_DIE);
-						vy = -SOPHIA_JUMP_DEFLECT_SPEED;
-					}
+					
+
 				}
-				else if (e->nx != 0)
+				else if (e->nx > 0)
 				{
-					if (untouchable==0)
-					{
-						if (goomba->GetState()!=GOOMBA_STATE_DIE)
-						{
-							if (level > SOPHIA_LEVEL_SMALL)
-							{
-								level = SOPHIA_LEVEL_SMALL;
-								StartUntouchable();
-							}
-							else 
-								SetState(SOPHIA_STATE_DIE);
-						}
-					}
+					
 				}
-			} // if Goomba
-			else if (dynamic_cast<CPortal *>(e->obj))
-			{
-				CPortal *p = dynamic_cast<CPortal *>(e->obj);
-				CGame::GetInstance()->SwitchScene(p->GetSceneId());
+
 			}
 		}
 	}
@@ -137,7 +118,7 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 void CSophia::Render()
 {
-	DebugOut(L"Render: %d\n", state);
+	//DebugOut(L"Render: %d\n", state);
 	int alpha = 255;
 	if (untouchable) alpha = 128;
 
@@ -185,28 +166,31 @@ void CSophia::Render()
 		}
 
 	}
-	//else if (state == SOPHIA_STATE_JUMP)
-	//{
-	//	if (lifeTimeJump == 0)
-	//		lifeTimeJump = GetTickCount64();
+	else if (state == SOPHIA_STATE_JUMP)
+	{
+		if (lifeTimeJump == 0)
+			lifeTimeJump = GetTickCount64();
 
-	//	if (nx > 0)
-	//		ani = SOPHIA_ANI_JUMP_RIGHT;
-	//	else
-	//		ani = SOPHIA_ANI_JUMP_LEFT;
+		if (nx > 0)
+			ani = SOPHIA_ANI_JUMP_RIGHT;
+		else
+			ani = SOPHIA_ANI_JUMP_LEFT;
 
-	//	//Ngăn không cho render ani khác khi ani hiện tại chưa render đủ thời gian
-	//	if (GetTickCount64() - lifeTimeJump >= animation_set->at(ani)->GetAniTime())
-	//	{
-	//		lifeTimeJump = 0;		//Reset lifeTimeJump
+		//Ngăn không cho render ani khác khi ani hiện tại chưa render đủ thời gian
+		if (GetTickCount64() - lifeTimeJump >= animation_set->at(ani)->GetAniTime())
+		{
+			lifeTimeJump = 0;		//Reset lifeTimeJump
 
-	//		if (nx > 0)
-	//			ani = SOPHIA_ANI_IDLE_RIGHT;
-	//		else
-	//			ani = SOPHIA_ANI_IDLE_LEFT;
-
-	//	}
-	//}
+			/*if (nx > 0)
+				ani = SOPHIA_ANI_IDLE_RIGHT;
+			else
+				ani = SOPHIA_ANI_IDLE_LEFT;*/
+			if (nx > 0)
+				ani = SOPHIA_ANI_JUMP_RIGHT;
+			else
+				ani = SOPHIA_ANI_JUMP_LEFT;
+		}
+	}
 	else if (level == SOPHIA_LEVEL_BIG)
 	{
 		//Reset lifeTimeGunUp nếu chuyển trạng thái khác nhưng chưa reset time
@@ -304,7 +288,7 @@ void CSophia::SetState(int state)
 		break;
 	case SOPHIA_STATE_JUMP:
 		// TODO: need to check if Sophia is *current* on a platform before allowing to jump again
-		//if (vy == 0)
+		if (vy == 0)
 			vy = -SOPHIA_JUMP_SPEED_Y;
 		break; 
 	case SOPHIA_STATE_GUN_UP:

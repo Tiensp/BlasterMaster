@@ -8,7 +8,7 @@ CMap::CMap(int id, string fileMatrix, string fileTileSet)
 	this->id = id;
 	LoadMatrix(fileMatrix);
 	LoadTileSet(fileTileSet);
-
+	
 }
 
 CMap::~CMap()
@@ -37,7 +37,7 @@ void CMap::LoadTileSet(string filePath)
 {
 	DebugOut(L"[INFO] Start loading tile set map: %s\n", ToLPCWSTR(filePath));
 	//Add Texture TileMap từ path file ảnh (.PNG,...)
-	CTextures::GetInstance()->Add(static_cast<ObjectType>(id + MAPID), ToLPCWSTR(filePath), D3DCOLOR_XRGB(255, 255, 255));
+	CTextures::GetInstance()->Add(static_cast<ObjectType>(id + MAPID), ToLPCWSTR(filePath), D3DCOLOR_XRGB(255, 255, 255)); 
 	TileTexture = CTextures::GetInstance()->Get(static_cast<ObjectType>(id + MAPID));
 	DebugOut(L"[INFO] Done loading tile set map\n");
 }
@@ -45,25 +45,25 @@ void CMap::LoadTileSet(string filePath)
 
 void CMap::DrawMap()
 {
-	/*
+	/*  
 		Từ một tọa độ bất kỳ trong Map,
 		Ta có thể biết được tọa độ đó nằm trong ô nào của MatrixMap
-		Bằng cách chia tọa độ cho kích thước của Tile (TileWidth, TileHeight)
+		Bằng cách chia tọa độ cho kích thước của Tile (TileWidth, TileHeight) 
 	*/
 
-	/*
+	/*		
 		Do đó ta sẽ tính xem tọa độ Camera hiện tại đang nằm ở vị trí nào
-		Và bắt đầu fill những tile nằm trong vùng Camera (fill từ start->end)
+	    Và bắt đầu fill những tile nằm trong vùng Camera (fill từ start->end) 
 	*/
 	CCamera* camera = CCamera::GetInstance();
 	D3DXVECTOR2 camPos = camera->GetCamPos();
-	DebugOut(L"CamX: %f, CamY: %f\n", camPos.x, camPos.y);
+	//DebugOut(L"CamX: %f, CamY: %f\n", camPos.x, camPos.y);
 	int start_Col = camPos.x / TileSize;
 	int start_Row = camPos.y / TileSize;
 
-	/*
+	/* 
 		Thỉnh thoảng trong lúc tính toán và làm tròn sẽ có ô không được fill
-		Vì vậy ta sẽ +2 (hoặc bao nhiêu tùy chọn) để có thể vẽ hết tất cả và không bị flick cạnh
+		Vì vậy ta sẽ +2 (hoặc bao nhiêu tùy chọn) để có thể vẽ hết tất cả và không bị flick cạnh 
 	*/
 	int end_Col = (camera->GetWidth() / TileSize) + start_Col + 2;
 	int end_Row = (camera->GetHeight() / TileSize) + start_Row + 2;
@@ -76,12 +76,12 @@ void CMap::DrawMap()
 		 Sử dụng biến:
 				id_tile: để lưu ID Tile
 				m, n: để lưu vị trí cột, hàng của tile
-				tileRECT: để lưu tile RECT
+				tileRECT: để lưu tile RECT 
 	*/
 	int id_tile;
 	int m, n;
 	RECT tileRECT;
-
+	
 	for (int i = start_Col; i <= end_Col; i++)
 		for (int j = start_Row; j <= end_Row; j++)
 		{

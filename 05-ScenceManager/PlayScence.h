@@ -7,14 +7,15 @@
 #include "Sophia.h"
 #include "Goomba.h"
 #include "Koopas.h"
-#include "Golem.h"
 #include "Map.h"
+#include "Golem.h"
+#include "Domes.h"
 
 
-class CPlayScene : public CScene
+class CPlayScene: public CScene
 {
-protected:
-	CSophia* player;	// A play scene has to have player, right? 
+protected: 
+	CSophia *player;	// A play scene has to have player, right? 
 	CMap* map;			//Cần một đối tượng lưu trữ MAP
 	CCamera* camera;	//Và một đối tượng lưu trữ camera của Play Scene
 
@@ -28,8 +29,8 @@ protected:
 	void _ParseSection_OBJECTS(string line);
 	void _ParseSection_MAP(string line);
 
-
-public:
+	
+public: 
 	CPlayScene(int id, LPCWSTR filePath);
 
 	virtual void Load();
@@ -38,7 +39,7 @@ public:
 	virtual void Unload();
 
 
-	CSophia* GetPlayer() { return this->player; }
+	CSophia * GetPlayer() { return this->player; } 
 	CCamera* GetCamera() { return this->camera; }
 	CMap* GetMap() { return this->map; }
 	//friend class CPlayScenceKeyHandler;
@@ -46,9 +47,10 @@ public:
 
 class CPlayScenceKeyHandler : public CScenceKeyHandler
 {
-public:
-	virtual void KeyState(BYTE* states);
+public: 
+	virtual void KeyState(BYTE *states);
 	virtual void OnKeyDown(int KeyCode);
 	virtual void OnKeyUp(int KeyCode);
-	CPlayScenceKeyHandler(CScene* s) :CScenceKeyHandler(s) {};
+	CPlayScenceKeyHandler(CScene *s) :CScenceKeyHandler(s) {};
 };
+

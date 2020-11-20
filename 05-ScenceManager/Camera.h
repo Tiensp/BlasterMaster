@@ -10,11 +10,11 @@ class CCamera
 
 	D3DXVECTOR2 camPos;
 
-	int width;
+	int width;		
 	int height;
 
 	RECT camBound;		  //Set biên giới hạn camera dựa vào kích thước map
-
+	
 	//LPGAMEOBJECT gameObj; //Lưu gameObj camera follow
 
 public:
@@ -45,3 +45,6 @@ public:
 	void SetCamBound(float mapWidth, float mapHeight);
 	void Update(CGameObject* gameObj);
 };
+
+
+

@@ -21,10 +21,9 @@ public:
 	void LoadMatrix(string filePath);
 	void LoadTileSet(string filePath);
 	void DrawMap();
-	bool isContain(RECT rect1, RECT rect2);
-
 
 	int GetMapWidth() { return MapCols * TileSize; }
 	int GetMapHeight() { return MapRows * TileSize; }
 
 };
+

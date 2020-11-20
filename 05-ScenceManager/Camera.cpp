@@ -9,10 +9,10 @@ CCamera* CCamera::GetInstance()
 {
 	if (__intance == NULL)
 	{
-		__intance = new CCamera(CGame::GetInstance()->GetScreenWidth(),
-			CGame::GetInstance()->GetScreenWidth());
+		__intance = new CCamera(CGame::GetInstance()->GetScreenWidth(), 
+								CGame::GetInstance()->GetScreenWidth());
 	}
-
+		
 	return __intance;
 }
 
@@ -29,23 +29,26 @@ CCamera::~CCamera()
 
 D3DXVECTOR2 CCamera::World2Cam(const D3DXVECTOR2& pos)
 {
-	/*
+	/* 
 		Ban đầu mình sử dụng code dưới đây để transform tọa độ vì nó XỊN =)))
-		và lúc tìm hiểu mình được biết transform bằng cách nhân vector với ma trận
+		và lúc tìm hiểu mình được biết transform bằng cách nhân vector với ma trận 
 		tốt hơn vì máy trính thực hiện phép nhân chia nhanh hơn cộng trừ (mình không sure nhe)
+
 		Tuy nhiên về sau mình nhận ra khi render, việc gọi hàm này liên tục mỗi khi vẽ
-		và phải chạy đi chạy lại mớ code này còn khiên chương trình chậm và lag hơn nên quyết
+		và phải chạy đi chạy lại mớ code này còn khiên chương trình chậm và lag hơn nên quyết 
 		định không sử dụng nữa.
 	*/
 
 	/*
 		//Khởi tạo Vector4
 		D3DXVECTOR4 vp_pos;
+
 		//Khởi tạo ma trận đơn vị
 		D3DXMATRIX mt;
 		D3DXMatrixIdentity(&mt);
 		mt._41 = -camPos.x;
 		mt._42 = -camPos.y;
+
 		D3DXVec3Transform(&vp_pos, &D3DXVECTOR3(pos.x, pos.y, 1), &mt);
 		D3DXVECTOR2 _pos(vp_pos.x, vp_pos.y);
 	*/
@@ -57,7 +60,7 @@ D3DXVECTOR2 CCamera::Cam2World(const D3DXVECTOR2& pos)
 	return D3DXVECTOR2(pos.x + camPos.x, pos.y + camPos.y);
 }
 
-void CCamera::SetPosition(const D3DXVECTOR2& pos)
+void CCamera::SetPosition(const D3DXVECTOR2 &pos)
 {
 	camPos.x = pos.x;
 	camPos.y = pos.y;
@@ -93,7 +96,8 @@ void CCamera::Update(CGameObject* gameObj)
 	/*
 		Kiểm tra xem Camera có bị vượt ra ngoài map không
 		Vượt quá giới hạn thì đặt lại vị trí Camera
-		Tọa độ biên trái và biên trên chắc chắn là tọa độ pos(0,0)
+
+		Tọa độ biên trái và biên trên chắc chắn là tọa độ pos(0,0) 
 		Cách xét tọa độ biên phải và biên dưới là tùy theo mỗi người
 		Ở đây, tọa độ giới hạn của cam được tính theo:
 			+ Tọa độ Biên phải - Độ dài Camera
@@ -104,7 +108,7 @@ void CCamera::Update(CGameObject* gameObj)
 
 	if (camPos.y < camBound.top)
 		camPos.y = camBound.top;
-	/*
+	/* 
 		Khi đặt lại camPos nếu vượt qua camBound sẽ dẫn đến việc không render hết được map
 		nguyên nhân do độ kích thước map đôi lúc không chia hết cho kích thước camera
 		nên ở đây mình + Pull screen (có thể theo chiều x or y) để có thể nhìn thấy toàn bộ map
