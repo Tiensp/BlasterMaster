@@ -37,8 +37,8 @@ void CMap::LoadTileSet(string filePath)
 {
 	DebugOut(L"[INFO] Start loading tile set map: %s\n", ToLPCWSTR(filePath));
 	//Add Texture TileMap từ path file ảnh (.PNG,...)
-	CTextures::GetInstance()->Add(static_cast<ObjectType>(id + MAPID), ToLPCWSTR(filePath), D3DCOLOR_XRGB(255, 255, 255)); 
-	TileTexture = CTextures::GetInstance()->Get(static_cast<ObjectType>(id + MAPID));
+	CTextures::GetInstance()->Add(static_cast<ObjectTYPE>(id + MAPID), ToLPCWSTR(filePath), D3DCOLOR_XRGB(255, 255, 255)); 
+	TileTexture = CTextures::GetInstance()->Get(static_cast<ObjectTYPE>(id + MAPID));
 	DebugOut(L"[INFO] Done loading tile set map\n");
 }
 
@@ -57,7 +57,6 @@ void CMap::DrawMap()
 	*/
 	CCamera* camera = CCamera::GetInstance();
 	D3DXVECTOR2 camPos = camera->GetCamPos();
-	DebugOut(L"CamX: %f, CamY: %f\n", camPos.x, camPos.y);
 	int start_Col = camPos.x / TileSize;
 	int start_Row = camPos.y / TileSize;
 

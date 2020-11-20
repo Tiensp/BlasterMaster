@@ -1,5 +1,7 @@
 #pragma once
 #include "GameObject.h"
+#include "State.h"
+#include "GameDefine.h"
 
 #define SOPHIA_WALKING_SPEED		0.09f 
 //0.1f
@@ -18,25 +20,10 @@
 #define SOPHIA_STATE_TURN					108
 #define SOPHIA_STATE_DIE					130
 
-#define SOPHIA_ANI_IDLE_RIGHT			0
-#define SOPHIA_ANI_IDLE_LEFT			4
-#define SOPHIA_ANI_SMALL_IDLE_RIGHT			2
-#define SOPHIA_ANI_SMALL_IDLE_LEFT			3
-
-#define SOPHIA_ANI_WALKING_RIGHT		8
-#define SOPHIA_ANI_WALKING_LEFT			9
 #define SOPHIA_ANI_SMALL_WALKING_RIGHT		6
 #define SOPHIA_ANI_SMALL_WALKING_LEFT		7
-#define SOPHIA_ANI_TURN_RIGHT				10
-#define SOPHIA_ANI_TURN_LEFT				11
-#define SOPHIA_ANI_JUMP_RIGHT				12
-#define SOPHIA_ANI_JUMP_LEFT				13
-#define SOPHIA_ANI_GUN_UP_RIGHT				16
-#define SOPHIA_ANI_GUN_UP_LEFT				17
-#define SOPHIA_ANI_IDLE_GUN_UP_RIGHT		18
-#define	SOPHIA_ANI_IDLE_GUN_UP_LEFT			19
-#define SOPHIA_ANI_GUN_DOWN_RIGHT			20
-#define SOPHIA_ANI_GUN_DOWN_LEFT			21
+
+
 
 #define SOPHIA_ANI_DIE				1
 
@@ -54,6 +41,8 @@
 
 class CSophia : public CGameObject
 {
+protected:
+	static CSophia* __instance;
 	int level;
 	int untouchable;
 	DWORD untouchable_start;
@@ -61,7 +50,8 @@ class CSophia : public CGameObject
 	float start_x;			// initial position of Sophia at scene
 	float start_y; 
 
-	bool raisedGun;
+	bool isRaisedGun;
+	bool isLoweredGun;
 	bool isTurning;
 	bool isJumping;
 
@@ -69,27 +59,43 @@ class CSophia : public CGameObject
 	bool DoneGunUp;		
 	bool DoneGunDown;
 
-	DWORD lifeTimeJump;
-	DWORD lifeTimeGunUp;
-	DWORD lifeTimeGunDown;
-	DWORD lifeTimeTurn;
+	DWORD lifeTimeAni;
 public: 
-	CSophia(float x = 0.0f, float y = 0.0f);
+	CSophia();
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT> *colliable_objects = NULL);
 	virtual void Render();
 
+	/* Keyboard */
+	void OnKeyDown(int keycode);
+	void OnKeyUp(int keycode);
+	void KeyState();
+
+	bool GetDoneTurn() { return DoneTurn; }
 	bool GetDoneGunUp() { return DoneGunUp; }
-	void SetState(int state);
+	//void SetState(int state);
 	void SetLevel(int l) { level = l; }
 	void SetIsTurning(bool turn) { isTurning = turn; }
+	bool GetIsTurning() { return isTurning; }
+	void SetIsRaisedGun(bool raisedgun) { isRaisedGun = raisedgun; }
+	bool GetIsRaisedGun() { return isRaisedGun; }
+	void SetIsLoweredGun(bool loweredgun) { isLoweredGun = loweredgun; }
+	bool GetIsLoweredGun() { return isLoweredGun; }
 	void SetIsJumping(bool jump) { isJumping = jump; }
 	void SetDoneGunUp(bool done) { DoneGunUp = done; }
+	void SetDoneTurn(bool done) { DoneTurn = done; }
 	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount64(); }
 
-	/* Actions */
+	/* State */
+	void SwitchState(CState* state);
 
 
-	void Reset();
+	void Reset(float _startx = 0.0f , float _starty = 0.0f);
 
 	virtual void GetBoundingBox(float &left, float &top, float &right, float &bottom);
+	static CSophia* GetInstance();
+	/* Variable */
+	CState* currentState;
+	CAnimation* currentAni;
+	bool renderFrame;
+	int frameID;
 };

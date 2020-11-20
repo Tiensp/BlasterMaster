@@ -4,6 +4,7 @@
 #include <unordered_map>
 
 #include "Sprites.h"
+#include "GameDefine.h"
 
 /*
 Sprite animation
@@ -34,7 +35,9 @@ public:
 	void Render(float x, float y, int alpha = 255);
 	void RenderFrame(int frameID, float x, float y, int alpha = 255);
 	void ResetCurrentFrame() { currentFrame = -1; isComplete = false; }
+	void SetCurrentFrame(int curr) { currentFrame = curr; }
 	int GetCurrentFrame();
+	int GetAniSize() { return frames->size(); }
 	int GetLastFrame();
 	int GetAniTime();
 	bool IsFinalFrame();
@@ -60,6 +63,14 @@ public:
 typedef vector<LPANIMATION> CAnimationSet;
 
 typedef CAnimationSet* LPANIMATION_SET;
+//class AnimationSet {
+//	unordered_map<int, LPANIMATION> animations;
+//public:
+//	void Add(int aniId, STATENAME StateName);
+//	LPANIMATION Get(STATENAME StateName);
+//};
+//
+//typedef AnimationSet* LPANIMATION_SET;
 
 /*
 	Manage animation set database

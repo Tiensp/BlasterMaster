@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <Windows.h>
 #include <d3dx9.h>
@@ -6,6 +6,7 @@
 
 #include "Sprites.h"
 #include "Animations.h"
+#include "GameDefine.h"
 
 
 using namespace std;
@@ -45,18 +46,26 @@ class CGameObject
 {
 public:
 
-	float x; 
+	float x;	//tọa độ x,y
 	float y;
 
 	float dx;	// dx = vx*dt
 	float dy;	// dy = vy*dt
 
-	float vx;
+	float vx;	//vận tốc (velocity)
 	float vy;
 
-	int nx;	 
+	float ax;	//gia tốc (acceleration)
+	float ay;
+
+	int nx;		//pháp tuyến theo chiều x (normal) 
+				//hay còn gọi là hướng (direction)
 
 	int state;
+
+	ObjectTAG objTag;	// Thẻ (tag) obj
+
+	ObjectTYPE objType;	// Loại (type) obj
 
 	DWORD dt; 
 
@@ -64,9 +73,12 @@ public:
 
 public: 
 	void SetPosition(float x, float y) { this->x = x, this->y = y; }
+	void GetPosition(float& x, float& y) { x = this->x; y = this->y; }
+	
 	void SetSpeed(float vx, float vy) { this->vx = vx, this->vy = vy; }
-	void GetPosition(float &x, float &y) { x = this->x; y = this->y; }
 	void GetSpeed(float &vx, float &vy) { vx = this->vx; vy = this->vy; }
+	
+	void SetDirection(float nx) { this->nx = nx; }
 	int GetDirection() { return this->nx; }
 	
 	int GetState() { return this->state; }

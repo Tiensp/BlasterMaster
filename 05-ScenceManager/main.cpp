@@ -30,8 +30,6 @@
 #define MAIN_WINDOW_TITLE L"SAMPLE 05 - SCENCE MANAGER"
 
 #define BACKGROUND_COLOR D3DCOLOR_XRGB(255, 255, 200)
-//#define SCREEN_WIDTH 320
-//#define SCREEN_HEIGHT 240
 
 #define MAX_FRAME_RATE 120
 
@@ -162,6 +160,7 @@ int Run()
 			game->ProcessKeyboard();
 			
 			Update(dt);
+			DebugOut(L"FPS: %f\n", 1000.0 / dt);
 			Render();
 		}
 		else

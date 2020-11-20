@@ -8,23 +8,26 @@
 #include "Goomba.h"
 #include "Portal.h"
 
-CSophia::CSophia(float x, float y) : CGameObject()
+#include "StateIDLE.h"
+#include "StateTURN.h"
+
+CSophia* CSophia::__instance = NULL;
+
+CSophia::CSophia() : CGameObject()
 {
 	level = SOPHIA_LEVEL_BIG;
 	untouchable = 0;
-	SetState(SOPHIA_STATE_IDLE);
+	_ACTIVE[SOPHIA] = true;
+	animation_set = CAnimationSets::GetInstance()->Get(SOPHIA);
 
 	start_x = x; 
 	start_y = y; 
 	this->x = x; 
 	this->y = y; 
-
 	DoneTurn = false;
 	DoneGunDown = false;
 	DoneGunUp = false;
 
-	lifeTimeGunDown = 0;
-	lifeTimeGunUp = 0;
 }
 
 void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
@@ -32,10 +35,9 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	// Calculate dx, dy 
 	CGameObject::Update(dt);
 
-	
 	// Simple fall down
 	vy += SOPHIA_GRAVITY*dt;
-
+	
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
 
@@ -110,8 +112,8 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 								level = SOPHIA_LEVEL_SMALL;
 								StartUntouchable();
 							}
-							else 
-								SetState(SOPHIA_STATE_DIE);
+							//else 
+								//SetState(SOPHIA_STATE_DIE);
 						}
 					}
 				}
@@ -123,13 +125,10 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			}
 		}
 	}
+	currentState->Update();
 	//Đặt lại biến DoneGunUp nếu không còn GUN UP
 	if (state != SOPHIA_STATE_GUN_UP)
 		DoneGunUp = false;
-	if (state == SOPHIA_STATE_JUMP)
-	{
-		
-	}
 
 	// clean up collision events
 	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
@@ -137,10 +136,9 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 void CSophia::Render()
 {
-	DebugOut(L"Render: %d\n", state);
 	int alpha = 255;
 	if (untouchable) alpha = 128;
-
+/*
 	/// <summary>
 	/// Set Animation based on State
 	/// </summary>
@@ -185,7 +183,7 @@ void CSophia::Render()
 		}
 
 	}
-	/*else if (state == SOPHIA_STATE_JUMP)
+	else if (state == SOPHIA_STATE_JUMP)
 	{
 		if (lifeTimeJump == 0)
 			lifeTimeJump = GetTickCount64();
@@ -201,12 +199,12 @@ void CSophia::Render()
 			lifeTimeJump = 0;		//Reset lifeTimeJump
 
 			if (nx > 0)
-				ani = SOPHIA_ANI_IDLE_RIGHT;
+				ani = SOPHIA_ANI_JUMP_RIGHT;
 			else
-				ani = SOPHIA_ANI_IDLE_LEFT;
+				ani = SOPHIA_ANI_JUMP_LEFT;
 
 		}
-	}*/
+	}
 	else if (level == SOPHIA_LEVEL_BIG)
 	{
 		//Reset lifeTimeGunUp nếu chuyển trạng thái khác nhưng chưa reset time
@@ -228,9 +226,9 @@ void CSophia::Render()
 					lifeTimeGunDown = 0;		//Reset lifeTimeGunDown
 					
 					if (nx > 0)
-						ani = SOPHIA_ANI_IDLE_RIGHT;
+						ani = SOPHIA_IDLE_RIGHT;
 					else
-						ani = SOPHIA_ANI_IDLE_LEFT;
+						ani = SOPHIA_IDLE_LEFT;
 
 					raisedGun = false;
 				}
@@ -252,8 +250,8 @@ void CSophia::Render()
 
 				if (vx == 0)
 				{
-					if (nx > 0) ani = SOPHIA_ANI_IDLE_RIGHT;
-					else ani = SOPHIA_ANI_IDLE_LEFT;
+					if (nx > 0) ani = SOPHIA_IDLE_RIGHT;
+					else ani = SOPHIA_IDLE_LEFT;
 				}
 				else if (vx > 0)
 					ani = SOPHIA_ANI_WALKING_RIGHT;
@@ -268,8 +266,8 @@ void CSophia::Render()
 		{ 
 			if (vx == 0)
 			{
-				if (nx > 0) ani = SOPHIA_ANI_IDLE_RIGHT;
-				else ani = SOPHIA_ANI_IDLE_LEFT;
+				if (nx > 0) ani = SOPHIA_IDLE_RIGHT;
+				else ani = SOPHIA_IDLE_LEFT;
 			}
 			else if (vx > 0)
 				ani = SOPHIA_ANI_WALKING_RIGHT;
@@ -279,46 +277,47 @@ void CSophia::Render()
 	}
 	
 
-	
-	/*int alpha = 255;
-	if (untouchable) alpha = 128;*/
+
 
 	animation_set->at(ani)->Render(x, y, alpha);
 
-	RenderBoundingBox();
-}
-
-void CSophia::SetState(int state)
-{
-	CGameObject::SetState(state);
-
-	switch (state)
+	RenderBoundingBox();*/
+		
+	if (isTurning || isRaisedGun || isLoweredGun)
 	{
-	case SOPHIA_STATE_WALKING_RIGHT:
-		vx = SOPHIA_WALKING_SPEED;
-		nx = 1;
-		break;
-	case SOPHIA_STATE_WALKING_LEFT: 
-		vx = -SOPHIA_WALKING_SPEED;
-		nx = -1;
-		break;
-	case SOPHIA_STATE_JUMP:
-		// TODO: need to check if Sophia is *current* on a platform before allowing to jump again
-		//if (vy == 0)
-			vy = -SOPHIA_JUMP_SPEED_Y;
-		break; 
-	case SOPHIA_STATE_GUN_UP:
-		raisedGun = true;
-		DoneGunDown = false;
-		break;
-	case SOPHIA_STATE_IDLE: 
-		vx = 0;
-		break;
-	case SOPHIA_STATE_DIE:
-		vy = -SOPHIA_DIE_DEFLECT_SPEED;
+		if (currentAni->IsFinalFrame())
+		{
+			isTurning = false;
+			isRaisedGun = false;
+			isLoweredGun = false;
+		}
+	}
+
+	currentAni->Render(x, y);
+	RenderBoundingBox();
+
+}
+#pragma region Xử lý phím
+
+void CSophia::OnKeyDown(int keycode)
+{
+	switch (keycode)
+	{
+	case DIK_S:
 		break;
 	}
 }
+
+void CSophia::OnKeyUp(int keycode)
+{
+}
+
+void CSophia::KeyState()
+{
+}
+
+#pragma endregion
+
 
 void CSophia::GetBoundingBox(float &left, float &top, float &right, float &bottom)
 {
@@ -337,14 +336,36 @@ void CSophia::GetBoundingBox(float &left, float &top, float &right, float &botto
 	}
 }
 
+
+
+void CSophia::SwitchState(CState* state)
+{
+	/*
+		Tại hàm này, ta sẽ thay đổi state và animation hiện tại của player sang state, ani mới
+	*/
+	delete currentState;
+	currentState = state;
+	currentAni = animation_set->at(state->StateName);
+}
+
 /*
 	Reset Sophia status to the beginning state of a scene
 */
-void CSophia::Reset()
+void CSophia::Reset(float _startx, float _starty)
 {
-	SetState(SOPHIA_STATE_IDLE);
+	start_x = _startx;
+	start_y = _starty;
 	SetLevel(SOPHIA_LEVEL_BIG);
 	SetPosition(start_x, start_y);
+	SwitchState(new StateIDLE());
 	SetSpeed(0, 0);
+}
+
+CSophia* CSophia::GetInstance()
+{
+	if (__instance == NULL) {
+		__instance = new CSophia();
+	}
+	return __instance;
 }
 

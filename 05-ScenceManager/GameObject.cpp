@@ -12,6 +12,8 @@ CGameObject::CGameObject()
 {
 	x = y = 0;
 	vx = vy = 0;
+	ax = 0;
+	ay = 0;
 	nx = 1;	
 }
 
@@ -129,7 +131,7 @@ void CGameObject::RenderBoundingBox()
 	rect.right = (int)r - (int)l;
 	rect.bottom = (int)b - (int)t;
 
-	CGame::GetInstance()->Draw(p, bbox, rect, 32);
+	CGame::GetInstance()->Draw(p, bbox, rect, 120);
 }
 
 

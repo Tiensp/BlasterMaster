@@ -149,8 +149,11 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 			DebugOut(L"[ERROR] SOPHIA object was created before!\n");
 			return;
 		}
-		obj = new CSophia(x,y); 
-		player = (CSophia*)obj;  
+		
+		obj = CSophia::GetInstance(); //new CSophia(x, y);
+		player = (CSophia*)obj; 
+		player->Reset(x, y);
+
 
 		DebugOut(L"[INFO] Player object created!\n");
 		break;
@@ -253,6 +256,7 @@ void CPlayScene::Load()
 	// Khởi tạo camera
 	camera = CCamera::GetInstance();
 	camera->SetCamBound(map->GetMapWidth(), map->GetMapHeight());
+	player->Reset();
 }
 
 void CPlayScene::Update(DWORD dt)
@@ -306,31 +310,22 @@ void CPlayScene::Unload()
 void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 {
 	DebugOut(L"[INFO] KeyDown: %d\n", KeyCode);
-
-	CSophia *sophia = ((CPlayScene*)scence)->GetPlayer();
-	switch (KeyCode)
+	CSophia* sophia = ((CPlayScene*)scence)->GetPlayer();
+	if (_ACTIVE[SOPHIA])
 	{
-	case DIK_SPACE:
-		sophia->SetState(SOPHIA_STATE_JUMP);
-		break;
-	/*case DIK_UP:
-		sophia->SetState(SOPHIA_STATE_GUN_UP);
-		break;*/
-	case DIK_A: 
-		sophia->Reset();
-		break;
+		_KEYCODE[KeyCode] = true;
+		sophia->OnKeyDown(KeyCode);
 	}
 }
 
 void CPlayScenceKeyHandler::OnKeyUp(int KeyCode)
 {
 	CSophia* sophia = ((CPlayScene*)scence)->GetPlayer();
-	/*switch (KeyCode)
+	if (_ACTIVE[SOPHIA])
 	{
-	case DIK_UP:
-		sophia->SetState(SOPHIA_STATE_GUN_DOWN);
-		break;
-	}*/
+		_KEYCODE[KeyCode] = false;
+		sophia->OnKeyUp(KeyCode);
+	}
 }
 
 void CPlayScenceKeyHandler::KeyState(BYTE *states)
@@ -339,27 +334,6 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 	CSophia *sophia = ((CPlayScene*)scence)->GetPlayer();
 
 	// disable control key when Sophia die 
-	if (sophia->GetState() == SOPHIA_STATE_DIE) return;
-	if (game->IsKeyDown(DIK_RIGHT))
-	{	
-		if (sophia->GetDirection() < 0)
-			sophia->SetIsTurning(true);
+	/*if (sophia->GetState() == SOPHIA_STATE_DIE) return;*/
 
-		sophia->SetState(SOPHIA_STATE_WALKING_RIGHT);
-	}
-	else if (game->IsKeyDown(DIK_LEFT))
-	{
-		if (sophia->GetDirection() > 0)
-			sophia->SetIsTurning(true);
-		sophia->SetState(SOPHIA_STATE_WALKING_LEFT);
-	}
-	else if (game->IsKeyDown(DIK_UP))
-		sophia->SetState(SOPHIA_STATE_GUN_UP);
-	/*else if (game->IsKeyDown(DIK_SPACE))
-	{
-		
-		sophia->SetState(SOPHIA_STATE_JUMP);
-	}*/
-	else
-		sophia->SetState(SOPHIA_STATE_IDLE);
 }
