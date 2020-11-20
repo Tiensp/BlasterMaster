@@ -43,8 +43,32 @@
     <Filter Include="Framework\Game\Scence\Camera">
       <UniqueIdentifier>{ea0938a0-fe8b-4b5a-a58e-ae9bc42e7d6c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Framework\GameObject\GameObject\StateMachine">
+    <Filter Include="Framework\GameObject\State Machine">
       <UniqueIdentifier>{060cb22e-7598-4e80-8f3c-c9dbf8c74ac9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\GameObject\State Machine\State IDLE">
+      <UniqueIdentifier>{15ee7e43-a922-40d1-bddd-b594233e598d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\GameObject\State Machine\State TURN">
+      <UniqueIdentifier>{64b356af-bea3-4fec-b82c-1f064eb033ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\GameObject\State Machine\State WALKING">
+      <UniqueIdentifier>{12f561f6-587b-4497-9fad-037cb2e4f00b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\GameObject\State Machine\State IDLE Gun UP">
+      <UniqueIdentifier>{9c945057-c536-475f-b97f-2f1f563f1dac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\GameObject\State Machine\State RAISED Gun">
+      <UniqueIdentifier>{31d13ad0-c06e-4bc8-9a71-3e854273f68c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\GameObject\State Machine\State LOWERED Gun">
+      <UniqueIdentifier>{49aa362d-3c5d-4e41-810d-369f4f346f6a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\GameObject\State Machine\State WALKING Gun UP">
+      <UniqueIdentifier>{4008bf78-bd65-4153-aaf8-fc99d30826ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\GameObject\State Machine\State JUMP">
+      <UniqueIdentifier>{d5488222-049a-4020-9497-03334cfa5389}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -93,11 +117,41 @@
     <ClCompile Include="main.cpp">
       <Filter>Framework\Game</Filter>
     </ClCompile>
+    <ClCompile Include="GameDefine.cpp">
+      <Filter>Framework\Game\GameDefine</Filter>
+    </ClCompile>
+    <ClCompile Include="Jason.cpp">
+      <Filter>Framework\GameObject\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="BigJason.cpp">
+      <Filter>Framework\GameObject\Player</Filter>
+    </ClCompile>
     <ClCompile Include="GameObject.cpp">
       <Filter>Framework\GameObject\GameObject</Filter>
     </ClCompile>
-    <ClCompile Include="State.cpp">
-      <Filter>Framework\GameObject\GameObject\StateMachine</Filter>
+    <ClCompile Include="StateIDLE.cpp">
+      <Filter>Framework\GameObject\State Machine\State IDLE</Filter>
+    </ClCompile>
+    <ClCompile Include="StateWALKING.cpp">
+      <Filter>Framework\GameObject\State Machine\State WALKING</Filter>
+    </ClCompile>
+    <ClCompile Include="StateTURN.cpp">
+      <Filter>Framework\GameObject\State Machine\State TURN</Filter>
+    </ClCompile>
+    <ClCompile Include="StateIDLEGunUP.cpp">
+      <Filter>Framework\GameObject\State Machine\State IDLE Gun UP</Filter>
+    </ClCompile>
+    <ClCompile Include="StateRAISEDGun.cpp">
+      <Filter>Framework\GameObject\State Machine\State RAISED Gun</Filter>
+    </ClCompile>
+    <ClCompile Include="StateLOWEREDGun.cpp">
+      <Filter>Framework\GameObject\State Machine\State LOWERED Gun</Filter>
+    </ClCompile>
+    <ClCompile Include="StateWALKINGGunUP.cpp">
+      <Filter>Framework\GameObject\State Machine\State WALKING Gun UP</Filter>
+    </ClCompile>
+    <ClCompile Include="StateJUMP.cpp">
+      <Filter>Framework\GameObject\State Machine\State JUMP</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -149,11 +203,41 @@
     <ClInclude Include="KeyEventHandler.h">
       <Filter>Framework\Game</Filter>
     </ClInclude>
+    <ClInclude Include="State.h">
+      <Filter>Framework\GameObject\State Machine</Filter>
+    </ClInclude>
+    <ClInclude Include="Jason.h">
+      <Filter>Framework\GameObject\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="BigJason.h">
+      <Filter>Framework\GameObject\Player</Filter>
+    </ClInclude>
     <ClInclude Include="GameObject.h">
       <Filter>Framework\GameObject\GameObject</Filter>
     </ClInclude>
-    <ClInclude Include="State.h">
-      <Filter>Framework\GameObject\GameObject\StateMachine</Filter>
+    <ClInclude Include="StateIDLE.h">
+      <Filter>Framework\GameObject\State Machine\State IDLE</Filter>
+    </ClInclude>
+    <ClInclude Include="StateWALKING.h">
+      <Filter>Framework\GameObject\State Machine\State WALKING</Filter>
+    </ClInclude>
+    <ClInclude Include="StateTURN.h">
+      <Filter>Framework\GameObject\State Machine\State TURN</Filter>
+    </ClInclude>
+    <ClInclude Include="StateIDLEGunUP.h">
+      <Filter>Framework\GameObject\State Machine\State IDLE Gun UP</Filter>
+    </ClInclude>
+    <ClInclude Include="StateRAISEDGun.h">
+      <Filter>Framework\GameObject\State Machine\State RAISED Gun</Filter>
+    </ClInclude>
+    <ClInclude Include="StateLOWEREDGun.h">
+      <Filter>Framework\GameObject\State Machine\State LOWERED Gun</Filter>
+    </ClInclude>
+    <ClInclude Include="StateWALKINGGunUP.h">
+      <Filter>Framework\GameObject\State Machine\State WALKING Gun UP</Filter>
+    </ClInclude>
+    <ClInclude Include="StateJUMP.h">
+      <Filter>Framework\GameObject\State Machine\State JUMP</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -6,6 +6,7 @@
 
 #include "Sprites.h"
 #include "Animations.h"
+#include "GameDefine.h"
 
 
 using namespace std;
@@ -62,6 +63,10 @@ public:
 
 	int state;
 
+	ObjectTAG objTag;	// Thẻ (tag) obj
+
+	ObjectTYPE objType;	// Loại (type) obj
+
 	DWORD dt; 
 
 	LPANIMATION_SET animation_set;
@@ -73,7 +78,7 @@ public:
 	void SetSpeed(float vx, float vy) { this->vx = vx, this->vy = vy; }
 	void GetSpeed(float &vx, float &vy) { vx = this->vx; vy = this->vy; }
 	
-	int SetDirection(float nx) { this->nx = nx; }
+	void SetDirection(float nx) { this->nx = nx; }
 	int GetDirection() { return this->nx; }
 	
 	int GetState() { return this->state; }
@@ -95,10 +100,6 @@ public:
 		float &rdy);
 
 	CGameObject();
-
-	virtual void KeyState();
-	virtual void OnKeyDown(int keycode);
-	virtual void OnKeyUp(int keycode);
 
 	virtual void GetBoundingBox(float &left, float &top, float &right, float &bottom) = 0;
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects = NULL);

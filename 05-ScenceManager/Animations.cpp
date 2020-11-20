@@ -53,7 +53,7 @@ void CAnimation::Render(float x, float y, int alpha)
 
 void CAnimation::RenderFrame(int frameID, float x, float y, int alpha) /* Render mot ani_frame theo id */
 {
-	if (frameID == -1)
+	if (frameID == -1 || frameID >= frames->size())
 		frameID = 0;
 	frames->at(frameID)->GetSprite()->Draw(x, y, alpha);
 }
@@ -137,3 +137,13 @@ void CAnimationSets::Add(int id, LPANIMATION_SET ani_set)
 {
 	animation_sets[id] = ani_set;
 }
+
+//void AnimationSet::Add(int aniId, STATENAME StateName)
+//{
+//
+//}
+//
+//LPANIMATION AnimationSet::Get(STATENAME StateName)
+//{
+//	return LPANIMATION();
+//}
