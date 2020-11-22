@@ -30,11 +30,11 @@
 #define	SOPHIA_LEVEL_SMALL	1
 #define	SOPHIA_LEVEL_BIG		2
 
-#define SOPHIA_BIG_BBOX_WIDTH  26
-#define SOPHIA_BIG_BBOX_HEIGHT 18
+#define SOPHIA_SMALL_BBOX_WIDTH  26
+#define SOPHIA_SMALL_BBOX_HEIGHT 18
 
-#define SOPHIA_SMALL_BBOX_WIDTH  13
-#define SOPHIA_SMALL_BBOX_HEIGHT 15
+#define SOPHIA_BIG_BBOX_WIDTH  26
+#define SOPHIA_BIG_BBOX_HEIGHT 34
 
 #define SOPHIA_UNTOUCHABLE_TIME 5000
 
@@ -50,10 +50,12 @@ protected:
 	float start_x;			// initial position of Sophia at scene
 	float start_y; 
 
+	bool isGunUp;
 	bool isRaisedGun;
 	bool isLoweredGun;
 	bool isTurning;
 	bool isJumping;
+	bool isFalling;
 
 	bool DoneTurn;
 	bool DoneGunUp;		
@@ -86,6 +88,11 @@ public:
 	bool GetIsLoweredGun() { return isLoweredGun; }
 
 	void SetIsJumping(bool jump) { isJumping = jump; }
+	bool GetIsJumping() { return isJumping; }
+	void SetIsGunUp(bool gunup) { isGunUp = gunup; }
+	bool GetIsGunUp() { return isGunUp; }
+	void SetIsFalling(bool fall) { isFalling = fall; }
+	bool GetIsFalling() { return isFalling; }
 	void SetDoneGunUp(bool done) { DoneGunUp = done; }
 	void SetDoneTurn(bool done) { DoneTurn = done; }
 	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount64(); }
