@@ -48,7 +48,7 @@ void StateJUMP::HandleKeyboard()
 			}
 			else
 			{
-				sophia->SwitchState(new StateWALKING());
+				sophia->vx = SOPHIA_WALKING_SPEED;
 				sophia->currentAni->ResetCurrentFrame();
 			}
 		}

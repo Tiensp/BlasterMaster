@@ -320,6 +320,7 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 
 void CPlayScenceKeyHandler::OnKeyUp(int KeyCode)
 {
+	DebugOut(L"[INFO] KeyUp: %d\n", KeyCode);
 	CSophia* sophia = ((CPlayScene*)scence)->GetPlayer();
 	if (_ACTIVE[SOPHIA])
 	{
