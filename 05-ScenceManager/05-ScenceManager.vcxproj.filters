@@ -70,6 +70,12 @@
     <Filter Include="Framework\GameObject\State Machine\State JUMP">
       <UniqueIdentifier>{d5488222-049a-4020-9497-03334cfa5389}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Framework\GameObject\State Machine\State FALL">
+      <UniqueIdentifier>{c0bc5542-d818-4acf-8097-53a3cdaf7210}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\GameObject\State Machine\State JUMP TURN">
+      <UniqueIdentifier>{dfc045a9-1afd-4df6-99ea-a163093ec34c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Brick.cpp">
@@ -152,6 +158,12 @@
     </ClCompile>
     <ClCompile Include="StateJUMP.cpp">
       <Filter>Framework\GameObject\State Machine\State JUMP</Filter>
+    </ClCompile>
+    <ClCompile Include="StateFALL.cpp">
+      <Filter>Framework\GameObject\State Machine\State FALL</Filter>
+    </ClCompile>
+    <ClCompile Include="StateJUMPTurn.cpp">
+      <Filter>Framework\GameObject\State Machine\State JUMP TURN</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -238,6 +250,12 @@
     </ClInclude>
     <ClInclude Include="StateJUMP.h">
       <Filter>Framework\GameObject\State Machine\State JUMP</Filter>
+    </ClInclude>
+    <ClInclude Include="StateFALL.h">
+      <Filter>Framework\GameObject\State Machine\State FALL</Filter>
+    </ClInclude>
+    <ClInclude Include="StateJUMPTurn.h">
+      <Filter>Framework\GameObject\State Machine\State JUMP TURN</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

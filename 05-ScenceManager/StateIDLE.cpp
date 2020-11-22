@@ -7,6 +7,7 @@
 StateIDLE::StateIDLE()
 {
 	CSophia* sophia = CSophia::GetInstance();
+
 	sophia->vx = 0;
 	
 	if (sophia->nx > 0)
@@ -15,7 +16,7 @@ StateIDLE::StateIDLE()
 	}
 	else
 	{
-		StateName = SOPHIA_IDLE_LEFT;
+		StateName = SOPHIA_IDLE_LEFT; 
 	}
 }
 
@@ -70,14 +71,6 @@ void StateIDLE::HandleKeyboard()
 	}
 	else if (_KEYCODE[DIK_DOWN])
 	{
-	}
-	else if (_KEYCODE[DIK_SPACE])
-	{
-		if (_ACTIVE[SOPHIA])
-		{
-			sophia->SwitchState(new StateJUMP());
-			sophia->currentAni->ResetCurrentFrame();
-		}
 	}
 	else
 		sophia->SwitchState(new StateIDLE());

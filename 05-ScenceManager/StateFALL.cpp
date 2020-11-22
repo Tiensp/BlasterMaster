@@ -1,49 +1,46 @@
-#include "StateJUMP.h"
+#include "StateFALL.h"
 #include "StateTURN.h"
 #include "StateWALKING.h"
 #include "StateRAISEDGUN.h"
 #include "StateIDLE.h"
-#include "StateFALL.h"
-#include "StateJUMPTurn.h"
 
-StateJUMP::StateJUMP()
+StateFALL::StateFALL()
 {
 	CSophia* sophia = CSophia::GetInstance();
+	sophia->SetIsFalling(true);
 
-	sophia->vy = -SOPHIA_JUMP_SPEED;
 	if (sophia->nx > 0)
 	{
-		StateName = SOPHIA_JUMP_RIGHT;
+		StateName = SOPHIA_FALL_RIGHT;
 	}
 	else
 	{
-		StateName = SOPHIA_JUMP_LEFT;
+		StateName = SOPHIA_FALL_LEFT;
 	}
 }
 
-void StateJUMP::Update()
+void StateFALL::Update()
 {
 	CSophia* sophia = CSophia::GetInstance();
-	if (sophia->vy >= 0)
+	this->HandleKeyboard();
+	if (sophia->vy == 0)
 	{
-		sophia->SetIsJumping(false);
-		sophia->SwitchState(new StateFALL());
+		sophia->SetIsFalling(false);
+		sophia->SwitchState(new StateIDLE());
 	}
-	else
-		this->HandleKeyboard();
 }
 
-void StateJUMP::HandleKeyboard()
+void StateFALL::HandleKeyboard()
 {
 	CSophia* sophia = CSophia::GetInstance();
 
-	if (_KEYCODE[DIK_RIGHT])
+	/*if (_KEYCODE[DIK_RIGHT])
 	{
 		if (_ACTIVE[SOPHIA])
 		{
 			if (sophia->nx < 0)
 			{
-				sophia->SwitchState(new StateJUMPTurn());
+				sophia->SwitchState(new StateTURN());
 				sophia->currentAni->ResetCurrentFrame();
 			}
 			else
@@ -59,7 +56,7 @@ void StateJUMP::HandleKeyboard()
 		{
 			if (sophia->nx > 0)
 			{
-				sophia->SwitchState(new StateJUMPTurn());
+				sophia->SwitchState(new StateTURN());
 				sophia->currentAni->ResetCurrentFrame();
 			}
 			else
@@ -80,9 +77,10 @@ void StateJUMP::HandleKeyboard()
 	else if (_KEYCODE[DIK_DOWN])
 	{
 	}
-
+	else
+		sophia->SwitchState(new StateFALL());*/
 }
 
-StateJUMP::~StateJUMP()
+StateFALL::~StateFALL()
 {
 }

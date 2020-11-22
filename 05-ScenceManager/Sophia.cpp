@@ -10,6 +10,8 @@
 
 #include "StateIDLE.h"
 #include "StateTURN.h"
+#include "StateFALL.h"
+#include "StateJUMP.h"
 
 CSophia* CSophia::__instance = NULL;
 
@@ -36,8 +38,9 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	CGameObject::Update(dt);
 
 	// Simple fall down
-	vy += SOPHIA_GRAVITY*dt;
-	
+	//vy += SOPHIA_GRAVITY*dt;
+	vy += 0.001f * dt;
+
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
 
@@ -125,10 +128,9 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			}
 		}
 	}
+
 	currentState->Update();
-	//Đặt lại biến DoneGunUp nếu không còn GUN UP
-	if (state != SOPHIA_STATE_GUN_UP)
-		DoneGunUp = false;
+
 
 	// clean up collision events
 	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
@@ -138,150 +140,7 @@ void CSophia::Render()
 {
 	int alpha = 255;
 	if (untouchable) alpha = 128;
-/*
-	/// <summary>
-	/// Set Animation based on State
-	/// </summary>
-	int ani = -1;
-	if (state == SOPHIA_STATE_DIE)
-	{
-		ani = SOPHIA_ANI_DIE;
-	}
-	else if (state == SOPHIA_STATE_GUN_UP)
-	{
-		//Render ani GUN UP nếu trước đó chưa render xong ani GUN UP
-		if (DoneGunUp == false)
-		{
-			if (lifeTimeGunUp == 0)
-				lifeTimeGunUp = GetTickCount64();
 
-			if (nx > 0)
-				ani = SOPHIA_ANI_GUN_UP_RIGHT;
-			else
-				ani = SOPHIA_ANI_GUN_UP_LEFT;
-
-			//Ngăn không cho render ani khác khi ani hiện tại chưa render đủ thời gian
-			if (GetTickCount64() - lifeTimeGunUp >= animation_set->at(ani)->GetAniTime())
-			{
-				lifeTimeGunUp = 0;		//Reset lifeTimeGunUp
-
-				if (nx > 0)
-					ani = SOPHIA_ANI_IDLE_GUN_UP_RIGHT;
-				else
-					ani = SOPHIA_ANI_IDLE_GUN_UP_LEFT;
-
-				DoneGunUp = true;
-			}
-		}
-		else
-		{
-			//Render ani IDLE GUN UP 
-			if (nx > 0)
-				ani = SOPHIA_ANI_IDLE_GUN_UP_RIGHT;
-			else
-				ani = SOPHIA_ANI_IDLE_GUN_UP_LEFT;
-		}
-
-	}
-	else if (state == SOPHIA_STATE_JUMP)
-	{
-		if (lifeTimeJump == 0)
-			lifeTimeJump = GetTickCount64();
-
-		if (nx > 0)
-			ani = SOPHIA_ANI_JUMP_RIGHT;
-		else
-			ani = SOPHIA_ANI_JUMP_LEFT;
-
-		//Ngăn không cho render ani khác khi ani hiện tại chưa render đủ thời gian
-		if (GetTickCount64() - lifeTimeJump >= animation_set->at(ani)->GetAniTime())
-		{
-			lifeTimeJump = 0;		//Reset lifeTimeJump
-
-			if (nx > 0)
-				ani = SOPHIA_ANI_JUMP_RIGHT;
-			else
-				ani = SOPHIA_ANI_JUMP_LEFT;
-
-		}
-	}
-	else if (level == SOPHIA_LEVEL_BIG)
-	{
-		//Reset lifeTimeGunUp nếu chuyển trạng thái khác nhưng chưa reset time
-		lifeTimeGunUp = 0;
-		//GUN DOWN
-		if (raisedGun)		//Render ani GUN DOWN nếu trước đó trạng thái đang là GUN UP
-		{
-				if (lifeTimeGunDown == 0)
-					lifeTimeGunDown = GetTickCount64();
-
-				if (nx > 0)
-					ani = SOPHIA_ANI_GUN_DOWN_RIGHT;
-				else
-					ani = SOPHIA_ANI_GUN_DOWN_LEFT;
-
-				//Ngăn không cho render ani khác khi ani hiện tại chưa render đủ thời gian
-				if (GetTickCount64() - lifeTimeGunDown >= animation_set->at(ani)->GetAniTime())
-				{
-					lifeTimeGunDown = 0;		//Reset lifeTimeGunDown
-					
-					if (nx > 0)
-						ani = SOPHIA_IDLE_RIGHT;
-					else
-						ani = SOPHIA_IDLE_LEFT;
-
-					raisedGun = false;
-				}
-		}
-		//TURN
-		else if (isTurning)
-		{
-			if (lifeTimeTurn == 0)
-				lifeTimeTurn = GetTickCount64();
-
-			if (nx > 0)
-				ani = SOPHIA_ANI_TURN_RIGHT;
-			else
-				ani = SOPHIA_ANI_TURN_LEFT;
-
-			if (GetTickCount64() - lifeTimeTurn >= animation_set->at(ani)->GetAniTime())
-			{
-				lifeTimeTurn = 0;		//Reset lifeTimeTurn
-
-				if (vx == 0)
-				{
-					if (nx > 0) ani = SOPHIA_IDLE_RIGHT;
-					else ani = SOPHIA_IDLE_LEFT;
-				}
-				else if (vx > 0)
-					ani = SOPHIA_ANI_WALKING_RIGHT;
-				else ani = SOPHIA_ANI_WALKING_LEFT;
-
-				isTurning = false;
-			}
-			
-		}
-		//IDLE
-		else
-		{ 
-			if (vx == 0)
-			{
-				if (nx > 0) ani = SOPHIA_IDLE_RIGHT;
-				else ani = SOPHIA_IDLE_LEFT;
-			}
-			else if (vx > 0)
-				ani = SOPHIA_ANI_WALKING_RIGHT;
-			else ani = SOPHIA_ANI_WALKING_LEFT;
-
-		}
-	}
-	
-
-
-
-	animation_set->at(ani)->Render(x, y, alpha);
-
-	RenderBoundingBox();*/
 		
 	if (isTurning || isRaisedGun || isLoweredGun)
 	{
@@ -305,6 +164,15 @@ void CSophia::OnKeyDown(int keycode)
 	{
 	case DIK_S:
 		break;
+			
+	case DIK_SPACE:
+		if (!isJumping && !isFalling)
+		{
+			isJumping = true;
+			SwitchState(new StateJUMP());
+			currentAni->ResetCurrentFrame();
+		}
+		break;
 	}
 }
 
@@ -321,16 +189,19 @@ void CSophia::KeyState()
 
 void CSophia::GetBoundingBox(float &left, float &top, float &right, float &bottom)
 {
-	left = x;
-	top = y; 
 
-	if (level==SOPHIA_LEVEL_BIG)
+	if (isRaisedGun || isGunUp)
 	{
+		left = x;
+		top = y - (SOPHIA_BIG_BBOX_HEIGHT - SOPHIA_SMALL_BBOX_HEIGHT);
 		right = x + SOPHIA_BIG_BBOX_WIDTH;
-		bottom = y + SOPHIA_BIG_BBOX_HEIGHT;
+		bottom = top + SOPHIA_BIG_BBOX_HEIGHT;
+		
 	}
 	else
 	{
+		left = x;
+		top = y;
 		right = x + SOPHIA_SMALL_BBOX_WIDTH;
 		bottom = y + SOPHIA_SMALL_BBOX_HEIGHT;
 	}

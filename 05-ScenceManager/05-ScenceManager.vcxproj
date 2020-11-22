@@ -134,9 +134,11 @@
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Jason.cpp" />
     <ClCompile Include="Portal.cpp" />
+    <ClCompile Include="StateFALL.cpp" />
     <ClCompile Include="StateIDLE.cpp" />
     <ClCompile Include="StateIDLEGunUP.cpp" />
     <ClCompile Include="StateJUMP.cpp" />
+    <ClCompile Include="StateJUMPTurn.cpp" />
     <ClCompile Include="StateLOWEREDGun.cpp" />
     <ClCompile Include="StateRAISEDGun.cpp" />
     <ClCompile Include="StateTURN.cpp" />
@@ -163,8 +165,10 @@
     <ClInclude Include="Map.h" />
     <ClInclude Include="Jason.h" />
     <ClInclude Include="Portal.h" />
+    <ClInclude Include="StateFALL.h" />
     <ClInclude Include="StateIDLEGunUP.h" />
     <ClInclude Include="StateJUMP.h" />
+    <ClInclude Include="StateJUMPTurn.h" />
     <ClInclude Include="StateLOWEREDGun.h" />
     <ClInclude Include="StateRAISEDGun.h" />
     <ClInclude Include="StateTURN.h" />

@@ -47,6 +47,7 @@ void StateWALKINGGunUP::HandleKeyboard()
 	}
 	else
 	{
+		sophia->SetIsGunUp(false);
 		sophia->SwitchState(new StateLOWEREDGun());
 		sophia->currentAni->ResetCurrentFrame();
 	}
