@@ -56,20 +56,17 @@ void CDomes::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	if (coEvents.size() == 0)  //nếu không có va chạm, update bình thường	
 	{
-		if (this->GetState() != DOMES_STATE_START)
+		if (this->GetState() == DOMES_ANI_WALKING_DOWN_LEFT)
 		{
-			if (this->nx > 0 && this->ny > 0)
-			{
-				this->SetState(DOMES_ANI_WALKING_RIGHT_DOWN);
-
-			}
-			else if (this->nx > 0 && this->ny < 0)
-			{
-				this->SetState(DOMES_ANI_WALKING_UP_RIGHT);
-			}		
+			
 		}
-		x += dx;
-		y += dy;
+		
+			x += dx;
+			y += dy;
+		
+	
+		
+			
 	}
 	else //có va chạm
 	{
@@ -80,17 +77,18 @@ void CDomes::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	
 
 		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);  // sắp xếp lại các sự kiện va chạm đầu tiên theo trục x, y 
-		x += min_tx * dx + nx * 0.4f;
-		y += min_ty * dy + ny * 0.4f;
-		if (nx != 0) vx = 0;
-		if (ny != 0) vy = 0;
+	
 		for (UINT i = 0; i < coEventsResult.size(); i++)
 		{
 			LPCOLLISIONEVENT e = coEventsResult[i];
 
 			if (dynamic_cast<CBrick*>(e->obj)) // if e->obj is Goomba 
 			{
-				
+				x += min_tx * dx + nx * 0.4f;
+				y += min_ty * dy + ny * 0.4f;
+
+				if (nx != 0) vx = 0;
+				if (ny != 0) vy = 0;
 				
 				CBrick* brick = dynamic_cast<CBrick*>(e->obj);
 			
@@ -102,7 +100,15 @@ void CDomes::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					{
 						if (this->nx > 0 )
 						{
-							this->SetState(DOMES_ANI_WALKING_RIGHT_UP);
+							if (this->GetState() == DOMES_ANI_WALKING_DOWN_LEFT)
+							{
+								this->SetState(DOMES_ANI_WALKING_LEFT_UP);
+							}
+							else
+							{
+								this->SetState(DOMES_ANI_WALKING_RIGHT_UP);
+							}
+							
 						}
 						else if(this-> nx < 0)
 						{
@@ -245,10 +251,10 @@ void CDomes::SetState(int state)
 	switch (state)
 	{
 	case DOMES_STATE_START:
-		vx = 0;
-		vy = -DOMES_WALKING_SPEED;
-		ny = 1;
-		nx = -1;
+		vx= -DOMES_WALKING_SPEED;
+		vy = 0;
+		ny = -1;
+		nx =1;
 		break;
 	case DOMES_ANI_WALKING_RIGHT_UP:
 		vx = DOMES_WALKING_SPEED;

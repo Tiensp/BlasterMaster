@@ -132,6 +132,7 @@
     <ClCompile Include="GameDefine.cpp" />
     <ClCompile Include="Domes.cpp" />
     <ClCompile Include="Golem.cpp" />
+    <ClCompile Include="Health.cpp" />
     <ClCompile Include="Koopas.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Jason.cpp" />
@@ -156,6 +157,7 @@
     <ClCompile Include="Scence.cpp" />
     <ClCompile Include="Sprites.cpp" />
     <ClCompile Include="Textures.cpp" />
+    <ClCompile Include="Worms.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animations.h" />
@@ -165,6 +167,7 @@
     <ClInclude Include="Domes.h" />
     <ClInclude Include="GameDefine.h" />
     <ClInclude Include="Golem.h" />
+    <ClInclude Include="Health.h" />
     <ClInclude Include="Koopas.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="Jason.h" />
@@ -190,6 +193,7 @@
     <ClInclude Include="Scence.h" />
     <ClInclude Include="Sprites.h" />
     <ClInclude Include="Textures.h" />
+    <ClInclude Include="Worms.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

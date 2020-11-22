@@ -82,6 +82,9 @@
     <Filter Include="Framework\GameObject\Enemy">
       <UniqueIdentifier>{0d9cca50-9b83-4b36-a7e8-90bf6b4fd716}</UniqueIdentifier>
     </Filter>
+    <Filter Include="HUD">
+      <UniqueIdentifier>{43e83214-9c73-471f-a460-5df20200721a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Brick.cpp">
@@ -191,6 +194,12 @@
     </ClCompile>
     <ClCompile Include="StateJUMPTurn.cpp">
       <Filter>Framework\GameObject\State Machine\State JUMP TURN</Filter>
+    </ClCompile>
+    <ClCompile Include="Health.cpp">
+      <Filter>HUD</Filter>
+    </ClCompile>
+    <ClCompile Include="Worms.cpp">
+      <Filter>Framework\GameObject\Enemy</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -304,6 +313,12 @@
     </ClInclude>
     <ClInclude Include="StateJUMPTurn.h">
       <Filter>Framework\GameObject\State Machine\State JUMP TURN</Filter>
+    </ClInclude>
+    <ClInclude Include="Health.h">
+      <Filter>HUD</Filter>
+    </ClInclude>
+    <ClInclude Include="Worms.h">
+      <Filter>Framework\GameObject\Enemy</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -180,6 +180,15 @@
 50016	46	460	63	478	30
 
 
+#WORMS
+#idle right
+60001	168	411	186	421	30
+60002	187	411	204	421	30
+#idle left
+60003	60	411	78	421	30
+60004	42	411	59	421	30
+
+
 
 # ani_id	sprite1_id	time1	sprite2_id	time2	...
 [ANIMATIONS]
@@ -270,7 +279,11 @@
 908	50013	100	50014	100
 #walk down nx = -1
 909	50015	100	50016	100
-
+# === Worms ===
+#walk right
+1001	60001	100	60002	100
+#walk left
+1002	60003	100	60004	100
 
 #
 # id	ani1	ani2	ani3
@@ -289,7 +302,8 @@
 4	801	802	
 # Domes
 5	901	902	903	904	905	906	907	908	909	
-
+# Worms
+6	1001	1002
 [OBJECTS]
 # type	x	y	ani_set_id	extra_settings per object type
 # type: 0 = Mario , 1 = Brick, 2 = Goomba, 3 = Koopas
@@ -301,6 +315,8 @@
 3	1100	1120	4
 # Domes
 4	1050	1120	5
+# Worms
+5	1100	1120	6
 	
 
 # BRICK 

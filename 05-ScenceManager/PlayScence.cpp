@@ -34,6 +34,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):
 #define OBJECT_TYPE_GOOMBA	2
 #define OBJECT_TYPE_GOLEM	3
 #define	OBJECT_TYPE_DOMES	4
+#define OBJECT_TYPE_WORMS	5
 
 #define OBJECT_TYPE_PORTAL	50
 
@@ -169,6 +170,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	break;
 	case OBJECT_TYPE_GOLEM: obj = new CGolem(x,y, player); break;
 	case OBJECT_TYPE_DOMES: obj = new CDomes(x, y, player); break;
+	case OBJECT_TYPE_WORMS: obj = new CWorm(x, y, player); break;
 
 	case OBJECT_TYPE_PORTAL:
 		{	
