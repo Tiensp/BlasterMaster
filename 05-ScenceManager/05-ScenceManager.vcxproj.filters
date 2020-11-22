@@ -76,6 +76,12 @@
     <Filter Include="Framework\GameObject\State Machine\State JUMP TURN">
       <UniqueIdentifier>{dfc045a9-1afd-4df6-99ea-a163093ec34c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Scence">
+      <UniqueIdentifier>{4ef561ba-0058-4368-82cc-7175539f1ff4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\GameObject\Enemy">
+      <UniqueIdentifier>{0d9cca50-9b83-4b36-a7e8-90bf6b4fd716}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Brick.cpp">
@@ -158,6 +164,27 @@
     </ClCompile>
     <ClCompile Include="StateJUMP.cpp">
       <Filter>Framework\GameObject\State Machine\State JUMP</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayScence.cpp">
+      <Filter>Scence</Filter>
+    </ClCompile>
+    <ClCompile Include="Scence.cpp">
+      <Filter>Scence</Filter>
+    </ClCompile>
+    <ClCompile Include="Game.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject.cpp">
+      <Filter>GameObject\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Golem.cpp">
+      <Filter>Framework\GameObject\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Domes.cpp">
+      <Filter>Framework\GameObject\Enemy</Filter>
     </ClCompile>
     <ClCompile Include="StateFALL.cpp">
       <Filter>Framework\GameObject\State Machine\State FALL</Filter>
@@ -250,6 +277,27 @@
     </ClInclude>
     <ClInclude Include="StateJUMP.h">
       <Filter>Framework\GameObject\State Machine\State JUMP</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayScence.h">
+      <Filter>Scence</Filter>
+    </ClInclude>
+    <ClInclude Include="Scence.h">
+      <Filter>Scence</Filter>
+    </ClInclude>
+    <ClInclude Include="Game.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="KeyEventHandler.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject.h">
+      <Filter>GameObject\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Golem.h">
+      <Filter>Framework\GameObject\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Domes.h">
+      <Filter>Framework\GameObject\Enemy</Filter>
     </ClInclude>
     <ClInclude Include="StateFALL.h">
       <Filter>Framework\GameObject\State Machine\State FALL</Filter>

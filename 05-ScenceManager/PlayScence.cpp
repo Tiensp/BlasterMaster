@@ -7,6 +7,7 @@
 #include "Sprites.h"
 #include "Portal.h"
 
+
 using namespace std;
 
 CPlayScene::CPlayScene(int id, LPCWSTR filePath):
@@ -31,7 +32,8 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):
 #define OBJECT_TYPE_SOPHIA	0
 #define OBJECT_TYPE_BRICK	1
 #define OBJECT_TYPE_GOOMBA	2
-#define OBJECT_TYPE_KOOPAS	3
+#define OBJECT_TYPE_GOLEM	3
+#define	OBJECT_TYPE_DOMES	4
 
 #define OBJECT_TYPE_PORTAL	50
 
@@ -150,16 +152,24 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 			return;
 		}
 		
+	
+		//obj = new CSophia();
 		obj = CSophia::GetInstance(); //new CSophia(x, y);
 		player = (CSophia*)obj; 
-		player->Reset(x, y);
-
-
+		player->SetStartPos(x, y);
 		DebugOut(L"[INFO] Player object created!\n");
 		break;
 	case OBJECT_TYPE_GOOMBA: obj = new CGoomba(); break;
-	case OBJECT_TYPE_BRICK: obj = new CBrick(); break;
-	case OBJECT_TYPE_KOOPAS: obj = new CKoopas(); break;
+	case OBJECT_TYPE_BRICK:
+	{
+		float w = atof(tokens[4].c_str());
+		float h = atof(tokens[5].c_str());
+		obj = new CBrick(x, y, w, h);
+	}
+	break;
+	case OBJECT_TYPE_GOLEM: obj = new CGolem(x,y, player); break;
+	case OBJECT_TYPE_DOMES: obj = new CDomes(x, y, player); break;
+
 	case OBJECT_TYPE_PORTAL:
 		{	
 			float r = atof(tokens[4].c_str());
