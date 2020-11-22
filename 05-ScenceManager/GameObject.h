@@ -59,7 +59,7 @@ public:
 	float ay;
 
 	int nx;		//pháp tuyến theo chiều x (normal) 
-				//hay còn gọi là hướng (direction)
+	int ny;		//hay còn gọi là hướng (direction)
 
 	int state;
 

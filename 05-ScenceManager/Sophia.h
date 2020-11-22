@@ -70,16 +70,21 @@ public:
 	void OnKeyUp(int keycode);
 	void KeyState();
 
+	void SetStartPos(float startx, float starty);
 	bool GetDoneTurn() { return DoneTurn; }
 	bool GetDoneGunUp() { return DoneGunUp; }
 	//void SetState(int state);
 	void SetLevel(int l) { level = l; }
+
 	void SetIsTurning(bool turn) { isTurning = turn; }
 	bool GetIsTurning() { return isTurning; }
+
 	void SetIsRaisedGun(bool raisedgun) { isRaisedGun = raisedgun; }
 	bool GetIsRaisedGun() { return isRaisedGun; }
+
 	void SetIsLoweredGun(bool loweredgun) { isLoweredGun = loweredgun; }
 	bool GetIsLoweredGun() { return isLoweredGun; }
+
 	void SetIsJumping(bool jump) { isJumping = jump; }
 	void SetDoneGunUp(bool done) { DoneGunUp = done; }
 	void SetDoneTurn(bool done) { DoneTurn = done; }

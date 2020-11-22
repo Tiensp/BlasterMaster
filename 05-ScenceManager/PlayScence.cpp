@@ -152,11 +152,11 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 			return;
 		}
 		
+	
+		//obj = new CSophia();
 		obj = CSophia::GetInstance(); //new CSophia(x, y);
 		player = (CSophia*)obj; 
-		player->Reset(x, y);
-
-
+		player->SetStartPos(x, y);
 		DebugOut(L"[INFO] Player object created!\n");
 		break;
 	case OBJECT_TYPE_GOOMBA: obj = new CGoomba(); break;

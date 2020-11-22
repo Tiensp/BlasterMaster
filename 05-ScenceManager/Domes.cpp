@@ -66,15 +66,6 @@ void CDomes::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		float rdy = 0;
 
 		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);  // sắp xếp lại các sự kiện va chạm đầu tiên theo trục x, y 
-	
-		if (nx != 0) vx = 0;
-		if (ny != 0) vy = 0;
-		x += min_tx * dx + nx * 0.4f;
-		y += min_ty * dy + ny * 0.4f;
-		
-	
-
-	
 		for (UINT i = 0; i < coEventsResult.size(); i++)
 		{
 			LPCOLLISIONEVENT e = coEventsResult[i];
@@ -82,21 +73,19 @@ void CDomes::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			if (dynamic_cast<CBrick*>(e->obj)) // if e->obj is Goomba 
 			{
 				
-				CBrick* brick = dynamic_cast<CBrick*>(e->obj);
 				
+				CBrick* brick = dynamic_cast<CBrick*>(e->obj);
+				x += min_tx * dx + nx * 0.4f;
+				y += min_ty * dy + ny * 0.4f;
+				if (nx != 0) vx = 0;
+				if (ny != 0) vy = 0;
 				if (e->ny != 0 )
 				{
-					
-
-					if (this->GetState() == DOMES_ANI_WALKING_UP_RIGHT || this->GetState() == DOMES_ANI_WALKING_DOWN_RIGHT)
-					{
-						this->nx = 1;
-					}
+				
 					if (e->ny < 0)
 					{
 						if (this->nx > 0 )
 						{
-
 							this->SetState(DOMES_ANI_WALKING_RIGHT_UP);
 						}
 						else if(this-> nx < 0)

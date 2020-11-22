@@ -73,13 +73,7 @@
     <Filter Include="Scence">
       <UniqueIdentifier>{4ef561ba-0058-4368-82cc-7175539f1ff4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Game">
-      <UniqueIdentifier>{85600d58-6777-4cd2-a691-77f77f4f8a62}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="GameObject\GameObject">
-      <UniqueIdentifier>{037eda8a-4994-4fe9-8d04-2d8e2cb0d81d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Enemy">
+    <Filter Include="Framework\GameObject\Enemy">
       <UniqueIdentifier>{0d9cca50-9b83-4b36-a7e8-90bf6b4fd716}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -181,10 +175,10 @@
       <Filter>GameObject\GameObject</Filter>
     </ClCompile>
     <ClCompile Include="Golem.cpp">
-      <Filter>Enemy</Filter>
+      <Filter>Framework\GameObject\Enemy</Filter>
     </ClCompile>
     <ClCompile Include="Domes.cpp">
-      <Filter>Enemy</Filter>
+      <Filter>Framework\GameObject\Enemy</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -288,10 +282,10 @@
       <Filter>GameObject\GameObject</Filter>
     </ClInclude>
     <ClInclude Include="Golem.h">
-      <Filter>Enemy</Filter>
+      <Filter>Framework\GameObject\Enemy</Filter>
     </ClInclude>
     <ClInclude Include="Domes.h">
-      <Filter>Enemy</Filter>
+      <Filter>Framework\GameObject\Enemy</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

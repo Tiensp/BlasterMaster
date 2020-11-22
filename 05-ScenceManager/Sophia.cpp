@@ -75,7 +75,7 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		
 		// block every object first!
 		x += min_tx*dx + nx*0.4f;
-		y += min_ty*dy + ny*0.4f;
+		/*y += min_ty*dy + ny*0.4f;*/
 
 		if (nx!=0) vx = 0;
 		if (ny!=0) vy = 0;
@@ -84,46 +84,8 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		//
 		// Collision logic with other objects
 		//
-		for (UINT i = 0; i < coEventsResult.size(); i++)
-		{
-			LPCOLLISIONEVENT e = coEventsResult[i];
-
-			if (dynamic_cast<CGoomba *>(e->obj)) // if e->obj is Goomba 
-			{
-				CGoomba *goomba = dynamic_cast<CGoomba *>(e->obj);
-
-				// jump on top >> kill Goomba and deflect a bit 
-				if (e->ny < 0)
-				{
-					if (goomba->GetState()!= GOOMBA_STATE_DIE)
-					{
-						goomba->SetState(GOOMBA_STATE_DIE);
-						vy = -SOPHIA_JUMP_DEFLECT_SPEED;
-					}
-				}
-				else if (e->nx != 0)
-				{
-					if (untouchable==0)
-					{
-						if (goomba->GetState()!=GOOMBA_STATE_DIE)
-						{
-							if (level > SOPHIA_LEVEL_SMALL)
-							{
-								level = SOPHIA_LEVEL_SMALL;
-								StartUntouchable();
-							}
-							//else 
-								//SetState(SOPHIA_STATE_DIE);
-						}
-					}
-				}
-			} // if Goomba
-			else if (dynamic_cast<CPortal *>(e->obj))
-			{
-				CPortal *p = dynamic_cast<CPortal *>(e->obj);
-				CGame::GetInstance()->SwitchScene(p->GetSceneId());
-			}
-		}
+		
+		
 	}
 	currentState->Update();
 	//Đặt lại biến DoneGunUp nếu không còn GUN UP
@@ -316,6 +278,12 @@ void CSophia::KeyState()
 {
 }
 
+void CSophia::SetStartPos(float startx, float starty)
+{
+	start_x = startx;
+	start_y = starty;
+}
+
 #pragma endregion
 
 
@@ -353,8 +321,6 @@ void CSophia::SwitchState(CState* state)
 */
 void CSophia::Reset(float _startx, float _starty)
 {
-	start_x = _startx;
-	start_y = _starty;
 	SetLevel(SOPHIA_LEVEL_BIG);
 	SetPosition(start_x, start_y);
 	SwitchState(new StateIDLE());
