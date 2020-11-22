@@ -115,18 +115,15 @@ void CGolem::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					CBrick* brick = dynamic_cast<CBrick*>(e->obj);
 
 					// jump on top >> kill Goomba and deflect a bit 
-					if (e->nx < 0)
+					if (e->nx != 0)
 					{
 						this->SetState(GOLEM_STATE_WALKING);
-
-
+						this->nx = e->nx;
 					}
-					else if (e->nx > 0)
-					{
-						this->SetState(GOLEM_STATE_WALKING);
-
-					}
-					this->nx = e->nx;
+				
+				
+				
+					
 
 				}
 				//	else if (e->nx != 0)

@@ -17,13 +17,14 @@
 #define DOMES_BBOX_HEIGHT_DIE 16
 
 #define DOMES_STATE_WALKING 100
-#define DOMES_STATE_DIE 200
+#define DOMES_STATE_START 200
 #define DOMES_STATE_JUMPING 300
 
 class CDomes : public CGameObject
 {
 	bool isFolow;  //theo player 
 	LPGAMEOBJECT target;
+	int ani;
 
 
 
@@ -34,6 +35,7 @@ public:
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	virtual void Render();
+	void Convert(int nx, int ny);
 	void flowPlayer(LPGAMEOBJECT player);
 };
 
