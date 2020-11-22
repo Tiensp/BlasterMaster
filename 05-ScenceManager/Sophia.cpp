@@ -12,6 +12,7 @@
 #include "StateTURN.h"
 #include "StateFALL.h"
 #include "StateJUMP.h"
+#include "Brick.h"
 
 CSophia* CSophia::__instance = NULL;
 
@@ -82,7 +83,14 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 		if (nx!=0) vx = 0;
 		if (ny!=0) vy = 0;
-
+		for (UINT i = 0; i < coEventsResult.size(); i++)
+		{
+			LPCOLLISIONEVENT e = coEventsResult[i];
+			if (dynamic_cast<CBrick*>(e->obj)) // if e->obj is Goomba 
+			{
+				y += min_ty * dy + ny * 0.4f;
+			}
+		}
 
 		//
 		// Collision logic with other objects

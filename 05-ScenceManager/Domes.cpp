@@ -15,7 +15,7 @@ CDomes::CDomes(float x, float y, LPGAMEOBJECT player)
 	this->x = x;
 	this->y = y;
 	this->target = player;
-
+	
 
 }
 
@@ -33,7 +33,7 @@ void CDomes::GetBoundingBox(float& left, float& top, float& right, float& bottom
 
 void CDomes::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	vx -= 0.0005f * dt;
+	//vx -= 0.0005f * dt;
 
 	//DebugOut(L"golumnvX: %f, golumnvY: %f\n", vx, vy);
 	CGameObject::Update(dt, coObjects);
@@ -56,6 +56,18 @@ void CDomes::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	if (coEvents.size() == 0)  //nếu không có va chạm, update bình thường	
 	{
+		if (this->GetState() != DOMES_STATE_START)
+		{
+			if (this->nx > 0 && this->ny > 0)
+			{
+				this->SetState(DOMES_ANI_WALKING_RIGHT_DOWN);
+
+			}
+			else if (this->nx > 0 && this->ny < 0)
+			{
+				this->SetState(DOMES_ANI_WALKING_UP_RIGHT);
+			}		
+		}
 		x += dx;
 		y += dy;
 	}
@@ -65,7 +77,13 @@ void CDomes::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		float rdx = 0;
 		float rdy = 0;
 
+	
+
 		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);  // sắp xếp lại các sự kiện va chạm đầu tiên theo trục x, y 
+		x += min_tx * dx + nx * 0.4f;
+		y += min_ty * dy + ny * 0.4f;
+		if (nx != 0) vx = 0;
+		if (ny != 0) vy = 0;
 		for (UINT i = 0; i < coEventsResult.size(); i++)
 		{
 			LPCOLLISIONEVENT e = coEventsResult[i];
@@ -75,10 +93,8 @@ void CDomes::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				
 				
 				CBrick* brick = dynamic_cast<CBrick*>(e->obj);
-				x += min_tx * dx + nx * 0.4f;
-				y += min_ty * dy + ny * 0.4f;
-				if (nx != 0) vx = 0;
-				if (ny != 0) vy = 0;
+			
+
 				if (e->ny != 0 )
 				{
 				
@@ -90,8 +106,15 @@ void CDomes::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 						}
 						else if(this-> nx < 0)
 						{
+							if (this->GetState() == DOMES_ANI_WALKING_DOWN_RIGHT)
+							{
+								this->SetState(DOMES_ANI_WALKING_RIGHT_UP);
+							}
+							else
+							{
+								this->SetState(DOMES_ANI_WALKING_LEFT_UP);
+							}
 							
-							this->SetState(DOMES_ANI_WALKING_LEFT_UP);
 						}
 					}
 					else 
@@ -103,7 +126,15 @@ void CDomes::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 						}
 						else 
 						{
-							this->SetState(DOMES_ANI_WALKING_LEFT_DOWN);
+							if (this->GetState() == DOMES_ANI_WALKING_UP_RIGHT)
+							{
+								this->SetState(DOMES_ANI_WALKING_RIGHT_DOWN);
+							}
+							else
+							{
+								this->SetState(DOMES_ANI_WALKING_LEFT_DOWN);
+							}
+							
 						}
 					}
 				
@@ -114,6 +145,7 @@ void CDomes::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					{
 						if (this->ny < 0 )
 						{
+						
 							this->SetState(DOMES_ANI_WALKING_UP_RIGHT);
 						}
 						else 
@@ -125,7 +157,15 @@ void CDomes::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					{
 						if (this->ny < 0 )
 						{
-							this->SetState(DOMES_ANI_WALKING_UP_LEFT);
+							if (this->GetState() == DOMES_ANI_WALKING_RIGHT_DOWN)
+							{
+								this->SetState(DOMES_ANI_WALKING_DOWN_LEFT);
+							}
+							else
+							{
+								this->SetState(DOMES_ANI_WALKING_UP_LEFT);
+							}
+							
 						}
 						else 
 						{
@@ -153,10 +193,36 @@ void CDomes::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 void CDomes::Render()
 {
+	int ani;
+	if (this->GetState() == DOMES_STATE_START)
+	{
+		ani = 0; 
+	}
+	if (vx > 0 && vy == 0)
+	{
+		if (nx > 0 && ny > 0) ani = DOMES_ANI_WALKING_RIGHT_UP;
+		else if (nx > 0 && ny < 0) ani = DOMES_ANI_WALKING_RIGHT_DOWN;
+	}
+	else if (vx < 0 && vy == 0)
+	{
+		if (nx < 0 && ny > 0) ani = DOMES_ANI_WALKING_LEFT_UP;
+		else if (nx < 0 && ny < 0) ani = DOMES_ANI_WALKING_LEFT_DOWN;
+	}
+	else if (vy > 0 && vx == 0)
+	{
+		if (ny > 0 && nx > 0) ani = DOMES_ANI_WALKING_DOWN_LEFT;
+		else if (ny > 0 && nx < 0) ani = DOMES_ANI_WALKING_DOWN_RIGHT;
+	}
+	else if (vy < 0 && vx == 0)
+	{
+		if (ny < 0 && nx > 0) ani = DOMES_ANI_WALKING_UP_LEFT;
+		else if (ny < 0 && nx < 0) ani = DOMES_ANI_WALKING_UP_RIGHT;
+	}
+
+		
 	
-
-
-	animation_set->at(this->ani)->Render(x, y);
+	DebugOut(L"ani %d\n", ani);
+	animation_set->at(ani)->Render(x, y);
 
 	RenderBoundingBox();
 }
@@ -179,49 +245,58 @@ void CDomes::SetState(int state)
 	switch (state)
 	{
 	case DOMES_STATE_START:
-		this->ani = DOMES_ANI_WALKING_DOWN_RIGHT;
-		nx = -1;
+		vx = 0;
+		vy = -DOMES_WALKING_SPEED;
 		ny = 1;
+		nx = -1;
 		break;
 	case DOMES_ANI_WALKING_RIGHT_UP:
 		vx = DOMES_WALKING_SPEED;
+		vy = 0;
 		nx = 1;
-		this->ani = DOMES_ANI_WALKING_RIGHT_UP;
+		ny = 1;
 		break;
 	case DOMES_ANI_WALKING_LEFT_UP:
 		vx = -DOMES_WALKING_SPEED;
-		this->nx = -1;
-		this->ani = DOMES_ANI_WALKING_LEFT_UP;
+		vy = 0;
+		nx = -1;
+		ny = 1;
 		break;
 	case DOMES_ANI_WALKING_RIGHT_DOWN:
 		vx = DOMES_WALKING_SPEED;
-		this->nx = 1;
-		this->ani = DOMES_ANI_WALKING_RIGHT_DOWN;
+		vy = 0;
+		nx = 1;
+		ny = -1;
 		break;
 	case DOMES_ANI_WALKING_LEFT_DOWN:
 		vx = -DOMES_WALKING_SPEED;
-		this->nx = -1;
-		this->ani = DOMES_ANI_WALKING_LEFT_DOWN;
+		vy = 0;
+		nx = -1;
+		ny = -1;
 		break;
 	case DOMES_ANI_WALKING_UP_RIGHT:
 		vy = -DOMES_WALKING_SPEED;
+		vx = 0;
 		ny = -1;
-		this->ani = DOMES_ANI_WALKING_UP_RIGHT;
+		nx = -1;
 		break;
 	case DOMES_ANI_WALKING_DOWN_RIGHT:
+		vx = 0;
 		vy = DOMES_WALKING_SPEED;
-		this->ny = 1;
-		this->ani = DOMES_ANI_WALKING_DOWN_RIGHT;
+		ny = 1;
+		nx = -1;
 		break;
 	case DOMES_ANI_WALKING_UP_LEFT:
+		vx = 0;
 		vy = -DOMES_WALKING_SPEED;
-		this->ny = -1;
-		this->ani = DOMES_ANI_WALKING_UP_LEFT;
+		ny = -1;
+		nx = 1;
 		break;
 	case DOMES_ANI_WALKING_DOWN_LEFT:
+		vx = 0;
 		vy = DOMES_WALKING_SPEED;
-		this->ny = 1;
-		this->ani = DOMES_ANI_WALKING_DOWN_LEFT;
+		ny = 1;
+		nx = 1;
 		break;
 	}
 }
