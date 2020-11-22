@@ -10,6 +10,7 @@
 #include "Map.h"
 #include "Golem.h"
 #include "Domes.h"
+#include "GameDefine.h"
 
 
 class CPlayScene: public CScene

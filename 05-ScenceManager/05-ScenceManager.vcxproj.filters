@@ -13,23 +13,62 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="GameObject">
+    <Filter Include="Framework">
+      <UniqueIdentifier>{16fc35ec-36ad-40ed-8d41-9608615f2a3a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\Game">
+      <UniqueIdentifier>{85600d58-6777-4cd2-a691-77f77f4f8a62}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\GameObject">
       <UniqueIdentifier>{7d4427f5-ff0f-4bfa-8cee-24604a2b8f16}</UniqueIdentifier>
     </Filter>
-    <Filter Include="GameObject\Player">
+    <Filter Include="Framework\GameObject\Player">
       <UniqueIdentifier>{b4c460b1-5dd8-4ede-aed1-5108e41d31ce}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Camera">
-      <UniqueIdentifier>{ea0938a0-fe8b-4b5a-a58e-ae9bc42e7d6c}</UniqueIdentifier>
+    <Filter Include="Framework\GameObject\GameObject">
+      <UniqueIdentifier>{037eda8a-4994-4fe9-8d04-2d8e2cb0d81d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Map">
-      <UniqueIdentifier>{f3a90e3d-1025-44ac-a56a-6242d4a945c0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="GameDefine">
+    <Filter Include="Framework\Game\GameDefine">
       <UniqueIdentifier>{183570da-78ad-4454-9f57-f498c6a0a68a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="GameGraphics">
+    <Filter Include="Framework\Game\Graphics">
       <UniqueIdentifier>{c79f6e6b-5182-4f07-9f60-4c17cbc81ff6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\Game\Scence">
+      <UniqueIdentifier>{4ef561ba-0058-4368-82cc-7175539f1ff4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\Game\Scence\Map">
+      <UniqueIdentifier>{f3a90e3d-1025-44ac-a56a-6242d4a945c0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\Game\Scence\Camera">
+      <UniqueIdentifier>{ea0938a0-fe8b-4b5a-a58e-ae9bc42e7d6c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\GameObject\State Machine">
+      <UniqueIdentifier>{060cb22e-7598-4e80-8f3c-c9dbf8c74ac9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\GameObject\State Machine\State IDLE">
+      <UniqueIdentifier>{15ee7e43-a922-40d1-bddd-b594233e598d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\GameObject\State Machine\State TURN">
+      <UniqueIdentifier>{64b356af-bea3-4fec-b82c-1f064eb033ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\GameObject\State Machine\State WALKING">
+      <UniqueIdentifier>{12f561f6-587b-4497-9fad-037cb2e4f00b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\GameObject\State Machine\State IDLE Gun UP">
+      <UniqueIdentifier>{9c945057-c536-475f-b97f-2f1f563f1dac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\GameObject\State Machine\State RAISED Gun">
+      <UniqueIdentifier>{31d13ad0-c06e-4bc8-9a71-3e854273f68c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\GameObject\State Machine\State LOWERED Gun">
+      <UniqueIdentifier>{49aa362d-3c5d-4e41-810d-369f4f346f6a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\GameObject\State Machine\State WALKING Gun UP">
+      <UniqueIdentifier>{4008bf78-bd65-4153-aaf8-fc99d30826ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\GameObject\State Machine\State JUMP">
+      <UniqueIdentifier>{d5488222-049a-4020-9497-03334cfa5389}</UniqueIdentifier>
     </Filter>
     <Filter Include="Scence">
       <UniqueIdentifier>{4ef561ba-0058-4368-82cc-7175539f1ff4}</UniqueIdentifier>
@@ -58,25 +97,73 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Sophia.cpp">
-      <Filter>GameObject\Player</Filter>
+      <Filter>Framework\GameObject\Player</Filter>
     </ClCompile>
     <ClCompile Include="Camera.cpp">
-      <Filter>Camera</Filter>
+      <Filter>Framework\Game\Scence\Camera</Filter>
     </ClCompile>
     <ClCompile Include="Map.cpp">
-      <Filter>Map</Filter>
+      <Filter>Framework\Game\Scence\Map</Filter>
     </ClCompile>
     <ClCompile Include="Utils.cpp">
-      <Filter>GameDefine</Filter>
+      <Filter>Framework\Game\GameDefine</Filter>
     </ClCompile>
     <ClCompile Include="Animations.cpp">
-      <Filter>GameGraphics</Filter>
+      <Filter>Framework\Game\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="Sprites.cpp">
-      <Filter>GameGraphics</Filter>
+      <Filter>Framework\Game\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="Textures.cpp">
-      <Filter>GameGraphics</Filter>
+      <Filter>Framework\Game\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayScence.cpp">
+      <Filter>Framework\Game\Scence</Filter>
+    </ClCompile>
+    <ClCompile Include="Scence.cpp">
+      <Filter>Framework\Game\Scence</Filter>
+    </ClCompile>
+    <ClCompile Include="Game.cpp">
+      <Filter>Framework\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Framework\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="GameDefine.cpp">
+      <Filter>Framework\Game\GameDefine</Filter>
+    </ClCompile>
+    <ClCompile Include="Jason.cpp">
+      <Filter>Framework\GameObject\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="BigJason.cpp">
+      <Filter>Framework\GameObject\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject.cpp">
+      <Filter>Framework\GameObject\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="StateIDLE.cpp">
+      <Filter>Framework\GameObject\State Machine\State IDLE</Filter>
+    </ClCompile>
+    <ClCompile Include="StateWALKING.cpp">
+      <Filter>Framework\GameObject\State Machine\State WALKING</Filter>
+    </ClCompile>
+    <ClCompile Include="StateTURN.cpp">
+      <Filter>Framework\GameObject\State Machine\State TURN</Filter>
+    </ClCompile>
+    <ClCompile Include="StateIDLEGunUP.cpp">
+      <Filter>Framework\GameObject\State Machine\State IDLE Gun UP</Filter>
+    </ClCompile>
+    <ClCompile Include="StateRAISEDGun.cpp">
+      <Filter>Framework\GameObject\State Machine\State RAISED Gun</Filter>
+    </ClCompile>
+    <ClCompile Include="StateLOWEREDGun.cpp">
+      <Filter>Framework\GameObject\State Machine\State LOWERED Gun</Filter>
+    </ClCompile>
+    <ClCompile Include="StateWALKINGGunUP.cpp">
+      <Filter>Framework\GameObject\State Machine\State WALKING Gun UP</Filter>
+    </ClCompile>
+    <ClCompile Include="StateJUMP.cpp">
+      <Filter>Framework\GameObject\State Machine\State JUMP</Filter>
     </ClCompile>
     <ClCompile Include="PlayScence.cpp">
       <Filter>Scence</Filter>
@@ -114,28 +201,76 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Sophia.h">
-      <Filter>GameObject\Player</Filter>
+      <Filter>Framework\GameObject\Player</Filter>
     </ClInclude>
     <ClInclude Include="Camera.h">
-      <Filter>Camera</Filter>
+      <Filter>Framework\Game\Scence\Camera</Filter>
     </ClInclude>
     <ClInclude Include="Map.h">
-      <Filter>Map</Filter>
+      <Filter>Framework\Game\Scence\Map</Filter>
     </ClInclude>
     <ClInclude Include="GameDefine.h">
-      <Filter>GameDefine</Filter>
+      <Filter>Framework\Game\GameDefine</Filter>
     </ClInclude>
     <ClInclude Include="Utils.h">
-      <Filter>GameDefine</Filter>
+      <Filter>Framework\Game\GameDefine</Filter>
     </ClInclude>
     <ClInclude Include="Sprites.h">
-      <Filter>GameGraphics</Filter>
+      <Filter>Framework\Game\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="Textures.h">
-      <Filter>GameGraphics</Filter>
+      <Filter>Framework\Game\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="Animations.h">
-      <Filter>GameGraphics</Filter>
+      <Filter>Framework\Game\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayScence.h">
+      <Filter>Framework\Game\Scence</Filter>
+    </ClInclude>
+    <ClInclude Include="Scence.h">
+      <Filter>Framework\Game\Scence</Filter>
+    </ClInclude>
+    <ClInclude Include="Game.h">
+      <Filter>Framework\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="KeyEventHandler.h">
+      <Filter>Framework\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="State.h">
+      <Filter>Framework\GameObject\State Machine</Filter>
+    </ClInclude>
+    <ClInclude Include="Jason.h">
+      <Filter>Framework\GameObject\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="BigJason.h">
+      <Filter>Framework\GameObject\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject.h">
+      <Filter>Framework\GameObject\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="StateIDLE.h">
+      <Filter>Framework\GameObject\State Machine\State IDLE</Filter>
+    </ClInclude>
+    <ClInclude Include="StateWALKING.h">
+      <Filter>Framework\GameObject\State Machine\State WALKING</Filter>
+    </ClInclude>
+    <ClInclude Include="StateTURN.h">
+      <Filter>Framework\GameObject\State Machine\State TURN</Filter>
+    </ClInclude>
+    <ClInclude Include="StateIDLEGunUP.h">
+      <Filter>Framework\GameObject\State Machine\State IDLE Gun UP</Filter>
+    </ClInclude>
+    <ClInclude Include="StateRAISEDGun.h">
+      <Filter>Framework\GameObject\State Machine\State RAISED Gun</Filter>
+    </ClInclude>
+    <ClInclude Include="StateLOWEREDGun.h">
+      <Filter>Framework\GameObject\State Machine\State LOWERED Gun</Filter>
+    </ClInclude>
+    <ClInclude Include="StateWALKINGGunUP.h">
+      <Filter>Framework\GameObject\State Machine\State WALKING Gun UP</Filter>
+    </ClInclude>
+    <ClInclude Include="StateJUMP.h">
+      <Filter>Framework\GameObject\State Machine\State JUMP</Filter>
     </ClInclude>
     <ClInclude Include="PlayScence.h">
       <Filter>Scence</Filter>
