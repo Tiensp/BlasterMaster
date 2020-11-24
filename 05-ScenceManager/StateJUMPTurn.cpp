@@ -10,12 +10,14 @@ StateJUMPTurn::StateJUMPTurn()
 {
 	CSophia* sophia = CSophia::GetInstance();
 	sophia->SetIsTurning(true);
-	if (sophia->nx > 0)
+	if (sophia->nx < 0)
 	{
+		sophia->nx = 1;
 		StateName = SOPHIA_JUMP_TURN_RIGHT;
 	}
 	else
 	{
+		sophia->nx = -1;
 		StateName = SOPHIA_JUMP_TURN_LEFT;
 	}
 }

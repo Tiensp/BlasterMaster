@@ -20,7 +20,6 @@ CSophia::CSophia() : CGameObject()
 {
 	level = SOPHIA_LEVEL_BIG;
 	untouchable = 0;
-	_ACTIVE[SOPHIA] = true;
 	animation_set = CAnimationSets::GetInstance()->Get(SOPHIA);
 
 	start_x = x; 
@@ -40,7 +39,7 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 	// Simple fall down
 	//vy += SOPHIA_GRAVITY*dt;
-	vy += 0.001f * dt;
+	vy += SOPHIA_GRAVITY * dt;
 
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
@@ -198,7 +197,7 @@ void CSophia::SwitchState(CState* state)
 /*
 	Reset Sophia status to the beginning state of a scene
 */
-void CSophia::Reset(float _startx, float _starty)
+void CSophia::Reset()
 {
 	SetLevel(SOPHIA_LEVEL_BIG);
 	SetPosition(start_x, start_y);

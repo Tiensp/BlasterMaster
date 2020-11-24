@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "GameObject.h"
 #include "State.h"
 #include "GameDefine.h"
@@ -46,6 +46,7 @@ protected:
 	int level;
 	int untouchable;
 	DWORD untouchable_start;
+	DWORD lifeTimeAni;
 
 	float start_x;			// initial position of Sophia at scene
 	float start_y; 
@@ -61,7 +62,7 @@ protected:
 	bool DoneGunUp;		
 	bool DoneGunDown;
 
-	DWORD lifeTimeAni;
+	int health = 8;	// Máu nhân vật
 public: 
 	CSophia();
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT> *colliable_objects = NULL);
@@ -73,9 +74,7 @@ public:
 	void KeyState();
 
 	void SetStartPos(float startx, float starty);
-	bool GetDoneTurn() { return DoneTurn; }
-	bool GetDoneGunUp() { return DoneGunUp; }
-	//void SetState(int state);
+
 	void SetLevel(int l) { level = l; }
 
 	void SetIsTurning(bool turn) { isTurning = turn; }
@@ -89,19 +88,22 @@ public:
 
 	void SetIsJumping(bool jump) { isJumping = jump; }
 	bool GetIsJumping() { return isJumping; }
+	
 	void SetIsGunUp(bool gunup) { isGunUp = gunup; }
 	bool GetIsGunUp() { return isGunUp; }
+	
 	void SetIsFalling(bool fall) { isFalling = fall; }
 	bool GetIsFalling() { return isFalling; }
-	void SetDoneGunUp(bool done) { DoneGunUp = done; }
-	void SetDoneTurn(bool done) { DoneTurn = done; }
+
+	void SetHealth(int hp) { health = hp; }
+	int GetHealth() { return health; }
 	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount64(); }
 
 	/* State */
 	void SwitchState(CState* state);
 
 
-	void Reset(float _startx = 0.0f , float _starty = 0.0f);
+	void Reset();
 
 	virtual void GetBoundingBox(float &left, float &top, float &right, float &bottom);
 	static CSophia* GetInstance();

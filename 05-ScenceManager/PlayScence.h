@@ -11,6 +11,7 @@
 #include "Golem.h"
 #include "Domes.h"
 #include "GameDefine.h"
+#include "HUD.h"
 
 
 class CPlayScene: public CScene
@@ -19,7 +20,7 @@ protected:
 	CSophia *player;	// A play scene has to have player, right? 
 	CMap* map;			//Cần một đối tượng lưu trữ MAP
 	CCamera* camera;	//Và một đối tượng lưu trữ camera của Play Scene
-
+	HUD* hud;
 	vector<LPGAMEOBJECT> objects;	//một list obj lưu trữ các GameObj có trong Play Scene
 
 	/* Các hàm ParsSection dùng để đọc file */

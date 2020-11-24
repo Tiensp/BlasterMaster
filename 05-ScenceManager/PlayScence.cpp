@@ -267,6 +267,8 @@ void CPlayScene::Load()
 	camera = CCamera::GetInstance();
 	camera->SetCamBound(map->GetMapWidth(), map->GetMapHeight());
 	player->Reset();
+	hud = new HUD();
+	
 }
 
 void CPlayScene::Update(DWORD dt)
@@ -290,7 +292,8 @@ void CPlayScene::Update(DWORD dt)
 
 	// Update camera to follow sophia
 	camera->Update(player);
-
+	//Update HUD
+	hud->Update();
 
 }
 
@@ -299,6 +302,7 @@ void CPlayScene::Render()
 	map->DrawMap();
 	for (int i = 0; i < objects.size(); i++)
 		objects[i]->Render();
+	hud->Render();
 }
 
 /*

@@ -46,14 +46,17 @@ extern enum ObjectTAG
 extern enum ObjectTYPE
 {
 	/* PLAYER TYPE */
-	SOPHIA,
-	JASON,
-	BIG_JASON,
+	SOPHIA = 0,
+	JASON = 2,
+	BIG_JASON = 3,
 
 	/* ENEMY TYPE */
 	Domes,
 	/* MAP */
-	MAPID = 10000
+	MAPID = 10000,
+	/* HP */
+	Health = 50,
+	HealthBar = 51
 };
 
 extern enum STATENAME
@@ -78,7 +81,25 @@ extern enum STATENAME
 	SOPHIA_WALKING_GUN_UP_RIGHT = 22,
 	SOPHIA_WALKING_GUN_UP_LEFT = 23,
 	SOPHIA_FALL_RIGHT = 24,
-	SOPHIA_FALL_LEFT = 25
+	SOPHIA_FALL_LEFT = 25,
+
+	/* BIG JASON ANI */
+	BIG_JASON_IDLE_RIGHT = 0,
+	BIG_JASON_WALKING_RIGHT = 1,
+	BIG_JASON_IDLE_LEFT = 2,
+	BIG_JASON_WALKING_LEFT = 3,
+	BIG_JASON_IDLE_TOP = 4,
+	BIG_JASON_WALKING_TOP = 5,
+	BIG_JASON_IDLE_BOT = 6,
+	BIG_JASON_WALKING_BOT = 7,
+	BIG_JASON_DIE = 8,
+};
+
+extern enum ANISET_OBJ
+{
+	/* HP */
+	ANISET_HP = 0,
+	ANISET_HP_BAR = 0
 };
 
 ///Game Global
