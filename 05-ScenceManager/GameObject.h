@@ -61,6 +61,9 @@ public:
 	int nx;		//pháp tuyến theo chiều x (normal) 
 	int ny;		//hay còn gọi là hướng (direction)
 
+	int width;
+	int height;
+
 	int state;
 
 	ObjectTAG objTag;	// Thẻ (tag) obj

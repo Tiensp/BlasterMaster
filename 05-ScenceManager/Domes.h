@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "GameObject.h"
 #define DOMES_ANI_WALKING_RIGHT_UP	0
 #define DOMES_ANI_WALKING_RIGHT_DOWN	1
@@ -25,12 +25,16 @@ class CDomes : public CGameObject
 	bool isFolow;  //theo player 
 	LPGAMEOBJECT target;
 	int ani;
+	float boundingHeigt;
+	float boundingWight;
+	RECT rectBrick; //phần gạch đang va chạm
+
 
 
 
 
 public:
-	CDomes(float x, float y, LPGAMEOBJECT player);
+	CDomes(float x, float y,float boundingHeight,float  boundingWight ,LPGAMEOBJECT player);
 	virtual void SetState(int state);
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);

@@ -169,7 +169,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	}
 	break;
 	case OBJECT_TYPE_GOLEM: obj = new CGolem(x,y, player); break;
-	case OBJECT_TYPE_DOMES: obj = new CDomes(x, y, player); break;
+	case OBJECT_TYPE_DOMES: obj = new CDomes(x, y,999999, 999999, player); break;
 	case OBJECT_TYPE_WORMS: obj = new CWorm(x, y, player); break;
 
 	case OBJECT_TYPE_PORTAL:
