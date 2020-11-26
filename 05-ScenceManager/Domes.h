@@ -2,12 +2,14 @@
 #include "GameObject.h"
 #define DOMES_ANI_WALKING_RIGHT_UP	0
 #define DOMES_ANI_WALKING_RIGHT_DOWN	1
-#define DOMES_ANI_WALKING_LEFT_UP	3
-#define DOMES_ANI_WALKING_LEFT_DOWN	4
-#define DOMES_ANI_WALKING_UP_RIGHT	5
-#define DOMES_ANI_WALKING_UP_LEFT	6
-#define DOMES_ANI_WALKING_DOWN_RIGHT	7
-#define DOMES_ANI_WALKING_DOWN_LEFT		8
+#define DOMES_ANI_WALKING_LEFT_UP	2
+#define DOMES_ANI_WALKING_LEFT_DOWN	3
+#define DOMES_ANI_WALKING_UP_RIGHT	4
+#define DOMES_ANI_WALKING_UP_LEFT	5
+#define DOMES_ANI_WALKING_DOWN_RIGHT	6
+#define DOMES_ANI_WALKING_DOWN_LEFT		7
+#define DOMES_STATE_ATACK_NX 8
+#define DOMES_STATE_ATACK_NY 9
 
 #define DOMES_WALKING_SPEED 0.03f;
 #define	DOMES_JUMPING_SPEED 0.163f;
@@ -22,15 +24,16 @@
 
 class CDomes : public CGameObject
 {
-	bool isFolow;  //theo player 
+	bool isFolow;//theo player
+	bool isAtack;
+	bool isWall;
 	LPGAMEOBJECT target;
 	int ani;
+	int numberCollisionBrick = 1;
 	float boundingHeigt;
 	float boundingWight;
-	RECT rectBrick; //phần gạch đang va chạm
-
-
-
+	RECT rectBrick = {0,0,5000,5000};
+ //phần gạch đang va chạm
 
 
 public:

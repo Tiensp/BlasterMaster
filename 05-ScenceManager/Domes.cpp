@@ -34,6 +34,8 @@ void CDomes::GetBoundingBox(float& left, float& top, float& right, float& bottom
 void CDomes::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	CGameObject::Update(dt, coObjects);
+
+
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
 
@@ -43,31 +45,58 @@ void CDomes::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	if (coEvents.size() == 0)  //nếu không có va chạm, update bình thường	
 	{
+		
 		x += dx;
 		y += dy;
-		if (x >= rectBrick.right)
+		DebugOut(L"number %d\n", numberCollisionBrick);
+		if (numberCollisionBrick >= 2)
 		{
-			if (this->GetState() == DOMES_ANI_WALKING_RIGHT_UP) this->SetState(DOMES_ANI_WALKING_DOWN_RIGHT);
-			else if (this->GetState() == DOMES_ANI_WALKING_RIGHT_DOWN) this->SetState(DOMES_ANI_WALKING_UP_RIGHT);
-		}
-		else if (x <= rectBrick.left - DOMES_BBOX_HEIGHT)
-		{
-			if (this->GetState() == DOMES_ANI_WALKING_LEFT_UP) this->SetState(DOMES_ANI_WALKING_DOWN_LEFT);
-			else if (this->GetState() == DOMES_ANI_WALKING_LEFT_DOWN) this->SetState(DOMES_ANI_WALKING_UP_LEFT);
-		}
-		else if (y >= rectBrick.bottom)
-		{
-			if (this->GetState() == DOMES_ANI_WALKING_DOWN_RIGHT)
+			if (vx == 0 && this->GetState() != DOMES_STATE_ATACK_NY)
 			{
-				this->SetState(DOMES_ANI_WALKING_LEFT_DOWN);
-			}//ABC
-			else if (this->GetState() == DOMES_ANI_WALKING_DOWN_LEFT) this->SetState(DOMES_ANI_WALKING_RIGHT_DOWN);
+				if (abs(this->y - target->y) <= 10)
+				{
+					isAtack = true;
+					this->SetState(DOMES_STATE_ATACK_NX);
+					numberCollisionBrick = 0;
+				}
+			}
+			if (vy == 0 && this->GetState() != DOMES_STATE_ATACK_NX)
+			{
+				if (abs(this->x - target->x) <= 10)
+				{
+					isAtack = true;
+					this->SetState(DOMES_STATE_ATACK_NY);
+					numberCollisionBrick = 0;
+				}
+
 		}
-		else if (y <= rectBrick.top - DOMES_BBOX_HEIGHT)
+		}
+		if (!isAtack)
 		{
-			if (this->GetState() == DOMES_ANI_WALKING_UP_RIGHT) this->SetState(DOMES_ANI_WALKING_LEFT_UP);
-			else if (this->GetState() == DOMES_ANI_WALKING_UP_LEFT) this->SetState(DOMES_ANI_WALKING_RIGHT_UP);
+			if (this->x >= rectBrick.right)
+			{
+				if (this->GetState() == DOMES_ANI_WALKING_RIGHT_UP) this->SetState(DOMES_ANI_WALKING_DOWN_RIGHT);
+				else if (this->GetState() == DOMES_ANI_WALKING_RIGHT_DOWN) this->SetState(DOMES_ANI_WALKING_UP_RIGHT);
+			}
+			if (x <= rectBrick.left - DOMES_BBOX_HEIGHT)
+			{
+				if (this->GetState() == DOMES_ANI_WALKING_LEFT_UP) this->SetState(DOMES_ANI_WALKING_DOWN_LEFT);
+				else if (this->GetState() == DOMES_ANI_WALKING_LEFT_DOWN) this->SetState(DOMES_ANI_WALKING_UP_LEFT);
+			}
+			if (this->y > rectBrick.bottom)
+			{
+				if (this->GetState() == DOMES_ANI_WALKING_DOWN_LEFT) this->SetState(DOMES_ANI_WALKING_RIGHT_DOWN);
+				else if (this->GetState() == DOMES_ANI_WALKING_DOWN_RIGHT) this->SetState(DOMES_ANI_WALKING_LEFT_DOWN);
+			}
+			if (this->y <= rectBrick.top - DOMES_BBOX_HEIGHT)
+			{
+				if (this->GetState() == DOMES_ANI_WALKING_UP_RIGHT) this->SetState(DOMES_ANI_WALKING_LEFT_UP);
+				else if (this->GetState() == DOMES_ANI_WALKING_UP_LEFT) this->SetState(DOMES_ANI_WALKING_RIGHT_UP);
+			}
 		}
+		
+		
+		//DebugOut(L"bottom %d\n,  y %f\n", this->rectBrick.bottom, this->y);
 			
 	}
 	else //có va chạm
@@ -87,15 +116,20 @@ void CDomes::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		
 			if (dynamic_cast<CBrick*>(e->obj)) // if e->obj is Goomba 
 			{
+				isAtack = false;
+				numberCollisionBrick++;
+
+			
 				x += min_tx * dx + nx * 0.4f;
 				y += min_ty * dy + ny * 0.4f;
 
 				if (nx != 0) vx = 0;
 				if (ny != 0) vy = 0;
+				
 				CBrick* brick = dynamic_cast<CBrick*>(e->obj); 
+
 				
-				
-				
+
 				if (e->ny != 0 )
 				{			
 					if (e->ny < 0)
@@ -204,10 +238,13 @@ void CDomes::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				rectBrick.left = brick->x;
 				rectBrick.right = rectBrick.left + brick->width;
 				rectBrick.top = brick->y;
-				rectBrick.bottom = rectBrick.top + brick->height;
+				rectBrick.bottom = brick->y + brick->height;
+
+				
 
 
-				DebugOut(L"ani %f\n", this->x);
+
+				
 
 				// jump on top >> kill Goomba and deflect a bit 
 			
@@ -227,51 +264,68 @@ void CDomes::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 void CDomes::Render()
 {
 	int ani;
-	if (vx == 0)
+	if (isAtack)
 	{
-		if (vy > 0)
+		if (this->GetState() == DOMES_STATE_ATACK_NX)
 		{
-			if (nx > 0)
+			if (nx > 0) ani = DOMES_ANI_WALKING_UP_RIGHT;
+			else ani = DOMES_ANI_WALKING_UP_LEFT;
+		}
+		else if (this->GetState() == DOMES_STATE_ATACK_NY)
+		{
+			if (ny > 0) ani = DOMES_ANI_WALKING_RIGHT_DOWN;
+			else ani = DOMES_ANI_WALKING_RIGHT_UP;
+		}
+	}
+	else
+	{
+		if (vx == 0)
+		{
+			if (vy > 0)
 			{
-				ani = DOMES_ANI_WALKING_DOWN_LEFT;
+				if (nx > 0)
+				{
+					ani = DOMES_ANI_WALKING_DOWN_LEFT;
+				}
+				else
+				{
+					ani = DOMES_ANI_WALKING_DOWN_RIGHT;
+				}
 			}
 			else
 			{
-				ani = DOMES_ANI_WALKING_DOWN_RIGHT;
+				if (nx > 0)
+				{
+					ani = DOMES_ANI_WALKING_UP_LEFT;
+				}
+				else
+				{
+					ani = DOMES_ANI_WALKING_UP_RIGHT;
+				}
 			}
 		}
-		else
+		else if (vy == 0)
 		{
-			if (nx > 0)
+			if (vx > 0)
 			{
-				ani = DOMES_ANI_WALKING_UP_LEFT;
+				if (ny > 0) ani = DOMES_ANI_WALKING_RIGHT_UP;
+				else ani = DOMES_ANI_WALKING_RIGHT_DOWN;
 			}
 			else
 			{
-				ani = DOMES_ANI_WALKING_UP_RIGHT;
+				if (ny > 0) ani = DOMES_ANI_WALKING_LEFT_UP;
+				else ani = DOMES_ANI_WALKING_LEFT_DOWN;
+
 			}
 		}
 	}
-	else if (vy == 0)
-	{
-		if (vx > 0)
-		{
-			if (ny > 0) ani = DOMES_ANI_WALKING_RIGHT_UP;
-			else ani = DOMES_ANI_WALKING_RIGHT_DOWN;
-		}
-		else
-		{
-			if (ny > 0) ani = DOMES_ANI_WALKING_LEFT_UP;
-			else ani = DOMES_ANI_WALKING_LEFT_DOWN;
-			
-		}
-	}
+	
 
 	
 
 		
 	
-	DebugOut(L"ani %d\n", ani);
+	
 	animation_set->at(ani)->Render(x, y);
 
 	RenderBoundingBox();
@@ -347,6 +401,32 @@ void CDomes::SetState(int state)
 		ny = -1;
 		vx = -DOMES_WALKING_SPEED;
 		vy = 0;
+		break;
+	case DOMES_STATE_ATACK_NX:
+		vy = 0;
+		if (nx < 0)
+		{
+			vx = 0.1f;
+			nx = 1;
+		}
+		else
+		{
+			vx = -0.1f;
+			nx = -1;
+		}
+		break;
+	case DOMES_STATE_ATACK_NY:
+		vx = 0;
+		if (ny < 0)
+		{
+			vy = 0.1f;
+			ny= 1;
+		}
+		else
+		{
+			vx = -0.1f;
+			ny = -1;
+		}
 		break;
 	}
 }
