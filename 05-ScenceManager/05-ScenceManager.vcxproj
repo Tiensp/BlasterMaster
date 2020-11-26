@@ -138,6 +138,7 @@
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Jason.cpp" />
     <ClCompile Include="Portal.cpp" />
+    <ClCompile Include="StateCRAWL.cpp" />
     <ClCompile Include="StateFALL.cpp" />
     <ClCompile Include="StateIDLE.cpp" />
     <ClCompile Include="StateIDLEGunUP.cpp" />
@@ -173,6 +174,7 @@
     <ClInclude Include="Map.h" />
     <ClInclude Include="Jason.h" />
     <ClInclude Include="Portal.h" />
+    <ClInclude Include="StateCRAWL.h" />
     <ClInclude Include="StateFALL.h" />
     <ClInclude Include="StateIDLEGunUP.h" />
     <ClInclude Include="StateJUMP.h" />

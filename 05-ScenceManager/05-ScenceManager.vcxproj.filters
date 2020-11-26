@@ -85,6 +85,9 @@
     <Filter Include="Framework\Game\HUD">
       <UniqueIdentifier>{7d86c7b4-4ccd-4b3a-91de-01b33efb6013}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Framework\GameObject\State Machine\State CRAWL">
+      <UniqueIdentifier>{e75ae9b0-c422-49e8-8058-96944f8ea047}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Brick.cpp">
@@ -199,7 +202,10 @@
       <Filter>Framework\Game\HUD</Filter>
     </ClCompile>
     <ClCompile Include="HUD.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Framework\Game\HUD</Filter>
+    </ClCompile>
+    <ClCompile Include="StateCRAWL.cpp">
+      <Filter>Framework\GameObject\State Machine\State CRAWL</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -318,7 +324,10 @@
       <Filter>Framework\Game\HUD</Filter>
     </ClInclude>
     <ClInclude Include="HUD.h">
-      <Filter>Header Files</Filter>
+      <Filter>Framework\Game\HUD</Filter>
+    </ClInclude>
+    <ClInclude Include="StateCRAWL.h">
+      <Filter>Framework\GameObject\State Machine\State CRAWL</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

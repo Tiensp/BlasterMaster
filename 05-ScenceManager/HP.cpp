@@ -14,10 +14,10 @@ void HP::Update()
 	}
 	/*else if (_ACTIVE[JASON]) {
 		currentHP = playerSmall->health;
-	}
-	else if (_ACTIVE[BIG_JASON]) {
-		currentHP = 
 	}*/
+	else if (_ACTIVE[BIG_JASON]) {
+		currentHP = CBigJason::GetInstance()->GetHealth();
+	}
 }
 
 void HP::Render(float xHUD, float yHUD)

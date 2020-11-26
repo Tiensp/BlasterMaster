@@ -17,7 +17,10 @@
 class CPlayScene: public CScene
 {
 protected: 
-	CSophia *player;	// A play scene has to have player, right? 
+	CSophia *sophia;	// A play scene has to have player, right? 
+	CJason *jason;
+	CBigJason *bigJason;
+
 	CMap* map;			//Cần một đối tượng lưu trữ MAP
 	CCamera* camera;	//Và một đối tượng lưu trữ camera của Play Scene
 	HUD* hud;
@@ -41,7 +44,9 @@ public:
 	virtual void Unload();
 
 
-	CSophia * GetPlayer() { return this->player; } 
+	CSophia * GetSophia() { return this->sophia; }
+	CJason* GetJason() { return this->jason; }
+	CBigJason* GetBigJason() { return this->bigJason; }
 	CCamera* GetCamera() { return this->camera; }
 	CMap* GetMap() { return this->map; }
 	//friend class CPlayScenceKeyHandler;

@@ -43,7 +43,7 @@ public:
 	void LockCam();
 	void UnlockCam();
 	void SetCamBound(float mapWidth, float mapHeight);
-	void Update(CGameObject* gameObj);
+	void Update();
 };
 
 

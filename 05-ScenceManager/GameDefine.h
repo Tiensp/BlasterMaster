@@ -61,6 +61,13 @@ extern enum ObjectTYPE
 
 extern enum STATENAME
 {
+	/// Vì thứ tự ani trong aniset của các nhân vật có thể trùng nhau
+	/// Ex: SOPHIA_IDLE_RIGHT == JASON_IDLE_RIGHT...
+	/// Nên mình không dùng STATENAME làm kiểu dữ liệu cho thuộc tính StateName trong 
+	/// class State vì sẽ ảnh hưởng vấn đề hiển thị
+	/// Ex: BigJason->currState->StateName = SOPHIA_IDLE_RIGHT :vv
+	/// Do đó mình chuyển sang dùng kiểu Int
+
 	/* SOPHIA ANI */
 	SOPHIA_IDLE_RIGHT = 0,
 	SOPHIA_IDLE_LEFT = 4,
@@ -82,6 +89,19 @@ extern enum STATENAME
 	SOPHIA_WALKING_GUN_UP_LEFT = 23,
 	SOPHIA_FALL_RIGHT = 24,
 	SOPHIA_FALL_LEFT = 25,
+
+	/* JASON */
+	JASON_IDLE_RIGHT = 0,
+	JASON_WALKING_RIGHT = 1,
+	JASON_CRAWL_RIGHT = 2,
+	JASON_SWIM_RIGHT = 3,
+	JASON_CLIMB = 4,
+	JASON_IDLE_LEFT = 5,
+	JASON_WALKING_LEFT = 6,
+	JASON_CRAWL_LEFT = 7,
+	JASON_SWIM_LEFT = 8,
+	JASON_DIE_RIGHT = 9,
+	JASON_DIE_LEFT = 10,
 
 	/* BIG JASON ANI */
 	BIG_JASON_IDLE_RIGHT = 0,

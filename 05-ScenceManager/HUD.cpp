@@ -8,6 +8,10 @@ HUD::HUD()
 	{
 		playerHP = new HP(CSophia::GetInstance()->GetHealth());
 	}
+	else if (_ACTIVE[BIG_JASON])
+	{
+		playerHP = new HP(CBigJason::GetInstance()->GetHealth());
+	}
 }
 
 void HUD::Update()

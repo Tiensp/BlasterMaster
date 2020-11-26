@@ -23,7 +23,18 @@ StateIDLE::StateIDLE()
 	}
 	else if (_ACTIVE[JASON])
 	{
+		CJason* jason = CJason::GetInstance();
 
+		jason->vx = 0;
+
+		if (jason->nx > 0)
+		{
+			StateName = JASON_IDLE_RIGHT;
+		}
+		else
+		{
+			StateName = JASON_IDLE_LEFT;
+		}
 	}
 	else if (_ACTIVE[BIG_JASON])
 	{
@@ -76,7 +87,9 @@ void StateIDLE::HandleKeyboard()
 		}
 		else if (_ACTIVE[JASON])
 		{
-
+			CJason* jason = CJason::GetInstance();
+			jason->nx = 1;
+			jason->SwitchState(new StateWALKING());
 		}
 		else if (_ACTIVE[BIG_JASON])
 		{
@@ -104,7 +117,9 @@ void StateIDLE::HandleKeyboard()
 		}
 		else if (_ACTIVE[JASON])
 		{
-
+			CJason* jason = CJason::GetInstance();
+			jason->nx = -1;
+			jason->SwitchState(new StateWALKING());
 		}
 		else if (_ACTIVE[BIG_JASON])
 		{
@@ -149,8 +164,8 @@ void StateIDLE::HandleKeyboard()
 		}
 		else if (_ACTIVE[JASON])
 		{
-			CSophia* sophia = CSophia::GetInstance();
-			sophia->SwitchState(new StateIDLE());
+			CJason* jason = CJason::GetInstance();
+			jason->SwitchState(new StateIDLE());
 		}
 		else if (_ACTIVE[BIG_JASON])
 		{
