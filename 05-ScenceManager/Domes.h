@@ -26,13 +26,11 @@ class CDomes : public CGameObject
 {
 	bool isFolow;//theo player
 	bool isAtack;
-	bool isWall;
 	LPGAMEOBJECT target;
-	int ani;
-	int numberCollisionBrick = 1;
+	int numberCollisionBrick = 1;  //số lần chạm tường trước khi tân công
 	float boundingHeigt;
 	float boundingWight;
-	RECT rectBrick = {0,0,5000,5000};
+	RECT rectBrick = {0,0,5000,5000}; //cục đá va chạm sau cùng, để lấy đố dài của nó 
  //phần gạch đang va chạm
 
 
@@ -42,7 +40,8 @@ public:
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	virtual void Render();
-	void Convert(int nx, int ny);
-	void flowPlayer(LPGAMEOBJECT player);
+	void Wall();
+	void Atack();
+	
 };
 

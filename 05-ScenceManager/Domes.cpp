@@ -48,53 +48,12 @@ void CDomes::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		
 		x += dx;
 		y += dy;
-		DebugOut(L"number %d\n", numberCollisionBrick);
-		if (numberCollisionBrick >= 2)
-		{
-			if (vx == 0 && this->GetState() != DOMES_STATE_ATACK_NY)
-			{
-				if (abs(this->y - target->y) <= 10)
-				{
-					isAtack = true;
-					this->SetState(DOMES_STATE_ATACK_NX);
-					numberCollisionBrick = 0;
-				}
-			}
-			if (vy == 0 && this->GetState() != DOMES_STATE_ATACK_NX)
-			{
-				if (abs(this->x - target->x) <= 10)
-				{
-					isAtack = true;
-					this->SetState(DOMES_STATE_ATACK_NY);
-					numberCollisionBrick = 0;
-				}
-
-		}
-		}
+		//DebugOut(L"number %d\n", numberCollisionBrick);
+		Atack(); 	
 		if (!isAtack)
 		{
-			if (this->x >= rectBrick.right)
-			{
-				if (this->GetState() == DOMES_ANI_WALKING_RIGHT_UP) this->SetState(DOMES_ANI_WALKING_DOWN_RIGHT);
-				else if (this->GetState() == DOMES_ANI_WALKING_RIGHT_DOWN) this->SetState(DOMES_ANI_WALKING_UP_RIGHT);
-			}
-			if (x <= rectBrick.left - DOMES_BBOX_HEIGHT)
-			{
-				if (this->GetState() == DOMES_ANI_WALKING_LEFT_UP) this->SetState(DOMES_ANI_WALKING_DOWN_LEFT);
-				else if (this->GetState() == DOMES_ANI_WALKING_LEFT_DOWN) this->SetState(DOMES_ANI_WALKING_UP_LEFT);
-			}
-			if (this->y > rectBrick.bottom)
-			{
-				if (this->GetState() == DOMES_ANI_WALKING_DOWN_LEFT) this->SetState(DOMES_ANI_WALKING_RIGHT_DOWN);
-				else if (this->GetState() == DOMES_ANI_WALKING_DOWN_RIGHT) this->SetState(DOMES_ANI_WALKING_LEFT_DOWN);
-			}
-			if (this->y <= rectBrick.top - DOMES_BBOX_HEIGHT)
-			{
-				if (this->GetState() == DOMES_ANI_WALKING_UP_RIGHT) this->SetState(DOMES_ANI_WALKING_LEFT_UP);
-				else if (this->GetState() == DOMES_ANI_WALKING_UP_LEFT) this->SetState(DOMES_ANI_WALKING_RIGHT_UP);
-			}
+			Wall();
 		}
-		
 		
 		//DebugOut(L"bottom %d\n,  y %f\n", this->rectBrick.bottom, this->y);
 			
@@ -320,27 +279,60 @@ void CDomes::Render()
 		}
 	}
 	
-
-	
-
-		
-	
-	
 	animation_set->at(ani)->Render(x, y);
 
 	RenderBoundingBox();
 }
 
-void CDomes::Convert(int nx, int ny)
+void CDomes::Wall()
 {
-	int nx1 = nx;
-	int ny1 = ny;
-	this->nx = ny1;
-	this->ny = nx1;
-
+	if (this->x >= rectBrick.right)
+	{
+		if (this->GetState() == DOMES_ANI_WALKING_RIGHT_UP) this->SetState(DOMES_ANI_WALKING_DOWN_RIGHT);
+		else if (this->GetState() == DOMES_ANI_WALKING_RIGHT_DOWN) this->SetState(DOMES_ANI_WALKING_UP_RIGHT);
+	}
+	if (x <= rectBrick.left - DOMES_BBOX_HEIGHT)
+	{
+		if (this->GetState() == DOMES_ANI_WALKING_LEFT_UP) this->SetState(DOMES_ANI_WALKING_DOWN_LEFT);
+		else if (this->GetState() == DOMES_ANI_WALKING_LEFT_DOWN) this->SetState(DOMES_ANI_WALKING_UP_LEFT);
+	}
+	if (this->y > rectBrick.bottom)
+	{
+		if (this->GetState() == DOMES_ANI_WALKING_DOWN_LEFT) this->SetState(DOMES_ANI_WALKING_RIGHT_DOWN);
+		else if (this->GetState() == DOMES_ANI_WALKING_DOWN_RIGHT) this->SetState(DOMES_ANI_WALKING_LEFT_DOWN);
+	}
+	if (this->y <= rectBrick.top - DOMES_BBOX_HEIGHT)
+	{
+		if (this->GetState() == DOMES_ANI_WALKING_UP_RIGHT) this->SetState(DOMES_ANI_WALKING_LEFT_UP);
+		else if (this->GetState() == DOMES_ANI_WALKING_UP_LEFT) this->SetState(DOMES_ANI_WALKING_RIGHT_UP);
+	}
 }
 
+void CDomes::Atack()
+{
+	if (numberCollisionBrick >= 2)
+	{
+		if (vx == 0 && this->GetState() != DOMES_STATE_ATACK_NY)
+		{
+			if (abs(this->y - target->y) <= 10)
+			{
+				isAtack = true;
+				this->SetState(DOMES_STATE_ATACK_NX);
+				numberCollisionBrick = 0;
+			}
+		}
+		if (vy == 0 && this->GetState() != DOMES_STATE_ATACK_NX)
+		{
+			if (abs(this->x - target->x) <= 10)
+			{
+				isAtack = true;
+				this->SetState(DOMES_STATE_ATACK_NY);
+				numberCollisionBrick = 0;
+			}
 
+		}
+	}
+}
 
 void CDomes::SetState(int state)
 {
