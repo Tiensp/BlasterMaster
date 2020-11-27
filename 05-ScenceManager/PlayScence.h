@@ -12,6 +12,8 @@
 #include "Domes.h"
 #include "GameDefine.h"
 #include "Worms.h"
+#include "Floaters.h"
+#include "Skulls.h"
 
 
 class CPlayScene: public CScene
