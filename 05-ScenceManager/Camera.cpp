@@ -1,5 +1,8 @@
 ﻿#include "Camera.h"
 #include <cstddef>
+#include "Sophia.h"
+#include "Jason.h"
+#include "BigJason.h"
 
 #define PULL_SCREEN_Y	28
 
@@ -88,9 +91,17 @@ RECT CCamera::GetCamBound()
 	return camBound;
 }
 
-void CCamera::Update(CGameObject* gameObj)
+void CCamera::Update()
 {
-	gameObj->GetPosition(camPos.x, camPos.y);
+	if (_ACTIVE[SOPHIA])
+		CSophia::GetInstance()->GetPosition(camPos.x, camPos.y);
+	else if (_ACTIVE[JASON])
+	{
+		CJason::GetInstance()->GetPosition(camPos.x, camPos.y);
+	}
+	else if (_ACTIVE[BIG_JASON])
+		CBigJason::GetInstance()->GetPosition(camPos.x, camPos.y);
+
 	camPos.x -= width / 2;
 	camPos.y -= height / 2;
 	/*

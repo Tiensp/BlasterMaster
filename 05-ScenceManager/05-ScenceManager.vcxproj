@@ -130,13 +130,20 @@
     <ClCompile Include="Brick.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="GameDefine.cpp" />
+    <ClCompile Include="Domes.cpp" />
+    <ClCompile Include="Golem.cpp" />
+    <ClCompile Include="HP.cpp" />
+    <ClCompile Include="HUD.cpp" />
     <ClCompile Include="Koopas.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Jason.cpp" />
     <ClCompile Include="Portal.cpp" />
+    <ClCompile Include="StateCRAWL.cpp" />
+    <ClCompile Include="StateFALL.cpp" />
     <ClCompile Include="StateIDLE.cpp" />
     <ClCompile Include="StateIDLEGunUP.cpp" />
     <ClCompile Include="StateJUMP.cpp" />
+    <ClCompile Include="StateJUMPTurn.cpp" />
     <ClCompile Include="StateLOWEREDGun.cpp" />
     <ClCompile Include="StateRAISEDGun.cpp" />
     <ClCompile Include="StateTURN.cpp" />
@@ -158,13 +165,21 @@
     <ClInclude Include="BigJason.h" />
     <ClInclude Include="Brick.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="Domes.h" />
     <ClInclude Include="GameDefine.h" />
+    <ClInclude Include="Golem.h" />
+    <ClInclude Include="HP.h" />
+    <ClInclude Include="HUD.h" />
     <ClInclude Include="Koopas.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="Jason.h" />
     <ClInclude Include="Portal.h" />
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="StateCRAWL.h" />
+    <ClInclude Include="StateFALL.h" />
     <ClInclude Include="StateIDLEGunUP.h" />
     <ClInclude Include="StateJUMP.h" />
+    <ClInclude Include="StateJUMPTurn.h" />
     <ClInclude Include="StateLOWEREDGun.h" />
     <ClInclude Include="StateRAISEDGun.h" />
     <ClInclude Include="StateTURN.h" />
@@ -182,6 +197,13 @@
     <ClInclude Include="Scence.h" />
     <ClInclude Include="Sprites.h" />
     <ClInclude Include="Textures.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="BlasterMaster.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="mario-sample.txt" />
+    <Text Include="scene2.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

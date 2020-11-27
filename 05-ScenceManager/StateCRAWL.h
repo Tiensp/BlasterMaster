@@ -4,14 +4,14 @@
 #include "Jason.h"
 #include "BigJason.h"
 
-class StateIDLE : public CState
+class StateCRAWL : public CState
 {
 public:
-	StateIDLE();
+	StateCRAWL();
 	void Update();
 	void HandleKeyboard();
 
-	~StateIDLE();
+	~StateCRAWL();
 
 };
 

@@ -8,6 +8,6 @@ public:
 	virtual void HandleKeyboard() = 0;
 	virtual void Update() = 0;
 
-	STATENAME StateName;
+	int StateName;
 };
 

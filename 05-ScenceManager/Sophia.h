@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "GameObject.h"
 #include "State.h"
 #include "GameDefine.h"
@@ -7,7 +7,7 @@
 //0.1f
 #define SOPHIA_JUMP_SPEED_Y		0.5f
 #define SOPHIA_JUMP_DEFLECT_SPEED 0.2f
-#define SOPHIA_GRAVITY			0.002f
+
 #define SOPHIA_DIE_DEFLECT_SPEED	 0.5f
 
 #define SOPHIA_STATE_IDLE					100
@@ -30,11 +30,11 @@
 #define	SOPHIA_LEVEL_SMALL	1
 #define	SOPHIA_LEVEL_BIG		2
 
-#define SOPHIA_BIG_BBOX_WIDTH  26
-#define SOPHIA_BIG_BBOX_HEIGHT 18
+#define SOPHIA_SMALL_BBOX_WIDTH  26
+#define SOPHIA_SMALL_BBOX_HEIGHT 18
 
-#define SOPHIA_SMALL_BBOX_WIDTH  13
-#define SOPHIA_SMALL_BBOX_HEIGHT 15
+#define SOPHIA_BIG_BBOX_WIDTH  26
+#define SOPHIA_BIG_BBOX_HEIGHT 34
 
 #define SOPHIA_UNTOUCHABLE_TIME 5000
 
@@ -46,20 +46,23 @@ protected:
 	int level;
 	int untouchable;
 	DWORD untouchable_start;
+	DWORD lifeTimeAni;
 
 	float start_x;			// initial position of Sophia at scene
 	float start_y; 
 
+	bool isGunUp;
 	bool isRaisedGun;
 	bool isLoweredGun;
 	bool isTurning;
 	bool isJumping;
+	bool isFalling;
 
 	bool DoneTurn;
 	bool DoneGunUp;		
 	bool DoneGunDown;
 
-	DWORD lifeTimeAni;
+	int health = 8;	// Máu nhân vật
 public: 
 	CSophia();
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT> *colliable_objects = NULL);
@@ -70,26 +73,37 @@ public:
 	void OnKeyUp(int keycode);
 	void KeyState();
 
-	bool GetDoneTurn() { return DoneTurn; }
-	bool GetDoneGunUp() { return DoneGunUp; }
-	//void SetState(int state);
+	void SetStartPos(float startx, float starty);
+
 	void SetLevel(int l) { level = l; }
+
 	void SetIsTurning(bool turn) { isTurning = turn; }
 	bool GetIsTurning() { return isTurning; }
+
 	void SetIsRaisedGun(bool raisedgun) { isRaisedGun = raisedgun; }
 	bool GetIsRaisedGun() { return isRaisedGun; }
+
 	void SetIsLoweredGun(bool loweredgun) { isLoweredGun = loweredgun; }
 	bool GetIsLoweredGun() { return isLoweredGun; }
+
 	void SetIsJumping(bool jump) { isJumping = jump; }
-	void SetDoneGunUp(bool done) { DoneGunUp = done; }
-	void SetDoneTurn(bool done) { DoneTurn = done; }
+	bool GetIsJumping() { return isJumping; }
+	
+	void SetIsGunUp(bool gunup) { isGunUp = gunup; }
+	bool GetIsGunUp() { return isGunUp; }
+	
+	void SetIsFalling(bool fall) { isFalling = fall; }
+	bool GetIsFalling() { return isFalling; }
+
+	void SetHealth(int hp) { health = hp; }
+	int GetHealth() { return health; }
 	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount64(); }
 
 	/* State */
 	void SwitchState(CState* state);
 
 
-	void Reset(float _startx = 0.0f , float _starty = 0.0f);
+	void Reset();
 
 	virtual void GetBoundingBox(float &left, float &top, float &right, float &bottom);
 	static CSophia* GetInstance();

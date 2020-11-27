@@ -7,6 +7,7 @@
 #include "Sprites.h"
 #include "Portal.h"
 
+
 using namespace std;
 
 CPlayScene::CPlayScene(int id, LPCWSTR filePath):
@@ -29,9 +30,11 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):
 #define SCENE_SECTION_MAP	7
 
 #define OBJECT_TYPE_SOPHIA	0
-#define OBJECT_TYPE_BRICK	1
-#define OBJECT_TYPE_GOOMBA	2
-#define OBJECT_TYPE_KOOPAS	3
+#define OBJECT_TYPE_BRICK	3
+#define OBJECT_TYPE_JASON	1
+#define OBJECT_TYPE_GOLEM	4
+#define	OBJECT_TYPE_DOMES	5
+#define OBJECT_TYPE_BIG_JASON 2
 
 #define OBJECT_TYPE_PORTAL	50
 
@@ -144,22 +147,64 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	switch (object_type)
 	{
 	case OBJECT_TYPE_SOPHIA:
-		if (player!=NULL) 
 		{
-			DebugOut(L"[ERROR] SOPHIA object was created before!\n");
+			if (sophia != NULL)
+			{
+				DebugOut(L"[ERROR] SOPHIA object was created before!\n");
+				return;
+			}
+
+
+			obj = CSophia::GetInstance(); 
+			sophia = (CSophia*)obj;
+			sophia->SetStartPos(x, y);
+			bool active = atoi(tokens[4].c_str());
+			_ACTIVE[SOPHIA] = active;
+			DebugOut(L"[INFO] SOPHIA object created!\n");
+		}
+		break;
+	case OBJECT_TYPE_JASON:
+	{
+		if (jason != NULL)
+		{
+			DebugOut(L"[ERROR] JASON object was created before!\n");
 			return;
 		}
-		
-		obj = CSophia::GetInstance(); //new CSophia(x, y);
-		player = (CSophia*)obj; 
-		player->Reset(x, y);
 
+		obj = CJason::GetInstance();
+		jason = (CJason*)obj;
+		jason->SetStartPos(x, y);
+		bool active = atoi(tokens[4].c_str());
+		_ACTIVE[JASON] = active;
+		DebugOut(L"[INFO] JASON object created!\n");
+	}
+	break;
+	case OBJECT_TYPE_BIG_JASON:
+		{
+			if (bigJason != NULL)
+			{
+				DebugOut(L"[ERROR] BIG JASON object was created before!\n");
+				return;
+			}
 
-		DebugOut(L"[INFO] Player object created!\n");
+			obj = CBigJason::GetInstance();
+			bigJason = (CBigJason*)obj;
+			bigJason->SetStartPos(x, y);
+			bool active = atoi(tokens[4].c_str());
+			_ACTIVE[BIG_JASON] = active;
+			DebugOut(L"[INFO] BIG JASON object created!\n");
+		}
 		break;
-	case OBJECT_TYPE_GOOMBA: obj = new CGoomba(); break;
-	case OBJECT_TYPE_BRICK: obj = new CBrick(); break;
-	case OBJECT_TYPE_KOOPAS: obj = new CKoopas(); break;
+	case OBJECT_TYPE_BRICK:
+	{
+		float w = atof(tokens[4].c_str());
+		float h = atof(tokens[5].c_str());
+		obj = new CBrick(x, y, w, h);
+	}
+	break;
+	case OBJECT_TYPE_GOLEM: obj = new CGolem(x,y, /*bigJason*/sophia); break;
+	case OBJECT_TYPE_DOMES: obj = new CDomes(x, y, /*bigJason*/sophia); break;
+
 	case OBJECT_TYPE_PORTAL:
 		{	
 			float r = atof(tokens[4].c_str());
@@ -256,7 +301,17 @@ void CPlayScene::Load()
 	// Khởi tạo camera
 	camera = CCamera::GetInstance();
 	camera->SetCamBound(map->GetMapWidth(), map->GetMapHeight());
-	player->Reset();
+
+	//Thiết lập trạng thái, vị trí khởi đầu,... cho đối tượng đang active
+	if (_ACTIVE[SOPHIA])
+		sophia->Reset();
+	else if (_ACTIVE[JASON])
+		jason->Reset();
+	else if (_ACTIVE[BIG_JASON])
+		bigJason->Reset();
+	//Sau khi active và khởi tạo xong xong đối tượng player thì khởi tạo thanh HUD 
+	hud = new HUD();
+	
 }
 
 void CPlayScene::Update(DWORD dt)
@@ -276,11 +331,12 @@ void CPlayScene::Update(DWORD dt)
 	}
 
 	// skip the rest if scene was already unloaded (Sophia::Update might trigger PlayScene::Unload)
-	if (player == NULL) return;
+	//if (sophia == NULL && jason == NULL && bigJason == NULL) return;
 
-	// Update camera to follow sophia
-	camera->Update(player);
-
+	// Update camera to follow player
+	camera->Update();
+	//Update HUD
+	hud->Update();
 
 }
 
@@ -289,6 +345,7 @@ void CPlayScene::Render()
 	map->DrawMap();
 	for (int i = 0; i < objects.size(); i++)
 		objects[i]->Render();
+	hud->Render();
 }
 
 /*
@@ -300,7 +357,9 @@ void CPlayScene::Unload()
 		delete objects[i];
 
 	objects.clear();
-	player = NULL;
+	sophia = NULL;
+	jason = NULL;
+	bigJason = NULL;
 	map = NULL;
 	camera = NULL;
 
@@ -310,28 +369,81 @@ void CPlayScene::Unload()
 void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 {
 	DebugOut(L"[INFO] KeyDown: %d\n", KeyCode);
-	CSophia* sophia = ((CPlayScene*)scence)->GetPlayer();
+	switch (KeyCode)
+	{
+	case DIK_I:
+		{
+			_ACTIVE[SOPHIA] = true;
+			_ACTIVE[JASON] = false;
+			_ACTIVE[BIG_JASON] = false;
+			CSophia::GetInstance()->Reset();
+		}
+		break;
+	case DIK_O:
+		{
+			_ACTIVE[SOPHIA] = false;
+			_ACTIVE[JASON] = true;
+			_ACTIVE[BIG_JASON] = false;
+			CJason::GetInstance()->Reset();
+		}
+		break;
+	case DIK_P:
+		{
+			_ACTIVE[SOPHIA] = false;
+			_ACTIVE[JASON] = false;
+			_ACTIVE[BIG_JASON] = true;
+			CBigJason::GetInstance()->Reset();
+		}
+		break;
+
+	}
 	if (_ACTIVE[SOPHIA])
 	{
+		CSophia* sophia = ((CPlayScene*)scence)->GetSophia();
 		_KEYCODE[KeyCode] = true;
 		sophia->OnKeyDown(KeyCode);
+	}
+	else if (_ACTIVE[JASON])
+	{
+		CJason* jason = ((CPlayScene*)scence)->GetJason();
+		_KEYCODE[KeyCode] = true;
+		jason->OnKeyDown(KeyCode);
+	}
+	else if (_ACTIVE[BIG_JASON])
+	{
+		CBigJason* bigJason = ((CPlayScene*)scence)->GetBigJason();
+		_KEYCODE[KeyCode] = true;
+		bigJason->OnKeyDown(KeyCode);
 	}
 }
 
 void CPlayScenceKeyHandler::OnKeyUp(int KeyCode)
 {
-	CSophia* sophia = ((CPlayScene*)scence)->GetPlayer();
+	DebugOut(L"[INFO] KeyUp: %d\n", KeyCode);
+	
 	if (_ACTIVE[SOPHIA])
 	{
+		CSophia* sophia = ((CPlayScene*)scence)->GetSophia();
 		_KEYCODE[KeyCode] = false;
 		sophia->OnKeyUp(KeyCode);
+	}
+	else if (_ACTIVE[JASON])
+	{
+		CJason* jason = ((CPlayScene*)scence)->GetJason();
+		_KEYCODE[KeyCode] = false;
+		jason->OnKeyUp(KeyCode);
+	}
+	else if (_ACTIVE[BIG_JASON])
+	{
+		CBigJason* bigJason = ((CPlayScene*)scence)->GetBigJason();
+		_KEYCODE[KeyCode] = false;
+		bigJason->OnKeyUp(KeyCode);
 	}
 }
 
 void CPlayScenceKeyHandler::KeyState(BYTE *states)
 {
-	CGame *game = CGame::GetInstance();
-	CSophia *sophia = ((CPlayScene*)scence)->GetPlayer();
+	
 
 	// disable control key when Sophia die 
 	/*if (sophia->GetState() == SOPHIA_STATE_DIE) return;*/

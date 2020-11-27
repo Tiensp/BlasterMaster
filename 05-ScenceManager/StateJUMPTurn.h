@@ -2,16 +2,15 @@
 #include "State.h"
 #include "Sophia.h"
 #include "Jason.h"
-#include "BigJason.h"
 
-class StateIDLE : public CState
+class StateJUMPTurn : public CState
 {
 public:
-	StateIDLE();
+	StateJUMPTurn();
 	void Update();
 	void HandleKeyboard();
 
-	~StateIDLE();
+	~StateJUMPTurn();
 
 };
 
