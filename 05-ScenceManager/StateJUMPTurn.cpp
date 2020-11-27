@@ -42,24 +42,19 @@ void StateJUMPTurn::HandleKeyboard()
 	{
 		if (!_KEYCODE[DIK_RIGHT] && !_KEYCODE[DIK_LEFT])
 		{
-			if (_ACTIVE[SOPHIA])
-				sophia->SwitchState(new StateJUMP());
+			sophia->SwitchState(new StateJUMP());
 		}
 		else if (_KEYCODE[DIK_RIGHT])
 		{
-			if (_ACTIVE[SOPHIA])
+			if (sophia->nx < 0)
 			{
-				if (sophia->nx < 0)
-				{
-					sophia->SwitchState(new StateJUMPTurn());
-					sophia->currentAni->ResetCurrentFrame();
-				}
-				else
-				{
-					sophia->SwitchState(new StateJUMP());
-				}
+				sophia->SwitchState(new StateJUMPTurn());
+				sophia->currentAni->ResetCurrentFrame();
 			}
-
+			else
+			{
+				sophia->SwitchState(new StateJUMP());
+			}
 		}
 		else if (_KEYCODE[DIK_LEFT])
 		{

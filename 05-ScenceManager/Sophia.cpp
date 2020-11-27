@@ -142,7 +142,6 @@ void CSophia::OnKeyDown(int keycode)
 	case DIK_SPACE:
 		if (!isJumping && !isFalling)
 		{
-			isJumping = true;
 			SwitchState(new StateJUMP());
 			currentAni->ResetCurrentFrame();
 		}

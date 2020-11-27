@@ -1,4 +1,4 @@
-#include "StateJUMP.h"
+﻿#include "StateJUMP.h"
 #include "StateTURN.h"
 #include "StateWALKING.h"
 #include "StateRAISEDGUN.h"
@@ -8,16 +8,24 @@
 
 StateJUMP::StateJUMP()
 {
-	CSophia* sophia = CSophia::GetInstance();
+	if (_ACTIVE[SOPHIA])
+	{
+		CSophia* sophia = CSophia::GetInstance();
 
-	sophia->vy = -SOPHIA_JUMP_SPEED;
-	if (sophia->nx > 0)
-	{
-		StateName = SOPHIA_JUMP_RIGHT;
-	}
-	else
-	{
-		StateName = SOPHIA_JUMP_LEFT;
+		if (!sophia->GetIsJumping())	// Nếu chưa nhảy thì cho nhảy
+		{
+			sophia->SetIsJumping(true);
+			sophia->vy = -SOPHIA_JUMP_SPEED;
+		}
+			
+		if (sophia->nx > 0)
+		{
+			StateName = SOPHIA_JUMP_RIGHT;
+		}
+		else
+		{
+			StateName = SOPHIA_JUMP_LEFT;
+		}
 	}
 }
 
@@ -45,11 +53,11 @@ void StateJUMP::HandleKeyboard()
 			{
 				sophia->SwitchState(new StateJUMPTurn());
 				sophia->currentAni->ResetCurrentFrame();
+				sophia->vx = SOPHIA_WALKING_SPEED;
 			}
 			else
 			{
 				sophia->vx = SOPHIA_WALKING_SPEED;
-				sophia->currentAni->ResetCurrentFrame();
 			}
 		}
 	}
@@ -61,11 +69,11 @@ void StateJUMP::HandleKeyboard()
 			{
 				sophia->SwitchState(new StateJUMPTurn());
 				sophia->currentAni->ResetCurrentFrame();
+				sophia->vx = -SOPHIA_WALKING_SPEED;
 			}
 			else
 			{
-				sophia->SwitchState(new StateWALKING());
-				sophia->currentAni->ResetCurrentFrame();
+				sophia->vx = -SOPHIA_WALKING_SPEED;
 			}
 		}
 	}
