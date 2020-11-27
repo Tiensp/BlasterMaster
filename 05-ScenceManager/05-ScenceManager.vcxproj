@@ -174,6 +174,7 @@
     <ClInclude Include="Map.h" />
     <ClInclude Include="Jason.h" />
     <ClInclude Include="Portal.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="StateCRAWL.h" />
     <ClInclude Include="StateFALL.h" />
     <ClInclude Include="StateIDLEGunUP.h" />
@@ -196,6 +197,13 @@
     <ClInclude Include="Scence.h" />
     <ClInclude Include="Sprites.h" />
     <ClInclude Include="Textures.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="BlasterMaster.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="mario-sample.txt" />
+    <Text Include="scene2.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

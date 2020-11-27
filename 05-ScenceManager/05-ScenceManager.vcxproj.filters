@@ -329,5 +329,21 @@
     <ClInclude Include="StateCRAWL.h">
       <Filter>Framework\GameObject\State Machine\State CRAWL</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="BlasterMaster.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="scene2.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="mario-sample.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>
