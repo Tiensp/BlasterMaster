@@ -89,6 +89,8 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				LPCOLLISIONEVENT e = coEventsResult[i];
 				if (dynamic_cast<CBrick*>(e->obj)) // if e->obj is Goomba 
 				{
+					CBrick* br = dynamic_cast<CBrick*>(e->obj);
+					
 					y += min_ty * dy + ny * 0.4f;
 				}
 			}
@@ -101,7 +103,6 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		}
 
 		currentState->Update();
-
 
 		// clean up collision events
 		for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];

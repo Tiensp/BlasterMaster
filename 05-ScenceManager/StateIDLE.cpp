@@ -9,7 +9,7 @@ StateIDLE::StateIDLE()
 	if (_ACTIVE[SOPHIA])
 	{
 		CSophia* sophia = CSophia::GetInstance();
-
+		sophia->SetIsFalling(false);
 		sophia->vx = 0;
 
 		if (sophia->nx > 0)

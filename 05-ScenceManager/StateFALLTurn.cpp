@@ -1,40 +1,40 @@
-#include "StateJUMPTurn.h"
-#include "StateJUMP.h"
+#include "StateFALLTurn.h"
+#include "StateFALL.h"
 #include "StateIDLE.h"
 #include "StateFALL.h"
 
-StateJUMPTurn::StateJUMPTurn()
+StateFALLTurn::StateFALLTurn()
 {
 	CSophia* sophia = CSophia::GetInstance();
 	sophia->SetIsTurning(true);
 	if (sophia->nx < 0)
 	{
 		sophia->nx = 1;
-		StateName = SOPHIA_JUMP_TURN_RIGHT;
+		StateName = SOPHIA_FALL_TURN_RIGHT;
 	}
 	else
 	{
 		sophia->nx = -1;
-		StateName = SOPHIA_JUMP_TURN_LEFT;
+		StateName = SOPHIA_FALL_TURN_LEFT;
 	}
 }
 
-void StateJUMPTurn::Update()
+void StateFALLTurn::Update()
 {
 	CSophia* sophia = CSophia::GetInstance();
-	if (sophia->vy >= 0)
+	if (sophia->vy == 0)
 	{
 		if (!sophia->GetIsTurning())
 		{
-			sophia->SetIsJumping(false);
-			sophia->SwitchState(new StateFALL());
-		}
+			sophia->SetIsFalling(false);
+			sophia->SwitchState(new StateIDLE());
+		}	
 	}
 	else
 		this->HandleKeyboard();
 }
 
-void StateJUMPTurn::HandleKeyboard()
+void StateFALLTurn::HandleKeyboard()
 {
 	CSophia* sophia = CSophia::GetInstance();
 
@@ -42,18 +42,18 @@ void StateJUMPTurn::HandleKeyboard()
 	{
 		if (!_KEYCODE[DIK_RIGHT] && !_KEYCODE[DIK_LEFT])
 		{
-			sophia->SwitchState(new StateJUMP());
+			sophia->SwitchState(new StateFALL());
 		}
 		else if (_KEYCODE[DIK_RIGHT])
 		{
 			if (sophia->nx < 0)
 			{
-				sophia->SwitchState(new StateJUMPTurn());
+				sophia->SwitchState(new StateFALLTurn());
 				sophia->currentAni->ResetCurrentFrame();
 			}
 			else
 			{
-				sophia->SwitchState(new StateJUMP());
+				sophia->SwitchState(new StateFALL());
 			}
 		}
 		else if (_KEYCODE[DIK_LEFT])
@@ -62,12 +62,12 @@ void StateJUMPTurn::HandleKeyboard()
 			{
 				if (sophia->nx > 0)
 				{
-					sophia->SwitchState(new StateJUMPTurn());
+					sophia->SwitchState(new StateFALLTurn());
 					sophia->currentAni->ResetCurrentFrame();
 				}
 				else
 				{
-					sophia->SwitchState(new StateJUMP());
+					sophia->SwitchState(new StateFALL());
 				}
 			}
 		}
@@ -75,6 +75,6 @@ void StateJUMPTurn::HandleKeyboard()
 	}
 }
 
-StateJUMPTurn::~StateJUMPTurn()
+StateFALLTurn::~StateFALLTurn()
 {
 }

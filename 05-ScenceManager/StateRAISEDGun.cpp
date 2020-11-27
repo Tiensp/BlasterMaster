@@ -39,38 +39,6 @@ void StateRAISEDGun::HandleKeyboard()
 			sophia->SwitchState(new StateIDLE());
 		}
 			
-		/*else if (_KEYCODE[DIK_RIGHT])
-		{
-			if (_ACTIVE[SOPHIA])
-			{
-				if (sophia->nx < 0)
-				{
-					sophia->SwitchState(new StateRAISEDGun());
-					sophia->currentAni->ResetCurrentFrame();
-				}
-				else
-				{
-					sophia->SwitchState(new StateWALKING());
-				}
-			}
-
-		}
-		else if (_KEYCODE[DIK_LEFT])
-		{
-			if (_ACTIVE[SOPHIA])
-			{
-				if (sophia->nx > 0)
-				{
-					sophia->SwitchState(new StateRAISEDGun());
-					sophia->currentAni->ResetCurrentFrame();
-				}
-				else
-				{
-					sophia->SwitchState(new StateWALKING());
-				}
-			}
-		}*/
-
 	}
 }
 

@@ -88,6 +88,9 @@
     <Filter Include="Framework\GameObject\State Machine\State CRAWL">
       <UniqueIdentifier>{e75ae9b0-c422-49e8-8058-96944f8ea047}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Framework\GameObject\State Machine\State FALL TURN">
+      <UniqueIdentifier>{60f0c8dd-e888-4afe-9fa7-207d480b4dd7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Brick.cpp">
@@ -206,6 +209,9 @@
     </ClCompile>
     <ClCompile Include="StateCRAWL.cpp">
       <Filter>Framework\GameObject\State Machine\State CRAWL</Filter>
+    </ClCompile>
+    <ClCompile Include="StateFALLTurn.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -330,6 +336,9 @@
       <Filter>Framework\GameObject\State Machine\State CRAWL</Filter>
     </ClInclude>
     <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="StateFALLTurn.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

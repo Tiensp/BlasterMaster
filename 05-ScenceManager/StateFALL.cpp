@@ -1,4 +1,5 @@
 #include "StateFALL.h"
+#include "StateFALLTurn.h"
 #include "StateTURN.h"
 #include "StateWALKING.h"
 #include "StateRAISEDGUN.h"
@@ -8,6 +9,7 @@ StateFALL::StateFALL()
 {
 	CSophia* sophia = CSophia::GetInstance();
 	sophia->SetIsFalling(true);
+
 
 	if (sophia->nx > 0)
 	{
@@ -22,31 +24,31 @@ StateFALL::StateFALL()
 void StateFALL::Update()
 {
 	CSophia* sophia = CSophia::GetInstance();
-	this->HandleKeyboard();
 	if (sophia->vy == 0)
 	{
 		sophia->SetIsFalling(false);
 		sophia->SwitchState(new StateIDLE());
 	}
+	else
+		this->HandleKeyboard();
 }
 
 void StateFALL::HandleKeyboard()
 {
 	CSophia* sophia = CSophia::GetInstance();
 
-	/*if (_KEYCODE[DIK_RIGHT])
+	if (_KEYCODE[DIK_RIGHT])
 	{
 		if (_ACTIVE[SOPHIA])
 		{
 			if (sophia->nx < 0)
 			{
-				sophia->SwitchState(new StateTURN());
+				sophia->SwitchState(new StateFALLTurn());
 				sophia->currentAni->ResetCurrentFrame();
 			}
 			else
 			{
-				sophia->SwitchState(new StateWALKING());
-				sophia->currentAni->ResetCurrentFrame();
+				sophia->vx = SOPHIA_WALKING_SPEED;
 			}
 		}
 	}
@@ -56,13 +58,12 @@ void StateFALL::HandleKeyboard()
 		{
 			if (sophia->nx > 0)
 			{
-				sophia->SwitchState(new StateTURN());
+				sophia->SwitchState(new StateFALLTurn());
 				sophia->currentAni->ResetCurrentFrame();
 			}
 			else
 			{
-				sophia->SwitchState(new StateWALKING());
-				sophia->currentAni->ResetCurrentFrame();
+				sophia->vx = -SOPHIA_WALKING_SPEED;
 			}
 		}
 	}
@@ -78,7 +79,7 @@ void StateFALL::HandleKeyboard()
 	{
 	}
 	else
-		sophia->SwitchState(new StateFALL());*/
+		sophia->SwitchState(new StateFALL());
 }
 
 StateFALL::~StateFALL()
