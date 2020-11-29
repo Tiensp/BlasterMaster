@@ -40,7 +40,7 @@ public:
 	virtual void Render();
 	virtual void Unload();
 
-
+	
 	CSophia * GetPlayer() { return this->player; } 
 	CCamera* GetCamera() { return this->camera; }
 	CMap* GetMap() { return this->map; }

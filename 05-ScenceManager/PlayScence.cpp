@@ -219,8 +219,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		return;
 	}
 
-	// General object setup
-;
+	// General object setu
 }
 
 void CPlayScene::_ParseSection_MAP(string line)
