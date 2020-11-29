@@ -7,6 +7,7 @@
 
 #include "Goomba.h"
 #include "Portal.h"
+#include "Domes.h"
 
 #include "StateIDLE.h"
 #include "StateTURN.h"

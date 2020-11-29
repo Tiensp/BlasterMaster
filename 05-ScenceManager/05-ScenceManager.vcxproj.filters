@@ -85,6 +85,9 @@
     <Filter Include="HUD">
       <UniqueIdentifier>{43e83214-9c73-471f-a460-5df20200721a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="BulletObject">
+      <UniqueIdentifier>{ef335510-ccd3-4917-b591-c1170ce0a5d0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Brick.cpp">
@@ -200,6 +203,12 @@
     </ClCompile>
     <ClCompile Include="Worms.cpp">
       <Filter>Framework\GameObject\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="BulletObject.cpp">
+      <Filter>BulletObject</Filter>
+    </ClCompile>
+    <ClCompile Include="BulletFloaters.cpp">
+      <Filter>BulletObject</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -319,6 +328,12 @@
     </ClInclude>
     <ClInclude Include="Worms.h">
       <Filter>Framework\GameObject\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="BulletObject.h">
+      <Filter>BulletObject</Filter>
+    </ClInclude>
+    <ClInclude Include="BulletFloaters.h">
+      <Filter>BulletObject</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

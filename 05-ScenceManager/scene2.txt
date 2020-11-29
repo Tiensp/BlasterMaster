@@ -189,6 +189,12 @@
 60004	42	411	59	421	30
 
 
+#Bullet
+#idle RIGHT
+150001	189	1369	199	1379	30	
+150002	47	1369	57	1379	30
+
+
 
 # ani_id	sprite1_id	time1	sprite2_id	time2	...
 [ANIMATIONS]
@@ -285,6 +291,11 @@
 #walk left
 1002	60003	100	60004	100
 
+#Bullet 
+#RIGHT
+15001	150001	30
+#LEFT
+15002	150002	30
 #
 # id	ani1	ani2	ani3
 #
@@ -304,6 +315,9 @@
 5	901	902	903	904	905	906	907	908		
 # Worms
 6	1001	1002
+#Bullet
+15	15001	15002
+
 [OBJECTS]
 # type	x	y	ani_set_id	extra_settings per object type
 # type: 0 = Mario , 1 = Brick, 2 = Goomba, 3 = Koopas

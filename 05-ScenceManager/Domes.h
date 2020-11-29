@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "GameObject.h"
+#include "BulletFloaters.h"
 #define DOMES_ANI_WALKING_RIGHT_UP	0
 #define DOMES_ANI_WALKING_RIGHT_DOWN	1
 #define DOMES_ANI_WALKING_LEFT_UP	2
@@ -31,6 +32,7 @@ class CDomes : public CGameObject
 	float boundingHeigt;
 	float boundingWight;
 	RECT rectBrick = {0,0,5000,5000}; //cục đá va chạm sau cùng, để lấy đố dài của nó 
+	vector<BulletFloaters* > bullet;
  //phần gạch đang va chạm
 
 

@@ -128,6 +128,8 @@
     <ClCompile Include="Animations.cpp" />
     <ClCompile Include="BigJason.cpp" />
     <ClCompile Include="Brick.cpp" />
+    <ClCompile Include="BulletFloaters.cpp" />
+    <ClCompile Include="BulletObject.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="GameDefine.cpp" />
     <ClCompile Include="Domes.cpp" />
@@ -163,6 +165,8 @@
     <ClInclude Include="Animations.h" />
     <ClInclude Include="BigJason.h" />
     <ClInclude Include="Brick.h" />
+    <ClInclude Include="BulletFloaters.h" />
+    <ClInclude Include="BulletObject.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Domes.h" />
     <ClInclude Include="GameDefine.h" />

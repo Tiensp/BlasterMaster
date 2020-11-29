@@ -9,6 +9,7 @@
 #include "Goomba.h"
 #include "Portal.h"
 #include "Brick.h"
+#include "BulletFloaters.h"
 CDomes::CDomes(float x, float y,float boundingHeight, float boundingWight, LPGAMEOBJECT player)
 {
 	SetState(DOMES_ANI_WALKING_LEFT_UP);
@@ -34,7 +35,12 @@ void CDomes::GetBoundingBox(float& left, float& top, float& right, float& bottom
 void CDomes::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	CGameObject::Update(dt, coObjects);
-
+	bullet.push_back(new BulletFloaters(x, y));
+	for (int i = 0; i < bullet.size(); i++)
+	{
+		bullet.at(i)->Update(dt, coObjects);		
+	}
+	DebugOut(L"xbullet %f\n", bullet.at(0)->x);
 
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
@@ -280,6 +286,15 @@ void CDomes::Render()
 	}
 	
 	animation_set->at(ani)->Render(x, y);
+	for (int i = 0; i < bullet.size(); i++)
+	{
+		bullet.at(0)->Render();
+
+
+
+	}
+	
+
 
 	RenderBoundingBox();
 }
