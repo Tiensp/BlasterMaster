@@ -228,5 +228,11 @@ void CFloaters::SetState(int state)
 		vy = FLOATER_JUMPING_SPEED;
 		ny = 1;
 		break;
+	case FLOATER_ANI_ATTACKING_LEFT:
+		vx = -FLOATER_WALKING_SPEED;
+		nx = -1;
+		vy = -FLOATER_JUMPING_SPEED;
+		ny = -1;
+		break;
 	}
 }

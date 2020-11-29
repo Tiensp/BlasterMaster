@@ -37,6 +37,9 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):
 #define OBJECT_TYPE_WORMS	5
 #define OBJECT_TYPE_FLOATERS 6
 #define OBJECT_TYPE_SKULLS 7
+#define OBJECT_TYPE_INSECT 8
+#define OBJECT_TYPE_ORB 9
+#define OBJECT_TYPE_SHIP 10
 
 #define OBJECT_TYPE_PORTAL	50
 
@@ -171,10 +174,13 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	}
 	break;
 	case OBJECT_TYPE_GOLEM: obj = new CGolem(x,y, player); break;
-	case OBJECT_TYPE_DOMES: obj = new CDomes(x, y, player); break;
+	case OBJECT_TYPE_DOMES: obj = new CDomes(x, y,99999,99999, player); break;
 	case OBJECT_TYPE_WORMS: obj = new CWorm(x, y, player); break;
 	case OBJECT_TYPE_FLOATERS: obj = new CFloaters(x, y, player); break;
 	case OBJECT_TYPE_SKULLS: obj = new CSkull(x, y, player); break;
+	case OBJECT_TYPE_INSECT: obj = new CInsect(x, y, player); break;
+	case OBJECT_TYPE_ORB: obj = new COrb(x, y, player); break;
+	case OBJECT_TYPE_SHIP: obj = new CShip(x, y, player); break;
 
 	case OBJECT_TYPE_PORTAL:
 		{	

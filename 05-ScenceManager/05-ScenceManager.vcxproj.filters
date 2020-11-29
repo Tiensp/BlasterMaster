@@ -207,6 +207,15 @@
     <ClCompile Include="Skulls.cpp">
       <Filter>Framework\GameObject\Enemy</Filter>
     </ClCompile>
+    <ClCompile Include="Insect.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Orbs.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Ship.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Brick.h">
@@ -331,6 +340,15 @@
     </ClInclude>
     <ClInclude Include="Skulls.h">
       <Filter>Framework\GameObject\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Insect.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Orbs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Ship.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

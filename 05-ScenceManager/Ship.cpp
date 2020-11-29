@@ -1,4 +1,4 @@
-﻿#include "Skulls.h"
+﻿#include "Ship.h"
 #include <algorithm>
 #include <assert.h>
 #include "Utils.h"
@@ -9,28 +9,28 @@
 #include "Goomba.h"
 #include "Portal.h"
 #include "Brick.h"
-CSkull::CSkull(float x, float y, LPGAMEOBJECT player)
+CShip::CShip(float x, float y, LPGAMEOBJECT player)
 {
-	SetState(SKULL_ANI_WALKING_LEFT);
+	SetState(SHIP_ANI_WALKING_LEFT);
 	this->x = x;
 	this->y = y;
 	this->target = player;
 
 }
 
-void CSkull::GetBoundingBox(float& left, float& top, float& right, float& bottom)
+void CShip::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
 	left = x;
 	top = y;
-	right = x + SKULL_BBOX_WIDTH;
+	right = x + SHIP_BBOX_WIDTH;
 
-	if (state == SKULL_STATE_DIE)
-		bottom = y + SKULL_BBOX_HEIGHT_DIE;
+	if (state == SHIP_STATE_DIE)
+		bottom = y + SHIP_BBOX_HEIGHT_DIE;
 	else
-		bottom = y + SKULL_BBOX_HEIGHT;
+		bottom = y + SHIP_BBOX_HEIGHT;
 }
 
-void CSkull::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
+void CShip::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 
 	//DebugOut(L"golumnvX: %f, golumnvY: %f\n", vx, vy);
@@ -96,28 +96,14 @@ void CSkull::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 						{
 							if (this->nx < 0)
 							{
-								if (this->GetState() == SKULL_ANI_WALKING_LEFT)
-								{
-									this->SetState(SKULL_ANI_COLLISION_LEFT);
-								}
-								else
-								{
-									this->SetState(SKULL_ANI_WALKING_RIGHT);
-								}
+								this->SetState(SHIP_ANI_WALKING_RIGHT);
 							}
 						}
-						else if(e->nx < 0)
+						else if (e->nx < 0)
 						{
 							if (this->nx > 0)
 							{
-								if (this->GetState() == SKULL_ANI_WALKING_RIGHT)
-								{
-									this->SetState(SKULL_ANI_COLLISION_RIGHT);
-								}
-								else
-								{
-									this->SetState(SKULL_ANI_WALKING_LEFT);
-								}
+								this->SetState(SHIP_ANI_WALKING_LEFT);
 							}
 						}
 
@@ -137,23 +123,23 @@ void CSkull::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		}
 
 
-		
+
 	}
 }
 
-void CSkull::Attack()
+void CShip::Attack()
 {
 
-	if (abs(this->x - target->x) <= 5)
+	if (abs(this->x - target->x) <= 30)
 	{
 		isAttack = true;
-		if (this->GetState() == SKULL_ANI_WALKING_LEFT)
+		if (this->GetState() == SHIP_ANI_WALKING_LEFT)
 		{
-			this->SetState(SKULL_ANI_ATTACKING_LEFT);
+			this->SetState(SHIP_ANI_ATTACKING_LEFT);
 		}
-		else if (this->GetState() == SKULL_ANI_WALKING_RIGHT)
+		else if (this->GetState() == SHIP_ANI_WALKING_RIGHT)
 		{
-			this->SetState(SKULL_ANI_ATTACKING_RIGHT);
+			this->SetState(SHIP_ANI_ATTACKING_RIGHT);
 		}
 	}
 	else
@@ -161,11 +147,11 @@ void CSkull::Attack()
 		isAttack = false;
 		if (this->nx > 0)
 		{
-			this->SetState(SKULL_ANI_WALKING_RIGHT);
+			this->SetState(SHIP_ANI_WALKING_RIGHT);
 		}
 		else if (this->nx < 0)
 		{
-			this->SetState(SKULL_ANI_WALKING_LEFT);
+			this->SetState(SHIP_ANI_WALKING_LEFT);
 		}
 	}
 
@@ -173,19 +159,19 @@ void CSkull::Attack()
 
 
 
-void CSkull::Render()
+void CShip::Render()
 {
-	int ani = SKULL_ANI_WALKING_LEFT;
-	
+	int ani = SHIP_ANI_WALKING_LEFT;
+
 	if (isAttack)
 	{
 		if (nx > 0)
 		{
-			ani = SKULL_ANI_ATTACKING_RIGHT;
+			ani = SHIP_ANI_ATTACKING_RIGHT;
 		}
 		else if (nx < 0)
 		{
-			ani = SKULL_ANI_ATTACKING_LEFT;
+			ani = SHIP_ANI_ATTACKING_LEFT;
 		}
 	}
 	else
@@ -194,14 +180,14 @@ void CSkull::Render()
 		{
 			if (vx > 0)
 			{
-				ani = SKULL_ANI_WALKING_RIGHT;
+				ani = SHIP_ANI_WALKING_RIGHT;
 			}
 		}
 		else if (nx < 0)
 		{
 			if (vx < 0)
 			{
-				ani = SKULL_ANI_WALKING_LEFT;
+				ani = SHIP_ANI_WALKING_LEFT;
 			}
 		}
 	}
@@ -231,48 +217,36 @@ void CSkull::Render()
 
 
 
-void CSkull::SetState(int state)
+void CShip::SetState(int state)
 {
 	CGameObject::SetState(state);
 	switch (state)
 	{
-	case SKULL_STATE_DIE:
-		y += SKULL_BBOX_HEIGHT - SKULL_BBOX_HEIGHT_DIE + 1;
+	case SHIP_STATE_DIE:
+		y += SHIP_BBOX_HEIGHT - SHIP_BBOX_HEIGHT_DIE + 1;
 		vx = 0;
 		vy = 0;
 		break;
-	case SKULL_ANI_WALKING_LEFT:
-		vx = -SKULL_WALKING_SPEED;
+	case SHIP_ANI_WALKING_LEFT:
+		vx = -SHIP_WALKING_SPEED;
 		nx = -1;
 		vy = 0;
 		ny = 0;
 		break;
-	case SKULL_ANI_WALKING_RIGHT:
-		vx = SKULL_WALKING_SPEED;
+	case SHIP_ANI_WALKING_RIGHT:
+		vx = SHIP_WALKING_SPEED;
 		nx = 1;
 		vy = 0;
 		ny = 0;
 		break;
-	case SKULL_ANI_ATTACKING_LEFT:
-		vx = 0;
+	case SHIP_ANI_ATTACKING_LEFT:
+		vx = -SHIP_WALKING_SPEED;
 		nx = -1;
 		vy = 0;
 		ny = 0;
 		break;
-	case SKULL_ANI_ATTACKING_RIGHT:
-		vx = 0;
-		nx = 1;
-		vy = 0;
-		ny = 0;
-		break;
-	case SKULL_ANI_COLLISION_LEFT:
-		vx = -SKULL_WALKING_SPEED;
-		nx = -1;
-		vy = 0;
-		ny = 0;
-		break;
-	case SKULL_ANI_COLLISION_RIGHT:
-		vx = SKULL_WALKING_SPEED;
+	case SHIP_ANI_ATTACKING_RIGHT:
+		vx = SHIP_WALKING_SPEED;
 		nx = 1;
 		vy = 0;
 		ny = 0;

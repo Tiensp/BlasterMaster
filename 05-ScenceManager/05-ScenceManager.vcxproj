@@ -134,10 +134,13 @@
     <ClCompile Include="Domes.cpp" />
     <ClCompile Include="Golem.cpp" />
     <ClCompile Include="Health.cpp" />
+    <ClCompile Include="Insect.cpp" />
     <ClCompile Include="Koopas.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Jason.cpp" />
+    <ClCompile Include="Orbs.cpp" />
     <ClCompile Include="Portal.cpp" />
+    <ClCompile Include="Ship.cpp" />
     <ClCompile Include="Skulls.cpp" />
     <ClCompile Include="StateFALL.cpp" />
     <ClCompile Include="StateIDLE.cpp" />
@@ -171,10 +174,13 @@
     <ClInclude Include="GameDefine.h" />
     <ClInclude Include="Golem.h" />
     <ClInclude Include="Health.h" />
+    <ClInclude Include="Insect.h" />
     <ClInclude Include="Koopas.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="Jason.h" />
+    <ClInclude Include="Orbs.h" />
     <ClInclude Include="Portal.h" />
+    <ClInclude Include="Ship.h" />
     <ClInclude Include="Skulls.h" />
     <ClInclude Include="StateFALL.h" />
     <ClInclude Include="StateIDLEGunUP.h" />

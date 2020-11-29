@@ -14,6 +14,9 @@
 #include "Worms.h"
 #include "Floaters.h"
 #include "Skulls.h"
+#include "Insect.h"
+#include "Orbs.h"
+#include "Ship.h"
 
 
 class CPlayScene: public CScene

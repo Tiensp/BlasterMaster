@@ -1,4 +1,4 @@
-﻿#include "Skulls.h"
+﻿#include "Orbs.h"
 #include <algorithm>
 #include <assert.h>
 #include "Utils.h"
@@ -9,28 +9,28 @@
 #include "Goomba.h"
 #include "Portal.h"
 #include "Brick.h"
-CSkull::CSkull(float x, float y, LPGAMEOBJECT player)
+COrb::COrb(float x, float y, LPGAMEOBJECT player)
 {
-	SetState(SKULL_ANI_WALKING_LEFT);
+	SetState(ORB_ANI_WALKING_RIGHT);
 	this->x = x;
 	this->y = y;
 	this->target = player;
 
 }
 
-void CSkull::GetBoundingBox(float& left, float& top, float& right, float& bottom)
+void COrb::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
 	left = x;
 	top = y;
-	right = x + SKULL_BBOX_WIDTH;
+	right = x + ORB_BBOX_WIDTH;
 
-	if (state == SKULL_STATE_DIE)
-		bottom = y + SKULL_BBOX_HEIGHT_DIE;
+	if (state == ORB_STATE_DIE)
+		bottom = y + ORB_BBOX_HEIGHT_DIE;
 	else
-		bottom = y + SKULL_BBOX_HEIGHT;
+		bottom = y + ORB_BBOX_HEIGHT;
 }
 
-void CSkull::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
+void COrb::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 
 	//DebugOut(L"golumnvX: %f, golumnvY: %f\n", vx, vy);
@@ -94,119 +94,125 @@ void CSkull::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					{
 						if (e->nx > 0)
 						{
-							if (this->nx < 0)
-							{
-								if (this->GetState() == SKULL_ANI_WALKING_LEFT)
-								{
-									this->SetState(SKULL_ANI_COLLISION_LEFT);
-								}
-								else
-								{
-									this->SetState(SKULL_ANI_WALKING_RIGHT);
-								}
-							}
+							this->SetState(ORB_ANI_WALKING_RIGHT);
+	
 						}
-						else if(e->nx < 0)
+						else if (e->nx < 0)
 						{
-							if (this->nx > 0)
-							{
-								if (this->GetState() == SKULL_ANI_WALKING_RIGHT)
-								{
-									this->SetState(SKULL_ANI_COLLISION_RIGHT);
-								}
-								else
-								{
-									this->SetState(SKULL_ANI_WALKING_LEFT);
-								}
-							}
+							this->SetState(ORB_ANI_WALKING_LEFT);
 						}
 
 					}
-					/*else if (e->ny != 0)
+					else if (e->ny != 0)
 					{
 						if (e->ny > 0)
 						{
-							if (this->GetState() == SKULL_ANI_COLLISION_LEFT)
+							if (nx < 0)
 							{
-								this->SetState(SKULL_ANI_COLLISION_LEFT);
+								this->SetState(ORB_ANI_WALKING_LEFT);
+							}
+							else if (nx > 0)
+							{
+								this->SetState(ORB_ANI_WALKING_RIGHT);
 							}
 						}
-					}*/
+						else if (e->ny < 0)
+						{
+							if (nx < 0)
+							{
+								this->SetState(ORB_ANI_WALKING_LEFT);
+							}
+							else if (nx > 0)
+							{
+								this->SetState(ORB_ANI_WALKING_RIGHT);
+							}
+						}
+					}
 				}
 			}
 		}
 
 
+
+	}
+}
+
+void COrb::Attack()
+{
+	if (abs(this->x - target->x) <= 70 && abs(this->y - target->y) <= 70)
+	{
+		if (this->GetState() == ORB_ANI_WALKING_LEFT)
+		{
+			this->SetState(ORB_ANI_WALKING_LEFT_DOWN);
+		}
+		if (abs(this->x - target->x) <= 15 && abs(this->y - target->y) <= 15)
+		{
+			isAttack = true;
+			if (this->GetState() == ORB_ANI_WALKING_LEFT_DOWN)
+			{
+				this->SetState(ORB_ANI_ATTACKING_LEFT);
+			}
+		}
+		else if (this->GetState() == ORB_ANI_WALKING_RIGHT)
+		{
+			
+		}
+	}
+	else 
+	{
+		isAttack = false;
 		
 	}
 }
 
-void CSkull::Attack()
+
+
+void COrb::Render()
 {
-
-	if (abs(this->x - target->x) <= 5)
-	{
-		isAttack = true;
-		if (this->GetState() == SKULL_ANI_WALKING_LEFT)
-		{
-			this->SetState(SKULL_ANI_ATTACKING_LEFT);
-		}
-		else if (this->GetState() == SKULL_ANI_WALKING_RIGHT)
-		{
-			this->SetState(SKULL_ANI_ATTACKING_RIGHT);
-		}
-	}
-	else
-	{
-		isAttack = false;
-		if (this->nx > 0)
-		{
-			this->SetState(SKULL_ANI_WALKING_RIGHT);
-		}
-		else if (this->nx < 0)
-		{
-			this->SetState(SKULL_ANI_WALKING_LEFT);
-		}
-	}
-
-}
-
-
-
-void CSkull::Render()
-{
-	int ani = SKULL_ANI_WALKING_LEFT;
+	int ani = ORB_ANI_WALKING_RIGHT;
 	
 	if (isAttack)
 	{
 		if (nx > 0)
 		{
-			ani = SKULL_ANI_ATTACKING_RIGHT;
+			ani = ORB_ANI_ATTACKING_RIGHT;
 		}
 		else if (nx < 0)
 		{
-			ani = SKULL_ANI_ATTACKING_LEFT;
+			ani = ORB_ANI_ATTACKING_LEFT;
 		}
 	}
-	else
+	else 
 	{
-		if (nx > 0)
+		if (vx > 0)
 		{
-			if (vx > 0)
-			{
-				ani = SKULL_ANI_WALKING_RIGHT;
-			}
+			ani = ORB_ANI_WALKING_RIGHT;
 		}
-		else if (nx < 0)
+		else if (vx < 0)
 		{
-			if (vx < 0)
-			{
-				ani = SKULL_ANI_WALKING_LEFT;
-			}
+			ani = ORB_ANI_WALKING_LEFT;
+		}
+		else if (vx > 0 && vy > 0)
+		{
+			ani = ORB_ANI_WALKING_RIGHT_DOWN;
+		}
+		else if (vx < 0 && vy > 0)
+		{
+			ani = ORB_ANI_WALKING_LEFT_DOWN;
+		}
+		else if (vx > 0 && vy < 0)
+		{
+			ani = ORB_ANI_WALKING_RIGHT_UP;
+		}
+		else if (vx < 0 && vy < 0)
+		{
+			ani = ORB_ANI_WALKING_LEFT_UP;
 		}
 	}
 
+
 	DebugOut(L"ani: %d\n", ani);
+	DebugOut(L"attack: %d\n", isAttack);
 
 	animation_set->at(ani)->Render(x, y);
 
@@ -231,48 +237,59 @@ void CSkull::Render()
 
 
 
-void CSkull::SetState(int state)
+void COrb::SetState(int state)
 {
 	CGameObject::SetState(state);
 	switch (state)
 	{
-	case SKULL_STATE_DIE:
-		y += SKULL_BBOX_HEIGHT - SKULL_BBOX_HEIGHT_DIE + 1;
+	case ORB_STATE_DIE:
+		y += ORB_BBOX_HEIGHT - ORB_BBOX_HEIGHT_DIE + 1;
 		vx = 0;
 		vy = 0;
 		break;
-	case SKULL_ANI_WALKING_LEFT:
-		vx = -SKULL_WALKING_SPEED;
+	case ORB_ANI_WALKING_LEFT:
+		vx = -ORB_WALKING_SPEED;
 		nx = -1;
 		vy = 0;
 		ny = 0;
 		break;
-	case SKULL_ANI_WALKING_RIGHT:
-		vx = SKULL_WALKING_SPEED;
+	case ORB_ANI_WALKING_RIGHT:
+		vx = ORB_WALKING_SPEED;
 		nx = 1;
 		vy = 0;
 		ny = 0;
 		break;
-	case SKULL_ANI_ATTACKING_LEFT:
-		vx = 0;
+	case ORB_ANI_WALKING_LEFT_UP:
+		vx = -ORB_WALKING_SPEED;
 		nx = -1;
-		vy = 0;
-		ny = 0;
+		vy = -ORB_JUMPING_SPEED;
+		ny = -1;
 		break;
-	case SKULL_ANI_ATTACKING_RIGHT:
-		vx = 0;
+	case ORB_ANI_WALKING_LEFT_DOWN:
+		vx = -ORB_WALKING_SPEED;
+		nx = -1;
+		vy = ORB_JUMPING_SPEED;
+		ny = 1;
+		break;
+	case ORB_ANI_WALKING_RIGHT_UP:
+		vx = ORB_WALKING_SPEED;
 		nx = 1;
-		vy = 0;
-		ny = 0;
+		vy = -ORB_JUMPING_SPEED;
+		ny = -1;
 		break;
-	case SKULL_ANI_COLLISION_LEFT:
-		vx = -SKULL_WALKING_SPEED;
+	case ORB_ANI_WALKING_RIGHT_DOWN:
+		vx = ORB_WALKING_SPEED;
+		nx = 1;
+		vy = ORB_JUMPING_SPEED;
+		ny = 1;
+		break;
+	case ORB_ANI_ATTACKING_LEFT:
+		vx = 0;
 		nx = -1;
 		vy = 0;
 		ny = 0;
-		break;
-	case SKULL_ANI_COLLISION_RIGHT:
-		vx = SKULL_WALKING_SPEED;
+	case ORB_ANI_ATTACKING_RIGHT:
+		vx = 0;
 		nx = 1;
 		vy = 0;
 		ny = 0;
