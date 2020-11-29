@@ -8,13 +8,16 @@
 StateWALKINGGunUP::StateWALKINGGunUP()
 {
 	CSophia* sophia = CSophia::GetInstance();
+	sophia->SetIsGunUp(true);
 	if (sophia->nx > 0)
 	{
+		sophia->x_render = sophia->x - 4;
 		sophia->vx = SOPHIA_WALKING_SPEED;
 		StateName = SOPHIA_WALKING_GUN_UP_RIGHT;
 	}
 	else
 	{
+		sophia->x_render = sophia->x + 3;
 		sophia->vx = -SOPHIA_WALKING_SPEED;
 		StateName = SOPHIA_WALKING_GUN_UP_LEFT;
 	}
@@ -23,6 +26,10 @@ StateWALKINGGunUP::StateWALKINGGunUP()
 void StateWALKINGGunUP::Update()
 {
 	CSophia* sophia = CSophia::GetInstance();
+	if (sophia->nx > 0)
+		sophia->x_render = sophia->x - 4;
+	else
+		sophia->x_render = sophia->x + 3;
 
 	if (sophia->currentAni->GetCurrentFrame() > -1)
 	{
@@ -60,6 +67,7 @@ void StateWALKINGGunUP::HandleKeyboard()
 	else
 	{
 		sophia->SetIsGunUp(false);
+		sophia->frameID = 0;
 		sophia->SwitchState(new StateLOWEREDGun());
 		sophia->currentAni->ResetCurrentFrame();
 	}

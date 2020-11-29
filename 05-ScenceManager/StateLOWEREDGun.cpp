@@ -3,6 +3,8 @@
 #include "StateTURN.h"
 #include "StateIDLE.h"
 #include "StateWALKING.h"
+#include "StateJUMP.h"
+#include "StateFALL.h"
 
 StateLOWEREDGun::StateLOWEREDGun()
 {
@@ -57,39 +59,18 @@ void StateLOWEREDGun::HandleKeyboard()
 	CSophia* sophia = CSophia::GetInstance();
 	if (!sophia->GetIsLoweredGun())
 	{
-			sophia->SwitchState(new StateIDLE());
-		/*else if (_KEYCODE[DIK_RIGHT])
+		if (sophia->GetIsJumping())
 		{
-			if (_ACTIVE[SOPHIA])
-			{
-				if (sophia->nx < 0)
-				{
-					sophia->SwitchState(new StateLOWEREDGun());
-					sophia->currentAni->ResetCurrentFrame();
-				}
-				else
-				{
-					sophia->SwitchState(new StateWALKING());
-				}
-			}
-
+			sophia->SwitchState(new StateJUMP());
 		}
-		else if (_KEYCODE[DIK_LEFT])
+		else if (sophia->GetIsFalling())
 		{
-			if (_ACTIVE[SOPHIA])
-			{
-				if (sophia->nx > 0)
-				{
-					sophia->SwitchState(new StateLOWEREDGun());
-					sophia->currentAni->ResetCurrentFrame();
-				}
-				else
-				{
-					sophia->SwitchState(new StateWALKING());
-				}
-			}
-		}*/
-
+			sophia->SwitchState(new StateFALL());
+		}
+		else
+		{
+			sophia->SwitchState(new StateIDLE());
+		}
 	}
 }
 

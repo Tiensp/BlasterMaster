@@ -123,13 +123,19 @@ void CSophia::Render()
 		if (untouchable) alpha = 128;
 
 		//currentAni->Render(x, y_render);
-		if (isTurning || isRaisedGun || isLoweredGun)
+		if (isRaisedGun || isLoweredGun)
 		{
 			if (currentAni->GetCurrentFrame() == currentAni->GetLastFrame() - 1)
 			{
-				isTurning = false;
 				isRaisedGun = false;
 				isLoweredGun = false;
+			}
+		}
+		if (isTurning) 
+		{
+			if (currentAni->IsFinalFrame())
+			{
+				isTurning = false;
 			}
 		}
 
@@ -149,6 +155,11 @@ void CSophia::OnKeyDown(int keycode)
 	case DIK_SPACE:
 		if (!isJumping && !isFalling)
 		{
+			/*if (isGunUp)
+			{
+				SwitchState(new StateI());
+				currentAni->ResetCurrentFrame();
+			}*/
 			SwitchState(new StateJUMP());
 			currentAni->ResetCurrentFrame();
 		}
