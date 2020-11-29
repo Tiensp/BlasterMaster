@@ -142,56 +142,85 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 
 	CAnimationSets * animation_sets = CAnimationSets::GetInstance();
 
-	CGameObject *obj = NULL;
+	CGameObject* obj = NULL;
 
 	switch (object_type)
 	{
 	case OBJECT_TYPE_SOPHIA:
-		if (player!=NULL) 
+	{
+		if (player != NULL)
 		{
 			DebugOut(L"[ERROR] SOPHIA object was created before!\n");
 			return;
 		}
-		
-	
 		//obj = new CSophia();
 		obj = CSophia::GetInstance(); //new CSophia(x, y);
-		player = (CSophia*)obj; 
+		player = (CSophia*)obj;
 		player->SetStartPos(x, y);
+		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
+		obj->SetAnimationSet(ani_set);
+		objects.push_back(obj);
+
 		DebugOut(L"[INFO] Player object created!\n");
 		break;
-	case OBJECT_TYPE_GOOMBA: obj = new CGoomba(); break;
+	}
+		
+	
 	case OBJECT_TYPE_BRICK:
 	{
 		float w = atof(tokens[4].c_str());
 		float h = atof(tokens[5].c_str());
 		obj = new CBrick(x, y, w, h);
+		obj->SetPosition(x, y);
+		objects.push_back(obj);
+		break;
 	}
-	break;
-	case OBJECT_TYPE_GOLEM: obj = new CGolem(x,y, player); break;
-	case OBJECT_TYPE_DOMES: obj = new CDomes(x, y,999999, 999999, player); break;
-	case OBJECT_TYPE_WORMS: obj = new CWorm(x, y, player); break;
+	case OBJECT_TYPE_GOLEM: 
+	{
+		obj = new CGolem(x, y, player); 
+		obj->SetPosition(x, y);
+		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
+		obj->SetAnimationSet(ani_set);
+		listEnemies.push_back(obj);
+		
+		break;
+
+	}
+	case OBJECT_TYPE_DOMES:
+	{
+		obj = new CDomes(x, y, 999999, 999999, player);
+		obj->SetPosition(x, y);
+		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
+		obj->SetAnimationSet(ani_set);
+		listEnemies.push_back(obj);
+		break;
+
+	}
+	case OBJECT_TYPE_WORMS:
+	{
+		obj = new CWorm(x, y, player); 
+		obj->SetPosition(x, y);
+		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
+		obj->SetAnimationSet(ani_set);
+		listEnemies.push_back(obj);
+		break;
+	}
 
 	case OBJECT_TYPE_PORTAL:
-		{	
-			float r = atof(tokens[4].c_str());
-			float b = atof(tokens[5].c_str());
-			int scene_id = atoi(tokens[6].c_str());
-			obj = new CPortal(x, y, r, b, scene_id);
-		}
+	{
+		float r = atof(tokens[4].c_str());
+		float b = atof(tokens[5].c_str());
+		int scene_id = atoi(tokens[6].c_str());
+		obj = new CPortal(x, y, r, b, scene_id);
 		break;
+	}
 	default:
 		DebugOut(L"[ERR] Invalid object type: %d\n", object_type);
 		return;
 	}
 
 	// General object setup
-	obj->SetPosition(x, y);
-
-	LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
-
-	obj->SetAnimationSet(ani_set);
-	objects.push_back(obj);
+;
 }
 
 void CPlayScene::_ParseSection_MAP(string line)
@@ -287,13 +316,13 @@ void CPlayScene::Update(DWORD dt)
 	{
 		objects[i]->Update(dt, &coObjects);
 	}
+	for (int i = 0; i < listEnemies.size(); i++)
+		listEnemies[i]->Update(dt, &objects);
 
 	// skip the rest if scene was already unloaded (Sophia::Update might trigger PlayScene::Unload)
 	if (player == NULL) return;
-
 	// Update camera to follow sophia
 	camera->Update(player);
-
 
 }
 
@@ -302,6 +331,8 @@ void CPlayScene::Render()
 	map->DrawMap();
 	for (int i = 0; i < objects.size(); i++)
 		objects[i]->Render();
+	for (int i = 0; i < listEnemies.size(); i++)
+		listEnemies[i]->Render();
 }
 
 /*

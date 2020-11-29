@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include "GameObject.h"
 #include "BulletFloaters.h"
+#include "Enemy.h"
 #define DOMES_ANI_WALKING_RIGHT_UP	0
 #define DOMES_ANI_WALKING_RIGHT_DOWN	1
 #define DOMES_ANI_WALKING_LEFT_UP	2
@@ -23,7 +24,7 @@
 #define DOMES_STATE_START 200
 #define DOMES_STATE_JUMPING 300
 
-class CDomes : public CGameObject
+class CDomes : public Enemy
 {
 	bool isFolow;//theo player
 	bool isAtack;

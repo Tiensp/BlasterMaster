@@ -1,5 +1,6 @@
 #pragma once
 #include "GameObject.h"
+#include "Enemy.h"
 #define GOLEM_ANI_WALKING_LEFT	1
 #define GOLEM_ANI_WALKING_RIGHT	0
 #define GOLEM_WALKING_SPEED 0.03f;
@@ -13,10 +14,9 @@
 #define GOLEM_STATE_DIE 200
 #define GOLEM_STATE_JUMPING 300
 
-class CGolem : public CGameObject
+class CGolem : public Enemy
 {
 	bool isFolow;  //theo player 
-	LPGAMEOBJECT target;
 
 
 

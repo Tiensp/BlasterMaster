@@ -210,6 +210,9 @@
     <ClCompile Include="BulletFloaters.cpp">
       <Filter>BulletObject</Filter>
     </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>Framework\GameObject\Enemy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Brick.h">
@@ -334,6 +337,9 @@
     </ClInclude>
     <ClInclude Include="BulletFloaters.h">
       <Filter>BulletObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>Framework\GameObject\Enemy</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

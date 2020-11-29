@@ -22,6 +22,7 @@ protected:
 	CCamera* camera;	//Và một đối tượng lưu trữ camera của Play Scene
 
 	vector<LPGAMEOBJECT> objects;	//một list obj lưu trữ các GameObj có trong Play Scene
+	vector<LPGAMEOBJECT> listEnemies;
 	/* Các hàm ParsSection dùng để đọc file */
 	void _ParseSection_TEXTURES(string line);
 	void _ParseSection_SPRITES(string line);
