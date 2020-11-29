@@ -1,5 +1,7 @@
 #pragma once
 #include "GameObject.h"
+#include "Enemy.h"
+
 #define SHIP_ANI_WALKING_RIGHT	0
 #define SHIP_ANI_WALKING_LEFT 1
 #define SHIP_ANI_ATTACKING_RIGHT 2
@@ -17,7 +19,7 @@
 #define SHIP_STATE_ATTACKING 300
 #define SHIP_STATE_COLLISION 400
 
-class CShip : public CGameObject
+class CShip : public Enemy
 {
 	bool isFolow;  //theo player 
 	LPGAMEOBJECT target;

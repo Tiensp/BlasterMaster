@@ -76,9 +76,6 @@
     <Filter Include="Framework\GameObject\State Machine\State JUMP TURN">
       <UniqueIdentifier>{dfc045a9-1afd-4df6-99ea-a163093ec34c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scence">
-      <UniqueIdentifier>{4ef561ba-0058-4368-82cc-7175539f1ff4}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Framework\GameObject\Enemy">
       <UniqueIdentifier>{0d9cca50-9b83-4b36-a7e8-90bf6b4fd716}</UniqueIdentifier>
     </Filter>
@@ -231,15 +228,6 @@
     <ClCompile Include="Skulls.cpp">
       <Filter>Framework\GameObject\Enemy</Filter>
     </ClCompile>
-    <ClCompile Include="Insect.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Orbs.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Ship.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="BulletObject.cpp">
       <Filter>BulletObject</Filter>
     </ClCompile>
@@ -247,6 +235,15 @@
       <Filter>BulletObject</Filter>
     </ClCompile>
     <ClCompile Include="Enemy.cpp">
+      <Filter>Framework\GameObject\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Insect.cpp">
+      <Filter>Framework\GameObject\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Orbs.cpp">
+      <Filter>Framework\GameObject\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Ship.cpp">
       <Filter>Framework\GameObject\Enemy</Filter>
     </ClCompile>
   </ItemGroup>
@@ -350,9 +347,6 @@
     <ClInclude Include="GameObject.h">
       <Filter>GameObject\GameObject</Filter>
     </ClInclude>
-    <ClInclude Include="Golem.h">
-      <Filter>Framework\GameObject\Enemy</Filter>
-    </ClInclude>
     <ClInclude Include="Domes.h">
       <Filter>Framework\GameObject\Enemy</Filter>
     </ClInclude>
@@ -380,15 +374,6 @@
     <ClInclude Include="Skulls.h">
       <Filter>Framework\GameObject\Enemy</Filter>
     </ClInclude>
-    <ClInclude Include="Insect.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Orbs.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Ship.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="HP.h">
       <Filter>Framework\Game\HUD</Filter>
     </ClInclude>
@@ -406,6 +391,15 @@
     </ClInclude>
     <ClInclude Include="StateJUMPGunUP.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Insect.h">
+      <Filter>Framework\GameObject\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Orbs.h">
+      <Filter>Framework\GameObject\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Ship.h">
+      <Filter>Framework\GameObject\Enemy</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

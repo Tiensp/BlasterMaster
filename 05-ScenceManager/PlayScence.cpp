@@ -30,22 +30,17 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):
 #define SCENE_SECTION_MAP	7
 
 #define OBJECT_TYPE_SOPHIA	0
-#define OBJECT_TYPE_BRICK	3
 #define OBJECT_TYPE_JASON	1
+#define OBJECT_TYPE_BIG_JASON 2
+#define OBJECT_TYPE_BRICK	3
 #define OBJECT_TYPE_GOLEM	4
 #define	OBJECT_TYPE_DOMES	5
-#define OBJECT_TYPE_BIG_JASON 2
 #define OBJECT_TYPE_WORMS 6
-#define OBJECT_TYPE_BRICK	1
-#define OBJECT_TYPE_GOOMBA	2
-#define OBJECT_TYPE_GOLEM	3
-#define	OBJECT_TYPE_DOMES	4
-#define OBJECT_TYPE_WORMS	5
-#define OBJECT_TYPE_FLOATERS 6
-#define OBJECT_TYPE_SKULLS 7
-#define OBJECT_TYPE_INSECT 8
-#define OBJECT_TYPE_ORB 9
-#define OBJECT_TYPE_SHIP 10
+#define OBJECT_TYPE_FLOATERS 7
+#define OBJECT_TYPE_SKULLS 8
+#define OBJECT_TYPE_INSECT 9
+#define OBJECT_TYPE_ORB 10
+#define OBJECT_TYPE_SHIP 11
 
 #define OBJECT_TYPE_PORTAL	50
 
@@ -258,14 +253,51 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		break;
 	}
 	break;
-	case OBJECT_TYPE_GOLEM: obj = new CGolem(x,y, player); break;
-	case OBJECT_TYPE_DOMES: obj = new CDomes(x, y,99999,99999, player); break;
-	case OBJECT_TYPE_WORMS: obj = new CWorm(x, y, player); break;
-	case OBJECT_TYPE_FLOATERS: obj = new CFloaters(x, y, player); break;
-	case OBJECT_TYPE_SKULLS: obj = new CSkull(x, y, player); break;
-	case OBJECT_TYPE_INSECT: obj = new CInsect(x, y, player); break;
-	case OBJECT_TYPE_ORB: obj = new COrb(x, y, player); break;
-	case OBJECT_TYPE_SHIP: obj = new CShip(x, y, player); break;
+	case OBJECT_TYPE_FLOATERS:
+	{
+		obj = new CFloaters(x, y, sophia);
+		obj->SetPosition(x, y);
+		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
+		obj->SetAnimationSet(ani_set);
+		listEnemies.push_back(obj);
+		break;
+	}
+	case OBJECT_TYPE_SKULLS:
+	{
+		obj = new CSkull(x, y, sophia);
+		obj->SetPosition(x, y);
+		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
+		obj->SetAnimationSet(ani_set);
+		listEnemies.push_back(obj);
+		break;
+	}
+	case OBJECT_TYPE_INSECT: 
+	{
+		obj = new CInsect(x, y, sophia);
+		obj->SetPosition(x, y);
+		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
+		obj->SetAnimationSet(ani_set);
+		listEnemies.push_back(obj);
+		break;
+	}
+	case OBJECT_TYPE_ORB: 
+	{
+		obj = new COrb(x, y, sophia);
+		obj->SetPosition(x, y);
+		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
+		obj->SetAnimationSet(ani_set);
+		listEnemies.push_back(obj);
+		break;
+	}
+	case OBJECT_TYPE_SHIP: 
+	{
+		obj = new CShip(x, y, sophia);
+		obj->SetPosition(x, y);
+		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
+		obj->SetAnimationSet(ani_set);
+		listEnemies.push_back(obj);
+		break;
+	}
 
 	case OBJECT_TYPE_PORTAL:
 	{

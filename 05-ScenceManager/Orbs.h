@@ -1,5 +1,7 @@
 #pragma once
 #include "GameObject.h"
+#include "Enemy.h"
+
 #define ORB_ANI_WALKING_RIGHT 0
 #define ORB_ANI_WALKING_LEFT 1
 #define ORB_ANI_WALKING_RIGHT_UP 2
@@ -21,7 +23,7 @@
 #define ORB_STATE_ATTACKING 300
 #define ORB_STATE_COLLISION 400
 
-class COrb : public CGameObject
+class COrb : public Enemy
 {
 	bool isFolow;  //theo player 
 	LPGAMEOBJECT target;

@@ -1,5 +1,6 @@
 #pragma once
 #include "GameObject.h"
+#include "Enemy.h"
 #define INSECT_ANI_WALKING_RIGHT_UP 0
 #define INSECT_ANI_WALKING_RIGHT_DOWN 1
 #define INSECT_ANI_WALKING_LEFT_UP 2
@@ -17,7 +18,7 @@
 #define INSECT_STATE_ATTACKING 300
 #define INSECT_STATE_COLLISION 400
 
-class CInsect : public CGameObject
+class CInsect : public Enemy
 {
 	bool isFolow;  //theo player 
 	LPGAMEOBJECT target;

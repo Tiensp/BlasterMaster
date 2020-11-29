@@ -14,7 +14,12 @@
 #include "Worms.h"
 #include "BulletObject.h"
 #include "HUD.h"
-
+#include "Floaters.h"
+#include "Skulls.h"
+#include "Ship.h"
+#include "Orbs.h"
+#include "BulletFloaters.h"
+#include "Insect.h"
 
 class CPlayScene: public CScene
 {
