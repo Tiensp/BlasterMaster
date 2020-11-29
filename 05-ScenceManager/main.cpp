@@ -135,7 +135,7 @@ int Run()
 	MSG msg;
 	int done = 0;
 	DWORD frameStart = GetTickCount64();
-	DWORD tickPerFrame = 2000 / MAX_FRAME_RATE;
+	DWORD tickPerFrame = 1000 / MAX_FRAME_RATE;
 
 	while (!done)
 	{
