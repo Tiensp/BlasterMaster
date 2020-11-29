@@ -58,11 +58,10 @@ protected:
 	bool isJumping;
 	bool isFalling;
 
-	bool DoneTurn;
-	bool DoneGunUp;		
-	bool DoneGunDown;
+	bool isColliBrick;
 
 	int health = 8;	// Máu nhân vật
+	RECT lastColliObj;
 public: 
 	CSophia();
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT> *colliable_objects = NULL);
@@ -110,6 +109,11 @@ public:
 	/* Variable */
 	CState* currentState;
 	CAnimation* currentAni;
-	bool renderFrame;
+	
+	bool renderFrame;	// Biến renderFrame để xác định khi nào cần render 1 frame
+
 	int frameID;
+
+	float x_render;		// Vì sophia có cần render vị trí cho từng hình nên mình dùng 
+	float y_render;		// x/y_render làm pos render thay vì đổi trực tiếp tọa độ x,y
 };

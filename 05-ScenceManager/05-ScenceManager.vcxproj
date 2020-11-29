@@ -144,6 +144,7 @@
     <ClCompile Include="StateIDLE.cpp" />
     <ClCompile Include="StateIDLEGunUP.cpp" />
     <ClCompile Include="StateJUMP.cpp" />
+    <ClCompile Include="StateJUMPGunUP.cpp" />
     <ClCompile Include="StateJUMPTurn.cpp" />
     <ClCompile Include="StateLOWEREDGun.cpp" />
     <ClCompile Include="StateRAISEDGun.cpp" />
@@ -181,6 +182,7 @@
     <ClInclude Include="StateFALLTurn.h" />
     <ClInclude Include="StateIDLEGunUP.h" />
     <ClInclude Include="StateJUMP.h" />
+    <ClInclude Include="StateJUMPGunUP.h" />
     <ClInclude Include="StateJUMPTurn.h" />
     <ClInclude Include="StateLOWEREDGun.h" />
     <ClInclude Include="StateRAISEDGun.h" />

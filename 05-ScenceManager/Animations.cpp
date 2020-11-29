@@ -81,6 +81,12 @@ bool CAnimation::IsFinalFrame()
 	return currentFrame == frames->size() - 1;
 }
 
+RECT CAnimation::GetFrameRect(int id)
+{
+	RECT r = frames->at(id)->GetSprite()->GetRECT();
+	return r;
+}
+
 CAnimations * CAnimations::__instance = NULL;
 
 CAnimations * CAnimations::GetInstance()

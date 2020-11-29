@@ -26,9 +26,8 @@ CSophia::CSophia() : CGameObject()
 	start_y = y; 
 	this->x = x; 
 	this->y = y; 
-	DoneTurn = false;
-	DoneGunDown = false;
-	DoneGunUp = false;
+	y_render = y;
+
 
 }
 
@@ -40,8 +39,7 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		CGameObject::Update(dt);
 
 		// Simple fall down
-		//vy += SOPHIA_GRAVITY*dt;
-		vy += SOPHIA_GRAVITY * dt;
+		vy += SOPHIA_GRAVITY*dt;	
 
 		vector<LPCOLLISIONEVENT> coEvents;
 		vector<LPCOLLISIONEVENT> coEventsResult;
@@ -64,6 +62,7 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		{
 			x += dx;
 			y += dy;
+			isColliBrick = false;
 		}
 		else
 		{
@@ -90,8 +89,12 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				if (dynamic_cast<CBrick*>(e->obj)) // if e->obj is Goomba 
 				{
 					CBrick* br = dynamic_cast<CBrick*>(e->obj);
-					
+					lastColliObj.left = br->x;
+					lastColliObj.top = br->y;
+					lastColliObj.right = lastColliObj.left + br->width;
+					lastColliObj.bottom = lastColliObj.top + br->height;
 					y += min_ty * dy + ny * 0.4f;
+					isColliBrick = true;
 				}
 			}
 
@@ -101,6 +104,8 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 
 		}
+		x_render = x;
+		y_render = y;
 
 		currentState->Update();
 
@@ -116,10 +121,10 @@ void CSophia::Render()
 		int alpha = 255;
 		if (untouchable) alpha = 128;
 
-
+		//currentAni->Render(x, y_render);
 		if (isTurning || isRaisedGun || isLoweredGun)
 		{
-			if (currentAni->IsFinalFrame())
+			if (currentAni->GetCurrentFrame() == currentAni->GetLastFrame() - 1)
 			{
 				isTurning = false;
 				isRaisedGun = false;
@@ -127,7 +132,7 @@ void CSophia::Render()
 			}
 		}
 
-		currentAni->Render(x, y);
+		currentAni->Render(x_render, y_render);
 		RenderBoundingBox();
 	}
 }

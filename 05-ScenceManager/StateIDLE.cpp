@@ -9,6 +9,7 @@ StateIDLE::StateIDLE()
 	if (_ACTIVE[SOPHIA])
 	{
 		CSophia* sophia = CSophia::GetInstance();
+		sophia->SetIsJumping(false);
 		sophia->SetIsFalling(false);
 		sophia->vx = 0;
 
@@ -134,6 +135,7 @@ void StateIDLE::HandleKeyboard()
 		if (_ACTIVE[SOPHIA])
 		{
 			CSophia* sophia = CSophia::GetInstance();
+			sophia->frameID = 0;
 			sophia->SwitchState(new StateRAISEDGun());
 			sophia->currentAni->ResetCurrentFrame();
 		}

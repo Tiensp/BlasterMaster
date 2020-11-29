@@ -135,7 +135,7 @@ int Run()
 	MSG msg;
 	int done = 0;
 	DWORD frameStart = GetTickCount64();
-	DWORD tickPerFrame = 1000 / MAX_FRAME_RATE;
+	DWORD tickPerFrame = 2000 / MAX_FRAME_RATE;
 
 	while (!done)
 	{
@@ -160,7 +160,7 @@ int Run()
 			game->ProcessKeyboard();
 			
 			Update(dt);
-			/*DebugOut(L"FPS: %f\n", 1000.0 / dt);*/
+			DebugOut(L"FPS: %f\n", 1000.0 / dt);
 			Render();
 		}
 		else

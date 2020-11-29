@@ -40,7 +40,7 @@ RECT CSprite::GetRECT()
 	r.top = top;
 	r.right = right;
 	r.bottom = bottom;
-	return RECT();
+	return r;
 }
 
 void CSprites::Add(int id, int left, int top, int right, int bottom, LPDIRECT3DTEXTURE9 tex)

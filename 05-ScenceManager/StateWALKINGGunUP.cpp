@@ -22,6 +22,18 @@ StateWALKINGGunUP::StateWALKINGGunUP()
 
 void StateWALKINGGunUP::Update()
 {
+	CSophia* sophia = CSophia::GetInstance();
+
+	if (sophia->currentAni->GetCurrentFrame() > -1)
+	{
+		RECT r = sophia->currentAni->GetFrameRect(sophia->currentAni->GetCurrentFrame());
+		sophia->y_render = sophia->y + SOPHIA_SMALL_BBOX_HEIGHT - (r.bottom - r.top);
+	}
+	else
+	{
+		RECT r = sophia->currentAni->GetFrameRect(0);
+		sophia->y_render = sophia->y + SOPHIA_SMALL_BBOX_HEIGHT - (r.bottom - r.top);
+	}
 	this->HandleKeyboard();
 }
 

@@ -41,6 +41,8 @@ public:
 	int GetLastFrame();
 	int GetAniTime();
 	bool IsFinalFrame();
+	bool GetIsComplete() { return isComplete; }
+	RECT GetFrameRect(int id);
 
 };
 

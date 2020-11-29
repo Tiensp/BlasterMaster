@@ -6,7 +6,7 @@
 
 class CBrick : public CGameObject
 {
-protected:
+public: //Test
 	int width;
 	int height;
 public:

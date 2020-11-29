@@ -1,4 +1,4 @@
-#include "StateIDLEGunUP.h"
+﻿#include "StateIDLEGunUP.h"
 #include "StateTURN.h"
 #include "StateIDLE.h"
 #include "StateWALKING.h"
@@ -8,21 +8,54 @@
 StateIDLEGunUP::StateIDLEGunUP()
 {
 	CSophia* sophia = CSophia::GetInstance();
+	sophia->SetIsJumping(false);
+	sophia->SetIsFalling(false);
 	sophia->SetIsGunUp(true);
 	sophia->vx = 0;
 
+	/* 
+		Vì Sprite IDLE GUN UP bên phải sẽ có phần tâm xe bị lệch so với tâm xe của 
+		các animation giương súng '4' pixel và ngược lại là '3' pixel với 
+		các animation giương súng bên trái (số '3' px chắc hơi khó hiểu, xem lại kỹ sprite
+		vì sprite bên trái lệch '4' từ chiều đuôi xe tính đến mũi xe NHƯNG lệch 3 px nếu 
+		tính từ mũi xe đến đuôi xe.
+	*/
 	if (sophia->nx > 0)
 	{
+		sophia->x_render = sophia->x - 4;
 		StateName = SOPHIA_IDLE_GUN_UP_RIGHT;
 	}
 	else
 	{
+		sophia->x_render = sophia->x + 3;
 		StateName = SOPHIA_IDLE_GUN_UP_LEFT;
 	}
+
 }
 
 void StateIDLEGunUP::Update()
 {
+	CSophia* sophia = CSophia::GetInstance();
+
+#pragma region Thay đổi x/y_render
+	// Xem lại chú thích y_render ở StateRAISEDGun
+	if (sophia->nx > 0 )
+		sophia->x_render = sophia->x - 4;
+	else
+		sophia->x_render = sophia->x + 3;
+
+	if (sophia->currentAni->GetCurrentFrame() > -1)
+	{
+		RECT r = sophia->currentAni->GetFrameRect(sophia->currentAni->GetCurrentFrame());
+		sophia->y_render = sophia->y + SOPHIA_SMALL_BBOX_HEIGHT - (r.bottom - r.top);
+	}
+	else
+	{
+		RECT r = sophia->currentAni->GetFrameRect(0);
+		sophia->y_render = sophia->y + SOPHIA_SMALL_BBOX_HEIGHT - (r.bottom - r.top);
+	}
+#pragma endregion
+
 	this->HandleKeyboard();
 }
 
@@ -52,6 +85,7 @@ void StateIDLEGunUP::HandleKeyboard()
 		else
 		{
 			sophia->SetIsGunUp(false);
+			sophia->frameID = 0;
 			sophia->SwitchState(new StateLOWEREDGun());
 			sophia->currentAni->ResetCurrentFrame();
 		}
