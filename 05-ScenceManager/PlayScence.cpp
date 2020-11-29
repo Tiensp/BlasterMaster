@@ -35,6 +35,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):
 #define OBJECT_TYPE_GOLEM	4
 #define	OBJECT_TYPE_DOMES	5
 #define OBJECT_TYPE_BIG_JASON 2
+#define OBJECT_TYPE_WORMS 6
 
 #define OBJECT_TYPE_PORTAL	50
 
@@ -160,6 +161,10 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 			sophia->SetStartPos(x, y);
 			bool active = atoi(tokens[4].c_str());
 			_ACTIVE[SOPHIA] = active;
+
+			LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
+			obj->SetAnimationSet(ani_set);
+			objects.push_back(obj);
 			DebugOut(L"[INFO] SOPHIA object created!\n");
 		}
 		break;
@@ -176,6 +181,10 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		jason->SetStartPos(x, y);
 		bool active = atoi(tokens[4].c_str());
 		_ACTIVE[JASON] = active;
+
+		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
+		obj->SetAnimationSet(ani_set);
+		objects.push_back(obj);
 		DebugOut(L"[INFO] JASON object created!\n");
 	}
 	break;
@@ -192,6 +201,10 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 			bigJason->SetStartPos(x, y);
 			bool active = atoi(tokens[4].c_str());
 			_ACTIVE[BIG_JASON] = active;
+
+			LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
+			obj->SetAnimationSet(ani_set);
+			objects.push_back(obj);
 			DebugOut(L"[INFO] BIG JASON object created!\n");
 		}
 		break;
@@ -206,7 +219,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	}
 	case OBJECT_TYPE_GOLEM: 
 	{
-		obj = new CGolem(x, y, player); 
+		obj = new CGolem(x, y, sophia); 
 		obj->SetPosition(x, y);
 		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
 		obj->SetAnimationSet(ani_set);
@@ -217,7 +230,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	}
 	case OBJECT_TYPE_DOMES:
 	{
-		obj = new CDomes(x, y, 999999, 999999, player);
+		obj = new CDomes(x, y, 999999, 999999, sophia);
 		obj->SetPosition(x, y);
 		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
 		obj->SetAnimationSet(ani_set);
@@ -227,7 +240,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	}
 	case OBJECT_TYPE_WORMS:
 	{
-		obj = new CWorm(x, y, player); 
+		obj = new CWorm(x, y, sophia); 
 		obj->SetPosition(x, y);
 		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
 		obj->SetAnimationSet(ani_set);
