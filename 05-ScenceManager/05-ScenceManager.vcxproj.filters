@@ -225,6 +225,21 @@
     <ClCompile Include="Worms.cpp">
       <Filter>Framework\GameObject\Enemy</Filter>
     </ClCompile>
+    <ClCompile Include="Floaters.cpp">
+      <Filter>Framework\GameObject\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Skulls.cpp">
+      <Filter>Framework\GameObject\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Insect.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Orbs.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Ship.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="BulletObject.cpp">
       <Filter>BulletObject</Filter>
     </ClCompile>
@@ -358,6 +373,21 @@
     </ClInclude>
     <ClInclude Include="Enemy.h">
       <Filter>Framework\GameObject\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Floaters.h">
+      <Filter>Framework\GameObject\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Skulls.h">
+      <Filter>Framework\GameObject\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Insect.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Orbs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Ship.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="HP.h">
       <Filter>Framework\Game\HUD</Filter>
