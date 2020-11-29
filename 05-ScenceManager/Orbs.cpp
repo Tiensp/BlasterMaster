@@ -11,7 +11,8 @@
 #include "Brick.h"
 COrb::COrb(float x, float y, LPGAMEOBJECT player)
 {
-	SetState(ORB_ANI_WALKING_RIGHT);
+	SetState(ORB_ANI_WALKING_LEFT);
+	//SetState(ORB_ANI_WALKING_RIGHT);
 	this->x = x;
 	this->y = y;
 	this->target = player;
@@ -145,23 +146,26 @@ void COrb::Attack()
 		{
 			this->SetState(ORB_ANI_WALKING_LEFT_DOWN);
 		}
+		else if (this->GetState() == ORB_ANI_WALKING_RIGHT)
+		{
+			this->SetState(ORB_ANI_WALKING_RIGHT_DOWN);
+		}
 		if (abs(this->x - target->x) <= 15 && abs(this->y - target->y) <= 15)
 		{
 			isAttack = true;
-			if (this->GetState() == ORB_ANI_WALKING_LEFT_DOWN)
+			if (this->GetState() == ORB_ANI_WALKING_LEFT_DOWN || this->GetState() == ORB_ANI_WALKING_LEFT)
 			{
 				this->SetState(ORB_ANI_ATTACKING_LEFT);
 			}
-		}
-		else if (this->GetState() == ORB_ANI_WALKING_RIGHT)
-		{
-			
+			else if (this->GetState() == ORB_ANI_WALKING_RIGHT_DOWN || this->GetState() == ORB_ANI_WALKING_RIGHT)
+			{
+				this->SetState(ORB_ANI_ATTACKING_RIGHT);
+			}
 		}
 	}
 	else 
 	{
 		isAttack = false;
-		
 	}
 }
 
@@ -173,22 +177,30 @@ void COrb::Render()
 	
 	if (isAttack)
 	{
-		if (nx > 0)
+		/*if (nx > 0)
 		{
 			ani = ORB_ANI_ATTACKING_RIGHT;
 		}
 		else if (nx < 0)
 		{
 			ani = ORB_ANI_ATTACKING_LEFT;
+		}*/
+		if (this->GetState() == ORB_ANI_WALKING_LEFT_DOWN || this->GetState() == ORB_ANI_WALKING_LEFT)
+		{
+			ani = ORB_ANI_ATTACKING_LEFT;
+		}
+		else if (this->GetState() == ORB_ANI_WALKING_RIGHT_DOWN || this->GetState() == ORB_ANI_WALKING_RIGHT)
+		{
+			ani = ORB_ANI_ATTACKING_RIGHT;
 		}
 	}
 	else 
 	{
-		if (vx > 0)
+		if (vx > 0 && vy == 0)
 		{
 			ani = ORB_ANI_WALKING_RIGHT;
 		}
-		else if (vx < 0)
+		else if (vx < 0 && vy == 0)
 		{
 			ani = ORB_ANI_WALKING_LEFT;
 		}
