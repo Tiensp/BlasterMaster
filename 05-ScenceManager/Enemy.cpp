@@ -7,3 +7,6 @@ Enemy::Enemy()
 Enemy::~Enemy()
 {
 }
+void Enemy::Render()
+{
+}

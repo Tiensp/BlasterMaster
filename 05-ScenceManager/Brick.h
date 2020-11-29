@@ -6,9 +6,8 @@
 
 class CBrick : public CGameObject
 {
-public: //Test
-	int width;
-	int height;
+protected:
+	
 public:
 	CBrick(float X, float Y, int W, int H);
 	virtual void Render();
