@@ -301,10 +301,17 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 
 	case OBJECT_TYPE_PORTAL:
 	{
-		float r = atof(tokens[4].c_str());
-		float b = atof(tokens[5].c_str());
-		int scene_id = atoi(tokens[6].c_str());
-		obj = new CPortal(x, y, r, b, scene_id);
+		int sceneID = atoi(tokens[3].c_str());
+		int porID = atoi(tokens[4].c_str());
+		int dir = atoi(tokens[5].c_str());
+		int type = atoi(tokens[6].c_str());
+		float xDes = atof(tokens[7].c_str());
+		float yDes = atof(tokens[8].c_str());
+		ani_set_id = atoi(tokens[9].c_str());
+		obj = new CPortal(x, y, sceneID, porID, dir, type, xDes, yDes);
+		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
+		obj->SetAnimationSet(ani_set);
+		listEnemies.push_back(obj);
 		break;
 	}
 	default:
