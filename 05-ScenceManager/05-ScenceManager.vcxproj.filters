@@ -246,6 +246,9 @@
     <ClCompile Include="StateJUMPGunUP.cpp">
       <Filter>Framework\GameObject\State Machine\State JUMP Gun UP</Filter>
     </ClCompile>
+    <ClCompile Include="MiniScene.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Brick.h">
@@ -400,6 +403,9 @@
     </ClInclude>
     <ClInclude Include="StateJUMPGunUP.h">
       <Filter>Framework\GameObject\State Machine\State JUMP Gun UP</Filter>
+    </ClInclude>
+    <ClInclude Include="MiniScene.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

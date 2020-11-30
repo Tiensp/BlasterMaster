@@ -23,7 +23,7 @@ CCamera::CCamera(int width, int height)
 {
 	this->width = width;
 	this->height = height;
-
+	isSwitchScene = false;
 }
 
 CCamera::~CCamera()
@@ -93,48 +93,65 @@ RECT CCamera::GetCamBound()
 
 void CCamera::Update()
 {
-	if (_ACTIVE[SOPHIA])
-		CSophia::GetInstance()->GetPosition(camPos.x, camPos.y);
-	else if (_ACTIVE[JASON])
+	if (!isSwitchScene)
 	{
-		CJason::GetInstance()->GetPosition(camPos.x, camPos.y);
+		if (_ACTIVE[SOPHIA])
+			CSophia::GetInstance()->GetPosition(camPos.x, camPos.y);
+		else if (_ACTIVE[JASON])
+		{
+			CJason::GetInstance()->GetPosition(camPos.x, camPos.y);
+		}
+		else if (_ACTIVE[BIG_JASON])
+			CBigJason::GetInstance()->GetPosition(camPos.x, camPos.y);
+
+		camPos.x -= width / 2;
+		camPos.y -= height / 2;
+		/*
+			Kiểm tra xem Camera có bị vượt ra ngoài map không
+			Vượt quá giới hạn thì đặt lại vị trí Camera
+
+			Tọa độ biên trái và biên trên chắc chắn là tọa độ pos(0,0)
+			Cách xét tọa độ biên phải và biên dưới là tùy theo mỗi người
+			Ở đây, tọa độ giới hạn của cam được tính theo:
+				+ Tọa độ Biên phải - Độ dài Camera
+				+ Tọa độ Biên dưới - Chiều cao Camera
+		*/
+		if (camPos.x < camBound.left)
+			camPos.x = camBound.left;
+
+		if (camPos.y < camBound.top)
+			camPos.y = camBound.top;
+		/*
+			Khi đặt lại camPos nếu vượt qua camBound sẽ dẫn đến việc không render hết được map
+			nguyên nhân do độ kích thước map đôi lúc không chia hết cho kích thước camera
+			nên ở đây mình + Pull screen (có thể theo chiều x or y) để có thể nhìn thấy toàn bộ map
+		*/
+		if (camPos.x > camBound.right - width)
+			camPos.x = camBound.right - width;
+
+		if (camPos.y > camBound.bottom - height + PULL_SCREEN_Y)
+			camPos.y = camBound.bottom - height + PULL_SCREEN_Y;
 	}
-	else if (_ACTIVE[BIG_JASON])
-		CBigJason::GetInstance()->GetPosition(camPos.x, camPos.y);
-
-	camPos.x -= width / 2;
-	camPos.y -= height / 2;
-	/*
-		Kiểm tra xem Camera có bị vượt ra ngoài map không
-		Vượt quá giới hạn thì đặt lại vị trí Camera
-
-		Tọa độ biên trái và biên trên chắc chắn là tọa độ pos(0,0) 
-		Cách xét tọa độ biên phải và biên dưới là tùy theo mỗi người
-		Ở đây, tọa độ giới hạn của cam được tính theo:
-			+ Tọa độ Biên phải - Độ dài Camera
-			+ Tọa độ Biên dưới - Chiều cao Camera
-	*/
-	if (camPos.x < camBound.left)
-		camPos.x = camBound.left;
-
-	if (camPos.y < camBound.top)
-		camPos.y = camBound.top;
-	/* 
-		Khi đặt lại camPos nếu vượt qua camBound sẽ dẫn đến việc không render hết được map
-		nguyên nhân do độ kích thước map đôi lúc không chia hết cho kích thước camera
-		nên ở đây mình + Pull screen (có thể theo chiều x or y) để có thể nhìn thấy toàn bộ map
-	*/
-	if (camPos.x > camBound.right - width)
-		camPos.x = camBound.right - width;
-
-	if (camPos.y > camBound.bottom - height + PULL_SCREEN_Y)
-		camPos.y = camBound.bottom - height + PULL_SCREEN_Y;
+	else
+	{
+		if (camPos.x != SwitchScenePos.x)
+			if (camPos.x > SwitchScenePos.x)
+				camPos.x -= 3.0f;
+			else
+				camPos.x += 3.0f;
+		else
+		{
+			isSwitchScene = false;
+			camBound.left = SwitchScenePos.x;
+			camBound.right = SwitchScenePos.x + width;
+		}
+	}
 }
 
-void CCamera::SetCamBound(float mapWidth, float mapHeight)
+void CCamera::SetCamBound(float x, float y, float mapWidth, float mapHeight)
 {
-	camBound.left = 0;
-	camBound.top = 0;
-	camBound.right = mapWidth;
-	camBound.bottom = mapHeight;
+	camBound.left = x;
+	camBound.top = y;
+	camBound.right = x + mapWidth;
+	camBound.bottom = y + mapHeight;
 }

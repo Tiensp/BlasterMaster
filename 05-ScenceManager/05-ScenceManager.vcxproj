@@ -142,6 +142,7 @@
     <ClCompile Include="Koopas.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Jason.cpp" />
+    <ClCompile Include="MiniScene.cpp" />
     <ClCompile Include="Orbs.cpp" />
     <ClCompile Include="Portal.cpp" />
     <ClCompile Include="Ship.cpp" />
@@ -188,6 +189,7 @@
     <ClInclude Include="Koopas.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="Jason.h" />
+    <ClInclude Include="MiniScene.h" />
     <ClInclude Include="Orbs.h" />
     <ClInclude Include="Portal.h" />
     <ClInclude Include="Ship.h" />
