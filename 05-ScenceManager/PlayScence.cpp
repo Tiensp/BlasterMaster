@@ -42,7 +42,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):
 #define OBJECT_TYPE_ORB 10
 #define OBJECT_TYPE_SHIP 11
 
-#define OBJECT_TYPE_PORTAL	50
+#define OBJECT_TYPE_PORTAL	52
 
 #define MAX_SCENE_LINE 1024
 

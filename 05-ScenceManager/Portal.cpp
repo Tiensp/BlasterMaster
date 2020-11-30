@@ -27,13 +27,13 @@ CPortal::CPortal(float _x, float _y, int sceneID, int portalID, int _nx, int typ
 			+ Xem lại Sprite Portal để hiểu cách tính tọa độ x_render, y_render
 		*/
 
-		if (nx < 0)	
+		if (nx > 0)	
 		{
 			x_render = x + width / 2;
 		}
 		else
 		{
-			x_render = x - 32;	//32 là độ dày của tường :D
+			x_render = x - 32 ;	//32 là độ dày của tường :D
 		}
 	}
 }
