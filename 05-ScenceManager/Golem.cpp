@@ -81,27 +81,13 @@ void CGolem::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		float rdx = 0;
 		float rdy = 0;
 
-		// TODO: This is a very ugly designed function!!!!
 		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);  // sắp xếp lại các sự kiện va chạm đầu tiên theo trục x, y 
 
-		// how to push back Sophia if collides with a moving objects, what if Sophia is pushed this way into another object?
-		//if (rdx != 0 && rdx!=dx)
-		//	x += nx*abs(rdx); 
-
-		// block every object first!
-
-
-		x += min_tx * dx + nx * 0.4f;  //cập nhật lại vị trí x
-		y += min_ty * dy + ny * 0.4f;	// cập nhật lại vị trí y  để tránh bị hụt xuống
+		x += min_tx * dx + nx * 0.4f;  
 
 		if (nx != 0) vx = 0;
 		if (ny != 0) vy = 0;
 
-		
-
-		//
-		// Collision logic with other objects
-		//
 		
 		else
 		{
@@ -113,6 +99,10 @@ void CGolem::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				{
 					
 				
+					x += min_tx * dx + nx * 0.4f;
+
+					if (nx != 0) vx = 0;
+					if (ny != 0) vy = 0;
 					CBrick* brick = dynamic_cast<CBrick*>(e->obj);
 
 					// jump on top >> kill Goomba and deflect a bit 

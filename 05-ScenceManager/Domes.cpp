@@ -54,14 +54,8 @@ void CDomes::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	if (coEvents.size() == 0)  //nếu không có va chạm, update bình thường	
 	{
-		
 		x += dx;
 		y += dy;
-		//DebugOut(L"number %d\n", numberCollisionBrick);
-	
-		
-		//DebugOut(L"bottom %d\n,  y %f\n", this->rectBrick.bottom, this->y);
-			
 	}
 	else //có va chạm
 	{
@@ -71,9 +65,6 @@ void CDomes::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		
 		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);  // sắp xếp lại các sự kiện va chạm đầu tiên theo trục x, y 
 	
-		
-		
-
 		for (UINT i = 0; i < coEventsResult.size(); i++)
 		{
 			LPCOLLISIONEVENT e = coEventsResult[i];
