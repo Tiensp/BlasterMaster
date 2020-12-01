@@ -111,7 +111,7 @@ void CBigJason::Render()
 
 
 		currentAni->Render(x, y);
-		RenderBoundingBox();
+		RenderBoundingBox(x, y);
 	}
 }
 #pragma region Xử lý phím

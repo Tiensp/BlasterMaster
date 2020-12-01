@@ -155,7 +155,7 @@ void BulletObject::HandleMove(const float x_border, const float y_border)
 
 void BulletObject::Render()
 {
-	RenderBoundingBox();
+	RenderBoundingBox(x,y);
 	int ani = 0;
 	if (isDone) return;
 	if (isColBrick)

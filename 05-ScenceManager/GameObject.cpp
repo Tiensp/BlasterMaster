@@ -116,9 +116,9 @@ void CGameObject::FilterCollision(
 }
 
 
-void CGameObject::RenderBoundingBox()
+void CGameObject::RenderBoundingBox(float x_render, float y_render)
 {
-	D3DXVECTOR2 p(x, y);
+	D3DXVECTOR2 p(x_render, y_render);
 	RECT rect;
 
 	LPDIRECT3DTEXTURE9 bbox = CTextures::GetInstance()->Get(ID_TEX_BBOX);

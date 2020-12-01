@@ -161,7 +161,7 @@ void CWorm::Render()
 
 	animation_set->at(ani)->Render(x, y);
 
-	RenderBoundingBox();
+	RenderBoundingBox(x,y);
 }
 
 void CWorm::flowPlayer(LPGAMEOBJECT player)

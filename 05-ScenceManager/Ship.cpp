@@ -196,7 +196,7 @@ void CShip::Render()
 
 	animation_set->at(ani)->Render(x, y);
 
-	RenderBoundingBox();
+	RenderBoundingBox(x,y);
 }
 
 //void CSkull::flowPlayer(LPGAMEOBJECT player)

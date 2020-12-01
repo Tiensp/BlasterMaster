@@ -42,7 +42,7 @@ void CPortal::Render()
 {
 	if (objType == OverWorld)
 		animation_set->at(scene_id)->RenderFrame(portal_id, x_render, y_render);
-	RenderBoundingBox();
+	RenderBoundingBox(x_render, y_render);
 }
 
 void CPortal::GetBoundingBox(float &l, float &t, float &r, float &b)

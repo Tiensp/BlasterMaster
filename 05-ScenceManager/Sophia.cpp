@@ -170,10 +170,10 @@ void CSophia::Render()
 		}
 
 		if (renderFrame)
-			currentAni->RenderFrame(frameID, x, y);
+			currentAni->RenderFrame(frameID, x_render, y_render);
 		else
-			currentAni->Render(x, y);
-		RenderBoundingBox();
+			currentAni->Render(x_render, y_render);
+		RenderBoundingBox(x_render, y_render);
 
 		for (int i = 0; i < p_bullet_list.size(); i++)
 		{
