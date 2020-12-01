@@ -409,6 +409,8 @@ void CPlayScene::Load()
 	MiniScene* miniScene = listScene.at(0);
 	camera = CCamera::GetInstance();
 	camera->SetCamBound(miniScene->x, miniScene->y, miniScene->width, miniScene->height);
+	//camera->SetCamBound(0, 0, map->GetMapWidth(), map->GetMapHeight());
+
 
 	//Thiết lập trạng thái, vị trí khởi đầu,... cho đối tượng đang active
 	if (_ACTIVE[SOPHIA])
