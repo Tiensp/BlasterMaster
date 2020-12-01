@@ -14,7 +14,7 @@
 #include "StateFALL.h"
 #include "StateJUMP.h"
 #include "Brick.h"
-
+#include <vector>
 CSophia* CSophia::__instance = NULL;
 
 CSophia::CSophia() : CGameObject()
@@ -30,6 +30,7 @@ CSophia::CSophia() : CGameObject()
 	y_render = y;
 
 
+
 }
 
 void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
@@ -38,10 +39,13 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	{
 		// Calculate dx, dy 
 		CGameObject::Update(dt);
+		
+		set_bullet_list();
+		
 
 		// Simple fall down
 		vy += SOPHIA_GRAVITY*dt;	
-
+		
 		vector<LPCOLLISIONEVENT> coEvents;
 		vector<LPCOLLISIONEVENT> coEventsResult;
 
@@ -135,6 +139,18 @@ void CSophia::Render()
 
 		currentAni->Render(x_render, y_render);
 		RenderBoundingBox();
+
+		for (int i = 0; i < p_bullet_list.size(); i++)
+		{
+			BulletObject* p_bullet = p_bullet_list.at(i);
+			if (p_bullet != NULL)
+			{
+				if (p_bullet->Get_IsMove() == true)
+				{
+					p_bullet->Render();
+				}
+			}
+		}
 	}
 }
 #pragma region Xử lý phím
@@ -153,6 +169,41 @@ void CSophia::OnKeyDown(int keycode)
 			currentAni->ResetCurrentFrame();
 		}
 		break;
+	case DIK_Z:
+	{
+		BulletObject* p_bullet = new BulletObject(this->x, this->y);
+		if (isGunUp == false)
+		{
+			if (this->nx == 1)
+			{
+				p_bullet->SetPosition(this->x + width + 20, this->y + height * 0.3);
+				p_bullet->Set_bullet_dir(this->nx);
+			}
+			else
+			{
+				p_bullet->SetPosition(this->x + width - 20, this->y + height * 0.3);
+				p_bullet->Set_bullet_dir(this->nx);
+			}			
+		}
+		else
+		{
+			if (this->nx == 1)
+			{
+				p_bullet->SetPosition(this->x + width / 2, this->y - 30);
+				p_bullet->Set_bullet_dir(3);
+			}
+			else
+			{
+				p_bullet->SetPosition(this->x + width / 2 + 7 , this->y - 30);
+				p_bullet->Set_bullet_dir(3);
+			}
+			
+		}
+		p_bullet->Set_IsMove(true);
+		p_bullet_list.push_back(p_bullet);
+		
+	}
+
 	}
 }
 
@@ -214,6 +265,28 @@ void CSophia::Reset()
 	SetPosition(start_x, start_y);
 	SwitchState(new StateIDLE());
 	SetSpeed(0, 0);
+}
+
+void CSophia::set_bullet_list()
+{
+	for (int i = 0; i < p_bullet_list.size(); i++)
+	{
+		BulletObject* p_bullet = p_bullet_list[i];
+		if (p_bullet != NULL)
+		{
+			if (p_bullet->isDone)
+			{
+				p_bullet_list.erase(p_bullet_list.begin() + i);
+				if (p_bullet != NULL)
+				{
+					delete p_bullet;
+					p_bullet = NULL;
+				}
+				
+			}
+		}
+		
+	}
 }
 
 CSophia* CSophia::GetInstance()

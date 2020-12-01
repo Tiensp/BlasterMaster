@@ -246,6 +246,9 @@
     <ClCompile Include="Ship.cpp">
       <Filter>Framework\GameObject\Enemy</Filter>
     </ClCompile>
+    <ClCompile Include="SophiaBullet.cpp">
+      <Filter>BulletObject</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Brick.h">
@@ -399,6 +402,12 @@
       <Filter>Framework\GameObject\Enemy</Filter>
     </ClInclude>
     <ClInclude Include="Ship.h">
+      <Filter>Framework\GameObject\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="SophiaBullet.h">
+      <Filter>BulletObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Golem.h">
       <Filter>Framework\GameObject\Enemy</Filter>
     </ClInclude>
   </ItemGroup>

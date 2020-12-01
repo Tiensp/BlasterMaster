@@ -16,8 +16,9 @@
 #define FLOATER_STATE_WALKING 100
 #define FLOATER_STATE_DIE 200
 #define FLOATER_STATE_FLYING 300
+#include "Enemy.h"
 
-class CFloaters : public CGameObject
+class CFloaters : public Enemy
 {
 	bool isFolow;  //theo player 
 	LPGAMEOBJECT target;

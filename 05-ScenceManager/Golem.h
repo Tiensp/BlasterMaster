@@ -19,10 +19,9 @@ class CGolem : public Enemy
 	bool isFolow;  //theo player 
 
 
-
-
 public:
 	CGolem(float x, float y, LPGAMEOBJECT player);
+	~CGolem();
 	virtual void SetState(int state);
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);

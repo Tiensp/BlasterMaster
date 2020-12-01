@@ -39,7 +39,7 @@ extern enum ObjectTAG
 {
 	None, //Default Object
 	Player,
-	Enemy,
+	/*Enemy,*/
 	Misc
 };
 

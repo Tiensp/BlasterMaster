@@ -12,6 +12,7 @@
 #define DOMES_ANI_WALKING_DOWN_LEFT		7
 #define DOMES_STATE_ATACK_NX 8
 #define DOMES_STATE_ATACK_NY 9
+#define DOMES_STATE_DIE 10
 
 #define DOMES_WALKING_SPEED 0.03f;
 #define	DOMES_JUMPING_SPEED 0.163f;
@@ -33,7 +34,7 @@ class CDomes : public Enemy
 	float boundingHeigt;
 	float boundingWight;
 	RECT rectBrick = {0,0,5000,5000}; //cục đá va chạm sau cùng, để lấy đố dài của nó 
-	vector<BulletFloaters* > bullet;
+	
  //phần gạch đang va chạm
 
 

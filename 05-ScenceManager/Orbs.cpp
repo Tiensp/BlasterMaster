@@ -52,13 +52,13 @@ void COrb::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	// reset untouchable timer if untouchable time has passed
 
 	// No collision occured, proceed normally
-
+	Attack();
 	if (coEvents.size() == 0)  //nếu không có va chạm, update bình thường
 	{
 		x += dx;
 		y += dy;
 
-		Attack();
+	
 	}
 	else //có va chạm
 	{
@@ -74,8 +74,7 @@ void COrb::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		//	x += nx*abs(rdx); 
 
 
-		x += min_tx * dx + nx * 0.4f;  //cập nhật lại vị trí x
-		y += min_ty * dy + ny * 0.4f;	// cập nhật lại vị trí y  để tránh bị hụt xuống
+	
 
 		// block every object first!
 		{
@@ -85,6 +84,11 @@ void COrb::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 				if (dynamic_cast<CBrick*>(e->obj)) // if e->obj is Goomba 
 				{
+					
+					x += min_tx * dx + nx * 0.4f;  //cập nhật lại vị trí x
+					y += min_ty * dy + ny * 0.4f;
+					if (nx != 0) vx = 0;
+					if (ny != 0) vy = 0;// cập nhật lại vị trí y  để tránh bị hụt xuống
 					isAttack = false;
 
 					CBrick* brick = dynamic_cast<CBrick*>(e->obj);

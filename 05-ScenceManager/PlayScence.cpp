@@ -409,18 +409,40 @@ void CPlayScene::Update(DWORD dt)
 	// TO-DO: This is a "dirty" way, need a more organized way 
 
 	vector<LPGAMEOBJECT> coObjects;
-	for (size_t i = 1; i < objects.size(); i++)
+
+	DebugOut(L"size %d\n", listBullet.size());
+	for (int i = 0; i < objects.size(); i++)
 	{
 		coObjects.push_back(objects[i]);
 	}
+	for (int i = 0; i < listEnemies.size(); i++)
+	{
+		coObjects.push_back(listEnemies[i]);
+	}
 
+	
 
-	for (size_t i = 0; i < objects.size(); i++)
+	for (int i = 0; i < objects.size(); i++)
 	{
 		objects[i]->Update(dt, &coObjects);
 	}
+	listBullet = sophia->Get_Bullet_List();
 	for (int i = 0; i < listEnemies.size(); i++)
-		listEnemies[i]->Update(dt, &objects);
+		listEnemies[i]->Update(dt, &coObjects);
+
+	for (int i = 0; i < listBullet.size(); i++)
+	{
+		listBullet[i]->Update(dt, &coObjects);
+		
+			
+		
+	}
+
+		
+
+
+
+
 
 	// skip the rest if scene was already unloaded (Sophia::Update might trigger PlayScene::Unload)
 	//if (sophia == NULL && jason == NULL && bigJason == NULL) return;
@@ -439,6 +461,8 @@ void CPlayScene::Render()
 		objects[i]->Render();
 	for (int i = 0; i < listEnemies.size(); i++)
 		listEnemies[i]->Render();
+	for (int i = 0; i < listBullet.size(); i++)
+		listBullet[i]->Render();
 	hud->Render();
 }
 

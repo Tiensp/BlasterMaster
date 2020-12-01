@@ -146,6 +146,7 @@
     <ClCompile Include="Portal.cpp" />
     <ClCompile Include="Ship.cpp" />
     <ClCompile Include="Skulls.cpp" />
+    <ClCompile Include="SophiaBullet.cpp" />
     <ClCompile Include="StateCRAWL.cpp" />
     <ClCompile Include="StateFALL.cpp" />
     <ClCompile Include="StateFALLTurn.cpp" />
@@ -182,6 +183,7 @@
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="Floaters.h" />
     <ClInclude Include="GameDefine.h" />
+    <ClInclude Include="Golem.h" />
     <ClInclude Include="Insect.h" />
     <ClInclude Include="HP.h" />
     <ClInclude Include="HUD.h" />
@@ -193,6 +195,7 @@
     <ClInclude Include="Ship.h" />
     <ClInclude Include="Skulls.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="SophiaBullet.h" />
     <ClInclude Include="StateCRAWL.h" />
     <ClInclude Include="StateFALL.h" />
     <ClInclude Include="StateFALLTurn.h" />

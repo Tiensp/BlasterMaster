@@ -18,27 +18,47 @@ CGolem::CGolem(float x, float y, LPGAMEOBJECT player)
 
 }
 
+CGolem::~CGolem()
+{
+}
+
 void CGolem::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
 	left = x;
 	top = y;
 	right = x + GOLEM_BBOX_WIDTH;
+	bottom = y + GOLEM_BBOX_HEIGHT;
 
-	if (state == GOLEM_STATE_DIE)
-		bottom = y + GOLEM_BBOX_HEIGHT_DIE;
-	else
-		bottom = y + GOLEM_BBOX_HEIGHT;
+	
 }
 
 void CGolem::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-
+	CGameObject::Update(dt, coObjects);
 	vy += 0.0005f * dt;
 	//DebugOut(L"golumnvX: %f, golumnvY: %f\n", vx, vy);
-	CGameObject::Update(dt, coObjects);
-	//DebugOut(L"golumnvX: %f, golumnvY: %f\n", vx, vy);
-	
-	//DebugOut(L"golumnvX: %f, golumnvY: %f\n", target->nx, this->nx);
+
+	if (abs(this->x - target->x) <= 300 && abs(this->y - target->y) <= 20)
+	{
+		if (this->x - target->x <= 0)
+		{
+			this->nx = 1;
+		}
+		else
+		{
+			this->nx = -1;
+		}
+		if (abs(this->x - target->x) <= 70)
+		{
+			this->SetState(GOLEM_STATE_JUMPING);
+		}
+		else
+		{
+			this->SetState(GOLEM_STATE_WALKING);
+		}
+
+
+	}
 
 
 	vector<LPCOLLISIONEVENT> coEvents;
@@ -46,13 +66,9 @@ void CGolem::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	coEvents.clear();
 
-	// turn off collision when die 
-	//nếu không chết thì kiểm tra toàn bộ va chạm với các đối tượng khác
 	CalcPotentialCollisions(coObjects, coEvents);
 
-	// reset untouchable timer if untouchable time has passed
 
-	// No collision occured, proceed normally
 
 	if (coEvents.size() == 0)  //nếu không có va chạm, update bình thường
 	{
@@ -86,27 +102,7 @@ void CGolem::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		//
 		// Collision logic with other objects
 		//
-		if (abs(this->x - target->x) <= 300 && abs(this->y - target->y)<=20)
-		{
-			if (this->x - target->x <= 0)
-			{
-				this->nx = 1;
-			}	
-			else
-			{
-				this->nx = -1;
-			}
-			if (abs(this->x - target->x) <= 70)
-			{
-				this->SetState(GOLEM_STATE_JUMPING);
-			}
-			else
-			{
-				this->SetState(GOLEM_STATE_WALKING);
-			}
-			
-
-		}
+		
 		else
 		{
 			for (UINT i = 0; i < coEventsResult.size(); i++)
@@ -126,37 +122,13 @@ void CGolem::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 						this->SetState(GOLEM_STATE_WALKING);
 					}
-				
-				
-				
-					
 
 				}
-				//	else if (e->nx != 0)
-				//	{
-				//		if (untouchable==0)
-				//		{
-				//			if (goomba->GetState()!=GOOMBA_STATE_DIE)
-				//			{
-				//				if (level > SOPHIA_LEVEL_SMALL)
-				//				{
-				//					level = SOPHIA_LEVEL_SMALL;
-				//					StartUntouchable();
-				//				}
-				//				else 
-				//					SetState(SOPHIA_STATE_DIE);
-				//			}
-				//		}
-				//	}
-				//} // if Goomba
-				/*else if (dynamic_cast<CPortal *>(e->obj))
-				{
-					CPortal *p = dynamic_cast<CPortal *>(e->obj);
-					CGame::GetInstance()->SwitchScene(p->GetSceneId());
-				}*/
+			
 			}
 
 		}
+		for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
 	}
 }
 

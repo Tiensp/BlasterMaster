@@ -82,11 +82,10 @@ void CFloaters::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 			if (dynamic_cast<CBrick*>(e->obj)) // if e->obj is Goomba 
 			{
-
-				//if (nx != 0) vx = 0;
-				//if (ny != 0) vy = 0;
 				x += min_tx * dx + nx * 0.4f;  //cập nhật lại vị trí x
-				y += min_ty * dy + ny * 0.4f;	// cập nhật lại vị trí y  để tránh bị hụt xuống
+				y += min_ty * dy + ny * 0.4f;
+				if (nx != 0) vx = 0;
+				if (ny != 0) vy = 0;// cập nhật lại vị trí y  để tránh bị hụt xuống
 
 
 				CBrick* brick = dynamic_cast<CBrick*>(e->obj);
