@@ -100,6 +100,7 @@ public:
 
 	void SetHealth(int hp) { health = hp; }
 	int GetHealth() { return health; }
+
 	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount64(); }
 
 	/* State */

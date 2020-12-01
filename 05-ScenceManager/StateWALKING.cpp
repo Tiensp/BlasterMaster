@@ -1,6 +1,9 @@
 #include "StateWALKING.h"
 #include "StateIDLE.h"
 #include "StateTURN.h"
+#include "StateIDLEGunUP.h"
+#include "StateRAISEDGun.h"
+#include "StateWALKINGGunUP.h"
 
 StateWALKING::StateWALKING()
 {
@@ -71,7 +74,41 @@ void StateWALKING::HandleKeyboard()
 {
 	if (_ACTIVE[SOPHIA] || _ACTIVE[JASON])
 	{
-		if (_KEYCODE[DIK_RIGHT])
+		if (_KEYCODE[DIK_UP] && _KEYCODE[DIK_RIGHT])
+		{
+			if (_ACTIVE[SOPHIA])
+			{
+				CSophia* sophia = CSophia::GetInstance();
+				if (sophia->GetIsGunUp())
+				{
+					sophia->SwitchState(new StateWALKINGGunUP());
+				}
+				else
+				{
+					sophia->frameID = 0;
+					sophia->SwitchState(new StateRAISEDGun());
+					sophia->currentAni->ResetCurrentFrame();
+				}
+			}
+		}
+		else if (_KEYCODE[DIK_UP] && _KEYCODE[DIK_LEFT])
+		{
+			if (_ACTIVE[SOPHIA])
+			{
+				CSophia* sophia = CSophia::GetInstance();
+				if (sophia->GetIsGunUp())
+				{
+					sophia->SwitchState(new StateWALKINGGunUP());
+				}
+				else
+				{
+					sophia->frameID = 0;
+					sophia->SwitchState(new StateRAISEDGun());
+					sophia->currentAni->ResetCurrentFrame();
+				}
+			}
+		}
+		else if (_KEYCODE[DIK_RIGHT])
 		{
 			if (_ACTIVE[SOPHIA])
 			{
@@ -120,13 +157,15 @@ void StateWALKING::HandleKeyboard()
 			if (_ACTIVE[SOPHIA])
 			{
 				CSophia* sophia = CSophia::GetInstance();
-				if (sophia->nx == -1)
+				if (sophia->GetIsGunUp())
 				{
-
+					sophia->SwitchState(new StateIDLEGunUP());
 				}
 				else
 				{
-					sophia->SwitchState(new StateWALKING());
+					sophia->frameID = 0;
+					sophia->SwitchState(new StateRAISEDGun());
+					sophia->currentAni->ResetCurrentFrame();
 				}
 			}
 		}

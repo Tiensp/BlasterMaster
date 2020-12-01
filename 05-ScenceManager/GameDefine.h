@@ -32,6 +32,10 @@ using namespace std;
 #define SOPHIA_GRAVITY 0.001f
 #define SOPHIA_JUMP_SPEED 0.35f
 
+/////// PORTAL ///////
+#define PORTAL_WIDTH	32
+#define PORTAL_HEIGHT	32
+
 /*
 	Lí do sử dụng Extern có thể tìm hiểu qua mã lỗi LNK2005
 */
@@ -39,8 +43,9 @@ extern enum ObjectTAG
 {
 	None, //Default Object
 	Player,
-	/*Enemy,*/
-	Misc
+	Enemy,
+	Misc,
+	Portal
 };
 
 extern enum ObjectTYPE
@@ -56,7 +61,10 @@ extern enum ObjectTYPE
 	MAPID = 10000,
 	/* HP */
 	Health = 50,
-	HealthBar = 51
+	HealthBar = 51,
+	/* Portal */
+	OverWorld = 500,
+	OverHead = 600
 };
 
 extern enum STATENAME

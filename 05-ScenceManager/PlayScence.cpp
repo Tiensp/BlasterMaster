@@ -42,7 +42,9 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):
 #define OBJECT_TYPE_ORB 10
 #define OBJECT_TYPE_SHIP 11
 
-#define OBJECT_TYPE_PORTAL	50
+
+#define OBJECT_TYPE_PORTAL	52
+#define OBJECT_TYPE_SCENE 53
 
 #define MAX_SCENE_LINE 1024
 
@@ -153,26 +155,26 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	switch (object_type)
 	{
 	case OBJECT_TYPE_SOPHIA:
+	{
+		if (sophia != NULL)
 		{
-			if (sophia != NULL)
-			{
-				DebugOut(L"[ERROR] SOPHIA object was created before!\n");
-				return;
-			}
-
-
-			obj = CSophia::GetInstance(); 
-			sophia = (CSophia*)obj;
-			sophia->SetStartPos(x, y);
-			bool active = atoi(tokens[4].c_str());
-			_ACTIVE[SOPHIA] = active;
-
-			LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
-			obj->SetAnimationSet(ani_set);
-			objects.push_back(obj);
-			DebugOut(L"[INFO] SOPHIA object created!\n");
+			DebugOut(L"[ERROR] SOPHIA object was created before!\n");
+			return;
 		}
-		break;
+
+
+		obj = CSophia::GetInstance();
+		sophia = (CSophia*)obj;
+		sophia->SetStartPos(x, y);
+		bool active = atoi(tokens[4].c_str());
+		_ACTIVE[SOPHIA] = active;
+
+		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
+		obj->SetAnimationSet(ani_set);
+		objects.push_back(obj);
+		DebugOut(L"[INFO] SOPHIA object created!\n");
+	}
+	break;
 	case OBJECT_TYPE_JASON:
 	{
 		if (jason != NULL)
@@ -194,25 +196,25 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	}
 	break;
 	case OBJECT_TYPE_BIG_JASON:
+	{
+		if (bigJason != NULL)
 		{
-			if (bigJason != NULL)
-			{
-				DebugOut(L"[ERROR] BIG JASON object was created before!\n");
-				return;
-			}
-
-			obj = CBigJason::GetInstance();
-			bigJason = (CBigJason*)obj;
-			bigJason->SetStartPos(x, y);
-			bool active = atoi(tokens[4].c_str());
-			_ACTIVE[BIG_JASON] = active;
-
-			LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
-			obj->SetAnimationSet(ani_set);
-			objects.push_back(obj);
-			DebugOut(L"[INFO] BIG JASON object created!\n");
+			DebugOut(L"[ERROR] BIG JASON object was created before!\n");
+			return;
 		}
-		break;
+
+		obj = CBigJason::GetInstance();
+		bigJason = (CBigJason*)obj;
+		bigJason->SetStartPos(x, y);
+		bool active = atoi(tokens[4].c_str());
+		_ACTIVE[BIG_JASON] = active;
+
+		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
+		obj->SetAnimationSet(ani_set);
+		objects.push_back(obj);
+		DebugOut(L"[INFO] BIG JASON object created!\n");
+	}
+	break;
 	case OBJECT_TYPE_BRICK:
 	{
 		float w = atof(tokens[4].c_str());
@@ -222,14 +224,14 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		objects.push_back(obj);
 		break;
 	}
-	case OBJECT_TYPE_GOLEM: 
+	case OBJECT_TYPE_GOLEM:
 	{
-		obj = new CGolem(x, y, sophia); 
+		obj = new CGolem(x, y, sophia);
 		obj->SetPosition(x, y);
 		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
 		obj->SetAnimationSet(ani_set);
 		listEnemies.push_back(obj);
-		
+
 		break;
 
 	}
@@ -245,7 +247,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	}
 	case OBJECT_TYPE_WORMS:
 	{
-		obj = new CWorm(x, y, sophia); 
+		obj = new CWorm(x, y, sophia);
 		obj->SetPosition(x, y);
 		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
 		obj->SetAnimationSet(ani_set);
@@ -271,7 +273,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		listEnemies.push_back(obj);
 		break;
 	}
-	case OBJECT_TYPE_INSECT: 
+	case OBJECT_TYPE_INSECT:
 	{
 		obj = new CInsect(x, y, sophia);
 		obj->SetPosition(x, y);
@@ -280,7 +282,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		listEnemies.push_back(obj);
 		break;
 	}
-	case OBJECT_TYPE_ORB: 
+	case OBJECT_TYPE_ORB:
 	{
 		obj = new COrb(x, y, sophia);
 		obj->SetPosition(x, y);
@@ -289,7 +291,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		listEnemies.push_back(obj);
 		break;
 	}
-	case OBJECT_TYPE_SHIP: 
+	case OBJECT_TYPE_SHIP:
 	{
 		obj = new CShip(x, y, sophia);
 		obj->SetPosition(x, y);
@@ -301,10 +303,26 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 
 	case OBJECT_TYPE_PORTAL:
 	{
-		float r = atof(tokens[4].c_str());
-		float b = atof(tokens[5].c_str());
-		int scene_id = atoi(tokens[6].c_str());
-		obj = new CPortal(x, y, r, b, scene_id);
+		int sceneID = atoi(tokens[3].c_str());
+		int porID = atoi(tokens[4].c_str());
+		int dir = atoi(tokens[5].c_str());
+		int type = atoi(tokens[6].c_str());
+		float xDes = atof(tokens[7].c_str());
+		float yDes = atof(tokens[8].c_str());
+		ani_set_id = atoi(tokens[9].c_str());
+		obj = new CPortal(x, y, sceneID, porID, dir, type, xDes, yDes);
+		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
+		obj->SetAnimationSet(ani_set);
+		listEnemies.push_back(obj);
+		break;
+	}
+	case OBJECT_TYPE_SCENE:
+	{
+		int sceneID = atoi(tokens[4].c_str());
+		int width = atoi(tokens[5].c_str());
+		int height = atoi(tokens[6].c_str());
+		MiniScene* miniS = new MiniScene(sceneID, x, y, width, height);
+		listScene.push_back(miniS);
 		break;
 	}
 	default:
@@ -388,8 +406,9 @@ void CPlayScene::Load()
 	DebugOut(L"[INFO] Done loading scene resources %s\n", sceneFilePath);
 	
 	// Khởi tạo camera
+	MiniScene* miniScene = listScene.at(0);
 	camera = CCamera::GetInstance();
-	camera->SetCamBound(map->GetMapWidth(), map->GetMapHeight());
+	camera->SetCamBound(miniScene->x, miniScene->y, miniScene->width, miniScene->height);
 
 	//Thiết lập trạng thái, vị trí khởi đầu,... cho đối tượng đang active
 	if (_ACTIVE[SOPHIA])
@@ -513,6 +532,22 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 			CBigJason::GetInstance()->Reset();
 		}
 		break;
+	case DIK_M:
+	{
+		CCamera* camera = CCamera::GetInstance();
+		camera->isSwitchScene = true;
+		D3DXVECTOR2 camPos = camera->GetCamPos();
+		camera->SwitchScenePos = D3DXVECTOR2(camPos.x - camera->GetWidth(), camPos.y);
+		break;
+	}
+	case DIK_N:
+	{
+		CCamera* camera = CCamera::GetInstance();
+		camera->isSwitchScene = true;
+		D3DXVECTOR2 camPos = camera->GetCamPos();
+		camera->SwitchScenePos = D3DXVECTOR2(camPos.x + camera->GetWidth(), camPos.y);
+		break;
+	}
 
 	}
 	if (_ACTIVE[SOPHIA])

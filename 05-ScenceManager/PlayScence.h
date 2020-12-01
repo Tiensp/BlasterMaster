@@ -20,6 +20,7 @@
 #include "Orbs.h"
 #include "BulletFloaters.h"
 #include "Insect.h"
+#include "MiniScene.h"
 
 class CPlayScene: public CScene
 {
@@ -34,6 +35,8 @@ protected:
 	vector<LPGAMEOBJECT> objects;	//một list obj lưu trữ các GameObj có trong Play Scene
 	vector<LPGAMEOBJECT> listEnemies;
 	vector<LPBulletObject> listBullet;
+	vector<MiniScene*>	listScene;
+	
 	/* Các hàm ParsSection dùng để đọc file */
 	void _ParseSection_TEXTURES(string line);
 	void _ParseSection_SPRITES(string line);
