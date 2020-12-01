@@ -16,6 +16,10 @@ CGolem::CGolem(float x, float y, LPGAMEOBJECT player)
 	this->y = y;
 	this->target = player;
 
+	objTag = ENEMY;
+	objType = GOLEM;
+
+
 }
 
 void CGolem::GetBoundingBox(float& left, float& top, float& right, float& bottom)

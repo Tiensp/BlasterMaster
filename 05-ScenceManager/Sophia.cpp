@@ -97,6 +97,16 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 					y += min_ty * dy + ny * 0.4f;
 					isColliBrick = true;
 				}
+				/*if (e->obj->objTag == ENEMY)
+				{
+					switch (objType)
+					{
+					case ORBS:
+						
+					default:
+						break;
+					}
+				}*/
 			}
 
 			//

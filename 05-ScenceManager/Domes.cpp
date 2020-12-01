@@ -18,6 +18,9 @@ CDomes::CDomes(float x, float y,float boundingHeight, float boundingWight, LPGAM
 	this->boundingHeigt = boundingHeight;
 	this->boundingWight = boundingWight;
 	this->target = player;
+
+	objTag = ENEMY;
+	objType = DOMES;
 }
 
 void CDomes::GetBoundingBox(float& left, float& top, float& right, float& bottom)

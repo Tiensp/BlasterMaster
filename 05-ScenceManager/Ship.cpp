@@ -16,6 +16,9 @@ CShip::CShip(float x, float y, LPGAMEOBJECT player)
 	this->y = y;
 	this->target = player;
 
+	objTag = ENEMY;
+	objType = SHIPS;
+
 }
 
 void CShip::GetBoundingBox(float& left, float& top, float& right, float& bottom)

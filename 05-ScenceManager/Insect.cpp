@@ -16,6 +16,9 @@ CInsect::CInsect(float x, float y, LPGAMEOBJECT player)
 	this->y = y;
 	this->target = player;
 
+	objTag = ENEMY;
+	objType = INSECTS;
+
 }
 
 void CInsect::GetBoundingBox(float& left, float& top, float& right, float& bottom)

@@ -16,6 +16,9 @@ CSkull::CSkull(float x, float y, LPGAMEOBJECT player)
 	this->y = y;
 	this->target = player;
 
+	objTag = ENEMY;
+	objType = SKULLS;
+
 }
 
 void CSkull::GetBoundingBox(float& left, float& top, float& right, float& bottom)

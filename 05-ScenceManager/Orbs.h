@@ -1,6 +1,7 @@
 #pragma once
 #include "GameObject.h"
 #include "Enemy.h"
+#include "GameDefine.h"
 
 #define ORB_ANI_WALKING_RIGHT 0
 #define ORB_ANI_WALKING_LEFT 1
@@ -8,8 +9,9 @@
 #define ORB_ANI_WALKING_RIGHT_DOWN	3
 #define ORB_ANI_WALKING_LEFT_UP 4
 #define ORB_ANI_WALKING_LEFT_DOWN 5
-#define ORB_ANI_ATTACKING_RIGHT 6
-#define ORB_ANI_ATTACKING_LEFT 7
+#define ORB_ANI_DEATH 6
+
+#define LAST_FRAME 2
 
 #define ORB_WALKING_SPEED 0.045f;
 #define	ORB_JUMPING_SPEED 0.04f;
@@ -28,6 +30,8 @@ class COrb : public Enemy
 	bool isFolow;  //theo player 
 	LPGAMEOBJECT target;
 	bool isAttack;
+	bool isDoneDeath;
+	bool isDeath;
 public:
 	COrb(float x, float y, LPGAMEOBJECT player);
 	virtual void SetState(int state);

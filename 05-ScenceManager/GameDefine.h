@@ -39,7 +39,7 @@ extern enum ObjectTAG
 {
 	None, //Default Object
 	Player,
-	Enemy,
+	ENEMY,
 	Misc
 };
 
@@ -56,7 +56,18 @@ extern enum ObjectTYPE
 	MAPID = 10000,
 	/* HP */
 	Health = 50,
-	HealthBar = 51
+	HealthBar = 51,
+
+	/*ENEMIES*/
+	GOLEM = 4,
+	DOMES = 5,
+	WORMS = 6,
+	FLOATERS = 7,
+	SKULLS = 8,
+	INSECTS = 9,
+	ORBS = 10,
+	SHIPS = 11
+
 };
 
 extern enum STATENAME

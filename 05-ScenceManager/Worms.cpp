@@ -16,6 +16,9 @@ CWorm::CWorm(float x, float y, LPGAMEOBJECT player)
 	this->y = y;
 	this->target = player;
 
+	objTag = ENEMY;
+	objType = WORMS;
+
 }
 
 void CWorm::GetBoundingBox(float& left, float& top, float& right, float& bottom)

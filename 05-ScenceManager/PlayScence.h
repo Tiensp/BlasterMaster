@@ -56,6 +56,7 @@ public:
 	CBigJason* GetBigJason() { return this->bigJason; }
 	CCamera* GetCamera() { return this->camera; }
 	CMap* GetMap() { return this->map; }
+	vector<LPGAMEOBJECT> GetListEnemies() { return this->listEnemies; }
 	//friend class CPlayScenceKeyHandler;
 };
 
