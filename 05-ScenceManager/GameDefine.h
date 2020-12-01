@@ -71,9 +71,8 @@ extern enum ObjectTYPE
 	SKULLS = 8,
 	INSECTS = 9,
 	ORBS = 10,
-	SHIPS = 11
+	SHIPS = 11,
 
-	HealthBar = 51,
 	/* Portal */
 	OverWorld = 500,
 	OverHead = 600
