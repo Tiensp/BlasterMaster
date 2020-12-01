@@ -2,8 +2,9 @@
 #include "GameObject.h"
 #include "State.h"
 #include "GameDefine.h"
-
+#include "SophiaBullet.h"
 #include "Health.h"
+#include "BulletObject.h"
 
 #define SOPHIA_WALKING_SPEED		0.09f 
 //0.1f
@@ -64,6 +65,7 @@ protected:
 
 	int health = 8;	// Máu nhân vật
 	RECT lastColliObj;
+	vector<BulletObject* > p_bullet_list;
 public: 
 	CSophia();
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT> *colliable_objects = NULL);
@@ -98,6 +100,7 @@ public:
 
 	void SetHealth(int hp) { health = hp; }
 	int GetHealth() { return health; }
+
 	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount64(); }
 
 	/* State */
@@ -105,6 +108,10 @@ public:
 
 
 	void Reset();
+
+	void set_bullet_list();
+	
+	vector<BulletObject*> Get_Bullet_List()  { return p_bullet_list; }
 
 	virtual void GetBoundingBox(float &left, float &top, float &right, float &bottom);
 	static CSophia* GetInstance();

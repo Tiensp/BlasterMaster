@@ -2,6 +2,7 @@
 
 Enemy::Enemy()
 {
+	isDeath = false;
 }
 
 Enemy::~Enemy()

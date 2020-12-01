@@ -213,12 +213,6 @@
     <ClCompile Include="StateCRAWL.cpp">
       <Filter>Framework\GameObject\State Machine\State CRAWL</Filter>
     </ClCompile>
-    <ClCompile Include="StateFALLTurn.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="StateJUMPGunUP.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Worms.cpp">
       <Filter>Framework\GameObject\Enemy</Filter>
     </ClCompile>
@@ -245,6 +239,18 @@
     </ClCompile>
     <ClCompile Include="Ship.cpp">
       <Filter>Framework\GameObject\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="StateFALLTurn.cpp">
+      <Filter>Framework\GameObject\State Machine\State FALL TURN</Filter>
+    </ClCompile>
+    <ClCompile Include="StateJUMPGunUP.cpp">
+      <Filter>Framework\GameObject\State Machine\State JUMP Gun UP</Filter>
+    </ClCompile>
+    <ClCompile Include="MiniScene.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SophiaBullet.cpp">
+      <Filter>BulletObject</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -386,12 +392,6 @@
     <ClInclude Include="resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="StateFALLTurn.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="StateJUMPGunUP.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Insect.h">
       <Filter>Framework\GameObject\Enemy</Filter>
     </ClInclude>
@@ -400,6 +400,21 @@
     </ClInclude>
     <ClInclude Include="Ship.h">
       <Filter>Framework\GameObject\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="SophiaBullet.h">
+      <Filter>BulletObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Golem.h">
+      <Filter>Framework\GameObject\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="StateFALLTurn.h">
+      <Filter>Framework\GameObject\State Machine\State FALL TURN</Filter>
+    </ClInclude>
+    <ClInclude Include="StateJUMPGunUP.h">
+      <Filter>Framework\GameObject\State Machine\State JUMP Gun UP</Filter>
+    </ClInclude>
+    <ClInclude Include="MiniScene.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

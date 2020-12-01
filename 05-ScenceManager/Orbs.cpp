@@ -53,13 +53,13 @@ void COrb::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	// reset untouchable timer if untouchable time has passed
 
 	// No collision occured, proceed normally
-
+	Attack();
 	if (coEvents.size() == 0)  //nếu không có va chạm, update bình thường
 	{
 		x += dx;
 		y += dy;
 
-		Attack();
+	
 	}
 	else //có va chạm
 	{

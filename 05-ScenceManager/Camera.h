@@ -13,6 +13,8 @@ class CCamera
 	int width;		
 	int height;
 
+	
+
 	RECT camBound;		  //Set biên giới hạn camera dựa vào kích thước map
 	
 	//LPGAMEOBJECT gameObj; //Lưu gameObj camera follow
@@ -42,8 +44,10 @@ public:
 	void UpdateAutoCam(DWORD dt);
 	void LockCam();
 	void UnlockCam();
-	void SetCamBound(float mapWidth, float mapHeight);
+	void SetCamBound(float x, float y, float mapWidth, float mapHeight);
 	void Update();
+	bool isSwitchScene;
+	D3DXVECTOR2 SwitchScenePos;
 };
 
 

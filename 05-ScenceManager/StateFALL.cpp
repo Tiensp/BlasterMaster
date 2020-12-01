@@ -71,6 +71,7 @@ void StateFALL::HandleKeyboard()
 	{
 		if (_ACTIVE[SOPHIA])
 		{
+			sophia->frameID = 0;
 			sophia->SwitchState(new StateRAISEDGun());
 			sophia->currentAni->ResetCurrentFrame();
 		}

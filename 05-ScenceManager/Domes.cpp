@@ -25,26 +25,29 @@ CDomes::CDomes(float x, float y,float boundingHeight, float boundingWight, LPGAM
 
 void CDomes::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
-	left = x;
-	top = y;
-	right = x + DOMES_BBOX_WIDTH;
-
-	if (state == DOMES_STATE_START)
-		bottom = y + DOMES_BBOX_HEIGHT_DIE;
-	else
+	if (!isDeath)
+	{
+		left = x;
+		top = y;
+		right = x + DOMES_BBOX_WIDTH;
 		bottom = y + DOMES_BBOX_HEIGHT;
+
+	/*	if (state == DOMES_STATE_START)
+			bottom = y + DOMES_BBOX_HEIGHT_DIE;
+		else
+			bottom = y + DOMES_BBOX_HEIGHT;*/
+	}
+
 }
 
 void CDomes::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	CGameObject::Update(dt, coObjects);
-	bullet.push_back(new BulletFloaters(x, y));
-	for (int i = 0; i < bullet.size(); i++)
+	Atack();
+	if (!isAtack)
 	{
-		bullet.at(i)->Update(dt, coObjects);		
+		Wall();
 	}
-	DebugOut(L"xbullet %f\n", bullet.at(0)->x);
-
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
 
@@ -54,18 +57,8 @@ void CDomes::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	if (coEvents.size() == 0)  //nếu không có va chạm, update bình thường	
 	{
-		
 		x += dx;
 		y += dy;
-		//DebugOut(L"number %d\n", numberCollisionBrick);
-		Atack(); 	
-		if (!isAtack)
-		{
-			Wall();
-		}
-		
-		//DebugOut(L"bottom %d\n,  y %f\n", this->rectBrick.bottom, this->y);
-			
 	}
 	else //có va chạm
 	{
@@ -75,9 +68,6 @@ void CDomes::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		
 		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);  // sắp xếp lại các sự kiện va chạm đầu tiên theo trục x, y 
 	
-		
-		
-
 		for (UINT i = 0; i < coEventsResult.size(); i++)
 		{
 			LPCOLLISIONEVENT e = coEventsResult[i];
@@ -232,6 +222,11 @@ void CDomes::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 void CDomes::Render()
 {
 	int ani;
+	if (this->GetState() == DOMES_STATE_DIE)
+	{
+		ani = 0;
+		return;
+	}
 	if (isAtack)
 	{
 		if (this->GetState() == DOMES_STATE_ATACK_NX)
@@ -289,13 +284,8 @@ void CDomes::Render()
 	}
 	
 	animation_set->at(ani)->Render(x, y);
-	for (int i = 0; i < bullet.size(); i++)
-	{
-		bullet.at(0)->Render();
-
-
-
-	}
+	
+	
 	
 
 
@@ -437,6 +427,11 @@ void CDomes::SetState(int state)
 			vx = -0.1f;
 			ny = -1;
 		}
+		break;
+	case DOMES_STATE_DIE:
+		isDeath = true;
+		vx = 0;
+		vy = 0;
 		break;
 	}
 }
