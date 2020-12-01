@@ -21,6 +21,7 @@
 #include "BulletFloaters.h"
 #include "Insect.h"
 #include "MiniScene.h"
+#include "Portal.h"
 
 class CPlayScene: public CScene
 {
@@ -36,6 +37,7 @@ protected:
 	vector<LPGAMEOBJECT> listEnemies;
 	vector<LPBulletObject> listBullet;
 	vector<MiniScene*>	listScene;
+	vector<LPGAMEOBJECT> listPortal;
 	
 	/* Các hàm ParsSection dùng để đọc file */
 	void _ParseSection_TEXTURES(string line);
@@ -60,6 +62,7 @@ public:
 	CBigJason* GetBigJason() { return this->bigJason; }
 	CCamera* GetCamera() { return this->camera; }
 	CMap* GetMap() { return this->map; }
+	vector<MiniScene*> GetListScene() { return listScene; }
 	//friend class CPlayScenceKeyHandler;
 };
 

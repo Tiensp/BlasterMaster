@@ -8,6 +8,7 @@
 #include "Goomba.h"
 #include "Portal.h"
 #include "Domes.h"
+#include "Camera.h"
 
 #include "StateIDLE.h"
 #include "StateTURN.h"
@@ -83,7 +84,7 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			//	x += nx*abs(rdx); 
 
 			// block every object first!
-			x += min_tx * dx + nx * 0.4f;
+			
 			/*y += min_ty*dy + ny*0.4f;*/
 
 			if (nx != 0) vx = 0;
@@ -98,8 +99,33 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 					lastColliObj.top = br->y;
 					lastColliObj.right = lastColliObj.left + br->width;
 					lastColliObj.bottom = lastColliObj.top + br->height;
+					x += min_tx * dx + nx * 0.4f;
 					y += min_ty * dy + ny * 0.4f;
 					isColliBrick = true;
+				}
+				else if (dynamic_cast<Enemy*>(e->obj)) // if e->obj is Goomba 
+				{
+					x += dx;
+					health -= 1;
+				}
+				else if (e->obj->objTag == Portal)
+				{
+					x += dx;
+					CPortal* por = dynamic_cast<CPortal*>(e->obj);
+					if (e->nx == -1 && por->nx == 1)
+					{
+						CCamera* camera = CCamera::GetInstance();
+						camera->isSwitchScene = true;
+						D3DXVECTOR2 camPos = camera->GetCamPos();
+						camera->SwitchScenePos = D3DXVECTOR2(camPos.x + camera->GetWidth(), camPos.y);
+					}
+					else if (e->nx == 1 && por->nx == -1)
+					{
+						CCamera* camera = CCamera::GetInstance();
+						camera->isSwitchScene = true;
+						D3DXVECTOR2 camPos = camera->GetCamPos();
+						camera->SwitchScenePos = D3DXVECTOR2(camPos.x - camera->GetWidth(), camPos.y);
+					}
 				}
 			}
 
@@ -143,7 +169,10 @@ void CSophia::Render()
 			}
 		}
 
-		currentAni->Render(x_render, y_render);
+		if (renderFrame)
+			currentAni->RenderFrame(frameID, x, y);
+		else
+			currentAni->Render(x, y);
 		RenderBoundingBox();
 
 		for (int i = 0; i < p_bullet_list.size(); i++)

@@ -313,7 +313,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj = new CPortal(x, y, sceneID, porID, dir, type, xDes, yDes);
 		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
 		obj->SetAnimationSet(ani_set);
-		listEnemies.push_back(obj);
+		listPortal.push_back(obj);
 		break;
 	}
 	case OBJECT_TYPE_SCENE:
@@ -406,7 +406,7 @@ void CPlayScene::Load()
 	DebugOut(L"[INFO] Done loading scene resources %s\n", sceneFilePath);
 	
 	// Khởi tạo camera
-	MiniScene* miniScene = listScene.at(0);
+	MiniScene* miniScene = listScene.at(1);
 	camera = CCamera::GetInstance();
 	camera->SetCamBound(miniScene->x, miniScene->y, miniScene->width, miniScene->height);
 	//camera->SetCamBound(0, 0, map->GetMapWidth(), map->GetMapHeight());
@@ -440,7 +440,10 @@ void CPlayScene::Update(DWORD dt)
 	{
 		coObjects.push_back(listEnemies[i]);
 	}
-
+	for (int i = 0; i < listPortal.size(); i++)
+	{
+		coObjects.push_back(listPortal[i]);
+	}
 	
 
 	for (int i = 0; i < objects.size(); i++)
@@ -482,6 +485,8 @@ void CPlayScene::Render()
 		objects[i]->Render();
 	for (int i = 0; i < listEnemies.size(); i++)
 		listEnemies[i]->Render();
+	for (int i = 0; i < listPortal.size(); i++)
+		listPortal[i]->Render();
 	for (int i = 0; i < listBullet.size(); i++)
 		listBullet[i]->Render();
 	hud->Render();
@@ -549,6 +554,21 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 		D3DXVECTOR2 camPos = camera->GetCamPos();
 		camera->SwitchScenePos = D3DXVECTOR2(camPos.x + camera->GetWidth(), camPos.y);
 		break;
+	}
+	case DIK_B:
+	{
+		if (_ACTIVE[SOPHIA])
+		{
+			CPlayScene* scene = ((CPlayScene*)scence);
+			MiniScene* miniScene = scene->GetListScene().at(0);
+			CCamera* camera = CCamera::GetInstance();
+			camera->SetCamBound(miniScene->x, miniScene->y, miniScene->width, miniScene->height);
+			CSophia* sophia = CSophia::GetInstance();
+			sophia->SetStartPos(1100, 800);
+			sophia->Reset();
+
+			break;
+		}
 	}
 
 	}
