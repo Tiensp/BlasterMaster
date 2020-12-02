@@ -406,10 +406,10 @@ void CPlayScene::Load()
 	DebugOut(L"[INFO] Done loading scene resources %s\n", sceneFilePath);
 	
 	// Khởi tạo camera
-	MiniScene* miniScene = listScene.at(1);
+	MiniScene* miniScene = listScene.at(0);
 	camera = CCamera::GetInstance();
-	//camera->SetCamBound(miniScene->x, miniScene->y, miniScene->width, miniScene->height);
-	camera->SetCamBound(0, 0, map->GetMapWidth(), map->GetMapHeight());
+	camera->SetCamBound(miniScene->x, miniScene->y, miniScene->width, miniScene->height);
+	//camera->SetCamBound(0, 0, map->GetMapWidth(), map->GetMapHeight());
 
 
 	//Thiết lập trạng thái, vị trí khởi đầu,... cho đối tượng đang active

@@ -4,7 +4,7 @@
 #include "Jason.h"
 #include "BigJason.h"
 
-#define PULL_SCREEN_Y	28
+#define PULL_SCREEN_Y	44
 
 CCamera* CCamera::__intance = NULL;
 
@@ -12,8 +12,7 @@ CCamera* CCamera::GetInstance()
 {
 	if (__intance == NULL)
 	{
-		__intance = new CCamera(CGame::GetInstance()->GetScreenWidth(), 
-								CGame::GetInstance()->GetScreenWidth());
+		__intance = new CCamera(CAMERA_WIDTH, CAMERA_HEIGHT);
 	}
 		
 	return __intance;
@@ -121,16 +120,12 @@ void CCamera::Update()
 
 		if (camPos.y < camBound.top)
 			camPos.y = camBound.top;
-		/*
-			Khi đặt lại camPos nếu vượt qua camBound sẽ dẫn đến việc không render hết được map
-			nguyên nhân do độ kích thước map đôi lúc không chia hết cho kích thước camera
-			nên ở đây mình + Pull screen (có thể theo chiều x or y) để có thể nhìn thấy toàn bộ map
-		*/
+
 		if (camPos.x > camBound.right - width)
 			camPos.x = camBound.right - width;
 
-		if (camPos.y > camBound.bottom - height + PULL_SCREEN_Y)
-			camPos.y = camBound.bottom - height + PULL_SCREEN_Y;
+		if (camPos.y > camBound.bottom - height /*+ PULL_SCREEN_Y*/)
+			camPos.y = camBound.bottom - height /*+ PULL_SCREEN_Y*/;
 	}
 	else
 	{
