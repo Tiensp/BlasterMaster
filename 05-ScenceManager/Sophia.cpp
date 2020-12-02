@@ -30,6 +30,8 @@ CSophia::CSophia() : CGameObject()
 	this->y = y; 
 	y_render = y;
 
+	objTag = Player;
+
 
 
 }

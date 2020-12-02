@@ -16,6 +16,9 @@ CInsect::CInsect(float x, float y, LPGAMEOBJECT player)
 	this->y = y;
 	this->target = player;
 
+	objTag = ENEMY;
+	objType = INSECTS;
+
 }
 
 void CInsect::GetBoundingBox(float& left, float& top, float& right, float& bottom)
@@ -170,11 +173,18 @@ void CInsect::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 						}
 					}
 				}
+				if (e->obj->objTag == Player)
+				{
+					x += dx;
+					y += dy;
+				}
+				if (e->obj->objTag == ENEMY)
+				{
+					x += dx;
+					y += dy;
+				}
 			}
 		}
-
-
-
 	}
 }
 

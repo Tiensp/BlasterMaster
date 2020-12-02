@@ -16,6 +16,9 @@ CSkull::CSkull(float x, float y, LPGAMEOBJECT player)
 	this->y = y;
 	this->target = player;
 
+	objTag = ENEMY;
+	objType = SKULLS;
+
 }
 
 void CSkull::GetBoundingBox(float& left, float& top, float& right, float& bottom)
@@ -73,10 +76,6 @@ void CSkull::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		//if (rdx != 0 && rdx!=dx)
 		//	x += nx*abs(rdx); 
 
-
-		x += min_tx * dx + nx * 0.4f;  //cập nhật lại vị trí x
-		y += min_ty * dy + ny * 0.4f;	// cập nhật lại vị trí y  để tránh bị hụt xuống
-
 		// block every object first!
 		{
 			for (UINT i = 0; i < coEventsResult.size(); i++)
@@ -133,11 +132,13 @@ void CSkull::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 						}
 					}*/
 				}
+				if (e->obj->objTag == ENEMY)
+				{
+					x += dx;  
+					y += dy;
+				}
 			}
 		}
-
-
-		
 	}
 }
 

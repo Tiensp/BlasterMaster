@@ -43,7 +43,7 @@ extern enum ObjectTAG
 {
 	None, //Default Object
 	Player,
-	//Enemy,
+	ENEMY,
 	Misc,
 	Portal
 };
@@ -62,6 +62,17 @@ extern enum ObjectTYPE
 	/* HP */
 	Health = 50,
 	HealthBar = 51,
+
+	/*ENEMIES*/
+	GOLEM = 4,
+	DOMES = 5,
+	WORMS = 6,
+	FLOATERS = 7,
+	SKULLS = 8,
+	INSECTS = 9,
+	ORBS = 10,
+	SHIPS = 11,
+
 	/* Portal */
 	OverWorld = 500,
 	OverHead = 600

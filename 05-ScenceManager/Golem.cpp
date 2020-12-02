@@ -16,6 +16,10 @@ CGolem::CGolem(float x, float y, LPGAMEOBJECT player)
 	this->y = y;
 	this->target = player;
 
+	objTag = ENEMY;
+	objType = GOLEM;
+
+
 }
 
 CGolem::~CGolem()
@@ -83,13 +87,11 @@ void CGolem::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);  // sắp xếp lại các sự kiện va chạm đầu tiên theo trục x, y 
 
-		x += min_tx * dx + nx * 0.4f;  
+		//x += min_tx * dx + nx * 0.4f;  
 
-		if (nx != 0) vx = 0;
-		if (ny != 0) vy = 0;
+		//if (nx != 0) vx = 0;
+		//if (ny != 0) vy = 0;
 
-		
-		else
 		{
 			for (UINT i = 0; i < coEventsResult.size(); i++)
 			{
@@ -114,11 +116,22 @@ void CGolem::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					}
 
 				}
+
+				if (e->obj->objTag == ENEMY)
+				{
+					x += dx;
+					y += dy;
+				}
+				if (e->obj->objTag == Player)
+				{
+					x += dx;
+					y += dy;
+				}
 			
 			}
 
 		}
-		for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
+		//for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
 	}
 }
 

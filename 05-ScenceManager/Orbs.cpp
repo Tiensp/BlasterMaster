@@ -15,13 +15,15 @@ COrb::COrb(float x, float y, LPGAMEOBJECT player)
 	this->x = x;
 	this->y = y;
 	this->target = player;
+	objTag = ENEMY;
+	objType = ORBS;
 	hp = 2;
 
 }
 
 void COrb::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
-	if (!isDeath)
+	if (!isDoneDeath)
 	{
 		left = x;
 		top = y;
@@ -32,7 +34,7 @@ void COrb::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 		else
 			bottom = y + ORB_BBOX_HEIGHT;
 	}
-
+	else return;
 }
 
 void COrb::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
@@ -50,6 +52,8 @@ void COrb::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	coEvents.clear();
 
+	// turn off collision when die 
+	//nếu không chết thì kiểm tra toàn bộ va chạm với các đối tượng khác
 	CalcPotentialCollisions(coObjects, coEvents);
 
 	if (coEvents.size() == 0)  //nếu không có va chạm, update bình thường
@@ -64,6 +68,7 @@ void COrb::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		float rdx = 0;
 		float rdy = 0;
 
+		// TODO: This is a very ugly designed function!!!!
 		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);  // sắp xếp lại các sự kiện va chạm đầu tiên theo trục x, y 
 
 		{
@@ -73,26 +78,37 @@ void COrb::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 				if (dynamic_cast<CBrick*>(e->obj)) // if e->obj is Goomba 
 				{
-					
-					x += min_tx * dx + nx * 0.4f;  //cập nhật lại vị trí x
-					y += min_ty * dy + ny * 0.4f;
-					if (nx != 0) vx = 0;
-					if (ny != 0) vy = 0;// cập nhật lại vị trí y  để tránh bị hụt xuống
 					isAttack = false;
+					isDeath = false;
 
-					CBrick* brick = dynamic_cast<CBrick*>(e->obj);
+					x += min_tx * dx + nx * 0.4f;  //cập nhật lại vị trí x
+					vy += 0.0005f * dt;
 
 					// jump on top >> kill Goomba and deflect a bit 
 					if (e->nx != 0)
 					{
 						if (e->nx > 0)
 						{
-							this->SetState(ORB_ANI_WALKING_RIGHT);
+							if (nx > 0)
+							{
+								this->SetState(ORB_ANI_WALKING_RIGHT);
+							}
+							else if (nx < 0)
+							{
+								this->SetState(ORB_ANI_WALKING_LEFT);
+							}
 	
 						}
 						else if (e->nx < 0)
 						{
-							this->SetState(ORB_ANI_WALKING_LEFT);
+							if (nx < 0)
+							{
+								this->SetState(ORB_ANI_WALKING_LEFT);
+							}
+							else if (nx > 0)
+							{
+								this->SetState(ORB_ANI_WALKING_RIGHT);
+							}
 						}
 
 					}
@@ -102,11 +118,17 @@ void COrb::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 						{
 							if (nx < 0)
 							{
-								this->SetState(ORB_ANI_WALKING_LEFT);
+								if (this->GetState() == ORB_ANI_WALKING_LEFT_DOWN)
+								{
+									this->SetState(ORB_ANI_WALKING_LEFT);
+								}
 							}
 							else if (nx > 0)
 							{
-								this->SetState(ORB_ANI_WALKING_RIGHT);
+								if (this->GetState() == ORB_ANI_WALKING_RIGHT_DOWN)
+								{
+									this->SetState(ORB_ANI_WALKING_RIGHT);
+								}
 							}
 						}
 						else if (e->ny < 0)
@@ -122,11 +144,28 @@ void COrb::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 						}
 					}
 				}
+				if (e->obj->objTag == Player)
+				{
+					isAttack = true;
+
+					if (e->nx != 0)
+					{
+						isDeath = true;
+						this->SetState(ORB_ANI_DEATH);
+					}
+					else if (e->ny != 0)
+					{
+						isDeath = true;
+						this->SetState(ORB_ANI_DEATH);
+					}
+				}
+				if (e->obj->objTag == ENEMY)
+				{
+					x += dx;
+					//y += dy;
+				}
 			}
 		}
-
-
-
 	}
 }
 
@@ -134,105 +173,95 @@ void COrb::Attack()
 {
 	if (abs(this->x - target->x) <= 70 && abs(this->y - target->y) <= 70)
 	{
+		if (this->x - target->x <= 0)
+		{
+			nx = 1;
+		}
+		else nx = -1;
+
 		if (this->GetState() == ORB_ANI_WALKING_LEFT)
 		{
-			this->SetState(ORB_ANI_WALKING_LEFT_DOWN);
-		}
-		if (abs(this->x - target->x) <= 15 && abs(this->y - target->y) <= 15)
-		{
-			isAttack = true;
-			if (this->GetState() == ORB_ANI_WALKING_LEFT_DOWN)
+			if (nx > 0)
 			{
-				this->SetState(ORB_ANI_ATTACKING_LEFT);
+				this->SetState(ORB_ANI_WALKING_RIGHT_DOWN);
+			}
+			else if (nx < 0)
+			{
+				this->SetState(ORB_ANI_WALKING_LEFT_DOWN);
 			}
 		}
 		else if (this->GetState() == ORB_ANI_WALKING_RIGHT)
 		{
-			
+			if (nx > 0)
+			{
+				this->SetState(ORB_ANI_WALKING_RIGHT_DOWN);
+			}
+			else if (nx < 0)
+			{
+				this->SetState(ORB_ANI_WALKING_LEFT_DOWN);
+			}
 		}
 	}
-	else 
-	{
-		isAttack = false;
-		
-	}
 }
-
-
 
 void COrb::Render()
 {
 	int ani = ORB_ANI_WALKING_RIGHT;
-	if (isDone) return;
-	if (isDeath)
-	{
-		isDone = true;
-	}
+
+	if (isDoneDeath) return;
 	
 	if (isAttack)
 	{
-		if (nx > 0)
+		if (isDeath)
 		{
-			ani = ORB_ANI_ATTACKING_RIGHT;
-		}
-		else if (nx < 0)
-		{
-			ani = ORB_ANI_ATTACKING_LEFT;
+			ani = ORB_ANI_DEATH;
+			animation_set->at(ani)->Render(x, y);
+			if (animation_set->at(ani)->GetCurrentFrame() == 3)
+			{
+				isDoneDeath = true;
+			}
+			return;
 		}
 	}
 	else 
 	{
-		if (vx > 0)
+		isDeath = false;
+		if (nx > 0)
 		{
-			ani = ORB_ANI_WALKING_RIGHT;
+			if (ny > 0)
+			{
+				ani = ORB_ANI_WALKING_RIGHT_DOWN;
+			}
+			else if (ny < 0)
+			{
+				ani = ORB_ANI_WALKING_RIGHT_UP;
+			}
+			else if (ny == 0)
+			{
+				ani = ORB_ANI_WALKING_RIGHT;
+			}
 		}
-		else if (vx < 0)
+		else if (nx < 0)
 		{
-			ani = ORB_ANI_WALKING_LEFT;
-		}
-		else if (vx > 0 && vy > 0)
-		{
-			ani = ORB_ANI_WALKING_RIGHT_DOWN;
-		}
-		else if (vx < 0 && vy > 0)
-		{
-			ani = ORB_ANI_WALKING_LEFT_DOWN;
-		}
-		else if (vx > 0 && vy < 0)
-		{
-			ani = ORB_ANI_WALKING_RIGHT_UP;
-		}
-		else if (vx < 0 && vy < 0)
-		{
-			ani = ORB_ANI_WALKING_LEFT_UP;
+			if (ny > 0)
+			{
+				ani = ORB_ANI_WALKING_LEFT_DOWN;
+			}
+			else if (ny < 0)
+			{
+				ani = ORB_ANI_WALKING_LEFT_UP;
+			}
+			else if (ny == 0)
+			{
+				ani = ORB_ANI_WALKING_LEFT;
+			}
 		}
 	}
-
-
-	DebugOut(L"ani: %d\n", ani);
-	DebugOut(L"attack: %d\n", isAttack);
 
 	animation_set->at(ani)->Render(x, y);
 
 	RenderBoundingBox();
 }
-
-//void CSkull::flowPlayer(LPGAMEOBJECT player)
-//{
-//	if (abs(this->x - player->x) <= 100)
-//	{
-//		if (this->x - player->x <= 0)
-//		{
-//			this->nx = -1;
-//		}
-//		else
-//		{
-//			this->nx = 1;
-//		}
-//	}
-//
-//}
-
 
 
 void COrb::SetState(int state)
@@ -281,14 +310,9 @@ void COrb::SetState(int state)
 		vy = ORB_JUMPING_SPEED;
 		ny = 1;
 		break;
-	case ORB_ANI_ATTACKING_LEFT:
+	case ORB_ANI_DEATH:
 		vx = 0;
-		nx = -1;
-		vy = 0;
-		ny = 0;
-	case ORB_ANI_ATTACKING_RIGHT:
-		vx = 0;
-		nx = 1;
+		nx = 0;
 		vy = 0;
 		ny = 0;
 		break;
