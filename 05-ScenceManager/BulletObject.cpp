@@ -162,7 +162,7 @@ void BulletObject::Render()
 	{
 		ani = BULLETSOPHIA_STATE_ISCOL_BRICK;
 		animation_set->at(ani)->Render(x, y);
-		if (animation_set->at(ani)->GetCurrentFrame() == 2)
+		if (animation_set->at(ani)->GetCurrentFrame() == 3)
 		{
 			isDone = true;
 		}

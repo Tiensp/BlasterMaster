@@ -122,6 +122,11 @@ void CShip::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 						}
 					}*/
 				}
+				if (e->obj->objTag == ENEMY)
+				{
+					x += dx;
+					y += dy;
+				}
 			}
 		}
 

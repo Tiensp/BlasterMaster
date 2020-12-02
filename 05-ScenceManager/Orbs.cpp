@@ -21,14 +21,18 @@ COrb::COrb(float x, float y, LPGAMEOBJECT player)
 
 void COrb::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
-	left = x;
-	top = y;
-	right = x + ORB_BBOX_WIDTH;
+	if (!isDoneDeath)
+	{
+		left = x;
+		top = y;
+		right = x + ORB_BBOX_WIDTH;
 
-	if (state == ORB_STATE_DIE)
-		bottom = y + ORB_BBOX_HEIGHT_DIE;
-	else
-		bottom = y + ORB_BBOX_HEIGHT;
+		if (state == ORB_STATE_DIE)
+			bottom = y + ORB_BBOX_HEIGHT_DIE;
+		else
+			bottom = y + ORB_BBOX_HEIGHT;
+	}
+	else return;
 }
 
 void COrb::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
@@ -58,8 +62,6 @@ void COrb::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	{
 		x += dx;
 		y += dy;
-
-	
 	}
 	else //có va chạm
 	{
@@ -87,9 +89,7 @@ void COrb::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					isDeath = false;
 
 					x += min_tx * dx + nx * 0.4f;  //cập nhật lại vị trí x
-					y += min_ty * dy + ny * 0.4f;	// cập nhật lại vị trí y  để tránh bị hụt xuống
-
-					CBrick* brick = dynamic_cast<CBrick*>(e->obj);
+					vy += 0.0005f * dt;
 
 					// jump on top >> kill Goomba and deflect a bit 
 					if (e->nx != 0)
@@ -129,7 +129,6 @@ void COrb::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 								{
 									this->SetState(ORB_ANI_WALKING_LEFT);
 								}
-								else this->SetState(ORB_ANI_WALKING_LEFT);
 							}
 							else if (nx > 0)
 							{
@@ -137,75 +136,40 @@ void COrb::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 								{
 									this->SetState(ORB_ANI_WALKING_RIGHT);
 								}
-								else this->SetState(ORB_ANI_WALKING_RIGHT);
 							}
 						}
 						else if (e->ny < 0)
 						{
 							if (nx < 0)
 							{
-								if (this->GetState() == ORB_ANI_WALKING_LEFT_DOWN)
-								{
-									this->SetState(ORB_ANI_WALKING_LEFT);
-								}
-								else this->SetState(ORB_ANI_WALKING_LEFT);
+								this->SetState(ORB_ANI_WALKING_LEFT);
 							}
 							else if (nx > 0)
 							{
-								if (this->GetState() == ORB_ANI_WALKING_RIGHT_DOWN)
-								{
-									this->SetState(ORB_ANI_WALKING_RIGHT);
-								}
-								else this->SetState(ORB_ANI_WALKING_RIGHT);
+								this->SetState(ORB_ANI_WALKING_RIGHT);
 							}
 						}
 					}
 				}
-				if (dynamic_cast<CSophia*>(e->obj))
+				if (e->obj->objTag == Player)
 				{
 					isAttack = true;
 
-					x += min_tx * dx + nx * 0.4f;  //cập nhật lại vị trí x
-					y += min_ty * dy + ny * 0.4f;	// cập nhật lại vị trí y  để tránh bị hụt xuống
-
-					CSophia* sophia = dynamic_cast<CSophia*>(e->obj);
-
 					if (e->nx != 0)
 					{
-						if (e->nx > 0)
-						{
-							if (nx > 0)
-							{
-								this->SetState(ORB_ANI_DEATH);
-							}
-							else if (nx < 0)
-							{
-								this->SetState(ORB_ANI_DEATH);
-							}
-						}
-						else if (e->nx < 0)
-						{
-							if (nx > 0)
-							{
-								this->SetState(ORB_ANI_DEATH);
-							}
-							else if (nx < 0)
-							{
-								this->SetState(ORB_ANI_DEATH);
-							}
-						}
+						isDeath = true;
+						this->SetState(ORB_ANI_DEATH);
 					}
 					else if (e->ny != 0)
 					{
-						if (e->ny > 0)
-						{
-							this->SetState(ORB_ANI_DEATH);
-						}
-						else if (e->ny < 0)
-						{
-							this->SetState(ORB_ANI_DEATH);
-						}
+						isDeath = true;
+						this->SetState(ORB_ANI_DEATH);
 					}
+				}
+				if (e->obj->objTag == ENEMY)
+				{
+					x += dx;
+					//y += dy;
 				}
 			}
 		}
@@ -250,24 +214,20 @@ void COrb::Attack()
 void COrb::Render()
 {
 	int ani = ORB_ANI_WALKING_RIGHT;
+
+	if (isDoneDeath) return;
 	
 	if (isAttack)
 	{
-		ani = ORB_ANI_DEATH;
-		isDeath = true; 
 		if (isDeath)
 		{
-			DebugOut(L"isDeath %d\n", isDeath);
-			DebugOut(L"isDoneDeath %d\n", isDoneDeath);
-
-			if (animation_set->at(ani)->GetIsComplete())
+			ani = ORB_ANI_DEATH;
+			animation_set->at(ani)->Render(x, y);
+			if (animation_set->at(ani)->GetCurrentFrame() == 3)
 			{
 				isDoneDeath = true;
 			}
-		}
-		else
-		{
-			isDoneDeath = false;
+			return;
 		}
 	}
 	else 
@@ -304,15 +264,6 @@ void COrb::Render()
 			}
 		}
 	}
-
-	
-
-	if (isDoneDeath)
-	{
-		return;
-	}
-
-	//DebugOut(L"alo: %d\n", animation_set->at(ani)->GetLastFrame());
 
 	animation_set->at(ani)->Render(x, y);
 

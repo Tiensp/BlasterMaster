@@ -1,5 +1,6 @@
 #pragma once
 #include "GameObject.h"
+#include "Enemy.h"
 #define SKULL_ANI_WALKING_RIGHT	0
 #define SKULL_ANI_WALKING_LEFT 1
 #define SKULL_ANI_ATTACKING_RIGHT 2
@@ -20,7 +21,7 @@
 #define SKULL_STATE_ATTACKING 300
 #define SKULL_STATE_COLLISION 400
 
-class CSkull : public CGameObject
+class CSkull : public Enemy
 {
 	bool isFolow;  //theo player 
 	LPGAMEOBJECT target;

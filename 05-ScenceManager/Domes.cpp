@@ -208,7 +208,16 @@ void CDomes::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			
 			
 			}
-			
+			if (e->obj->objTag == ENEMY)
+			{
+				x += dx;
+				y += dy;
+			}
+			if (e->obj->objTag == Player)
+			{
+				x += dx;
+				y += dy;
+			}
 		}
 
 
