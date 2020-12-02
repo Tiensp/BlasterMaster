@@ -64,6 +64,9 @@ public:
 	int width;
 	int height;
 
+	int hp;
+
+
 	int state;
 
 	ObjectTAG objTag;	// Thẻ (tag) obj
@@ -90,6 +93,9 @@ public:
 	void RenderBoundingBox();
 
 	void SetAnimationSet(LPANIMATION_SET ani_set) { animation_set = ani_set; }
+
+	void SetHp(int dameBullet);
+	int Get_Hp() { return hp; }
 
 	LPCOLLISIONEVENT SweptAABBEx(LPGAMEOBJECT coO);
 	void CalcPotentialCollisions(vector<LPGAMEOBJECT> *coObjects, vector<LPCOLLISIONEVENT> &coEvents);

@@ -15,50 +15,48 @@ COrb::COrb(float x, float y, LPGAMEOBJECT player)
 	this->x = x;
 	this->y = y;
 	this->target = player;
+	hp = 2;
 
 }
 
 void COrb::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
-	left = x;
-	top = y;
-	right = x + ORB_BBOX_WIDTH;
+	if (!isDeath)
+	{
+		left = x;
+		top = y;
+		right = x + ORB_BBOX_WIDTH;
 
-	if (state == ORB_STATE_DIE)
-		bottom = y + ORB_BBOX_HEIGHT_DIE;
-	else
-		bottom = y + ORB_BBOX_HEIGHT;
+		if (state == ORB_STATE_DIE)
+			bottom = y + ORB_BBOX_HEIGHT_DIE;
+		else
+			bottom = y + ORB_BBOX_HEIGHT;
+	}
+
 }
 
 void COrb::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 
-	//DebugOut(L"golumnvX: %f, golumnvY: %f\n", vx, vy);
+
 	CGameObject::Update(dt, coObjects);
-	//DebugOut(L"golumnvX: %f, golumnvY: %f\n", vx, vy);
-
-	//DebugOut(L"golumnvX: %f, golumnvY: %f\n", target->nx, this->nx);
-
+	if (isDone) return;
+	if (hp <= 0) isDeath = true;
+	if (isDeath) return;
+	Attack();
 
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
 
 	coEvents.clear();
 
-	// turn off collision when die 
-	//nếu không chết thì kiểm tra toàn bộ va chạm với các đối tượng khác
 	CalcPotentialCollisions(coObjects, coEvents);
 
-	// reset untouchable timer if untouchable time has passed
-
-	// No collision occured, proceed normally
-	Attack();
 	if (coEvents.size() == 0)  //nếu không có va chạm, update bình thường
 	{
 		x += dx;
 		y += dy;
 
-	
 	}
 	else //có va chạm
 	{
@@ -66,17 +64,8 @@ void COrb::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		float rdx = 0;
 		float rdy = 0;
 
-		// TODO: This is a very ugly designed function!!!!
 		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);  // sắp xếp lại các sự kiện va chạm đầu tiên theo trục x, y 
 
-		// how to push back Sophia if collides with a moving objects, what if Sophia is pushed this way into another object?
-		//if (rdx != 0 && rdx!=dx)
-		//	x += nx*abs(rdx); 
-
-
-	
-
-		// block every object first!
 		{
 			for (UINT i = 0; i < coEventsResult.size(); i++)
 			{
@@ -174,6 +163,11 @@ void COrb::Attack()
 void COrb::Render()
 {
 	int ani = ORB_ANI_WALKING_RIGHT;
+	if (isDone) return;
+	if (isDeath)
+	{
+		isDone = true;
+	}
 	
 	if (isAttack)
 	{

@@ -2,7 +2,7 @@
 
 Enemy::Enemy()
 {
-	isDeath = false;
+	
 }
 
 Enemy::~Enemy()
@@ -11,3 +11,7 @@ Enemy::~Enemy()
 void Enemy::Render()
 {
 }
+
+
+
+

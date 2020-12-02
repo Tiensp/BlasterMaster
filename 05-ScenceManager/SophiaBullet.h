@@ -1,16 +1,14 @@
-//#pragma once
-//#include "BulletObject.h"
-//class SophiaBullet : BulletObject
-//{
-//	float x_border;
-//	float y_border;
-//	bool isMove;
-//	int bulletType;
-//public:
-//	SophiaBullet(float start_x,float start_y);
-//	~SophiaBullet();
-//	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
-//	virtual void Render();
-//
-//};
+#include "BulletObject.h"
+#include "Enemy.h"
+#include "Brick.h"
 
+class SophiaBullet : public BulletObject
+{
+public:
+	SophiaBullet() {};
+	SophiaBullet(float _start_x, float _start_y);
+	~SophiaBullet();
+	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
+	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
+	virtual void Render();
+};

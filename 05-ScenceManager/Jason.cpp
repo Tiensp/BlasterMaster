@@ -115,7 +115,7 @@ void CJason::Render()
 			currentAni->RenderFrame(frameID, x, y);
 		else
 			currentAni->Render(x, y);
-		RenderBoundingBox();
+		/*RenderBoundingBox();*/
 	}
 }
 #pragma region Xử lý phím

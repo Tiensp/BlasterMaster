@@ -286,7 +286,7 @@ void CDomes::Render()
 	
 
 
-	RenderBoundingBox();
+	//RenderBoundingBox();
 }
 
 void CDomes::Wall()

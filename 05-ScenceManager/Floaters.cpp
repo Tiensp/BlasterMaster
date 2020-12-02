@@ -150,7 +150,7 @@ void CFloaters::Render()
 
 	animation_set->at(ani)->Render(x, y);
 
-	RenderBoundingBox();
+	//RenderBoundingBox();
 }
 
 void CFloaters::flowPlayer(LPGAMEOBJECT player)

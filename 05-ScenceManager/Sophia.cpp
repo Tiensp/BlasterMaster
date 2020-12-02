@@ -169,11 +169,11 @@ void CSophia::Render()
 			}
 		}
 
-		if (renderFrame)
-			currentAni->RenderFrame(frameID, x, y);
-		else
-			currentAni->Render(x, y);
-		RenderBoundingBox();
+		/*if (renderFrame)
+			currentAni->RenderFrame(frameID, x_render, y_render);
+		else*/
+			currentAni->Render(x_render, y_render);
+		//RenderBoundingBox();
 
 		for (int i = 0; i < p_bullet_list.size(); i++)
 		{
@@ -211,17 +211,18 @@ void CSophia::OnKeyDown(int keycode)
 		break;
 	case DIK_Z:
 	{
-		BulletObject* p_bullet = new BulletObject(this->x, this->y);
+		BulletObject* p_bullet = new BulletObject();
+		p_bullet = new SophiaBullet(this->x, this->y);
 		if (isGunUp == false)
 		{
 			if (this->nx == 1)
 			{
-				p_bullet->SetPosition(this->x + width + 20, this->y + height * 0.3);
+				p_bullet->SetPosition(this->x + width + 15, this->y + height * 0.3);
 				p_bullet->Set_bullet_dir(this->nx);
 			}
 			else
 			{
-				p_bullet->SetPosition(this->x + width - 20, this->y + height * 0.3);
+				p_bullet->SetPosition(this->x + width - 15, this->y + height * 0.3);
 				p_bullet->Set_bullet_dir(this->nx);
 			}			
 		}
@@ -229,18 +230,22 @@ void CSophia::OnKeyDown(int keycode)
 		{
 			if (this->nx == 1)
 			{
-				p_bullet->SetPosition(this->x + width / 2, this->y - 30);
+				p_bullet->SetPosition(this->x + width / 2 + 2, this->y - 20);
 				p_bullet->Set_bullet_dir(3);
 			}
 			else
 			{
-				p_bullet->SetPosition(this->x + width / 2 + 7 , this->y - 30);
+				p_bullet->SetPosition(this->x + width / 2 + 10 , this->y - 20);
 				p_bullet->Set_bullet_dir(3);
 			}
 			
 		}
-		p_bullet->Set_IsMove(true);
-		p_bullet_list.push_back(p_bullet);
+		if (p_bullet_list.size() <= 2)
+		{
+			p_bullet->Set_IsMove(true);
+			p_bullet_list.push_back(p_bullet);
+		}
+	
 		
 	}
 
@@ -270,7 +275,7 @@ void CSophia::GetBoundingBox(float &left, float &top, float &right, float &botto
 	if (isRaisedGun || isGunUp)
 	{
 		left = x;
-		top = y - (SOPHIA_BIG_BBOX_HEIGHT - SOPHIA_SMALL_BBOX_HEIGHT);
+		top = y - SOPHIA_BIG_BBOX_HEIGHT + SOPHIA_SMALL_BBOX_HEIGHT;
 		right = x + SOPHIA_BIG_BBOX_WIDTH;
 		bottom = top + SOPHIA_BIG_BBOX_HEIGHT;
 		

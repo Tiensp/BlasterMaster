@@ -201,7 +201,7 @@ void CInsect::Render()
 
 	animation_set->at(ani)->Render(x, y);
 
-	RenderBoundingBox();
+	//RenderBoundingBox();
 }
 
 //void CSkull::flowPlayer(LPGAMEOBJECT player)

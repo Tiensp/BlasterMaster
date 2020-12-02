@@ -20,24 +20,29 @@ public:
 	int bullet_dir;
 	int bullet_type;
 	bool isColBrick;
+	bool isColEnemy;
 	bool isDone; 
+	int bulletDame;
 
 public:
-	BulletObject(float _start_x, float _start_y);
-	~BulletObject();
+	BulletObject() {};
+	~BulletObject() {}
 
-	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
+	virtual void Render() {};
+	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = NULL) {};
+	virtual void GetBoundingBox(float& l, float& t, float& r, float& b) {};
 
-	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
+
+
 	void Set_IsMove(const bool& _isMove);
 	bool Get_IsMove() const { return isMove; };
 	void Set_bullet_dir(int bulletDir) { bullet_dir = bulletDir; }
 	int Get_bullet_dir() { return bullet_dir; }
 	void Set_bullet_type(int& bulletType) { bullet_type = bulletType; }
 	void HandleMove(const float x_border, const float y_border);
-	virtual void Render();
 
 
 
 };
+//typedef BulletObject* LPSCENE;
 

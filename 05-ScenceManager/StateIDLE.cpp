@@ -9,14 +9,14 @@ StateIDLE::StateIDLE()
 	if (_ACTIVE[SOPHIA])
 	{
 		CSophia* sophia = CSophia::GetInstance();
-		if (sophia->currentState != NULL)
+		/*if (sophia->currentState != NULL)
 		{
 			sophia->frameID = sophia->currentAni->GetCurrentFrame();
 			sophia->frameID = (sophia->frameID == -1) ? 0 : sophia->frameID;
 		}
 		else
 			sophia->frameID = 0;
-		sophia->renderFrame = true;
+		sophia->renderFrame = true;*/
 		sophia->SetIsJumping(false);
 		sophia->SetIsFalling(false);
 		sophia->vx = 0;
