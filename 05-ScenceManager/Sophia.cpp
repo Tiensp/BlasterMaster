@@ -198,7 +198,7 @@ void CSophia::OnKeyDown(int keycode)
 		break;
 			
 	case DIK_SPACE:
-		if (!isJumping && !isFalling)
+		//if (!isJumping && !isFalling)
 		{
 			/*if (isGunUp)
 			{

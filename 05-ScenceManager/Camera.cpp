@@ -94,17 +94,26 @@ void CCamera::Update()
 {
 	if (!isSwitchScene)
 	{
+		D3DXVECTOR2 playerPos;
 		if (_ACTIVE[SOPHIA])
-			CSophia::GetInstance()->GetPosition(camPos.x, camPos.y);
+			CSophia::GetInstance()->GetPosition(playerPos.x, playerPos.y);
 		else if (_ACTIVE[JASON])
 		{
-			CJason::GetInstance()->GetPosition(camPos.x, camPos.y);
+			CJason::GetInstance()->GetPosition(playerPos.x, playerPos.y);
 		}
 		else if (_ACTIVE[BIG_JASON])
-			CBigJason::GetInstance()->GetPosition(camPos.x, camPos.y);
+			CBigJason::GetInstance()->GetPosition(playerPos.x, playerPos.y);
 
-		camPos.x -= width / 2;
-		camPos.y -= height / 2;
+		if (playerPos.x > camPos.x + width * 0.55)
+			camPos.x += playerPos.x - (camPos.x + width * 0.55);
+		else if (playerPos.x < camPos.x + width * 0.35)
+			camPos.x -= (camPos.x + width * 0.35) - playerPos.x;
+
+		if (playerPos.y > camPos.y + height * 0.75)
+			camPos.y += playerPos.y - (camPos.y + height * 0.75);
+		else if (playerPos.y < camPos.y + height * 0.25)
+			camPos.y -= (camPos.y + height * 0.25) - playerPos.y;
+
 		/*
 			Kiểm tra xem Camera có bị vượt ra ngoài map không
 			Vượt quá giới hạn thì đặt lại vị trí Camera

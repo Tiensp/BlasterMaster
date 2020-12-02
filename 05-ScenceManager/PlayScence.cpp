@@ -409,6 +409,7 @@ void CPlayScene::Load()
 	MiniScene* miniScene = listScene.at(0);
 	camera = CCamera::GetInstance();
 	camera->SetCamBound(miniScene->x, miniScene->y, miniScene->width, miniScene->height);
+	camera->SetPosition(D3DXVECTOR2(miniScene->x, miniScene->y));
 	//camera->SetCamBound(0, 0, map->GetMapWidth(), map->GetMapHeight());
 
 
