@@ -3,6 +3,7 @@
 #include "Sophia.h"
 #include "Jason.h"
 #include "BigJason.h"
+#include "PlayScence.h"
 
 #define PULL_SCREEN_Y	44
 
@@ -140,14 +141,12 @@ void CCamera::Update()
 	{
 		if (camPos.x != SwitchScenePos.x)
 			if (camPos.x > SwitchScenePos.x)
-				camPos.x -= 3.0f;
+				camPos.x -= 2.0f;
 			else
-				camPos.x += 3.0f;
+				camPos.x += 2.0f;
 		else
 		{
 			isSwitchScene = false;
-			camBound.left = SwitchScenePos.x;
-			camBound.right = SwitchScenePos.x + width;
 		}
 	}
 }
