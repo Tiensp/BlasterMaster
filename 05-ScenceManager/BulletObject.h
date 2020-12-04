@@ -27,7 +27,6 @@ public:
 	int bullet_dir_x;
 	int bullet_dir_y;
 
-	bool isMove = false;
 	bool isColBrick;
 	bool isColEnemy;
 	bool isColPlayer;

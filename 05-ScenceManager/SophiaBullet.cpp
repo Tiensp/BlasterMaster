@@ -110,7 +110,7 @@ void SophiaBullet::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 
 	}
-	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
+	//for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
 }
 
 void SophiaBullet::GetBoundingBox(float& left, float& top, float& right, float& bottom)
