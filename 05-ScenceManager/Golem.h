@@ -3,6 +3,8 @@
 #include "Enemy.h"
 #define GOLEM_ANI_WALKING_LEFT	1
 #define GOLEM_ANI_WALKING_RIGHT	0
+#define GOLEM_ANI_DEATH 2
+
 #define GOLEM_WALKING_SPEED 0.03f;
 #define	GOLEM_JUMPING_SPEED 0.163f;
 
@@ -16,7 +18,10 @@
 
 class CGolem : public Enemy
 {
-	bool isFolow;  //theo player 
+	bool isFolow; //theo player 
+
+	bool isDoneDeath = false;
+	bool isDeath = false;
 
 
 public:

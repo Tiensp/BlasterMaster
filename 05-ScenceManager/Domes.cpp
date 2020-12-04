@@ -18,22 +18,28 @@ CDomes::CDomes(float x, float y,float boundingHeight, float boundingWight, LPGAM
 	this->boundingHeigt = boundingHeight;
 	this->boundingWight = boundingWight;
 	this->target = player;
+
+	hp = 1;
+
+	objTag = ENEMY;
+	objType = DOMES;
 }
 
 void CDomes::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
-	if (!isDeath)
+	if (!isDoneDeath)
 	{
 		left = x;
 		top = y;
 		right = x + DOMES_BBOX_WIDTH;
 		bottom = y + DOMES_BBOX_HEIGHT;
 
-	/*	if (state == DOMES_STATE_START)
-			bottom = y + DOMES_BBOX_HEIGHT_DIE;
-		else
-			bottom = y + DOMES_BBOX_HEIGHT;*/
+		/*	if (state == DOMES_STATE_START)
+				bottom = y + DOMES_BBOX_HEIGHT_DIE;
+			else
+				bottom = y + DOMES_BBOX_HEIGHT;*/
 	}
+	else return;
 
 }
 
@@ -205,7 +211,16 @@ void CDomes::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			
 			
 			}
-			
+			if (e->obj->objTag == ENEMY)
+			{
+				x += dx;
+				y += dy;
+			}
+			if (e->obj->objTag == Player)
+			{
+				x += dx;
+				y += dy;
+			}
 		}
 
 
@@ -224,6 +239,8 @@ void CDomes::Render()
 		ani = 0;
 		return;
 	}
+	if (isDoneDeath) return;
+	if (hp == 0) isDeath = true;
 	if (isAtack)
 	{
 		if (this->GetState() == DOMES_STATE_ATACK_NX)
@@ -279,8 +296,23 @@ void CDomes::Render()
 			}
 		}
 	}
-	
+
+	if (isDeath)
+	{
+		ani = DOMES_ANI_DEATH;
+		animation_set->at(ani)->Render(x, y);
+		if (animation_set->at(ani)->GetCurrentFrame() == 3)
+		{
+			isDoneDeath = true;
+		}
+		return;
+	}
+
+
+
 	animation_set->at(ani)->Render(x, y);
+	
+	
 	
 	
 	
@@ -425,8 +457,9 @@ void CDomes::SetState(int state)
 			ny = -1;
 		}
 		break;
-	case DOMES_STATE_DIE:
-		isDeath = true;
+	case DOMES_ANI_DEATH:
+		nx = 0;
+		ny = 0;
 		vx = 0;
 		vy = 0;
 		break;

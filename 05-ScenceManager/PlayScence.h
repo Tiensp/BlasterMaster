@@ -22,6 +22,9 @@
 #include "Insect.h"
 #include "MiniScene.h"
 #include "Portal.h"
+#include "Eyeballs.h"
+#include "Teleporters.h"
+#include "Cannons.h"
 
 class CPlayScene: public CScene
 {

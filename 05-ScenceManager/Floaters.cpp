@@ -15,18 +15,29 @@ CFloaters::CFloaters(float x, float y, LPGAMEOBJECT player)
 	this->x = x;
 	this->y = y;
 	this->target = player;
+
+	hp = 1;
+
+	objTag = ENEMY;
+	objType = FLOATERS;
+
 }
 
 void CFloaters::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
-	left = x;
-	top = y;
-	right = x + FLOATER_BBOX_WIDTH;
-
-	if (state == FLOATER_STATE_DIE)
-		bottom = y + FLOATER_BBOX_HEIGHT_DIE;
-	else
+	if (!isDoneDeath)
+	{
+		left = x;
+		top = y;
+		right = x + FLOATER_BBOX_WIDTH;
 		bottom = y + FLOATER_BBOX_HEIGHT;
+
+		/*if (state == FLOATER_STATE_DIE)
+			bottom = y + FLOATER_BBOX_HEIGHT_DIE;
+		else
+			bottom = y + FLOATER_BBOX_HEIGHT;*/
+	}
+	else return;
 }
 
 void CFloaters::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
@@ -73,6 +84,9 @@ void CFloaters::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	{
 		x += dx;
 		y += dy;
+
+		Attack();
+
 	}
 	else //có va chạm
 	{
@@ -92,6 +106,7 @@ void CFloaters::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				if (nx != 0) vx = 0;
 				if (ny != 0) vy = 0;// cập nhật lại vị trí y  để tránh bị hụt xuống
 
+				isAttack = false;
 
 				CBrick* brick = dynamic_cast<CBrick*>(e->obj);
 
@@ -102,7 +117,6 @@ void CFloaters::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					{
 						if (this->ny > 0)
 						{
-
 							this->SetState(FLOATER_ANI_WALKING_RIGHT_DOWN);
 						}
 						else if(this->ny < 0)
@@ -149,7 +163,56 @@ void CFloaters::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					}
 				}
 			}
+			if (e->obj->objTag == Player)
+			{
+				x += dx;
+				y += dy;
+			}
+			if (e->obj->objTag == ENEMY)
+			{
+				x += dx;
+				y += dy;
+			}
 		}
+	}
+}
+
+
+void CFloaters::Attack()
+{
+	if (abs(this->x - target->x) <= 200)
+	{
+		isAttack = true;
+		if (this->x - target->x < 0)
+		{
+			
+
+			if (this->GetState() == FLOATER_ANI_WALKING_RIGHT_UP)
+			{
+				this->SetState(FLOATER_ANI_ATTACKING_RIGHT_UP);
+			}
+			else if (this->GetState() == FLOATER_ANI_WALKING_RIGHT_DOWN)
+			{
+				this->SetState(FLOATER_ANI_ATTACKING_RIGHT_DOWN);
+			}
+		}
+		else if(this->x - target->x > 0)
+		{
+			
+			
+			if (this->GetState() == FLOATER_ANI_WALKING_LEFT_UP)
+			{
+				this->SetState(FLOATER_ANI_ATTACKING_LEFT_UP);
+			}
+			else if (this->GetState() == FLOATER_ANI_WALKING_LEFT_DOWN)
+			{
+				this->SetState(FLOATER_ANI_ATTACKING_LEFT_DOWN);
+			}
+		}
+	}
+	else 
+	{
+		isAttack = false;
 	}
 }
 
@@ -158,23 +221,72 @@ void CFloaters::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 void CFloaters::Render()
 {
 	int ani = FLOATER_ANI_WALKING_LEFT_UP;
-	if (vx > 0 && vy > 0)
+
+	if (isDoneDeath) return;
+	if (hp == 0) isDeath = true;
+	
+	if (isAttack)
 	{
-		ani = FLOATER_ANI_WALKING_RIGHT_DOWN;
+		if (this->nx - target->nx == 0 && nx > 0 && this->x - target->x < 0)
+		{
+			if (ny > 0)
+			{
+				ani = FLOATER_ANI_ATTACKING_RIGHT_DOWN;
+			}
+			else if (ny < 0)
+			{
+				ani = FLOATER_ANI_ATTACKING_RIGHT_UP;
+			}
+		}
+		else if (this->nx - target->nx == 0 && nx < 0 && this->x - target->x > 0)
+		{
+			if (ny > 0)
+			{
+				ani = FLOATER_ANI_ATTACKING_LEFT_DOWN;
+			}
+			else if (ny < 0)
+			{
+				ani = FLOATER_ANI_ATTACKING_LEFT_UP;
+			}
+		}
 	}
-	else if (vx > 0 && vy < 0)
+	else
 	{
-		ani = FLOATER_ANI_WALKING_RIGHT_UP;
-	}
-	else if (vx < 0 && vy > 0)
-	{
-		ani = FLOATER_ANI_WALKING_LEFT_DOWN;
-	}
-	else if (vx < 0 && vy < 0)
-	{
-		ani = FLOATER_ANI_WALKING_LEFT_UP;
+		if (nx > 0)
+		{
+			if (ny > 0)
+			{
+				ani = FLOATER_ANI_WALKING_RIGHT_DOWN;
+			}
+			else if (ny < 0)
+			{
+				ani = FLOATER_ANI_WALKING_RIGHT_UP;
+			}
+		}
+		else if (nx < 0)
+		{
+			if (ny > 0)
+			{
+				ani = FLOATER_ANI_WALKING_LEFT_DOWN;
+			}
+			else if (ny < 0)
+			{
+				ani = FLOATER_ANI_WALKING_LEFT_UP;
+			}
+		}
 	}
 
+	if (isDeath)
+	{
+		ani = FLOATER_ANI_DEATH;
+		animation_set->at(ani)->Render(x, y);
+		if (animation_set->at(ani)->GetCurrentFrame() == 3)
+		{
+			isDoneDeath = true;
+		}
+		return;
+	}
+	
 	animation_set->at(ani)->Render(x, y);
 
 
@@ -233,11 +345,29 @@ void CFloaters::SetState(int state)
 		vy = FLOATER_JUMPING_SPEED;
 		ny = 1;
 		break;
-	case FLOATER_ANI_ATTACKING_LEFT:
+	case FLOATER_ANI_ATTACKING_LEFT_UP:
 		vx = -FLOATER_WALKING_SPEED;
 		nx = -1;
 		vy = -FLOATER_JUMPING_SPEED;
 		ny = -1;
+		break;
+	case FLOATER_ANI_ATTACKING_LEFT_DOWN:
+		vx = -FLOATER_WALKING_SPEED;
+		nx = -1;
+		vy = FLOATER_JUMPING_SPEED;
+		ny = 1;
+		break;
+	case FLOATER_ANI_ATTACKING_RIGHT_UP:
+		vx = FLOATER_WALKING_SPEED;
+		nx = 1;
+		vy = -FLOATER_JUMPING_SPEED;
+		ny = -1;
+		break;
+	case FLOATER_ANI_ATTACKING_RIGHT_DOWN:
+		vx = FLOATER_WALKING_SPEED;
+		nx = 1;
+		vy = FLOATER_JUMPING_SPEED;
+		ny = 1;
 		break;
 	}
 }

@@ -30,6 +30,10 @@ void CGameObject::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 void CGameObject::SetHp(int dameBullet)
 {
 	this->hp -= dameBullet;
+	if (hp <= 0)
+	{
+		hp = 0;
+	}
 }
 LPCOLLISIONEVENT CGameObject::SweptAABBEx(LPGAMEOBJECT coO)
 {

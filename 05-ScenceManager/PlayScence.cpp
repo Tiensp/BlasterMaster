@@ -41,6 +41,8 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):
 #define OBJECT_TYPE_INSECT 9
 #define OBJECT_TYPE_ORB 10
 #define OBJECT_TYPE_SHIP 11
+#define OBJECT_TYPE_EYEBALL 12
+#define OBJECT_TYPE_CANNON 14
 
 
 #define OBJECT_TYPE_PORTAL	52
@@ -301,6 +303,26 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		break;
 	}
 
+	case OBJECT_TYPE_EYEBALL:
+	{
+		obj = new CEyeballs(x, y, sophia);
+		obj->SetPosition(x, y);
+		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
+		obj->SetAnimationSet(ani_set);
+		listEnemies.push_back(obj);
+		break;
+	}
+
+	case OBJECT_TYPE_CANNON:
+	{
+		obj = new CCannon(x, y, sophia);
+		obj->SetPosition(x, y);
+		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
+		obj->SetAnimationSet(ani_set);
+		listEnemies.push_back(obj);
+		break;
+	}
+
 	case OBJECT_TYPE_PORTAL:
 	{
 		int sceneID = atoi(tokens[3].c_str());
@@ -431,7 +453,7 @@ void CPlayScene::Update(DWORD dt)
 
 	vector<LPGAMEOBJECT> coObjects;
 
-	DebugOut(L"size %d\n", listBullet.size());
+	DebugOut(L"size %d\n", listBulletPlayer.size());
 	for (int i = 0; i < objects.size(); i++)
 	{
 		coObjects.push_back(objects[i]);
@@ -482,11 +504,6 @@ void CPlayScene::Update(DWORD dt)
 	}
 
 		
-
-
-
-
-
 	// skip the rest if scene was already unloaded (Sophia::Update might trigger PlayScene::Unload)
 	//if (sophia == NULL && jason == NULL && bigJason == NULL) return;
 

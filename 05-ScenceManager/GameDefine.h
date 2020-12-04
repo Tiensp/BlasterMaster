@@ -43,9 +43,10 @@ extern enum ObjectTAG
 {
 	None, //Default Object
 	Player,
-	//Enemy,
+	ENEMY,
 	Misc,
-	Portal
+	Portal,
+	BULLET_ENEMIES,
 };
 
 extern enum ObjectTYPE
@@ -55,13 +56,26 @@ extern enum ObjectTYPE
 	JASON = 2,
 	BIG_JASON = 3,
 
-	/* ENEMY TYPE */
-	Domes,
 	/* MAP */
 	MAPID = 10000,
 	/* HP */
 	Health = 50,
 	HealthBar = 51,
+
+	/*ENEMIES*/
+	GOLEM = 4,
+	DOMES = 5,
+	WORMS = 6,
+	FLOATERS = 7,
+	SKULLS = 8,
+	INSECTS = 9,
+	ORBS = 10,
+	SHIPS = 11,
+	EYEBALLS = 12,
+	TELEPORTERS = 13,
+	CANNONS = 14,
+
+
 	/* Portal */
 	OverWorld = 500,
 	OverHead = 600

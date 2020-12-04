@@ -30,6 +30,8 @@ CSophia::CSophia() : CGameObject()
 	this->y = y; 
 	y_render = y;
 
+	objTag = Player;
+
 
 
 }
@@ -103,7 +105,7 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 					y += min_ty * dy + ny * 0.4f;
 					isColliBrick = true;
 				}
-				else if (dynamic_cast<Enemy*>(e->obj)) // if e->obj is Goomba 
+				else if (e->obj->objTag == ENEMY) // if e->obj is Goomba 
 				{
 					x += dx;
 					health -= 1;

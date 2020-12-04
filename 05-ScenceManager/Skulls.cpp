@@ -16,18 +16,28 @@ CSkull::CSkull(float x, float y, LPGAMEOBJECT player)
 	this->y = y;
 	this->target = player;
 
+	hp = 1;
+
+	objTag = ENEMY;
+	objType = SKULLS;
+
 }
 
 void CSkull::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
-	left = x;
-	top = y;
-	right = x + SKULL_BBOX_WIDTH;
+	if (!isDoneDeath)
+	{
+		left = x;
+		top = y;
+		right = x + SKULL_BBOX_WIDTH;
+		bottom = y + SKULL_BBOX_HEIGHT;
+	}
+	else return;
 
-	if (state == SKULL_STATE_DIE)
+	/*if (state == SKULL_STATE_DIE)
 		bottom = y + SKULL_BBOX_HEIGHT_DIE;
 	else
-		bottom = y + SKULL_BBOX_HEIGHT;
+		bottom = y + SKULL_BBOX_HEIGHT;*/
 }
 
 void CSkull::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
@@ -72,10 +82,6 @@ void CSkull::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		// how to push back Sophia if collides with a moving objects, what if Sophia is pushed this way into another object?
 		//if (rdx != 0 && rdx!=dx)
 		//	x += nx*abs(rdx); 
-
-
-		x += min_tx * dx + nx * 0.4f;  //cập nhật lại vị trí x
-		y += min_ty * dy + ny * 0.4f;	// cập nhật lại vị trí y  để tránh bị hụt xuống
 
 		// block every object first!
 		{
@@ -133,11 +139,13 @@ void CSkull::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 						}
 					}*/
 				}
+				if (e->obj->objTag == ENEMY)
+				{
+					x += dx;  
+					y += dy;
+				}
 			}
 		}
-
-
-		
 	}
 }
 
@@ -176,6 +184,20 @@ void CSkull::Attack()
 void CSkull::Render()
 {
 	int ani = SKULL_ANI_WALKING_LEFT;
+
+	if (isDoneDeath) return;
+	if (hp == 0) isDeath = true;
+
+	if (isDeath)
+	{
+		ani = SKULL_ANI_DEATH;
+		animation_set->at(ani)->Render(x, y);
+		if (animation_set->at(ani)->GetCurrentFrame() == 3)
+		{
+			isDoneDeath = true;
+		}
+		return;
+	}
 	
 	if (isAttack)
 	{
