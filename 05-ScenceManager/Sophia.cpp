@@ -149,6 +149,7 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 void CSophia::Render()
 {
+	
 	if (_ACTIVE[SOPHIA])
 	{
 		int alpha = 255;
@@ -194,6 +195,7 @@ void CSophia::Render()
 
 void CSophia::OnKeyDown(int keycode)
 {
+	BulletObject* p_bullet = new BulletObject();
 	switch (keycode)
 	{
 	case DIK_S:
@@ -213,7 +215,6 @@ void CSophia::OnKeyDown(int keycode)
 		break;
 	case DIK_Z:
 	{
-		BulletObject* p_bullet = new BulletObject();
 		p_bullet = new SophiaBullet(this->x, this->y);
 		if (isGunUp == false)
 		{
@@ -249,6 +250,15 @@ void CSophia::OnKeyDown(int keycode)
 		}
 	
 		
+	}
+	case DIK_X:
+	{
+		
+		//BulletObject* p_bullet = new BulletObject();
+		p_bullet = new ThreeBullet(this->x, this->y);
+		p_bullet->Set_IsMove(true);
+		p_bullet_list.push_back(p_bullet);
+
 	}
 
 	}

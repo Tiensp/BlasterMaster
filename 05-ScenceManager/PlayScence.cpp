@@ -453,14 +453,21 @@ void CPlayScene::Update(DWORD dt)
 
 	vector<LPGAMEOBJECT> coObjects;
 
-	DebugOut(L"size %d\n", listBulletPlayer.size());
+	DebugOut(L"size %d\n", listBullet.size());
 	for (int i = 0; i < objects.size(); i++)
 	{
 		coObjects.push_back(objects[i]);
+	
 	}
 	for (int i = 0; i < listEnemies.size(); i++)
 	{
 		coObjects.push_back(listEnemies[i]);
+		if (dynamic_cast<CFloaters*>(listEnemies[i]))
+		{
+			CFloaters* floater = dynamic_cast<CFloaters*>(listEnemies[i]);
+			bulletFloater = floater->Get_Bullet_List();
+
+		}
 	}
 	for (int i = 0; i < listPortal.size(); i++)
 	{
@@ -472,16 +479,35 @@ void CPlayScene::Update(DWORD dt)
 	{
 		objects[i]->Update(dt, &coObjects);
 	}
-	listBulletPlayer = sophia->Get_Bullet_List();
+	listBullet = sophia->Get_Bullet_List();
 	for (int i = 0; i < listEnemies.size(); i++)
 		listEnemies[i]->Update(dt, &coObjects);
-
-	for (int i = 0; i < listBulletPlayer.size(); i++)
+	for (int i = 0; i < listEnemies.size(); i++)
 	{
-		listBulletPlayer[i]->Update(dt, &coObjects);
+		coObjects.push_back(listEnemies[i]);
+		if (dynamic_cast<CFloaters*>(listEnemies[i]))
+		{
+			CFloaters* floater = dynamic_cast<CFloaters*>(listEnemies[i]);
+			bulletFloater = floater->Get_Bullet_List();
+		}
+	}
+
+	for (int i = 0; i < listBullet.size(); i++)
+	{
+		listBullet[i]->Update(dt, &coObjects);
+		
+	}
+	for (int i = 0; i < bulletFloater.size(); i++)
+	{
+		bulletFloater[i]->Update(dt, &coObjects);
 	}
 
 		
+
+
+
+
+
 	// skip the rest if scene was already unloaded (Sophia::Update might trigger PlayScene::Unload)
 	//if (sophia == NULL && jason == NULL && bigJason == NULL) return;
 
@@ -501,8 +527,10 @@ void CPlayScene::Render()
 		listEnemies[i]->Render();
 	for (int i = 0; i < listPortal.size(); i++)
 		listPortal[i]->Render();
-	for (int i = 0; i < listBulletPlayer.size(); i++)
-		listBulletPlayer[i]->Render();
+	for (int i = 0; i < listBullet.size(); i++)
+		listBullet[i]->Render();
+	for (int i = 0; i < bulletFloater.size(); i++)
+		bulletFloater[i]->Render();
 	hud->Render();
 }
 

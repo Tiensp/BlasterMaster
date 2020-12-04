@@ -21,13 +21,14 @@
 #define FLOATER_STATE_FLYING 300
 #include "Enemy.h"
 #include "BulletFloaters.h"
-#include "BulletObject.h"
 
 class CFloaters : public Enemy
 {
 protected:
 	LPGAMEOBJECT target;
 	bool isAttack;
+	vector<BulletObject* > p_bullet_list;
+
 	bool isDoneDeath;
 	bool isDeath;
 public:
@@ -36,9 +37,11 @@ public:
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	virtual void Render();
-
 	void Attack();
 	void flowPlayer(LPGAMEOBJECT player);
+	//BulletFloaters* Get_bullet_floater() { return bulletFloaters; }
+	vector<BulletObject*> Get_Bullet_List() { return p_bullet_list; }
+
 };
 
 

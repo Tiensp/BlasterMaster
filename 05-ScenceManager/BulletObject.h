@@ -1,8 +1,9 @@
 
 #pragma once
 #include "GameObject.h"
+#include "Brick.h"
+#include "Enemy.h"
 
-/*BULLET SOPHIA*/
 #define BULLET_SPEED 0.25f
 #define BULLETSOPHIA_ANI_RIGHT 0
 #define BULLETSOPHIA_ANI_LEFT 1
@@ -18,10 +19,8 @@ public:
 	float start_x;
 	float start_y;
 	float x_Border, y_Border;
-	
+	bool isMove = false;
 	LPANIMATION aniBullet;
-	
-	
 	int bullet_dir;
 	int bullet_type;
 	int bulletDame;

@@ -163,6 +163,7 @@
     <ClCompile Include="StateTURN.cpp" />
     <ClCompile Include="StateWALKING.cpp" />
     <ClCompile Include="StateWALKINGGunUP.cpp" />
+    <ClCompile Include="ThreeBullet.cpp" />
     <ClCompile Include="Teleporters.cpp" />
     <ClCompile Include="Utils.cpp" />
     <ClCompile Include="Game.cpp" />
@@ -217,6 +218,7 @@
     <ClInclude Include="State.h" />
     <ClInclude Include="StateIDLE.h" />
     <ClInclude Include="StateWALKINGGunUP.h" />
+    <ClInclude Include="ThreeBullet.h" />
     <ClInclude Include="Teleporters.h" />
     <ClInclude Include="Utils.h" />
     <ClInclude Include="Game.h" />
