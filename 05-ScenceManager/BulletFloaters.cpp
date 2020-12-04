@@ -20,7 +20,7 @@ void BulletFloaters::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	if (isMove)
 	{
-		if (bullet_dir_x == 1 && bullet_dir_y == 1)
+		/*if (bullet_dir_x == 1 && bullet_dir_y == 1)
 		{
 			vx = 0.25f;
 			vy = 0.2f;
@@ -29,7 +29,9 @@ void BulletFloaters::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		{
 			vx = -0.25f;
 			vy = 0.2f;
-		}
+		}*/
+		vx = 0.25f;
+		vy = 0.2f;
 	}
 	else
 	{
@@ -75,8 +77,9 @@ void BulletFloaters::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 				if (nx != 0) vx = 0;
 				if (ny != 0) vy = 0;
+
 				isColBrick = true;
-				isDone = true; 
+				//isDone = true; 
 			}
 			else if (e->obj->objTag == ENEMY)
 			{
@@ -86,14 +89,14 @@ void BulletFloaters::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			else if (e->obj->objTag == Player)
 			{
 				isColPlayer = true;
-				x += min_tx * dx + nx * 0.4f;
-				y += min_ty * dy + ny * 0.4f;
+				/*x += min_tx * dx + nx * 0.4f;
+				y += min_ty * dy + ny * 0.4f;*/
 			}
 		}
 
 
 	}
-	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
+	//for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
 
 }
 
@@ -105,23 +108,34 @@ void BulletFloaters::Render()
 	{
 		ani = BULLET_FLOATER_ANI_COLLISON;
 		animation_set->at(ani)->Render(x, y);
-		if (animation_set->at(ani)->GetCurrentFrame() == 2)
+		if (animation_set->at(ani)->GetCurrentFrame() == 0)
 		{
 			isDone = true;
 		}
 		return;
 	}
-	else if (isColPlayer) isDone = true;
+	else if (isColPlayer)
+	{
+		ani = BULLET_FLOATER_ANI_COLLISON;
+		animation_set->at(ani)->Render(x, y);
+		if (animation_set->at(ani)->GetCurrentFrame() == 0)
+		{
+			isDone = true;
+		}
+		return;
+	}
 	else if (isMove)
 	{
-		if (bullet_dir_x == 1 && bullet_dir_y == 1)
+		vx = 0.25f;
+		vy = 0.2f;
+		/*if (bullet_dir_x == 1 && bullet_dir_y == 1)
 		{
 			ani = BULLET_FLOATER_ANI_WALKING_RIGHT_DOWN;
 		}
 		else if (bullet_dir == -1 && bullet_dir_y == 1)
 		{
 			ani = BULLET_FLOATER_ANI_WALKING_LEFT_DOWN;
-		}
+		}*/
 	}
 	animation_set->at(ani)->Render(x, y);
 

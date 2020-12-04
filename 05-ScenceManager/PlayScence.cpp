@@ -489,6 +489,15 @@ void CPlayScene::Update(DWORD dt)
 		listBullet[i]->Update(dt, &coObjects);
 		
 	}
+	for (int i = 0; i < listEnemies.size(); i++)
+	{
+		coObjects.push_back(listEnemies[i]);
+		if (dynamic_cast<CFloaters*>(listEnemies[i]))
+		{
+			CFloaters* floater = dynamic_cast<CFloaters*>(listEnemies[i]);
+			bulletFloater = floater->Get_Bullet_List();
+		}
+	}
 
 	for (int i = 0; i < bulletFloater.size(); i++)
 	{
