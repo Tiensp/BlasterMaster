@@ -248,7 +248,7 @@ void CSophia::OnKeyDown(int keycode)
 			p_bullet->Set_IsMove(true);
 			p_bullet_list.push_back(p_bullet);
 		}
-	
+		
 		
 	}
 	case DIK_X:

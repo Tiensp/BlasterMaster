@@ -45,7 +45,7 @@ void CFloaters::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	CGameObject::Update(dt, coObjects);
 
-
+	
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
 
@@ -155,7 +155,7 @@ void CFloaters::Attack()
 {
 	if (abs(this->x - target->x) <= 200)
 	{
-
+		
 		/*if (p_bullet_list.size() < 2)
 		{
 			BulletObject* p_bullet = new BulletObject();
@@ -180,9 +180,9 @@ void CFloaters::Attack()
 
 				}
 			}
-
+		
 		}*/
-
+		
 		isAttack = true;
 		if (this->x - target->x < 0)
 		{
