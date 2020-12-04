@@ -29,9 +29,9 @@ class COrb : public Enemy
 {
 	bool isFolow;  //theo player 
 	LPGAMEOBJECT target;
-	bool isAttack;
-	bool isDoneDeath;
-	bool isDeath;
+	bool isAttack = false;
+	bool isDoneDeath = false;
+	bool isDeath = false;
 public:
 	COrb(float x, float y, LPGAMEOBJECT player);
 	virtual void SetState(int state);

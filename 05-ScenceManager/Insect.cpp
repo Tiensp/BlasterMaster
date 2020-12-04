@@ -16,6 +16,8 @@ CInsect::CInsect(float x, float y, LPGAMEOBJECT player)
 	this->y = y;
 	this->target = player;
 
+	hp = 2;
+
 	objTag = ENEMY;
 	objType = INSECTS;
 
@@ -23,14 +25,19 @@ CInsect::CInsect(float x, float y, LPGAMEOBJECT player)
 
 void CInsect::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
-	left = x;
-	top = y;
-	right = x + INSECT_BBOX_WIDTH;
-
-	if (state == INSECT_STATE_DIE)
-		bottom = y + INSECT_BBOX_HEIGHT_DIE;
-	else
+	if (!isDoneDeath)
+	{
+		left = x;
+		top = y;
+		right = x + INSECT_BBOX_WIDTH;
 		bottom = y + INSECT_BBOX_HEIGHT;
+
+		/*if (state == INSECT_STATE_DIE)
+			bottom = y + INSECT_BBOX_HEIGHT_DIE;
+		else
+			bottom = y + INSECT_BBOX_HEIGHT;*/
+	}
+	else return;
 }
 
 void CInsect::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
@@ -88,9 +95,6 @@ void CInsect::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				timer = 0;
 			}
 		}
-
-
-	
 	}
 	else //có va chạm
 	{
@@ -191,6 +195,20 @@ void CInsect::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 void CInsect::Render()
 {
 	int ani = INSECT_ANI_WALKING_LEFT_UP;
+
+	if (isDoneDeath) return;
+	if (hp == 0) isDeath = true;
+
+	if (isDeath)
+	{
+		ani = INSECT_ANI_DEATH;
+		animation_set->at(ani)->Render(x, y);
+		if (animation_set->at(ani)->GetCurrentFrame() == 3)
+		{
+			isDoneDeath = true;
+		}
+		return;
+	}
 
 	if (vx > 0 && vy > 0)
 	{

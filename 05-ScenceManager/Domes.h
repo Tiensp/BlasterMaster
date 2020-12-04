@@ -10,11 +10,11 @@
 #define DOMES_ANI_WALKING_UP_LEFT	5
 #define DOMES_ANI_WALKING_DOWN_RIGHT	6
 #define DOMES_ANI_WALKING_DOWN_LEFT		7
-#define DOMES_ANI_DEAD 8
+#define DOMES_ANI_DEATH 8
 
-#define DOMES_STATE_ATACK_NX 8
-#define DOMES_STATE_ATACK_NY 9
-#define DOMES_STATE_DIE 10
+#define DOMES_STATE_ATACK_NX 9
+#define DOMES_STATE_ATACK_NY 10
+#define DOMES_STATE_DIE 11
 
 #define DOMES_WALKING_SPEED 0.03f;
 #define	DOMES_JUMPING_SPEED 0.163f;
@@ -31,6 +31,8 @@ class CDomes : public Enemy
 {
 	bool isFolow;//theo player
 	bool isAtack;
+	bool isDeath = false;
+	bool isDoneDeath = false;
 	LPGAMEOBJECT target;
 	int numberCollisionBrick = 1;  //số lần chạm tường trước khi tân công
 	float boundingHeigt;

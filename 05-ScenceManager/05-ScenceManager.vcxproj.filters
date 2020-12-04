@@ -252,6 +252,15 @@
     <ClCompile Include="SophiaBullet.cpp">
       <Filter>BulletObject</Filter>
     </ClCompile>
+    <ClCompile Include="Eyeballs.cpp">
+      <Filter>Framework\GameObject\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Teleporters.cpp">
+      <Filter>Framework\GameObject\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Cannons.cpp">
+      <Filter>Framework\GameObject\Enemy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Brick.h">
@@ -415,6 +424,15 @@
     </ClInclude>
     <ClInclude Include="MiniScene.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Eyeballs.h">
+      <Filter>Framework\GameObject\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Teleporters.h">
+      <Filter>Framework\GameObject\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Cannons.h">
+      <Filter>Framework\GameObject\Enemy</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

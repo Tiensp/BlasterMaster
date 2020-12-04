@@ -17,7 +17,8 @@ COrb::COrb(float x, float y, LPGAMEOBJECT player)
 	this->target = player;
 	objTag = ENEMY;
 	objType = ORBS;
-	hp = 2;
+	
+	hp = 1;
 
 }
 
@@ -28,11 +29,12 @@ void COrb::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 		left = x;
 		top = y;
 		right = x + ORB_BBOX_WIDTH;
+		bottom = y + ORB_BBOX_HEIGHT;
 
-		if (state == ORB_STATE_DIE)
+		/*if (state == ORB_STATE_DIE)
 			bottom = y + ORB_BBOX_HEIGHT_DIE;
 		else
-			bottom = y + ORB_BBOX_HEIGHT;
+			bottom = y + ORB_BBOX_HEIGHT;*/
 	}
 	else return;
 }
@@ -42,10 +44,6 @@ void COrb::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 
 	CGameObject::Update(dt, coObjects);
-	if (isDone) return;
-	if (hp <= 0) isDeath = true;
-	if (isDeath) return;
-	Attack();
 
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
@@ -60,6 +58,8 @@ void COrb::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	{
 		x += dx;
 		y += dy;
+
+		Attack();
 
 	}
 	else //có va chạm
@@ -78,8 +78,6 @@ void COrb::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 				if (dynamic_cast<CBrick*>(e->obj)) // if e->obj is Goomba 
 				{
-					isAttack = false;
-					isDeath = false;
 
 					x += min_tx * dx + nx * 0.4f;  //cập nhật lại vị trí x
 					vy += 0.0005f * dt;
@@ -144,22 +142,12 @@ void COrb::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 						}
 					}
 				}
-				if (e->obj->objTag == Player)
+				else if (e->obj->objTag == Player)
 				{
-					isAttack = true;
-
-					if (e->nx != 0)
-					{
-						isDeath = true;
-						this->SetState(ORB_ANI_DEATH);
-					}
-					else if (e->ny != 0)
-					{
-						isDeath = true;
-						this->SetState(ORB_ANI_DEATH);
-					}
+					isDeath = true;
+					this->SetState(ORB_ANI_DEATH);
 				}
-				if (e->obj->objTag == ENEMY)
+				else if (e->obj->objTag == ENEMY)
 				{
 					x += dx;
 					//y += dy;
@@ -173,6 +161,7 @@ void COrb::Attack()
 {
 	if (abs(this->x - target->x) <= 70 && abs(this->y - target->y) <= 70)
 	{
+		isAttack = true;
 		if (this->x - target->x <= 0)
 		{
 			nx = 1;
@@ -209,8 +198,9 @@ void COrb::Render()
 	int ani = ORB_ANI_WALKING_RIGHT;
 
 	if (isDoneDeath) return;
+	if (hp == 0) isDeath = true;
 	
-	if (isAttack)
+	if (isAttack || hp == 0)
 	{
 		if (isDeath)
 		{
@@ -225,7 +215,6 @@ void COrb::Render()
 	}
 	else 
 	{
-		isDeath = false;
 		if (nx > 0)
 		{
 			if (ny > 0)
@@ -257,7 +246,6 @@ void COrb::Render()
 			}
 		}
 	}
-
 	animation_set->at(ani)->Render(x, y);
 
 	RenderBoundingBox();

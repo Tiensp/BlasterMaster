@@ -16,6 +16,8 @@ CGolem::CGolem(float x, float y, LPGAMEOBJECT player)
 	this->y = y;
 	this->target = player;
 
+	hp = 2;
+
 	objTag = ENEMY;
 	objType = GOLEM;
 
@@ -28,12 +30,14 @@ CGolem::~CGolem()
 
 void CGolem::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
-	left = x;
-	top = y;
-	right = x + GOLEM_BBOX_WIDTH;
-	bottom = y + GOLEM_BBOX_HEIGHT;
-
-	
+	if (!isDoneDeath)
+	{
+		left = x;
+		top = y;
+		right = x + GOLEM_BBOX_WIDTH;
+		bottom = y + GOLEM_BBOX_HEIGHT;
+	}
+	else return;
 }
 
 void CGolem::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
@@ -140,8 +144,23 @@ void CGolem::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 void CGolem::Render()
 {
 	int ani = GOLEM_ANI_WALKING_RIGHT;
+
+	if (isDoneDeath) return;
+	if (hp == 0) isDeath = true;
+
 	if (vx > 0) ani = GOLEM_ANI_WALKING_RIGHT;
 	else if (vx <= 0) ani = GOLEM_ANI_WALKING_LEFT;
+
+	if (isDeath)
+	{
+		ani = GOLEM_ANI_DEATH;
+		animation_set->at(ani)->Render(x, y);
+		if (animation_set->at(ani)->GetCurrentFrame() == 3)
+		{
+			isDoneDeath = true;
+		}
+		return;
+	}
 
 	animation_set->at(ani)->Render(x, y);
 

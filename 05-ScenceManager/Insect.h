@@ -5,7 +5,7 @@
 #define INSECT_ANI_WALKING_RIGHT_DOWN 1
 #define INSECT_ANI_WALKING_LEFT_UP 2
 #define INSECT_ANI_WALKING_LEFT_DOWN 3
-#define INSECT_ANI_DEAD 4
+#define INSECT_ANI_DEATH 4
 
 #define INSECT_WALKING_SPEED 0.0375f;
 #define	INSECT_JUMPING_SPEED 0.035f;
@@ -26,6 +26,9 @@ class CInsect : public Enemy
 	int timeChangeState = 1500;
 	int interval = 30;
 	int timer;
+
+	bool isDeath = false;
+	bool isDoneDeath = false;
 public:
 	CInsect(float x, float y, LPGAMEOBJECT player);
 	virtual void SetState(int state);

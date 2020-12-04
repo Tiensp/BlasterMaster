@@ -27,18 +27,18 @@ void SophiaBullet::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	{
 		if (bullet_dir == 1)
 		{
-			vx = BULLET_SPEDD;
+			vx = BULLET_SPEED;
 			vy = 0;
 		}
 		else if (bullet_dir == -1)
 		{
-			vx = -BULLET_SPEDD;
+			vx = -BULLET_SPEED;
 			vy = 0;
 		}
 		else
 		{
 			vx = 0;
-			vy = -BULLET_SPEDD;
+			vy = -BULLET_SPEED;
 		}
 	}
 	else
@@ -98,25 +98,14 @@ void SophiaBullet::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				if (ny != 0) vy = 0;
 				isColBrick = true;
 			}
-			else if (dynamic_cast<Enemy*>(e->obj))
+			else if (e->obj->objTag == ENEMY)
 			{
-				/*e->obj->SetState(DOMES_STATE_DIE);*/
-			/*	x += min_tx * dx + nx * 0.4f;
-				y += min_ty * dy + ny * 0.4f;
-
-				if (nx != 0) vx = 0;
-				if (ny != 0) vy = 0;*/
 				e->obj->SetHp(bulletDame);
+				e->obj->vx = e->obj->vy = 0;
 				isMove = false;
 				isColEnemy = true;
 				/*	isColBrick = true;*/
 			}
-
-			//else if (dynamic_cast<CGolem*>(e->obj))
-			//{
-			//	/*e->obj->SetState(DOMES_STATE_DIE);*/
-			//	isMove = false;
-			//}
 		}
 
 

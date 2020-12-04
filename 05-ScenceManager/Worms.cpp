@@ -16,6 +16,8 @@ CWorm::CWorm(float x, float y, LPGAMEOBJECT player)
 	this->y = y;
 	this->target = player;
 
+	hp = 1;
+
 	objTag = ENEMY;
 	objType = WORMS;
 
@@ -23,14 +25,20 @@ CWorm::CWorm(float x, float y, LPGAMEOBJECT player)
 
 void CWorm::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
-	left = x;
-	top = y;
-	right = x + WORM_BBOX_WIDTH;
+	if (!isDoneDeath)
+	{
+		left = x;
+		top = y;
+		right = x + WORM_BBOX_WIDTH;
+		bottom = y + WORM_BBOX_HEIGHT;
 
-	if (state == WORM_STATE_DIE)
+	}
+	else return;
+
+	/*if (state == WORM_STATE_DIE)
 		bottom = y + WORM_BBOX_HEIGHT_DIE;
 	else
-		bottom = y + WORM_BBOX_HEIGHT;
+		bottom = y + WORM_BBOX_HEIGHT;*/
 }
 
 void CWorm::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
@@ -130,6 +138,22 @@ void CWorm::Render()
 {
 
 	int ani = WORM_ANI_WALKING_RIGHT;
+
+	if (isDoneDeath) return;
+	if (hp == 0) isDeath = true;
+
+	if (isDeath)
+	{
+		ani = WORM_ANI_DEATH;
+		animation_set->at(ani)->Render(x, y);
+		if (animation_set->at(ani)->GetCurrentFrame() == 3)
+		{
+			isDoneDeath = true;
+		}
+		return;
+	}
+
+
 	if (vx > 0) ani = WORM_ANI_WALKING_RIGHT;
 	else if (vx <= 0) ani = WORM_ANI_WALKING_LEFT;
 

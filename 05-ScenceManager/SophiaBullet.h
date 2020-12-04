@@ -1,7 +1,7 @@
+#pragma once
 #include "BulletObject.h"
 #include "Enemy.h"
 #include "Brick.h"
-
 class SophiaBullet : public BulletObject
 {
 public:

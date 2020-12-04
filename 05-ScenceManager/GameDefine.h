@@ -45,7 +45,8 @@ extern enum ObjectTAG
 	Player,
 	ENEMY,
 	Misc,
-	Portal
+	Portal,
+	BULLET_ENEMIES,
 };
 
 extern enum ObjectTYPE
@@ -55,8 +56,6 @@ extern enum ObjectTYPE
 	JASON = 2,
 	BIG_JASON = 3,
 
-	/* ENEMY TYPE */
-	Domes,
 	/* MAP */
 	MAPID = 10000,
 	/* HP */
@@ -72,6 +71,10 @@ extern enum ObjectTYPE
 	INSECTS = 9,
 	ORBS = 10,
 	SHIPS = 11,
+	EYEBALLS = 12,
+	TELEPORTERS = 13,
+	CANNONS = 14,
+
 
 	/* Portal */
 	OverWorld = 500,

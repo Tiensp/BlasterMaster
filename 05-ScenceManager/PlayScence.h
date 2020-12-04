@@ -22,6 +22,9 @@
 #include "Insect.h"
 #include "MiniScene.h"
 #include "Portal.h"
+#include "Eyeballs.h"
+#include "Teleporters.h"
+#include "Cannons.h"
 
 class CPlayScene: public CScene
 {
@@ -35,7 +38,7 @@ protected:
 	HUD* hud;
 	vector<LPGAMEOBJECT> objects;	//một list obj lưu trữ các GameObj có trong Play Scene
 	vector<LPGAMEOBJECT> listEnemies;
-	vector<LPBulletObject> listBullet;
+	vector<LPBulletObject> listBulletPlayer;
 	vector<MiniScene*>	listScene;
 	vector<LPGAMEOBJECT> listPortal;
 	

@@ -16,6 +16,8 @@ CShip::CShip(float x, float y, LPGAMEOBJECT player)
 	this->y = y;
 	this->target = player;
 
+	hp = 3;
+
 	objTag = ENEMY;
 	objType = SHIPS;
 
@@ -23,14 +25,19 @@ CShip::CShip(float x, float y, LPGAMEOBJECT player)
 
 void CShip::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
-	left = x;
-	top = y;
-	right = x + SHIP_BBOX_WIDTH;
-
-	if (state == SHIP_STATE_DIE)
-		bottom = y + SHIP_BBOX_HEIGHT_DIE;
-	else
+	if (!isDoneDeath)
+	{
+		left = x;
+		top = y;
+		right = x + SHIP_BBOX_WIDTH;
 		bottom = y + SHIP_BBOX_HEIGHT;
+
+		/*if (state == SHIP_STATE_DIE)
+			bottom = y + SHIP_BBOX_HEIGHT_DIE;
+		else
+			bottom = y + SHIP_BBOX_HEIGHT;*/
+	}
+	else return;
 }
 
 void CShip::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
@@ -137,7 +144,6 @@ void CShip::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 void CShip::Attack()
 {
-
 	if (abs(this->x - target->x) <= 30)
 	{
 		isAttack = true;
@@ -170,6 +176,20 @@ void CShip::Attack()
 void CShip::Render()
 {
 	int ani = SHIP_ANI_WALKING_LEFT;
+
+	if (isDoneDeath) return;
+	if (hp == 0) isDeath = true;
+
+	if (isDeath)
+	{
+		ani = SHIP_ANI_DEATH;
+		animation_set->at(ani)->Render(x, y);
+		if (animation_set->at(ani)->GetCurrentFrame() == 3)
+		{
+			isDoneDeath = true;
+		}
+		return;
+	}
 
 	if (isAttack)
 	{

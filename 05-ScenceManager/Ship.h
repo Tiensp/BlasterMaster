@@ -8,7 +8,7 @@
 #define SHIP_ANI_ATTACKING_LEFT 3
 #define SHIP_ANI_COLLISION_LEFT 4
 #define SHIP_ANI_COLLISION_RIGHT 5
-#define SHIP_ANI_DEAD 6
+#define SHIP_ANI_DEATH 6
 
 #define SHIP_WALKING_SPEED 0.09f;
 #define	SHIP_JUMPING_SPEED 0.05f;
@@ -27,6 +27,9 @@ class CShip : public Enemy
 	bool isFolow;  //theo player 
 	LPGAMEOBJECT target;
 	bool isAttack;
+
+	bool isDoneDeath = false;
+	bool isDeath = false;
 public:
 	CShip(float x, float y, LPGAMEOBJECT player);
 	virtual void SetState(int state);

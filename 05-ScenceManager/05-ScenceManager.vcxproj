@@ -131,7 +131,9 @@
     <ClCompile Include="BulletFloaters.cpp" />
     <ClCompile Include="BulletObject.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Cannons.cpp" />
     <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="Eyeballs.cpp" />
     <ClCompile Include="Floaters.cpp" />
     <ClCompile Include="GameDefine.cpp" />
     <ClCompile Include="Domes.cpp" />
@@ -161,6 +163,7 @@
     <ClCompile Include="StateTURN.cpp" />
     <ClCompile Include="StateWALKING.cpp" />
     <ClCompile Include="StateWALKINGGunUP.cpp" />
+    <ClCompile Include="Teleporters.cpp" />
     <ClCompile Include="Utils.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
@@ -180,8 +183,10 @@
     <ClInclude Include="BulletFloaters.h" />
     <ClInclude Include="BulletObject.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="Cannons.h" />
     <ClInclude Include="Domes.h" />
     <ClInclude Include="Enemy.h" />
+    <ClInclude Include="Eyeballs.h" />
     <ClInclude Include="Floaters.h" />
     <ClInclude Include="GameDefine.h" />
     <ClInclude Include="Golem.h" />
@@ -212,6 +217,7 @@
     <ClInclude Include="State.h" />
     <ClInclude Include="StateIDLE.h" />
     <ClInclude Include="StateWALKINGGunUP.h" />
+    <ClInclude Include="Teleporters.h" />
     <ClInclude Include="Utils.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />

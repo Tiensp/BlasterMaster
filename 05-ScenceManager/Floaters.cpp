@@ -16,6 +16,8 @@ CFloaters::CFloaters(float x, float y, LPGAMEOBJECT player)
 	this->y = y;
 	this->target = player;
 
+	hp = 1;
+
 	objTag = ENEMY;
 	objType = FLOATERS;
 
@@ -23,14 +25,19 @@ CFloaters::CFloaters(float x, float y, LPGAMEOBJECT player)
 
 void CFloaters::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
-	left = x;
-	top = y;
-	right = x + FLOATER_BBOX_WIDTH;
-
-	if (state == FLOATER_STATE_DIE)
-		bottom = y + FLOATER_BBOX_HEIGHT_DIE;
-	else
+	if (!isDoneDeath)
+	{
+		left = x;
+		top = y;
+		right = x + FLOATER_BBOX_WIDTH;
 		bottom = y + FLOATER_BBOX_HEIGHT;
+
+		/*if (state == FLOATER_STATE_DIE)
+			bottom = y + FLOATER_BBOX_HEIGHT_DIE;
+		else
+			bottom = y + FLOATER_BBOX_HEIGHT;*/
+	}
+	else return;
 }
 
 void CFloaters::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
@@ -148,9 +155,10 @@ void CFloaters::Attack()
 	if (abs(this->x - target->x) <= 200)
 	{
 		isAttack = true;
-
 		if (this->x - target->x < 0)
 		{
+			
+
 			if (this->GetState() == FLOATER_ANI_WALKING_RIGHT_UP)
 			{
 				this->SetState(FLOATER_ANI_ATTACKING_RIGHT_UP);
@@ -162,6 +170,8 @@ void CFloaters::Attack()
 		}
 		else if(this->x - target->x > 0)
 		{
+			
+			
 			if (this->GetState() == FLOATER_ANI_WALKING_LEFT_UP)
 			{
 				this->SetState(FLOATER_ANI_ATTACKING_LEFT_UP);
@@ -179,13 +189,17 @@ void CFloaters::Attack()
 }
 
 
+
 void CFloaters::Render()
 {
 	int ani = FLOATER_ANI_WALKING_LEFT_UP;
+
+	if (isDoneDeath) return;
+	if (hp == 0) isDeath = true;
 	
 	if (isAttack)
 	{
-		if (this->nx - target->nx == 0 && nx > 0)
+		if (this->nx - target->nx == 0 && nx > 0 && this->x - target->x < 0)
 		{
 			if (ny > 0)
 			{
@@ -196,7 +210,7 @@ void CFloaters::Render()
 				ani = FLOATER_ANI_ATTACKING_RIGHT_UP;
 			}
 		}
-		else if (this->nx - target->nx == 0 && nx < 0)
+		else if (this->nx - target->nx == 0 && nx < 0 && this->x - target->x > 0)
 		{
 			if (ny > 0)
 			{
@@ -234,8 +248,17 @@ void CFloaters::Render()
 		}
 	}
 
-	DebugOut(L"attack %d\n", isAttack);
-
+	if (isDeath)
+	{
+		ani = FLOATER_ANI_DEATH;
+		animation_set->at(ani)->Render(x, y);
+		if (animation_set->at(ani)->GetCurrentFrame() == 3)
+		{
+			isDoneDeath = true;
+		}
+		return;
+	}
+	
 	animation_set->at(ani)->Render(x, y);
 
 	//RenderBoundingBox();

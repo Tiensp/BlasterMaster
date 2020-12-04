@@ -8,7 +8,7 @@
 #define FLOATER_ANI_ATTACKING_RIGHT_DOWN 5
 #define FLOATER_ANI_ATTACKING_LEFT_UP 6 
 #define FLOATER_ANI_ATTACKING_LEFT_DOWN 7 
-#define FLOATER_ANI_DEAD 8 
+#define FLOATER_ANI_DEATH 8 
 #define FLOATER_WALKING_SPEED 0.05f;
 #define	FLOATER_JUMPING_SPEED 0.035f;
 
@@ -20,18 +20,23 @@
 #define FLOATER_STATE_DIE 200
 #define FLOATER_STATE_FLYING 300
 #include "Enemy.h"
+#include "BulletFloaters.h"
+#include "BulletObject.h"
 
 class CFloaters : public Enemy
 {
-	bool isFolow;  //theo player 
+protected:
 	LPGAMEOBJECT target;
 	bool isAttack;
+	bool isDoneDeath;
+	bool isDeath;
 public:
 	CFloaters(float x, float y, LPGAMEOBJECT player);
 	virtual void SetState(int state);
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	virtual void Render();
+
 	void Attack();
 	void flowPlayer(LPGAMEOBJECT player);
 };
