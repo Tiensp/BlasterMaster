@@ -17,12 +17,15 @@
 #define FLOATER_STATE_DIE 200
 #define FLOATER_STATE_FLYING 300
 #include "Enemy.h"
+#include "BulletFloaters.h"
 
 class CFloaters : public Enemy
 {
 	bool isFolow;  //theo player 
 	LPGAMEOBJECT target;
 	bool isAttack;
+	vector<BulletObject* > p_bullet_list;
+
 public:
 	CFloaters(float x, float y, LPGAMEOBJECT player);
 	virtual void SetState(int state);
@@ -31,6 +34,9 @@ public:
 	virtual void Render();
 	void Attack();
 	void flowPlayer(LPGAMEOBJECT player);
+	//BulletFloaters* Get_bullet_floater() { return bulletFloaters; }
+	vector<BulletObject*> Get_Bullet_List() { return p_bullet_list; }
+
 };
 
 

@@ -1,6 +1,9 @@
 
 #pragma once
 #include "GameObject.h"
+#include "Brick.h"
+#include "Enemy.h"
+
 #define BULLET_SPEDD 0.25f
 #define BULLETSOPHIA_ANI_RIGHT 0
 #define BULLETSOPHIA_ANI_LEFT 1

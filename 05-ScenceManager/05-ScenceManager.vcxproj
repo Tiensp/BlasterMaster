@@ -161,6 +161,7 @@
     <ClCompile Include="StateTURN.cpp" />
     <ClCompile Include="StateWALKING.cpp" />
     <ClCompile Include="StateWALKINGGunUP.cpp" />
+    <ClCompile Include="ThreeBullet.cpp" />
     <ClCompile Include="Utils.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
@@ -212,6 +213,7 @@
     <ClInclude Include="State.h" />
     <ClInclude Include="StateIDLE.h" />
     <ClInclude Include="StateWALKINGGunUP.h" />
+    <ClInclude Include="ThreeBullet.h" />
     <ClInclude Include="Utils.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />

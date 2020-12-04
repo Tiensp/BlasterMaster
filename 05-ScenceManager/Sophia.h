@@ -5,7 +5,7 @@
 #include "SophiaBullet.h"
 #include "Health.h"
 #include "BulletObject.h"
-
+#include "ThreeBullet.h"
 #define SOPHIA_WALKING_SPEED		0.09f 
 //0.1f
 #define SOPHIA_JUMP_SPEED_Y		0.5f

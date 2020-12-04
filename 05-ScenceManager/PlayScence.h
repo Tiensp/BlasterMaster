@@ -36,6 +36,7 @@ protected:
 	vector<LPGAMEOBJECT> objects;	//một list obj lưu trữ các GameObj có trong Play Scene
 	vector<LPGAMEOBJECT> listEnemies;
 	vector<LPBulletObject> listBullet;
+	vector<LPBulletObject> bulletFloater;
 	vector<MiniScene*>	listScene;
 	vector<LPGAMEOBJECT> listPortal;
 	
