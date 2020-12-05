@@ -48,7 +48,19 @@ void SophiaBullet::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		}
 	}
 
-	
+	for (int i = 0; i < coObjects->size(); i++)
+	{
+		if (dynamic_cast<Enemy*>(coObjects->at(i)))
+		{
+			if (this->IsCollidingObject(coObjects->at(i)))
+			{
+				coObjects->at(i)->SetHp(bulletDame);
+				isMove = false;
+				isColEnemy = true;
+			}
+			
+		}
+	}
 
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;

@@ -467,6 +467,7 @@ void CPlayScene::Update(DWORD dt)
 			bulletFloater = floater->Get_Bullet_List();
 		}
 	}
+
 	for (int i = 0; i < listBullet.size(); i++)
 	{
 		listBullet[i]->Update(dt, &coObjects);
