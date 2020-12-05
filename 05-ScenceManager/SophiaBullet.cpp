@@ -22,31 +22,33 @@ void SophiaBullet::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	HandleMove(SCREEN_WIDTH / 3, SCREEN_HEIGHT / 3);
 	if (isDone) return;
-
-	if (isMove)
+	if (type == 0)
 	{
-		if (bullet_dir == 1)
+		if (isMove)
 		{
-			vx = BULLET_SPEDD;
-			vy = 0;
-		}
-		else if (bullet_dir == -1)
-		{
-			vx = -BULLET_SPEDD;
-			vy = 0;
+			if (bullet_dir == 1)
+			{
+				vx = BULLET_SPEDD;
+				vy = 0;
+			}
+			else if (bullet_dir == -1)
+			{
+				vx = -BULLET_SPEDD;
+				vy = 0;
+			}
+			else
+			{
+				vx = 0;
+				vy = -BULLET_SPEDD;
+			}
 		}
 		else
 		{
-			vx = 0;
-			vy = -BULLET_SPEDD;
+			return;
 		}
 	}
-	else
-	{
-		return;
-	}
 
-
+	
 
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
@@ -72,18 +74,7 @@ void SophiaBullet::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		float rdx = 0;
 		float rdy = 0;
 
-		// TODO: This is a very ugly designed function!!!!
 		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);  // sắp xếp lại các sự kiện va chạm đầu tiên theo trục x, y 
-
-		// how to push back Sophia if collides with a moving objects, what if Sophia is pushed this way into another object?
-		//if (rdx != 0 && rdx!=dx)
-		//	x += nx*abs(rdx); 
-
-		// block every object first!
-
-
-		//x += min_tx * dx + nx * 0.4f;  //cập nhật lại vị trí x
-		//y += min_ty * dy + ny * 0.4f;	// cập nhật lại vị trí y  để tránh bị hụt xuống
 
 		for (UINT i = 0; i < coEventsResult.size(); i++)
 		{
@@ -91,12 +82,22 @@ void SophiaBullet::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 			if (dynamic_cast<CBrick*>(e->obj)) // if e->obj is Goomba 
 			{
-				x += min_tx * dx + nx * 0.4f;
-				y += min_ty * dy + ny * 0.4f;
+				
 
-				if (nx != 0) vx = 0;
-				if (ny != 0) vy = 0;
-				isColBrick = true;
+			/*	if (nx != 0) vx = 0;
+				if (ny != 0) vy = 0;*/
+				if (this->type == 0)
+				{
+					x += min_tx * dx + nx * 0.4f;
+					y += min_ty * dy + ny * 0.4f;
+					isColBrick = true;
+				}
+				else
+				{
+					x += dx;
+					y += dy;
+				}
+			
 			}
 			else if (dynamic_cast<Enemy*>(e->obj))
 			{
@@ -111,6 +112,7 @@ void SophiaBullet::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				isColEnemy = true;
 				/*	isColBrick = true;*/
 			}
+
 
 			//else if (dynamic_cast<CGolem*>(e->obj))
 			//{
