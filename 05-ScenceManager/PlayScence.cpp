@@ -442,6 +442,11 @@ void CPlayScene::Update(DWORD dt)
 	{
 		coObjects.push_back(listPortal[i]);
 	}
+	for (int i = 0; i < listEnemies.size(); i++)
+	{
+		coObjects.push_back(listEnemies[i]);
+		
+	}
 
 	for (int i = 0; i < objects.size(); i++)
 	{
@@ -457,10 +462,10 @@ void CPlayScene::Update(DWORD dt)
 		listBullet[i]->Update(dt, &coObjects);
 		
 	}
-	for (int i = 0; i < bulletFloater.size(); i++)
+	/*for (int i = 0; i < bulletFloater.size(); i++)
 	{
 		bulletFloater[i]->Update(dt, &coObjects);
-	}
+	}*/
 
 		
 
@@ -489,8 +494,8 @@ void CPlayScene::Render()
 		listPortal[i]->Render();
 	for (int i = 0; i < listBullet.size(); i++)
 		listBullet[i]->Render();
-	for (int i = 0; i < bulletFloater.size(); i++)
-		bulletFloater[i]->Render();
+	/*for (int i = 0; i < bulletFloater.size(); i++)
+		bulletFloater[i]->Render();*/
 	hud->Render();
 }
 

@@ -258,6 +258,9 @@
     <ClCompile Include="ThunderBullet.cpp">
       <Filter>BulletObject</Filter>
     </ClCompile>
+    <ClCompile Include="JasonBullet.cpp">
+      <Filter>BulletObject</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Brick.h">
@@ -426,6 +429,9 @@
       <Filter>BulletObject</Filter>
     </ClInclude>
     <ClInclude Include="ThunderBullet.h">
+      <Filter>BulletObject</Filter>
+    </ClInclude>
+    <ClInclude Include="JasonBullet.h">
       <Filter>BulletObject</Filter>
     </ClInclude>
   </ItemGroup>

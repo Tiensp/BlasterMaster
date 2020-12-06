@@ -36,7 +36,13 @@ void CJason::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	{
 		// Calculate dx, dy 
 		CGameObject::Update(dt);
+		set_bullet_list();
+		for (int i = 0; i < p_bullet_list.size(); i++)
+		{
+			p_bullet_list[i]->Update(dt, coObjects);
 
+		}
+		
 		// Simple fall down
 		vy += SOPHIA_GRAVITY * dt;
 		vector<LPCOLLISIONEVENT> coEvents;
@@ -115,6 +121,12 @@ void CJason::Render()
 			currentAni->RenderFrame(frameID, x, y);
 		else
 			currentAni->Render(x, y);
+
+		for (int i = 0; i < p_bullet_list.size(); i++)
+		{
+			p_bullet_list[i]->Render();
+
+		}
 		/*RenderBoundingBox();*/
 	}
 }
@@ -143,8 +155,30 @@ void CJason::OnKeyDown(int keycode)
 	case DIK_SPACE:
 
 		break;
+	case DIK_Z:
+	{
+		BulletObject* p_bullet = new BulletObject();
+		p_bullet = new JasonBullet(this->x, this->y);
+		if (this->nx == 1)
+		{
+			p_bullet->SetPosition(this->x + width + 15, this->y + height * 0.3);
+			p_bullet->Set_bullet_dir(this->nx);
+		}
+		else
+		{
+			p_bullet->SetPosition(this->x + width - 15, this->y + height * 0.3);
+			p_bullet->Set_bullet_dir(this->nx);
+		}
+		if (Get_Jason_Normal_bullet() <= 1)
+		{
+			p_bullet->Set_IsMove(true);
+			p_bullet_list.push_back(p_bullet);
+		}
+	}
+	break;
 	}
 }
+
 
 void CJason::OnKeyUp(int keycode)
 {
@@ -192,6 +226,41 @@ void CJason::Reset()
 	SetPosition(start_x, start_y);
 	SwitchState(new StateIDLE());
 	SetSpeed(0, 0);
+}
+
+int CJason::Get_Jason_Normal_bullet()
+{
+	int count = 0;
+	for (int i = 0; i < p_bullet_list.size(); i++)
+	{
+		if (dynamic_cast<JasonBullet*>(p_bullet_list[i]))
+		{
+			count += 1;
+		}
+	}
+	return count;
+}
+
+void CJason::set_bullet_list()
+{
+	for (int i = 0; i < p_bullet_list.size(); i++)
+	{
+		BulletObject* p_bullet = p_bullet_list[i];
+		if (p_bullet != NULL)
+		{
+			if (p_bullet->isDone)
+			{
+				p_bullet_list.erase(p_bullet_list.begin() + i);
+				if (p_bullet != NULL)
+				{
+					delete p_bullet;
+					p_bullet = NULL;
+				}
+
+			}
+		}
+
+	}
 }
 
 CJason* CJason::GetInstance()
