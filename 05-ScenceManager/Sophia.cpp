@@ -274,7 +274,6 @@ void CSophia::OnKeyDown(int keycode)
 			p_bullet_list.push_back(p_bullet);
 			numberThunderBullet--;
 		}
-	
 		break;
 	}
 

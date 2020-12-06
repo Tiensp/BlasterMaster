@@ -33,35 +33,16 @@ void CFloaters::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 
 	CGameObject::Update(dt, coObjects);
-
-	if (p_bullet_list.size()<2)
+	//khởi tạo đạn cho con fullet, để trong hàm Atack
+	if (p_bullet==NULL)
 	{
-		BulletObject* p_bullet = new BulletObject();
-		p_bullet = new BulletFloaters(this->x, this->y);
+		p_bullet = new BulletFloaters(x, y);
 		p_bullet->SetPosition(this->x + width + 15, this->y + height * 0.3);
 		p_bullet->Set_IsMove(true);
-		p_bullet_list.push_back(p_bullet);
 	}
-	for (int i = 0; i < p_bullet_list.size(); i++)
-	{
-		BulletObject* p_bullet = p_bullet_list[i];
-		if (p_bullet != NULL)
-		{
-			if (p_bullet->isDone)
-			{
-				p_bullet_list.erase(p_bullet_list.begin() + i);
-				if (p_bullet != NULL)
-				{
-					delete p_bullet;
-					p_bullet = NULL;
-				}
-
-			}
-		}
-
-	}
-
-
+	p_bullet->Update(dt, coObjects);
+	if (p_bullet->isDone) p_bullet = NULL;
+	
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
 
@@ -176,6 +157,11 @@ void CFloaters::Render()
 	}
 
 	animation_set->at(ani)->Render(x, y);
+	if (p_bullet != NULL)
+	{
+		p_bullet->Render();
+	}
+
 
 
 	//RenderBoundingBox();

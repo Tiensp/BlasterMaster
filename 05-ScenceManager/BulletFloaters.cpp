@@ -129,6 +129,7 @@ void BulletFloaters::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 void BulletFloaters::Render()
 {
 	int ani = 0;
+	if (isDone) return;
 	animation_set->at(ani)->Render(x, y);
 }
 

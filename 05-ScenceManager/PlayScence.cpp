@@ -437,15 +437,7 @@ void CPlayScene::Update(DWORD dt)
 		coObjects.push_back(objects[i]);
 	
 	}
-	for (int i = 0; i < listEnemies.size(); i++)
-	{
-		coObjects.push_back(listEnemies[i]);
-		if (dynamic_cast<CFloaters*>(listEnemies[i]))
-		{
-			CFloaters* floater = dynamic_cast<CFloaters*>(listEnemies[i]);
-			bulletFloater = floater->Get_Bullet_List();
-		}
-	}
+	
 	for (int i = 0; i < listPortal.size(); i++)
 	{
 		coObjects.push_back(listPortal[i]);
@@ -458,15 +450,7 @@ void CPlayScene::Update(DWORD dt)
 	listBullet = sophia->Get_Bullet_List();
 	for (int i = 0; i < listEnemies.size(); i++)
 		listEnemies[i]->Update(dt, &coObjects);
-	for (int i = 0; i < listEnemies.size(); i++)
-	{
-		/*coObjects.push_back(listEnemies[i]);*/
-		if (dynamic_cast<CFloaters*>(listEnemies[i]))
-		{
-			CFloaters* floater = dynamic_cast<CFloaters*>(listEnemies[i]);
-			bulletFloater = floater->Get_Bullet_List();
-		}
-	}
+
 
 	for (int i = 0; i < listBullet.size(); i++)
 	{
