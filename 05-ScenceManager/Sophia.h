@@ -6,6 +6,7 @@
 #include "Health.h"
 #include "BulletObject.h"
 #include "ThreeBullet.h"
+#include "ThunderBullet.h"
 #define SOPHIA_WALKING_SPEED		0.09f 
 //0.1f
 #define SOPHIA_JUMP_SPEED_Y		0.5f
@@ -64,6 +65,7 @@ protected:
 
 	bool isColliBrick;
 	int numberThreeBullet = 5;
+	int numberThunderBullet = 5;
 	int health = 8;	// Máu nhân vật
 	RECT lastColliObj;
 	vector<BulletObject* > p_bullet_list;

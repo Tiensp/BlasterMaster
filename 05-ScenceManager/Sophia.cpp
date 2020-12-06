@@ -263,6 +263,20 @@ void CSophia::OnKeyDown(int keycode)
 		}
 		break;
 	}
+	case DIK_C:
+	{
+		if (AllowFire() && numberThunderBullet > 0)
+		{
+			p_bullet = new ThunderBullet(this->x, this->y);
+			p_bullet->SetPosition(this->x, this->y);
+			isAllowFire = false;
+			p_bullet->Set_IsMove(true);
+			p_bullet_list.push_back(p_bullet);
+			numberThunderBullet--;
+		}
+	
+		break;
+	}
 
 	}
 }
@@ -310,7 +324,7 @@ bool CSophia::AllowFire()
 {
 	for (int i = 0; i < p_bullet_list.size(); i++)
 	{
-		if (dynamic_cast<ThreeBullet*>(p_bullet_list[i]))
+		if (dynamic_cast<ThreeBullet*>(p_bullet_list[i])|| dynamic_cast<ThunderBullet*>(p_bullet_list[i]))
 		{
 			
 			return false;

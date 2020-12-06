@@ -54,7 +54,7 @@ void ThreeBullet::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	bullet3->Update(dt, coObjects);
 
 	
-	DebugOut(L"bullet1: %f\n", bullet1->dt);
+	/*DebugOut(L"bullet1: %f\n", bullet1->dt);*/
 
 	
 

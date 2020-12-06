@@ -58,6 +58,64 @@ void CAnimation::RenderFrame(int frameID, float x, float y, int alpha) /* Render
 	frames->at(frameID)->GetSprite()->Draw(x, y, alpha);
 }
 
+void CAnimation::RenderThreeBullet(float x, float y, int alpha)
+{
+	DWORD now = GetTickCount64();
+	if (currentFrame == -1)
+	{
+		currentFrame = 0;
+		lastFrameTime = now;
+	}
+	else
+	{
+		DWORD t = frames->at(currentFrame)->GetTime();
+		if (now - lastFrameTime > t)
+		{
+			currentFrame++;
+			lastFrameTime = now;
+			isComplete = (currentFrame == frames->size() - 1);		/* Da render den frame cuoi cua ani */
+			if (currentFrame == frames->size()) currentFrame = 0;
+		}
+	}
+	if (currentFrame == 0)
+	{
+		frames->at(currentFrame)->GetSprite()->Draw(x, y, alpha);
+	}
+	else if (currentFrame == 1)
+	{
+		frames->at(currentFrame-1)->GetSprite()->Draw(x, y, alpha);
+		frames->at(currentFrame)->GetSprite()->Draw(x, y + 16, alpha);
+	}
+	else if (currentFrame == 2)
+	{
+		frames->at(currentFrame-2)->GetSprite()->Draw(x, y, alpha);
+		frames->at(currentFrame-1)->GetSprite()->Draw(x, y + 16, alpha);
+		frames->at(currentFrame)->GetSprite()->Draw(x, y+16*2, alpha);
+	}
+	else if (currentFrame == 3)
+	{
+		frames->at(currentFrame-3)->GetSprite()->Draw(x, y, alpha);
+		frames->at(currentFrame-2)->GetSprite()->Draw(x, y + 16, alpha);
+		frames->at(currentFrame-1)->GetSprite()->Draw(x, y + 16 * 2, alpha);
+		frames->at(currentFrame)->GetSprite()->Draw(x, y + 16*3, alpha);
+	}
+	else if (currentFrame == 4)
+	{
+		frames->at(currentFrame-3)->GetSprite()->Draw(x, y + 16, alpha);
+		frames->at(currentFrame-2)->GetSprite()->Draw(x, y + 16 * 2, alpha);
+		frames->at(currentFrame-1)->GetSprite()->Draw(x, y + 16 * 3, alpha);
+		frames->at(currentFrame)->GetSprite()->Draw(x, y + 16 * 4, alpha);
+	}
+	else if (currentFrame == 5)
+	{
+		frames->at(currentFrame-3)->GetSprite()->Draw(x, y + 16 * 2, alpha);
+		frames->at(currentFrame-2)->GetSprite()->Draw(x, y + 16 * 3, alpha);
+		frames->at(currentFrame-1)->GetSprite()->Draw(x, y + 16 * 4, alpha);
+		frames->at(currentFrame)->GetSprite()->Draw(x, y + 16 * 5, alpha);
+	}
+	/*frames->at(currentFrame)->GetSprite()->Draw(x, y, alpha);*/
+}
+
 int CAnimation::GetCurrentFrame()
 {
 	return currentFrame;
