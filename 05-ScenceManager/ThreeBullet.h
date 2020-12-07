@@ -7,10 +7,10 @@ class ThreeBullet : public BulletObject
 	SophiaBullet* bullet2;
 	SophiaBullet* bullet3;
 public:
-	ThreeBullet() {};
-	ThreeBullet(float _start_x, float _start_y);
+	/*ThreeBullet() {};*/
+	ThreeBullet(float _start_x, float _start_y, int _nx);
 	~ThreeBullet() {};
-	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {};
+	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom) {};
 	void Render() ;
 };

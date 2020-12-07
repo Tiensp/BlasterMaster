@@ -1,53 +1,49 @@
-﻿#include "SophiaBullet.h"
+﻿#include "JasonBullet.h"
 
-SophiaBullet::SophiaBullet(float _start_x, float _start_y)
+JasonBullet::JasonBullet(float _start_x, float _start_y)
 {
-	/*this->x = 0;
-	this->y = 0;*/
 	this->start_x = _start_x;
 	this->start_y = _start_y;
 	isMove = true;
 	isDone = false;
 	bulletDame = 1;
-	this->SetAnimationSet(CAnimationSets::GetInstance()->Get(15));
+	this->SetAnimationSet(CAnimationSets::GetInstance()->Get(20));
 }
 
-SophiaBullet::~SophiaBullet()
+JasonBullet::~JasonBullet()
 {
 }
 
-void SophiaBullet::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
+void JasonBullet::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	CGameObject::Update(dt, coObjects);
 
 	HandleMove(SCREEN_WIDTH / 3, SCREEN_HEIGHT / 3);
 	if (isDone) return;
-	if (type == 0)
+	if (isMove)
 	{
-		if (isMove)
+		if (bullet_dir == 1)
 		{
-			if (bullet_dir == 1)
-			{
-				vx = BULLET_SPEDD;
-				vy = 0;
-			}
-			else if (bullet_dir == -1)
-			{
-				vx = -BULLET_SPEDD;
-				vy = 0;
-			}
-			else
-			{
-				vx = 0;
-				vy = -BULLET_SPEDD;
-			}
+			vx = BULLET_SPEDD;
+			vy = 0;
+		}
+		else if (bullet_dir == -1)
+		{
+			vx = -BULLET_SPEDD;
+			vy = 0;
 		}
 		else
 		{
-			return;
+			vx = 0;
+			vy = -BULLET_SPEDD;
 		}
 	}
-
+	else
+	{
+		return;
+	}
+	
+		
 	for (int i = 0; i < coObjects->size(); i++)
 	{
 		if (dynamic_cast<Enemy*>(coObjects->at(i)))
@@ -58,7 +54,7 @@ void SophiaBullet::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				isMove = false;
 				isColEnemy = true;
 			}
-			
+
 		}
 	}
 
@@ -94,10 +90,9 @@ void SophiaBullet::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 			if (dynamic_cast<CBrick*>(e->obj)) // if e->obj is Goomba 
 			{
-				
 
-			/*	if (nx != 0) vx = 0;
-				if (ny != 0) vy = 0;*/
+
+			
 				if (this->type == 0)
 				{
 					x += min_tx * dx + nx * 0.4f;
@@ -109,74 +104,40 @@ void SophiaBullet::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					x += dx;
 					y += dy;
 				}
-			
 			}
-			else if (e->obj->objTag == ENEMY)
+			else if (dynamic_cast<Enemy*>(e->obj))
 			{
+			
 				e->obj->SetHp(bulletDame);
-				e->obj->vx = e->obj->vy = 0;
 				isMove = false;
 				isColEnemy = true;
 				/*	isColBrick = true;*/
 			}
 
 
-			//else if (dynamic_cast<CGolem*>(e->obj))
-			//{
-			//	/*e->obj->SetState(DOMES_STATE_DIE);*/
-			//	isMove = false;
-			//}
+			
 		}
 
 
 	}
-	//for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
+	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
 }
 
-void SophiaBullet::GetBoundingBox(float& left, float& top, float& right, float& bottom)
+void JasonBullet::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
-
 	if (!isDone)
 	{
 		left = x;
-		right = x + 26;
 		top = y;
-		bottom = y + 8;
+		right = x + 10;
+		bottom = y + 10;
 	}
 }
 
-void SophiaBullet::Render()
+void JasonBullet::Render()
 {
 	int ani = 0;
 	if (isDone) return;
-	if (isColBrick)
-	{
-		ani = BULLETSOPHIA_STATE_ISCOL_BRICK;
-		animation_set->at(ani)->Render(x, y);
-		if (animation_set->at(ani)->GetCurrentFrame() == 2)
-		{
-			isDone = true;
-		}
-		return;
-	}
-	else if (isColEnemy) isDone = true;
-	else if (isMove)
-	{
-		if (bullet_dir == 1)
-		{
-			ani = 0;
-		}
-		else if (bullet_dir == -1)
-		{
-			ani = 1;
-		}
-		else
-		{
-			ani = 2;
-		}
-	}
-
-
 	animation_set->at(ani)->Render(x, y);
-	RenderBoundingBox();
+
 }

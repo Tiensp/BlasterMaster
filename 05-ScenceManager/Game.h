@@ -62,7 +62,12 @@ public:
 
 	int GetScreenWidth() { return screen_width; }
 	int GetScreenHeight() { return screen_height; }
-
+	bool CGame::IsCollidingAABB(
+		float ml, float mt, float mr, float mb,
+		float sl, float st, float sr, float sb)
+	{
+		return !(mr < sl || ml > sr || mb < st || mt > sb);
+	}
 	static void SweptAABB(
 		float ml,			// move left 
 		float mt,			// move top

@@ -215,51 +215,68 @@ void CSophia::OnKeyDown(int keycode)
 		break;
 	case DIK_Z:
 	{
-		p_bullet = new SophiaBullet(this->x, this->y);
-		if (isGunUp == false)
+		if (AllowFire())
 		{
-			if (this->nx == 1)
+			p_bullet = new SophiaBullet(this->x, this->y);
+			if (isGunUp == false)
 			{
-				p_bullet->SetPosition(this->x + width + 15, this->y + height * 0.3);
-				p_bullet->Set_bullet_dir(this->nx);
+				if (this->nx == 1)
+				{
+					p_bullet->SetPosition(this->x + width + 15, this->y + height * 0.3);
+					p_bullet->Set_bullet_dir(this->nx);
+				}
+				else
+				{
+					p_bullet->SetPosition(this->x + width - 15, this->y + height * 0.3);
+					p_bullet->Set_bullet_dir(this->nx);
+				}
 			}
 			else
 			{
-				p_bullet->SetPosition(this->x + width - 15, this->y + height * 0.3);
-				p_bullet->Set_bullet_dir(this->nx);
-			}			
-		}
-		else
-		{
-			if (this->nx == 1)
-			{
-				p_bullet->SetPosition(this->x + width / 2 + 2, this->y - 20);
-				p_bullet->Set_bullet_dir(3);
+				if (this->nx == 1)
+				{
+					p_bullet->SetPosition(this->x + width / 2 + 2, this->y - 20);
+					p_bullet->Set_bullet_dir(3);
+				}
+				else
+				{
+					p_bullet->SetPosition(this->x + width / 2 + 10, this->y - 20);
+					p_bullet->Set_bullet_dir(3);
+				}
+
 			}
-			else
+			if (Get_Sophia_Normal_bullet() <= 2)
 			{
-				p_bullet->SetPosition(this->x + width / 2 + 10 , this->y - 20);
-				p_bullet->Set_bullet_dir(3);
+				p_bullet->Set_IsMove(true);
+				p_bullet_list.push_back(p_bullet);
 			}
-			
 		}
-		if (p_bullet_list.size() <= 2)
-		{
-			p_bullet->Set_IsMove(true);
-			p_bullet_list.push_back(p_bullet);
-		}
-		break;
-		
-		
+		break;	
 	}
 	case DIK_X:
 	{
-		
-		//BulletObject* p_bullet = new BulletObject();
-		p_bullet = new ThreeBullet(this->x, this->y);
-		p_bullet->Set_IsMove(true);
-		p_bullet_list.push_back(p_bullet);
-
+		if (AllowFire() && numberThreeBullet > 0 )
+		{
+			p_bullet = new ThreeBullet(this->x, this->y, this->nx);
+			p_bullet->Set_IsMove(true);
+			isAllowFire = false;
+			p_bullet_list.push_back(p_bullet);
+			numberThreeBullet--;
+		}
+		break;
+	}
+	case DIK_C:
+	{
+		if (AllowFire() && numberThunderBullet > 0)
+		{
+			p_bullet = new ThunderBullet(this->x, this->y);
+			p_bullet->SetPosition(this->x, this->y);
+			isAllowFire = false;
+			p_bullet->Set_IsMove(true);
+			p_bullet_list.push_back(p_bullet);
+			numberThunderBullet--;
+		}
+		break;
 	}
 
 	}
@@ -304,6 +321,19 @@ void CSophia::GetBoundingBox(float &left, float &top, float &right, float &botto
 
 
 
+bool CSophia::AllowFire()
+{
+	for (int i = 0; i < p_bullet_list.size(); i++)
+	{
+		if (dynamic_cast<ThreeBullet*>(p_bullet_list[i])|| dynamic_cast<ThunderBullet*>(p_bullet_list[i]))
+		{
+			
+			return false;
+		}
+	}
+	return true;
+}
+
 void CSophia::SwitchState(CState* state)
 {
 	/*
@@ -345,6 +375,19 @@ void CSophia::set_bullet_list()
 		}
 		
 	}
+}
+
+int CSophia::Get_Sophia_Normal_bullet()
+{
+	int count = 0;
+	for (int i = 0; i < p_bullet_list.size(); i++)
+	{
+		if (dynamic_cast<SophiaBullet*>(p_bullet_list[i]))
+		{
+			count += 1;
+		}
+	}
+	return count;
 }
 
 CSophia* CSophia::GetInstance()

@@ -141,6 +141,7 @@
     <ClCompile Include="HP.cpp" />
     <ClCompile Include="HUD.cpp" />
     <ClCompile Include="Insect.cpp" />
+    <ClCompile Include="JasonBullet.cpp" />
     <ClCompile Include="Koopas.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Jason.cpp" />
@@ -164,6 +165,7 @@
     <ClCompile Include="StateWALKING.cpp" />
     <ClCompile Include="StateWALKINGGunUP.cpp" />
     <ClCompile Include="ThreeBullet.cpp" />
+    <ClCompile Include="ThunderBullet.cpp" />
     <ClCompile Include="Teleporters.cpp" />
     <ClCompile Include="Utils.cpp" />
     <ClCompile Include="Game.cpp" />
@@ -194,6 +196,7 @@
     <ClInclude Include="Insect.h" />
     <ClInclude Include="HP.h" />
     <ClInclude Include="HUD.h" />
+    <ClInclude Include="JasonBullet.h" />
     <ClInclude Include="Koopas.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="Jason.h" />
@@ -220,6 +223,7 @@
     <ClInclude Include="StateWALKINGGunUP.h" />
     <ClInclude Include="ThreeBullet.h" />
     <ClInclude Include="Teleporters.h" />
+    <ClInclude Include="ThunderBullet.h" />
     <ClInclude Include="Utils.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />

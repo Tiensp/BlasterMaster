@@ -35,6 +35,27 @@ void CGameObject::SetHp(int dameBullet)
 		hp = 0;
 	}
 }
+bool CGameObject::IsCollidingObject(CGameObject* Obj)
+{
+	float ml, mt, mr, mb;		// moving object bbox
+	this->GetBoundingBox(ml, mt, mr, mb);
+
+	float sl, st, sr, sb;		// static object bbox
+	Obj->GetBoundingBox(sl, st, sr, sb);
+
+	//Check AABB first
+	/*LPSPRITE sprt = animationSet->at(0)->GetAnimationCurrentFrame(0)->GetSprite();
+	LPSPRITE coSprt = Obj->animationSet->at(0)->GetAnimationCurrentFrame(0)->GetSprite();*/
+	if (CGame::GetInstance()->IsCollidingAABB(
+		ml, mt, mr, mb,
+		sl, st, sr, sb))
+		return true;
+
+	//Swept AABB later
+	LPCOLLISIONEVENT e = SweptAABBEx(Obj);
+	bool isColliding = e->t > 0 && e->t <= 1;
+	return isColliding;
+}
 LPCOLLISIONEVENT CGameObject::SweptAABBEx(LPGAMEOBJECT coO)
 {
 	float sl, st, sr, sb;		// static object bbox

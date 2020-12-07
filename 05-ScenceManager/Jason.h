@@ -2,7 +2,7 @@
 #include "GameObject.h"
 #include "State.h"
 #include "GameDefine.h"
-
+#include "JasonBullet.h"
 #define JASON_WALKING_SPEED		0.09f 
 //0.1f
 #define JASON_JUMP_SPEED_Y		0.5f
@@ -52,6 +52,7 @@ protected:
 	bool isTouchingPortal;
 
 	int health = 8;	// Máu nhân vật
+	vector<BulletObject* > p_bullet_list;
 public:
 	CJason();
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects = NULL);
@@ -81,7 +82,9 @@ public:
 
 
 	void Reset();
-
+	int Get_Jason_Normal_bullet();
+	void set_bullet_list();
+	vector<BulletObject*> Get_Bullet_List() { return p_bullet_list; }
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	static CJason* GetInstance();
 	/* Variable */

@@ -27,7 +27,7 @@ class CFloaters : public Enemy
 protected:
 	LPGAMEOBJECT target;
 	bool isAttack;
-	vector<BulletObject* > p_bullet_list;
+	BulletObject* p_bullet;
 
 	bool isDoneDeath;
 	bool isDeath;
@@ -40,7 +40,7 @@ public:
 	void Attack();
 	void flowPlayer(LPGAMEOBJECT player);
 	//BulletFloaters* Get_bullet_floater() { return bulletFloaters; }
-	vector<BulletObject*> Get_Bullet_List() { return p_bullet_list; }
+	
 
 };
 
