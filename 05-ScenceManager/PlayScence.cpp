@@ -42,6 +42,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):
 #define OBJECT_TYPE_ORB 10
 #define OBJECT_TYPE_SHIP 11
 #define OBJECT_TYPE_EYEBALL 12
+#define OBJECT_TYPE_TELEPORTER 13
 #define OBJECT_TYPE_CANNON 14
 
 
@@ -306,6 +307,16 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_EYEBALL:
 	{
 		obj = new CEyeballs(x, y, sophia);
+		obj->SetPosition(x, y);
+		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
+		obj->SetAnimationSet(ani_set);
+		listEnemies.push_back(obj);
+		break;
+	}
+
+	case OBJECT_TYPE_TELEPORTER:
+	{
+		obj = new CTeleporter(x, y, sophia);
 		obj->SetPosition(x, y);
 		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
 		obj->SetAnimationSet(ani_set);

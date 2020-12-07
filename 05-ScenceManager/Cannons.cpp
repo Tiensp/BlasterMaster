@@ -11,7 +11,7 @@
 #include "Brick.h"
 CCannon::CCannon(float x, float y, LPGAMEOBJECT player)
 {
-	SetState(CANNON_ANI_IDLE);
+	SetState(CANNON_ANI_SHOOT_TOP_BOTTOM);
 	this->x = x;
 	this->y = y;
 	this->target = player;
@@ -45,18 +45,32 @@ void CCannon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	CGameObject::Update(dt, coObjects);
 
+	
+
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
 
 	coEvents.clear();
 
-
 	CalcPotentialCollisions(coObjects, coEvents);
 
 	if (coEvents.size() == 0)  //nếu không có va chạm, update bình thường
 	{
-		x += dx;
-		y += dy;
+
+		timer += interval;
+
+		if (timer == timeChangeState)
+		{
+			if (this->GetState() == CANNON_ANI_SHOOT_TOP_BOTTOM)
+			{
+				this->SetState(CANNON_ANI_SHOOT_RIGHT_LEFT);
+			}
+			else if (this->GetState() == CANNON_ANI_SHOOT_RIGHT_LEFT)
+			{
+				this->SetState(CANNON_ANI_SHOOT_TOP_BOTTOM);
+			}
+			timer = 0;
+		}
 	}
 	else //có va chạm
 	{
@@ -79,13 +93,17 @@ void CCannon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 				if (e->obj->objTag == Player)
 				{
-					/*x += dx;
-					y += dy;*/
+					x += min_tx * dx + nx * 0.4f;  //cập nhật lại vị trí x
+					y += min_ty * dy + ny * 0.4f;	// cập nhật lại vị trí y  để tránh bị hụt xuống
+					
+					vx = vy = 0;
 				}
 				if (e->obj->objTag == ENEMY)
 				{
 					/*x += dx;
 					y += dy;*/
+
+					vx = vy = 0;
 				}
 			}
 		}
@@ -93,14 +111,9 @@ void CCannon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 }
 
 
-void CCannon::ChangeState()
-{
-}
-
-
 void CCannon::Render()
 {
-	int ani = CANNON_ANI_IDLE;
+	int ani = CANNON_ANI_SHOOT_TOP_BOTTOM;
 
 	if (isDoneDeath) return;
 	if (hp == 0) isDeath = true;
@@ -116,10 +129,18 @@ void CCannon::Render()
 		return;
 	}
 
-	animation_set->at(ani)->Render(x, y);
+	if (vx > 0)
+	{
+		ani = CANNON_ANI_SHOOT_RIGHT_LEFT;
+	}
+	else if (vx < 0)
+	{
+		ani = CANNON_ANI_SHOOT_TOP_BOTTOM;
+	}
 
-	DebugOut(L"state%d\n", this->GetState());
-	DebugOut(L"counter%d\n", counter);
+
+
+	animation_set->at(ani)->Render(x, y);
 
 	//RenderBoundingBox();
 }
@@ -129,20 +150,14 @@ void CCannon::SetState(int state)
 	CGameObject::SetState(state);
 	switch (state)
 	{
-	case CANNON_ANI_IDLE:
-		vx = 0;
-		vy = 0;
-		nx = 0;
-		ny = 0;
-		break;
 	case CANNON_ANI_SHOOT_RIGHT_LEFT:
-		vx = 0;
+		vx = 0.0001f;
 		vy = 0;
 		nx = 0;
 		ny = 0;
 		break;
 	case CANNON_ANI_SHOOT_TOP_BOTTOM:
-		vx = 0;
+		vx = -0.0001f;
 		vy = 0;
 		nx = 0;
 		ny = 0;

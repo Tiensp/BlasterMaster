@@ -68,8 +68,6 @@ void CInsect::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		x += dx;
 		y += dy;
 
-		DWORD dt = GetTickCount();
-
 		timer += interval;
 
 		if (timer == timeChangeState)
