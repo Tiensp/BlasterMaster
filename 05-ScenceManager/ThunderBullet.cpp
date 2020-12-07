@@ -1,53 +1,19 @@
-﻿#include "SophiaBullet.h"
+﻿#include "ThunderBullet.h"
 
-SophiaBullet::SophiaBullet(float _start_x, float _start_y)
+ThunderBullet::ThunderBullet(float _start_x, float _start_y)
 {
-	/*this->x = 0;
-	this->y = 0;*/
 	this->start_x = _start_x;
 	this->start_y = _start_y;
 	isMove = true;
 	isDone = false;
 	bulletDame = 1;
-	this->SetAnimationSet(CAnimationSets::GetInstance()->Get(15));
+	this->SetAnimationSet(CAnimationSets::GetInstance()->Get(17));
 }
 
-SophiaBullet::~SophiaBullet()
-{
-}
-
-void SophiaBullet::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
+void ThunderBullet::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	CGameObject::Update(dt, coObjects);
-
-	HandleMove(SCREEN_WIDTH / 3, SCREEN_HEIGHT / 3);
 	if (isDone) return;
-	if (type == 0)
-	{
-		if (isMove)
-		{
-			if (bullet_dir == 1)
-			{
-				vx = BULLET_SPEDD;
-				vy = 0;
-			}
-			else if (bullet_dir == -1)
-			{
-				vx = -BULLET_SPEDD;
-				vy = 0;
-			}
-			else
-			{
-				vx = 0;
-				vy = -BULLET_SPEDD;
-			}
-		}
-		else
-		{
-			return;
-		}
-	}
-
 	for (int i = 0; i < coObjects->size(); i++)
 	{
 		if (dynamic_cast<Enemy*>(coObjects->at(i)))
@@ -58,10 +24,9 @@ void SophiaBullet::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				isMove = false;
 				isColEnemy = true;
 			}
-			
+
 		}
 	}
-
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
 
@@ -92,26 +57,7 @@ void SophiaBullet::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		{
 			LPCOLLISIONEVENT e = coEventsResult[i];
 
-			if (dynamic_cast<CBrick*>(e->obj)) // if e->obj is Goomba 
-			{
-				
-
-			/*	if (nx != 0) vx = 0;
-				if (ny != 0) vy = 0;*/
-				if (this->type == 0)
-				{
-					x += min_tx * dx + nx * 0.4f;
-					y += min_ty * dy + ny * 0.4f;
-					isColBrick = true;
-				}
-				else
-				{
-					x += dx;
-					y += dy;
-				}
-			
-			}
-			else if (dynamic_cast<Enemy*>(e->obj))
+			if (dynamic_cast<Enemy*>(e->obj))
 			{
 				/*e->obj->SetState(DOMES_STATE_DIE);*/
 			/*	x += min_tx * dx + nx * 0.4f;
@@ -121,7 +67,6 @@ void SophiaBullet::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				if (ny != 0) vy = 0;*/
 				e->obj->SetHp(bulletDame);
 				isMove = false;
-				isColEnemy = true;
 				/*	isColBrick = true;*/
 			}
 
@@ -136,52 +81,64 @@ void SophiaBullet::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	}
 	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
+	/*y += 0.005f * dt;*/
+	DebugOut(L"X, Y %f\n", x,y);
 }
 
-void SophiaBullet::GetBoundingBox(float& left, float& top, float& right, float& bottom)
+void ThunderBullet::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
-
 	if (!isDone)
 	{
-		left = x;
-		right = x + 26;
-		top = y;
-		bottom = y + 8;
+		if (animation_set->at(0)->GetCurrentFrame() == 0)
+		{
+			left = start_x;
+			top = start_y;
+			right = start_x + 15;
+			bottom = start_y + 16;
+			
+		}
+		if (animation_set->at(0)->GetCurrentFrame() == 1)
+		{
+			left = start_x;
+			top = start_y;
+			right = start_x + 15;
+			bottom = start_y + 16*2;
+		}
+		if (animation_set->at(0)->GetCurrentFrame() == 2)
+		{
+			left = start_x;
+			top = start_y;
+			right = start_x + 15;
+			bottom = start_y + 16*2;
+		}
+		if (animation_set->at(0)->GetCurrentFrame() == 3)
+		{
+			left = start_x;
+			top = start_y - 16;
+			right = start_x + 15;
+			bottom = start_y + 16 * 4;
+		}
+		if (animation_set->at(0)->GetCurrentFrame() == 5)
+		{
+			left = start_x;
+			top = start_y - 32;
+			right = start_x + 15;
+			bottom = start_y + 16 * 4;
+		}
+	
 	}
 }
 
-void SophiaBullet::Render()
+void ThunderBullet::Render()
 {
 	int ani = 0;
+	int alpha = rand() % (255 + 1) + 0;
 	if (isDone) return;
-	if (isColBrick)
+	animation_set->at(0)->RenderThreeBullet(x, y,alpha);
+	if (animation_set->at(0)->GetCurrentFrame() == animation_set->at(0)->GetLastFrame())
 	{
-		ani = BULLETSOPHIA_STATE_ISCOL_BRICK;
-		animation_set->at(ani)->Render(x, y);
-		if (animation_set->at(ani)->GetCurrentFrame() == 2)
-		{
-			isDone = true;
-		}
-		return;
+		isDone = true;
 	}
-	else if (isColEnemy) isDone = true;
-	else if (isMove)
-	{
-		if (bullet_dir == 1)
-		{
-			ani = 0;
-		}
-		else if (bullet_dir == -1)
-		{
-			ani = 1;
-		}
-		else
-		{
-			ani = 2;
-		}
-	}
-
-
-	animation_set->at(ani)->Render(x, y);
 	RenderBoundingBox();
+	
 }

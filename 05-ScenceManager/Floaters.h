@@ -24,7 +24,7 @@ class CFloaters : public Enemy
 	bool isFolow;  //theo player 
 	LPGAMEOBJECT target;
 	bool isAttack;
-	vector<BulletObject* > p_bullet_list;
+	BulletObject* p_bullet;
 
 public:
 	CFloaters(float x, float y, LPGAMEOBJECT player);
@@ -35,7 +35,7 @@ public:
 	void Attack();
 	void flowPlayer(LPGAMEOBJECT player);
 	//BulletFloaters* Get_bullet_floater() { return bulletFloaters; }
-	vector<BulletObject*> Get_Bullet_List() { return p_bullet_list; }
+	
 
 };
 

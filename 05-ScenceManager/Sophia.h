@@ -6,6 +6,7 @@
 #include "Health.h"
 #include "BulletObject.h"
 #include "ThreeBullet.h"
+#include "ThunderBullet.h"
 #define SOPHIA_WALKING_SPEED		0.09f 
 //0.1f
 #define SOPHIA_JUMP_SPEED_Y		0.5f
@@ -60,9 +61,11 @@ protected:
 	bool isTurning;
 	bool isJumping;
 	bool isFalling;
+	bool isAllowFire = true;
 
 	bool isColliBrick;
-
+	int numberThreeBullet = 5;
+	int numberThunderBullet = 5;
 	int health = 8;	// Máu nhân vật
 	RECT lastColliObj;
 	vector<BulletObject* > p_bullet_list;
@@ -101,6 +104,7 @@ public:
 	void SetHealth(int hp) { health = hp; }
 	int GetHealth() { return health; }
 
+
 	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount64(); }
 
 	/* State */
@@ -110,6 +114,8 @@ public:
 	void Reset();
 
 	void set_bullet_list();
+	int Get_Sophia_Normal_bullet();
+	bool AllowFire();
 	
 	vector<BulletObject*> Get_Bullet_List()  { return p_bullet_list; }
 

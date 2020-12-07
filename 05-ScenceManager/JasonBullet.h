@@ -3,13 +3,12 @@
 #include "Enemy.h"
 #include "Brick.h"
 
-class SophiaBullet : public BulletObject
+class JasonBullet : public BulletObject
 {
 	int type = 0;
 public:
-	SophiaBullet() {};
-	SophiaBullet(float _start_x, float _start_y);
-	~SophiaBullet();
+	JasonBullet(float _start_x, float _start_y);
+	~JasonBullet();
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	void Render();
