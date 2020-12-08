@@ -252,6 +252,9 @@
     <ClCompile Include="SophiaBullet.cpp">
       <Filter>BulletObject</Filter>
     </ClCompile>
+    <ClCompile Include="Grid.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Brick.h">
@@ -414,6 +417,9 @@
       <Filter>Framework\GameObject\State Machine\State JUMP Gun UP</Filter>
     </ClInclude>
     <ClInclude Include="MiniScene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Grid.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

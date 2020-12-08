@@ -6,7 +6,7 @@
 
 class CCamera
 {
-	static CCamera* __intance;
+	static CCamera* __instance;
 
 	D3DXVECTOR2 camPos;
 

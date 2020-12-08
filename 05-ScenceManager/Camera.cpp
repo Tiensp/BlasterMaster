@@ -7,16 +7,16 @@
 
 #define PULL_SCREEN_Y	44
 
-CCamera* CCamera::__intance = NULL;
+CCamera* CCamera::__instance = NULL;
 
 CCamera* CCamera::GetInstance()
 {
-	if (__intance == NULL)
+	if (__instance == NULL)
 	{
-		__intance = new CCamera(CAMERA_WIDTH, CAMERA_HEIGHT);
+		__instance = new CCamera(CAMERA_WIDTH, CAMERA_HEIGHT);
 	}
 		
-	return __intance;
+	return __instance;
 }
 
 CCamera::CCamera(int width, int height)
