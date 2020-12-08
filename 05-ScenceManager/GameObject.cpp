@@ -12,9 +12,8 @@ CGameObject::CGameObject()
 {
 	x = y = 0;
 	vx = vy = 0;
-	ax = 0;
-	ay = 0;
 	nx = 1;	
+	objTag = NONE;
 }
 
 void CGameObject::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)

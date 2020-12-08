@@ -108,7 +108,7 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 					x += dx;
 					health -= 1;
 				}
-				else if (e->obj->objTag == Portal)
+				else if (e->obj->objTag == PORTAL)
 				{
 					x += dx;
 					CPortal* por = dynamic_cast<CPortal*>(e->obj);

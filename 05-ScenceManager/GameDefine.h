@@ -45,11 +45,11 @@ using namespace std;
 */
 extern enum ObjectTAG
 {
-	None, //Default Object
-	Player,
-	//Enemy,
-	Misc,
-	Portal
+	NONE, //Default Object
+	PLAYER,
+	ENEMY,
+	MISC,
+	PORTAL
 };
 
 extern enum ObjectTYPE

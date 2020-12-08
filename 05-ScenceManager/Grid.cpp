@@ -5,6 +5,12 @@ CGrid::CGrid(int map_w, int map_h)
 {
 	Rows = map_w / CELL_SIZE;
 	Columns = map_h / CELL_SIZE;
+
+	Cell = new vector<CGameObject*> * [Rows + 1];
+	for (int i = 0; i < Rows + 1; i++)
+	{
+		Cell[i] = new vector<CGameObject*>[Columns + 1];
+	}
 }
 
 CGrid::~CGrid()
@@ -93,9 +99,9 @@ vector<LPGAMEOBJECT> CGrid::GetActiveObj()
 	int start_col = camPos.x / CELL_SIZE;
 	int start_row = camPos.y / CELL_SIZE;
 
-	int end_col = camera->GetWidth() / CELL_SIZE + start_col;
-	int end_row = camera->GetHeight() / CELL_SIZE + start_row;
-
+	int end_col = (camPos.x + camera->GetWidth()) / CELL_SIZE;
+	int end_row = (camPos.y + camera->GetHeight()) / CELL_SIZE;
+	
 	vector<LPGAMEOBJECT> activeObj;
 	for (int i = start_row; i <= end_row; i++)
 	{

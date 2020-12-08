@@ -171,7 +171,6 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 
 		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
 		obj->SetAnimationSet(ani_set);
-		objects.push_back(obj);
 		DebugOut(L"[INFO] SOPHIA object created!\n");
 	}
 	break;
@@ -191,7 +190,6 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 
 		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
 		obj->SetAnimationSet(ani_set);
-		objects.push_back(obj);
 		DebugOut(L"[INFO] JASON object created!\n");
 	}
 	break;
@@ -211,7 +209,6 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 
 		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
 		obj->SetAnimationSet(ani_set);
-		objects.push_back(obj);
 		DebugOut(L"[INFO] BIG JASON object created!\n");
 	}
 	break;
@@ -221,7 +218,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		float h = atof(tokens[5].c_str());
 		obj = new CBrick(x, y, w, h);
 		obj->SetPosition(x, y);
-		objects.push_back(obj);
+		AllObjs.push_back(obj);
 		break;
 	}
 	case OBJECT_TYPE_GOLEM:
@@ -230,7 +227,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj->SetPosition(x, y);
 		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
 		obj->SetAnimationSet(ani_set);
-		listEnemies.push_back(obj);
+		AllObjs.push_back(obj);
 
 		break;
 
@@ -241,7 +238,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj->SetPosition(x, y);
 		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
 		obj->SetAnimationSet(ani_set);
-		listEnemies.push_back(obj);
+		AllObjs.push_back(obj);
 		break;
 
 	}
@@ -251,7 +248,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj->SetPosition(x, y);
 		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
 		obj->SetAnimationSet(ani_set);
-		listEnemies.push_back(obj);
+		AllObjs.push_back(obj);
 		break;
 	}
 	break;
@@ -261,7 +258,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj->SetPosition(x, y);
 		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
 		obj->SetAnimationSet(ani_set);
-		listEnemies.push_back(obj);
+		AllObjs.push_back(obj);
 		break;
 	}
 	case OBJECT_TYPE_SKULLS:
@@ -270,7 +267,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj->SetPosition(x, y);
 		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
 		obj->SetAnimationSet(ani_set);
-		listEnemies.push_back(obj);
+		AllObjs.push_back(obj);
 		break;
 	}
 	case OBJECT_TYPE_INSECT:
@@ -279,7 +276,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj->SetPosition(x, y);
 		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
 		obj->SetAnimationSet(ani_set);
-		listEnemies.push_back(obj);
+		AllObjs.push_back(obj);
 		break;
 	}
 	case OBJECT_TYPE_ORB:
@@ -288,7 +285,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj->SetPosition(x, y);
 		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
 		obj->SetAnimationSet(ani_set);
-		listEnemies.push_back(obj);
+		AllObjs.push_back(obj);
 		break;
 	}
 	case OBJECT_TYPE_SHIP:
@@ -297,7 +294,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj->SetPosition(x, y);
 		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
 		obj->SetAnimationSet(ani_set);
-		listEnemies.push_back(obj);
+		AllObjs.push_back(obj);
 		break;
 	}
 
@@ -313,7 +310,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj = new CPortal(x, y, sceneID, porID, dir, type, xDes, yDes);
 		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
 		obj->SetAnimationSet(ani_set);
-		listPortal.push_back(obj);
+		AllObjs.push_back(obj);
 		break;
 	}
 	case OBJECT_TYPE_SCENE:
@@ -322,7 +319,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		int width = atoi(tokens[5].c_str());
 		int height = atoi(tokens[6].c_str());
 		MiniScene* miniS = new MiniScene(sceneID, x, y, width, height);
-		listScene.push_back(miniS);
+		listScenes.push_back(miniS);
 		break;
 	}
 	default:
@@ -406,12 +403,17 @@ void CPlayScene::Load()
 	DebugOut(L"[INFO] Done loading scene resources %s\n", sceneFilePath);
 	
 	// Khởi tạo camera
-	MiniScene* miniScene = listScene.at(0);
+	MiniScene* miniScene = listScenes.at(0);
 	camera = CCamera::GetInstance();
 	camera->SetCamBound(miniScene->x, miniScene->y, miniScene->width, miniScene->height);
 	camera->SetPosition(D3DXVECTOR2(miniScene->x, miniScene->y));
 	//camera->SetCamBound(0, 0, map->GetMapWidth(), map->GetMapHeight());
 
+	grid = new CGrid(map->GetMapWidth(), map->GetMapHeight());
+	for (int i = 0; i < AllObjs.size(); i++)
+	{
+		grid->AddObject(AllObjs.at(i));
+	}
 
 	//Thiết lập trạng thái, vị trí khởi đầu,... cho đối tượng đang active
 	if (_ACTIVE[SOPHIA])
@@ -430,42 +432,39 @@ void CPlayScene::Update(DWORD dt)
 	// We know that Sophia is the first object in the list hence we won't add him into the colliable object list
 	// TO-DO: This is a "dirty" way, need a more organized way 
 
-	vector<LPGAMEOBJECT> coObjects;
+	vector<LPGAMEOBJECT> coObjects = grid->GetActiveObj();
+	ClassifyOBJECT(coObjects);
+	
+	if (_ACTIVE[SOPHIA])
+	{
+		sophia->Update(dt, &coObjects);
+	}
+	else if (_ACTIVE[JASON])
+	{
+		jason->Update(dt, &coObjects);
+	}
+	else if (_ACTIVE[BIG_JASON])
+	{
+		bigJason->Update(dt, &coObjects);
+	}
+
+	for (int i = 0; i < coObjects.size(); i++)
+	{
+		if (!dynamic_cast<CBrick*>(coObjects.at(i)) && !dynamic_cast<CPortal*>(coObjects.at(i)))
+		{
+			coObjects.at(i)->Update(dt, &coObjects);
+		}
+	}
 
 	DebugOut(L"size %d\n", listBullet.size());
-	for (int i = 0; i < objects.size(); i++)
-	{
-		coObjects.push_back(objects[i]);
-	}
-	for (int i = 0; i < listEnemies.size(); i++)
-	{
-		coObjects.push_back(listEnemies[i]);
-	}
-	for (int i = 0; i < listPortal.size(); i++)
-	{
-		coObjects.push_back(listPortal[i]);
-	}
-	
 
-	for (int i = 0; i < objects.size(); i++)
-	{
-		objects[i]->Update(dt, &coObjects);
-	}
 	listBullet = sophia->Get_Bullet_List();
-	for (int i = 0; i < listEnemies.size(); i++)
-		listEnemies[i]->Update(dt, &coObjects);
 
 	for (int i = 0; i < listBullet.size(); i++)
 	{
 		listBullet[i]->Update(dt, &coObjects);
-		
-			
-		
+				
 	}
-
-		
-
-
 
 
 
@@ -476,6 +475,8 @@ void CPlayScene::Update(DWORD dt)
 	camera->Update();
 	//Update HUD
 	hud->Update();
+	//Grid Update
+	grid->Update(coObjects);
 
 }
 
@@ -486,8 +487,22 @@ void CPlayScene::Render()
 		objects[i]->Render();
 	for (int i = 0; i < listEnemies.size(); i++)
 		listEnemies[i]->Render();
-	for (int i = 0; i < listPortal.size(); i++)
-		listPortal[i]->Render();
+	// Thứ tự Render của Player chỉ sau Portal và Enemy
+	if (_ACTIVE[SOPHIA])
+	{
+		sophia->Render();
+	}
+	else if (_ACTIVE[JASON])
+	{
+		jason->Render();
+	}
+	else if (_ACTIVE[BIG_JASON])
+	{
+		bigJason->Render();
+	}
+
+	for (int i = 0; i < listPortals.size(); i++)
+		listPortals[i]->Render();
 	for (int i = 0; i < listBullet.size(); i++)
 		listBullet[i]->Render();
 	hud->Render();
@@ -509,6 +524,34 @@ void CPlayScene::Unload()
 	camera = NULL;
 
 	DebugOut(L"[INFO] Scene %s unloaded! \n", sceneFilePath);
+}
+
+void CPlayScene::ClassifyOBJECT(vector<LPGAMEOBJECT> obj)
+{
+	objects.clear();
+	listEnemies.clear();
+	listPortals.clear();
+	for (int i = 0; i < obj.size(); i++)
+	{
+		switch (obj.at(i)->objTag)
+		{
+		case ENEMY:
+		{
+			listEnemies.push_back(obj.at(i));
+			break;
+		}
+		case PORTAL:
+		{
+			listPortals.push_back(obj.at(i));
+			break;
+		}
+		default:
+		{
+			objects.push_back(obj.at(i));
+			break;
+		}
+		}
+	}
 }
 
 void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
@@ -561,7 +604,7 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 		if (_ACTIVE[SOPHIA])
 		{
 			CPlayScene* scene = ((CPlayScene*)scence);
-			MiniScene* miniScene = scene->GetListScene().at(0);
+			MiniScene* miniScene = scene->GetlistScenes().at(0);
 			CCamera* camera = CCamera::GetInstance();
 			camera->SetCamBound(miniScene->x, miniScene->y, miniScene->width, miniScene->height);
 			CSophia* sophia = CSophia::GetInstance();

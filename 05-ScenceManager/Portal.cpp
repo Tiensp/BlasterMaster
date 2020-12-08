@@ -12,7 +12,7 @@ CPortal::CPortal(float _x, float _y, int sceneID, int portalID, int _nx, int typ
 	nx = _nx;
 	width = PORTAL_HEIGHT;
 	height = PORTAL_HEIGHT;
-	objTag = Portal;
+	objTag = PORTAL;
 	objType = static_cast<ObjectTYPE> (type);
 	y_render = y;
 	if (objType == OverWorld)
