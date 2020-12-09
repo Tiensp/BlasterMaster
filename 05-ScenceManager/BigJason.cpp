@@ -13,6 +13,7 @@
 #include "StateFALL.h"
 #include "StateJUMP.h"
 #include "Brick.h"
+#include "BigJasonBullet.h"
 
 CBigJason* CBigJason::__instance = NULL;
 
@@ -51,6 +52,12 @@ void CBigJason::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		{
 			untouchable_start = 0;
 			untouchable = 0;
+		}
+		set_bullet_list();
+		for (int i = 0; i < p_bullet_list.size(); i++)
+		{
+			p_bullet_list[i]->Update(dt, coObjects);
+
 		}
 
 		// No collision occured, proceed normally
@@ -113,19 +120,61 @@ void CBigJason::Render()
 		currentAni->Render(x, y);
 		//RenderBoundingBox();
 	}
+	for (int i = 0; i < p_bullet_list.size(); i++)
+	{
+		p_bullet_list[i]->Render();
+
+	}
 }
 #pragma region Xử lý phím
 
 void CBigJason::OnKeyDown(int keycode)
 {
+	
 	switch (keycode)
 	{
 	case DIK_S:
 		break;
-
 	case DIK_SPACE:
-
 		break;
+	case  DIK_Z:
+	{
+		BulletObject* p_bullet = new BulletObject();
+		p_bullet = new BigJasonBullet(this->x, this->y);
+		if (this->ny == 0)
+		{
+			if (this->nx == 1)
+			{
+				p_bullet->SetPosition(this->x + width + 20, this->y + 14);
+			}
+			else
+			{
+				p_bullet->SetPosition(this->x + width - 8, this->y + 14);
+			}
+			
+			p_bullet->Set_bullet_dir(this->nx);
+		}
+		else if (this->nx == 0)
+		{
+			if (this->ny == 1)
+			{
+				p_bullet->SetPosition(this->x + width + 10, this->y - 5);
+				p_bullet->Set_bullet_dir(3);
+			}
+			else
+			{
+				p_bullet->SetPosition(this->x + width + 2, this->y + 25);
+				p_bullet->Set_bullet_dir(4);	
+			}
+		
+		}
+		if (Get_BigJason_Normal_bullet() <= 1)
+		{
+			p_bullet->Set_IsMove(true);
+			p_bullet_list.push_back(p_bullet);
+		}
+		break;
+	}
 	}
 }
 
@@ -164,6 +213,41 @@ void CBigJason::SwitchState(CState* state)
 	delete currentState;
 	currentState = state;
 	currentAni = animation_set->at(state->StateName);
+}
+
+void CBigJason::set_bullet_list()
+{
+	for (int i = 0; i < p_bullet_list.size(); i++)
+	{
+		BulletObject* p_bullet = p_bullet_list[i];
+		if (p_bullet != NULL)
+		{
+			if (p_bullet->isDone)
+			{
+				p_bullet_list.erase(p_bullet_list.begin() + i);
+				if (p_bullet != NULL)
+				{
+					delete p_bullet;
+					p_bullet = NULL;
+				}
+
+			}
+		}
+
+	}
+}
+
+int CBigJason::Get_BigJason_Normal_bullet()
+{
+	int count = 0;
+	for (int i = 0; i < p_bullet_list.size(); i++)
+	{
+		if (dynamic_cast<BigJasonBullet*>(p_bullet_list[i]))
+		{
+			count += 1;
+		}
+	}
+	return count;
 }
 
 /*

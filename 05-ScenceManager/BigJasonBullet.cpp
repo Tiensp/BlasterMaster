@@ -1,23 +1,23 @@
-﻿#include "JasonBullet.h"
+﻿#include "BigJasonBullet.h"
 
-JasonBullet::JasonBullet(float _start_x, float _start_y)
+BigJasonBullet::BigJasonBullet(float _start_x, float _start_y)
 {
+
 	this->start_x = _start_x;
 	this->start_y = _start_y;
 	isMove = true;
 	isDone = false;
 	bulletDame = 1;
-	this->SetAnimationSet(CAnimationSets::GetInstance()->Get(20));
+	this->SetAnimationSet(CAnimationSets::GetInstance()->Get(19));
 }
 
-JasonBullet::~JasonBullet()
+BigJasonBullet::~BigJasonBullet()
 {
 }
 
-void JasonBullet::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
+void BigJasonBullet::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	CGameObject::Update(dt, coObjects);
-
 	HandleMove(SCREEN_WIDTH / 3, SCREEN_HEIGHT / 3);
 	if (isDone) return;
 	if (isMove)
@@ -32,16 +32,19 @@ void JasonBullet::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			vx = -BULLET_SPEDD;
 			vy = 0;
 		}
-		else
+		else if (bullet_dir == 3)
 		{
 			vx = 0;
 			vy = -BULLET_SPEDD;
 		}
+		else if (bullet_dir == 4)
+		{
+			vx = 0;
+			vy = BULLET_SPEDD;
+		}
 	}
-	else
-	{
-		return;
-	}
+
+
 	
 		
 	for (int i = 0; i < coObjects->size(); i++)
@@ -91,48 +94,56 @@ void JasonBullet::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			if (dynamic_cast<CBrick*>(e->obj)) // if e->obj is Goomba 
 			{
 
-
-			
-				if (this->type == 0)
-				{
-					x += min_tx * dx + nx * 0.4f;
-					y += min_ty * dy + ny * 0.4f;
-					isColBrick = true;
-				}
-				else
-				{
-					x += dx;
-					y += dy;
-				}
+				x += dx;
+				y += dy;
 			}
 			else if (dynamic_cast<Enemy*>(e->obj))
-			{
-			
+			{	
 				e->obj->SetHp(bulletDame);
 				isMove = false;
 				isColEnemy = true;
-				/*	isColBrick = true;*/
-			}		
+			}
 		}
 	}
 	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
 }
 
-void JasonBullet::GetBoundingBox(float& left, float& top, float& right, float& bottom)
+void BigJasonBullet::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
+
 	if (!isDone)
 	{
 		left = x;
-		top = y;
 		right = x + 10;
+		top = y;
 		bottom = y + 10;
 	}
 }
 
-void JasonBullet::Render()
+void BigJasonBullet::Render()
 {
 	int ani = 0;
 	if (isDone) return;
+	else if (isColEnemy) isDone = true;
+	else if (isMove)
+	{
+		if (bullet_dir == 1)
+		{
+			ani = 2;	
+		}
+		else if (bullet_dir == -1)
+		{
+			ani = 0;
+		}
+		else if (bullet_dir == 3)
+		{
+			ani = 1;
+		}
+		else if (bullet_dir == 4)
+		{
+			ani = 3;
+		}
+	}
 	animation_set->at(ani)->Render(x, y);
-
+	RenderBoundingBox();
 }

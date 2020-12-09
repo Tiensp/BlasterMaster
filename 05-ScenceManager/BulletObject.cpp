@@ -12,13 +12,10 @@ void BulletObject::Set_IsMove(const bool& _isMove)
 
 void BulletObject::HandleMove(const float x_border, const float y_border)
 {
-	if (x > start_x + x_border || x < start_x - x_border || y < start_y - y_border)
+	if (x > start_x + x_border || x < start_x - x_border || y < start_y - y_border || y > start_y + y_border)
 	{
 		isMove = false;
 		isDone = true;
 	}
-	
-	
-
 }
 

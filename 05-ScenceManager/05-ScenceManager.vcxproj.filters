@@ -91,8 +91,11 @@
     <Filter Include="Framework\GameObject\State Machine\State JUMP Gun UP">
       <UniqueIdentifier>{4c661279-301f-4445-a9ae-49b6945bafe4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="BulletObject">
+    <Filter Include="Framework\GameObject\BulletObject">
       <UniqueIdentifier>{ef335510-ccd3-4917-b591-c1170ce0a5d0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\GameObject\Item">
+      <UniqueIdentifier>{493282e1-84e4-4066-af06-f73c3b46a572}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -145,9 +148,6 @@
       <Filter>Framework\Game\GameDefine</Filter>
     </ClCompile>
     <ClCompile Include="Jason.cpp">
-      <Filter>Framework\GameObject\Player</Filter>
-    </ClCompile>
-    <ClCompile Include="BigJason.cpp">
       <Filter>Framework\GameObject\Player</Filter>
     </ClCompile>
     <ClCompile Include="GameObject.cpp">
@@ -223,10 +223,10 @@
       <Filter>Framework\GameObject\Enemy</Filter>
     </ClCompile>
     <ClCompile Include="BulletObject.cpp">
-      <Filter>BulletObject</Filter>
+      <Filter>Framework\GameObject\BulletObject</Filter>
     </ClCompile>
     <ClCompile Include="BulletFloaters.cpp">
-      <Filter>BulletObject</Filter>
+      <Filter>Framework\GameObject\BulletObject</Filter>
     </ClCompile>
     <ClCompile Include="Enemy.cpp">
       <Filter>Framework\GameObject\Enemy</Filter>
@@ -250,16 +250,22 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SophiaBullet.cpp">
-      <Filter>BulletObject</Filter>
+      <Filter>Framework\GameObject\BulletObject</Filter>
     </ClCompile>
     <ClCompile Include="ThreeBullet.cpp">
-      <Filter>BulletObject</Filter>
+      <Filter>Framework\GameObject\BulletObject</Filter>
     </ClCompile>
     <ClCompile Include="ThunderBullet.cpp">
-      <Filter>BulletObject</Filter>
+      <Filter>Framework\GameObject\BulletObject</Filter>
     </ClCompile>
     <ClCompile Include="JasonBullet.cpp">
-      <Filter>BulletObject</Filter>
+      <Filter>Framework\GameObject\BulletObject</Filter>
+    </ClCompile>
+    <ClCompile Include="BigJason.cpp">
+      <Filter>Framework\GameObject\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="BigJasonBullet.cpp">
+      <Filter>Framework\GameObject\BulletObject</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -375,10 +381,10 @@
       <Filter>Framework\GameObject\Enemy</Filter>
     </ClInclude>
     <ClInclude Include="BulletObject.h">
-      <Filter>BulletObject</Filter>
+      <Filter>Framework\GameObject\BulletObject</Filter>
     </ClInclude>
     <ClInclude Include="BulletFloaters.h">
-      <Filter>BulletObject</Filter>
+      <Filter>Framework\GameObject\BulletObject</Filter>
     </ClInclude>
     <ClInclude Include="Enemy.h">
       <Filter>Framework\GameObject\Enemy</Filter>
@@ -411,7 +417,7 @@
       <Filter>Framework\GameObject\Enemy</Filter>
     </ClInclude>
     <ClInclude Include="SophiaBullet.h">
-      <Filter>BulletObject</Filter>
+      <Filter>Framework\GameObject\BulletObject</Filter>
     </ClInclude>
     <ClInclude Include="Golem.h">
       <Filter>Framework\GameObject\Enemy</Filter>
@@ -426,13 +432,16 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ThreeBullet.h">
-      <Filter>BulletObject</Filter>
+      <Filter>Framework\GameObject\BulletObject</Filter>
     </ClInclude>
     <ClInclude Include="ThunderBullet.h">
-      <Filter>BulletObject</Filter>
+      <Filter>Framework\GameObject\BulletObject</Filter>
     </ClInclude>
     <ClInclude Include="JasonBullet.h">
-      <Filter>BulletObject</Filter>
+      <Filter>Framework\GameObject\BulletObject</Filter>
+    </ClInclude>
+    <ClInclude Include="BigJasonBullet.h">
+      <Filter>Framework\GameObject\BulletObject</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

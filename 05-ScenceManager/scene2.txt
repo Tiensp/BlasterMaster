@@ -318,6 +318,17 @@
 170003	7	153	14	169	50
 170004	6	174	17	190	50
 
+#bullet big jason
+#Normal left
+190001	230	212	240	220	60
+#normal top 
+190002	192	210	200	220	60
+#normal right	
+190003	210	212	220	220	60
+#normal bottom
+190004	254	210	262	220	60
+
+
 #Bullet Floaters
 200001	189	1369	199	1379	30
 
@@ -599,6 +610,16 @@
 #bullet thunder sophia
 17001	170003	30	170001	30	170003	30	170001	30	170002	30	170004	30
 
+#bullet big jason
+#normal left
+19001	190001	30
+#normal top
+19002	190002	30
+#normal right
+19003	190003	30
+#normal bottom
+19004	190004	30
+
 #bullet floater
 20001	200001	50
 # id	ani1	ani2	ani3
@@ -636,6 +657,8 @@
 16	16001	16002	15004	15004
 #bullet thunder sophia
 17	17001
+#bullet normal sophia
+19	19001	19002	19003	19004
 #Bullet floater
 20	20001
 # HP
