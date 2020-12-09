@@ -17,5 +17,6 @@ void BulletObject::HandleMove(const float x_border, const float y_border)
 		isMove = false;
 		isDone = true;
 	}
+
 }
 
