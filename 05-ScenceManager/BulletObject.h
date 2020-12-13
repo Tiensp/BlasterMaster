@@ -24,9 +24,9 @@ public:
 	int bullet_type;
 	bool isColBrick;
 	bool isColEnemy;
-	bool isDone; 
+	bool isDone;
 	int bulletDame;
-
+	
 public:
 	//BulletObject() {};
 	~BulletObject() {}
