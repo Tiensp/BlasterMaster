@@ -40,8 +40,22 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	{
 		// Calculate dx, dy 
 		CGameObject::Update(dt);
-		
+	
+		DebugOut(L"size: %d\n", list_enemy_contain.size());
+		if (isSetFollowBullet)
+		{
+			BulletObject* p_bullet = new BulletObject();
+			p_bullet = new FollowBullets(this->x, this->y, coObjects);
+			p_bullet->SetPosition(this->x, this->y);
+			p_bullet->Set_IsMove(true);
+			p_bullet_list.push_back(p_bullet);
+			isSetFollowBullet = false;
+		}
 		set_bullet_list();
+		for (int i = 0; i < p_bullet_list.size(); i++)
+		{
+			p_bullet_list[i]->Update(dt, coObjects);
+		}
 		
 
 		// Simple fall down
@@ -276,8 +290,20 @@ void CSophia::OnKeyDown(int keycode)
 		}
 		break;
 	}
+	case DIK_V:
+	{
+	
+		if (numberFollowBullet > 0)
+		{
+			isSetFollowBullet = true;
+			numberFollowBullet--;
+		}
+	
+		break;
+	}
 
 	}
+	
 }
 
 void CSophia::OnKeyUp(int keycode)

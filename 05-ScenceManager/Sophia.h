@@ -7,6 +7,7 @@
 #include "BulletObject.h"
 #include "ThreeBullet.h"
 #include "ThunderBullet.h"
+#include "FollowBullets.h"
 #define SOPHIA_WALKING_SPEED		0.09f 
 //0.1f
 #define SOPHIA_JUMP_SPEED_Y		0.5f
@@ -66,9 +67,12 @@ protected:
 	bool isColliBrick;
 	int numberThreeBullet = 5;
 	int numberThunderBullet = 5;
+	int numberFollowBullet = 5;
 	int health = 8;	// Máu nhân vật
 	RECT lastColliObj;
+	bool isSetFollowBullet;
 	vector<BulletObject* > p_bullet_list;
+	vector<LPGAMEOBJECT> list_enemy_contain;
 public: 
 	CSophia();
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT> *colliable_objects = NULL);

@@ -267,6 +267,12 @@
     <ClCompile Include="BigJasonBullet.cpp">
       <Filter>Framework\GameObject\BulletObject</Filter>
     </ClCompile>
+    <ClCompile Include="FollowBullet.cpp">
+      <Filter>Framework\GameObject\BulletObject</Filter>
+    </ClCompile>
+    <ClCompile Include="FollowBullets.cpp">
+      <Filter>Framework\GameObject\BulletObject</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Brick.h">
@@ -441,6 +447,12 @@
       <Filter>Framework\GameObject\BulletObject</Filter>
     </ClInclude>
     <ClInclude Include="BigJasonBullet.h">
+      <Filter>Framework\GameObject\BulletObject</Filter>
+    </ClInclude>
+    <ClInclude Include="FollowBullet.h">
+      <Filter>Framework\GameObject\BulletObject</Filter>
+    </ClInclude>
+    <ClInclude Include="FollowBullets.h">
       <Filter>Framework\GameObject\BulletObject</Filter>
     </ClInclude>
   </ItemGroup>

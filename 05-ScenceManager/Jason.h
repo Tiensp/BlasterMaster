@@ -44,6 +44,7 @@ protected:
 	int untouchable;
 	DWORD untouchable_start;
 	DWORD lifeTimeAni;
+	
 
 	float start_x;			// initial position of Jason at scene
 	float start_y;
