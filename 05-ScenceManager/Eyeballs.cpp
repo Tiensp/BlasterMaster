@@ -15,7 +15,6 @@ CEyeballs::CEyeballs(float x, float y, LPGAMEOBJECT player)
 	this->x = x;
 	this->y = y;
 	this->target = player;
-
 	hp = 1;
 
 	objTag = ENEMY;
@@ -55,7 +54,17 @@ void CEyeballs::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	//DebugOut(L"golumnvX: %f, golumnvY: %f\n", vx, vy);
 
 	//DebugOut(L"golumnvX: %f, golumnvY: %f\n", target->nx, this->nx);
-
+	if (eyeball_bullet != NULL)
+	{
+		if (!eyeball_bullet->isDone)
+		{
+			eyeball_bullet->Update(dt, coObjects);
+		}
+		else
+		{
+			eyeball_bullet = NULL;
+		}
+	}
 
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
@@ -81,6 +90,13 @@ void CEyeballs::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		{
 			if (this->GetState() == EYEBALL_ANI_WALKING)
 			{
+				if (eyeball_bullet == NULL)
+				{
+					eyeball_bullet = new BulletEyeball(this->x, this->y, this->target);
+					eyeball_bullet->SetPosition(this->x + width + 10, this->y + height + 15);
+					eyeball_bullet->Set_bullet_dir(this->nx, this->ny);
+					eyeball_bullet->Set_IsMove(true);
+				}
 				this->SetState(EYEBALL_ANI_IDLE);
 				timer = 0;
 			}
@@ -176,6 +192,11 @@ void CEyeballs::Render()
 	else if (counter == 2)
 	{
 		counter = 0;
+	}
+
+	if (eyeball_bullet != NULL)
+	{
+		eyeball_bullet->Render();
 	}
 
 	animation_set->at(ani)->Render(x, y);

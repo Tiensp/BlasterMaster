@@ -1,6 +1,7 @@
 #pragma once
 #include "BulletObject.h"
 #include "Brick.h"
+#include "Sophia.h"
 
 #define BULLET_FLOATERS_ANI 15001
 
@@ -9,6 +10,9 @@
 #define BULLET_FLOATER_ANI_COLLISON 2
 class BulletFloaters : public BulletObject
 {
+
+protected:
+	CSophia* sophia;
 public:
 	BulletFloaters(float _start_x, float y_start_y);
 	~BulletFloaters();

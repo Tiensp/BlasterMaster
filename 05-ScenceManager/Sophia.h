@@ -68,7 +68,7 @@ protected:
 	int numberThunderBullet = 5;
 	int health = 8;	// Máu nhân vật
 	RECT lastColliObj;
-	vector<BulletObject* > p_bullet_list;
+	vector<BulletObject*> p_bullet_list;
 public: 
 	CSophia();
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT> *colliable_objects = NULL);

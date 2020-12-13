@@ -1,6 +1,7 @@
 #pragma once
 #include "GameObject.h"
 #include "Enemy.h"
+#include "BulletShip.h"
 
 #define SHIP_ANI_WALKING_RIGHT	0
 #define SHIP_ANI_WALKING_LEFT 1
@@ -26,8 +27,9 @@ class CShip : public Enemy
 {
 	bool isFolow;  //theo player 
 	LPGAMEOBJECT target;
-	bool isAttack;
+	BulletObject* s_bullet;
 
+	bool isAttack;
 	bool isDoneDeath = false;
 	bool isDeath = false;
 public:

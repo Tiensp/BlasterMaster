@@ -1,6 +1,7 @@
 #pragma once
 #include "GameObject.h"
 #include "Enemy.h"
+#include "BulletSkull.h"
 #define SKULL_ANI_WALKING_RIGHT	0
 #define SKULL_ANI_WALKING_LEFT 1
 #define SKULL_ANI_ATTACKING_RIGHT 2
@@ -25,8 +26,10 @@ class CSkull : public Enemy
 {
 	bool isFolow;  //theo player 
 	LPGAMEOBJECT target;
-	bool isAttack;
+	BulletObject* sk_bullet;
 
+
+	bool isAttack;
 	bool isDoneDeath = false;
 	bool isDeath = false;
 public:

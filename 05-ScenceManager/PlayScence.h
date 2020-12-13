@@ -19,6 +19,9 @@
 #include "Ship.h"
 #include "Orbs.h"
 #include "BulletFloaters.h"
+#include "BulletSkull.h"
+#include "BulletShip.h"
+#include "BulletEyeball.h"
 #include "Insect.h"
 #include "MiniScene.h"
 #include "Portal.h"
@@ -40,6 +43,9 @@ protected:
 	vector<LPGAMEOBJECT> listEnemies;
 	vector<LPBulletObject> listBullet;
 	vector<LPBulletObject> bulletFloater;
+	vector<LPBulletObject> bulletSkull;
+	vector<LPBulletObject> bulletShip;
+	vector<LPBulletObject> bulletEyeball;
 	vector<MiniScene*>	listScene;
 	vector<LPGAMEOBJECT> listPortal;
 	

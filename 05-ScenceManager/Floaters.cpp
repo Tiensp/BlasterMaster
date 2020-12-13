@@ -45,15 +45,27 @@ void CFloaters::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	CGameObject::Update(dt, coObjects);
 	//khởi tạo đạn cho con fullet, để trong hàm Atack
-	if (p_bullet==NULL)
+	
+	/*if (p_bullet==NULL)
 	{
 		p_bullet = new BulletFloaters(x, y);
 		p_bullet->SetPosition(this->x + width + 15, this->y + height * 0.3);
 		p_bullet->Set_IsMove(true);
+	}*/
+	Attack();
+
+	if(p_bullet != NULL)
+	{
+		if (!p_bullet->isDone)
+		{
+			p_bullet->Update(dt, coObjects);
+		}
+		else
+		{
+			p_bullet = NULL;
+		}
 	}
-	p_bullet->Update(dt, coObjects);
-	if (p_bullet->isDone) p_bullet = NULL;
-	
+
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
 
@@ -65,9 +77,6 @@ void CFloaters::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	{
 		x += dx;
 		y += dy;
-
-		Attack();
-
 	}
 	else //có va chạm
 	{
@@ -98,7 +107,6 @@ void CFloaters::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					{
 						if (this->ny > 0)
 						{
-
 							this->SetState(FLOATER_ANI_WALKING_RIGHT_DOWN);
 						}
 						else if(this->ny < 0)
@@ -164,24 +172,35 @@ void CFloaters::Attack()
 {
 	if (abs(this->x - target->x) <= 200)
 	{
-		
-		
-		
 		isAttack = true;
-		if (this->x - target->x < 0)
+		if (this->nx - target->nx == 0 && nx > 0)
 		{
+			if (p_bullet == NULL && this->nx)
+			{
+				p_bullet = new BulletFloaters(this->x, this->y);
+				p_bullet->SetPosition(this->x + width + 10, this->y + height + 15);
+				p_bullet->Set_bullet_dir(this->nx);
+				p_bullet->Set_IsMove(true);
+			}
 			if (this->GetState() == FLOATER_ANI_WALKING_RIGHT_UP)
 			{
 				this->SetState(FLOATER_ANI_ATTACKING_RIGHT_UP);
+				
 			}
 			else if (this->GetState() == FLOATER_ANI_WALKING_RIGHT_DOWN)
 			{
 				this->SetState(FLOATER_ANI_ATTACKING_RIGHT_DOWN);
 			}
 		}
-		else if(this->x - target->x > 0)
+		else if(this->nx - target->nx == 0 && nx < 0)
 		{
-			
+			if (p_bullet == NULL && this->nx)
+			{
+				p_bullet = new BulletFloaters(this->x, this->y);
+				p_bullet->SetPosition(this->x + width, this->y + height + 15);
+				p_bullet->Set_bullet_dir(this->nx);
+				p_bullet->Set_IsMove(true);
+			}
 			
 			if (this->GetState() == FLOATER_ANI_WALKING_LEFT_UP)
 			{
@@ -210,7 +229,7 @@ void CFloaters::Render()
 	
 	if (isAttack)
 	{
-		if (this->nx - target->nx == 0 && nx > 0 && this->x - target->x < 0)
+		if (this->nx - target->nx == 0 && nx > 0)
 		{
 			if (ny > 0)
 			{
@@ -221,7 +240,7 @@ void CFloaters::Render()
 				ani = FLOATER_ANI_ATTACKING_RIGHT_UP;
 			}
 		}
-		else if (this->nx - target->nx == 0 && nx < 0 && this->x - target->x > 0)
+		else if (this->nx - target->nx == 0 && nx < 0)
 		{
 			if (ny > 0)
 			{
@@ -280,24 +299,6 @@ void CFloaters::Render()
 
 	//RenderBoundingBox();
 }
-
-void CFloaters::flowPlayer(LPGAMEOBJECT player)
-{
-	if (abs(this->x - player->x) <= 100)
-	{
-		if (this->x - player->x <= 0)
-		{
-			this->nx = -1;
-		}
-		else
-		{
-			this->nx = 1;
-		}
-	}
-
-}
-
-
 
 void CFloaters::SetState(int state)
 {

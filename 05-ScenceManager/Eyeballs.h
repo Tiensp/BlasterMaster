@@ -1,6 +1,7 @@
-#pragma once
+﻿#pragma once
 #include "GameObject.h"
 #include "Enemy.h"
+#include "BulletEyeball.h"
 #define EYEBALL_ANI_WALKING 0
 #define EYEBALL_ANI_IDLE 1
 #define EYEBALL_ANI_DEATH 2
@@ -16,8 +17,10 @@ class CEyeballs : public Enemy
 {
 	LPGAMEOBJECT target;
 
+	BulletObject* eyeball_bullet;
+
 	int counter;
-	int timeChangeState = 5000;
+	int timeChangeState = 1400;
 	int interval = 20;
 	int timer;
 

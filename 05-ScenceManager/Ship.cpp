@@ -48,7 +48,19 @@ void CShip::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	//DebugOut(L"golumnvX: %f, golumnvY: %f\n", vx, vy);
 
 	//DebugOut(L"golumnvX: %f, golumnvY: %f\n", target->nx, this->nx);
+	Attack();
 
+	if (s_bullet != NULL)
+	{
+		if (!s_bullet->isDone)
+		{
+			s_bullet->Update(dt, coObjects);
+		}
+		else
+		{
+			s_bullet = NULL;
+		}
+	}
 
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
@@ -67,8 +79,6 @@ void CShip::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	{
 		x += dx;
 		y += dy;
-
-		Attack();
 	}
 	else //có va chạm
 	{
@@ -144,15 +154,29 @@ void CShip::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 void CShip::Attack()
 {
-	if (abs(this->x - target->x) <= 30)
+	if (abs(this->x - target->x) <= 100)
 	{
 		isAttack = true;
 		if (this->GetState() == SHIP_ANI_WALKING_LEFT)
 		{
+			if (s_bullet == NULL && this->nx)
+			{
+				s_bullet = new BulletShip(this->x, this->y);
+				s_bullet->SetPosition(this->x + width + 10, this->y + height + 15);
+				s_bullet->Set_bullet_dir(this->nx);
+				s_bullet->Set_IsMove(true);
+			}
 			this->SetState(SHIP_ANI_ATTACKING_LEFT);
 		}
 		else if (this->GetState() == SHIP_ANI_WALKING_RIGHT)
 		{
+			if (s_bullet == NULL && this->nx)
+			{
+				s_bullet = new BulletShip(this->x, this->y);
+				s_bullet->SetPosition(this->x + width + 10, this->y + height + 15);
+				s_bullet->Set_bullet_dir(this->nx);
+				s_bullet->Set_IsMove(true);
+			}
 			this->SetState(SHIP_ANI_ATTACKING_RIGHT);
 		}
 	}
@@ -219,8 +243,11 @@ void CShip::Render()
 			}
 		}
 	}
-
-	DebugOut(L"ani: %d\n", ani);
+	
+	if (s_bullet != NULL)
+	{
+		s_bullet->Render();
+	}
 
 	animation_set->at(ani)->Render(x, y);
 

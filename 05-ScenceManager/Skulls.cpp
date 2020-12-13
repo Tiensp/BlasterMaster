@@ -48,7 +48,19 @@ void CSkull::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	//DebugOut(L"golumnvX: %f, golumnvY: %f\n", vx, vy);
 
 	//DebugOut(L"golumnvX: %f, golumnvY: %f\n", target->nx, this->nx);
+	Attack();
 
+	if (sk_bullet != NULL)
+	{
+		if (!sk_bullet->isDone)
+		{
+			sk_bullet->Update(dt, coObjects);
+		}
+		else
+		{
+			sk_bullet = NULL;
+		}
+	}
 
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
@@ -68,7 +80,6 @@ void CSkull::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		x += dx;
 		y += dy;
 
-		Attack();
 	}
 	else //có va chạm
 	{
@@ -104,10 +115,6 @@ void CSkull::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 							{
 								if (this->GetState() == SKULL_ANI_WALKING_LEFT)
 								{
-									this->SetState(SKULL_ANI_COLLISION_LEFT);
-								}
-								else
-								{
 									this->SetState(SKULL_ANI_WALKING_RIGHT);
 								}
 							}
@@ -117,10 +124,6 @@ void CSkull::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 							if (this->nx > 0)
 							{
 								if (this->GetState() == SKULL_ANI_WALKING_RIGHT)
-								{
-									this->SetState(SKULL_ANI_COLLISION_RIGHT);
-								}
-								else
 								{
 									this->SetState(SKULL_ANI_WALKING_LEFT);
 								}
@@ -157,10 +160,24 @@ void CSkull::Attack()
 		isAttack = true;
 		if (this->GetState() == SKULL_ANI_WALKING_LEFT)
 		{
+			if (sk_bullet == NULL && this->nx)
+			{
+				sk_bullet = new BulletSkull(this->x, this->y, this->target);
+				sk_bullet->SetPosition(this->x + width + 10, this->y + height + 15);
+				sk_bullet->Set_bullet_dir(3);
+				sk_bullet->Set_IsMove(true);
+			}
 			this->SetState(SKULL_ANI_ATTACKING_LEFT);
 		}
 		else if (this->GetState() == SKULL_ANI_WALKING_RIGHT)
 		{
+			if (sk_bullet == NULL && this->nx)
+			{
+				sk_bullet = new BulletSkull(this->x, this->y, this->target);
+				sk_bullet->SetPosition(this->x + width + 10, this->y + height + 15);
+				sk_bullet->Set_bullet_dir(3);
+				sk_bullet->Set_IsMove(true);
+			}
 			this->SetState(SKULL_ANI_ATTACKING_RIGHT);
 		}
 	}
@@ -226,6 +243,11 @@ void CSkull::Render()
 				ani = SKULL_ANI_WALKING_LEFT;
 			}
 		}
+	}
+
+	if (sk_bullet != NULL)
+	{
+		sk_bullet->Render();
 	}
 
 	DebugOut(L"ani: %d\n", ani);

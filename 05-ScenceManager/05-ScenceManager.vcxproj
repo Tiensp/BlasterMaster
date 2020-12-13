@@ -128,8 +128,11 @@
     <ClCompile Include="Animations.cpp" />
     <ClCompile Include="BigJason.cpp" />
     <ClCompile Include="Brick.cpp" />
+    <ClCompile Include="BulletEyeball.cpp" />
     <ClCompile Include="BulletFloaters.cpp" />
     <ClCompile Include="BulletObject.cpp" />
+    <ClCompile Include="BulletShip.cpp" />
+    <ClCompile Include="BulletSkull.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Cannons.cpp" />
     <ClCompile Include="Enemy.cpp" />
@@ -183,8 +186,11 @@
     <ClInclude Include="Animations.h" />
     <ClInclude Include="BigJason.h" />
     <ClInclude Include="Brick.h" />
+    <ClInclude Include="BulletEyeball.h" />
     <ClInclude Include="BulletFloaters.h" />
     <ClInclude Include="BulletObject.h" />
+    <ClInclude Include="BulletShip.h" />
+    <ClInclude Include="BulletSkull.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Cannons.h" />
     <ClInclude Include="Domes.h" />

@@ -270,6 +270,15 @@
     <ClCompile Include="JasonBullet.cpp">
       <Filter>BulletObject</Filter>
     </ClCompile>
+    <ClCompile Include="BulletSkull.cpp">
+      <Filter>BulletObject</Filter>
+    </ClCompile>
+    <ClCompile Include="BulletShip.cpp">
+      <Filter>BulletObject</Filter>
+    </ClCompile>
+    <ClCompile Include="BulletEyeball.cpp">
+      <Filter>BulletObject</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Brick.h">
@@ -450,6 +459,15 @@
       <Filter>BulletObject</Filter>
     </ClInclude>
     <ClInclude Include="JasonBullet.h">
+      <Filter>BulletObject</Filter>
+    </ClInclude>
+    <ClInclude Include="BulletSkull.h">
+      <Filter>BulletObject</Filter>
+    </ClInclude>
+    <ClInclude Include="BulletShip.h">
+      <Filter>BulletObject</Filter>
+    </ClInclude>
+    <ClInclude Include="BulletEyeball.h">
       <Filter>BulletObject</Filter>
     </ClInclude>
   </ItemGroup>

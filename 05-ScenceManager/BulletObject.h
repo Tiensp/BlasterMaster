@@ -33,7 +33,6 @@ public:
 	
 	bool isColPlayer;
 
-	
 public:
 	//BulletObject() {};
 	~BulletObject() {}
@@ -47,7 +46,9 @@ public:
 	void Set_IsMove(const bool& _isMove);
 	bool Get_IsMove() const { return isMove; };
 	void Set_bullet_dir(int bulletDir) { bullet_dir = bulletDir; }
+	void Set_bullet_dir(int bulletDirX, int bulletDirY) { bullet_dir_x = bulletDirX, bullet_dir_y = bulletDirY; }
 	int Get_bullet_dir() { return bullet_dir; }
+	int Get_bullet_dir_XY() { return bullet_dir_x, bullet_dir_y; }
 	void Set_bullet_type(int& bulletType) { bullet_type = bulletType; }
 	void HandleMove(const float x_border, const float y_border);
 
