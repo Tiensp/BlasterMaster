@@ -127,7 +127,7 @@ void CJason::Render()
 			p_bullet_list[i]->Render();
 
 		}
-		/*RenderBoundingBox();*/
+		RenderBoundingBox();
 	}
 }
 #pragma region Xử lý phím

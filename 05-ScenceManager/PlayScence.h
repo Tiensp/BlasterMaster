@@ -22,6 +22,7 @@
 #include "Insect.h"
 #include "MiniScene.h"
 #include "Portal.h"
+#include "Grid.h"
 
 class CPlayScene: public CScene
 {
@@ -33,12 +34,14 @@ protected:
 	CMap* map;			//Cần một đối tượng lưu trữ MAP
 	CCamera* camera;	//Và một đối tượng lưu trữ camera của Play Scene
 	HUD* hud;
+	CGrid* grid;
+
+	vector<LPGAMEOBJECT> AllObjs;
 	vector<LPGAMEOBJECT> objects;	//một list obj lưu trữ các GameObj có trong Play Scene
 	vector<LPGAMEOBJECT> listEnemies;
 	vector<LPBulletObject> listBullet;
-	vector<LPBulletObject> bulletFloater;
-	vector<MiniScene*>	listScene;
-	vector<LPGAMEOBJECT> listPortal;
+	vector<MiniScene*>	listScenes;
+	vector<LPGAMEOBJECT> listPortals;
 	
 	/* Các hàm ParsSection dùng để đọc file */
 	void _ParseSection_TEXTURES(string line);
@@ -63,7 +66,8 @@ public:
 	CBigJason* GetBigJason() { return this->bigJason; }
 	CCamera* GetCamera() { return this->camera; }
 	CMap* GetMap() { return this->map; }
-	vector<MiniScene*> GetListScene() { return listScene; }
+	vector<MiniScene*> GetlistScenes() { return listScenes; }
+	void ClassifyOBJECT(vector<LPGAMEOBJECT> obj);	//Phân loại các obj
 	//friend class CPlayScenceKeyHandler;
 };
 

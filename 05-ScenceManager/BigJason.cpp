@@ -118,7 +118,7 @@ void CBigJason::Render()
 
 
 		currentAni->Render(x, y);
-		//RenderBoundingBox();
+		RenderBoundingBox(x, y);
 	}
 	for (int i = 0; i < p_bullet_list.size(); i++)
 	{

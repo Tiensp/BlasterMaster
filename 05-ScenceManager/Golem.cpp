@@ -132,7 +132,7 @@ void CGolem::Render()
 
 	animation_set->at(ani)->Render(x, y);
 
-	RenderBoundingBox();
+	RenderBoundingBox(x,y);
 }
 
 void CGolem::flowPlayer(LPGAMEOBJECT player)

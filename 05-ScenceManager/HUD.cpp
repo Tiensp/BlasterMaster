@@ -23,7 +23,7 @@ void HUD::Render()
 {
 	D3DXVECTOR2 hudPos = CCamera::GetInstance()->GetCamPos();
 	float xHUD = hudPos.x + 16;
-	float yHUD = hudPos.y + 182;
+	float yHUD = hudPos.y + 160;
 	HUD_ani->Render(xHUD, yHUD);
 	playerHP->Render(xHUD, yHUD);
 }

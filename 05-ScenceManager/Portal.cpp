@@ -12,7 +12,7 @@ CPortal::CPortal(float _x, float _y, int sceneID, int portalID, int _nx, int typ
 	nx = _nx;
 	width = PORTAL_HEIGHT;
 	height = PORTAL_HEIGHT;
-	objTag = Portal;
+	objTag = PORTAL;
 	objType = static_cast<ObjectTYPE> (type);
 	y_render = y;
 	if (objType == OverWorld)
@@ -42,7 +42,7 @@ void CPortal::Render()
 {
 	if (objType == OverWorld)
 		animation_set->at(scene_id)->RenderFrame(portal_id, x_render, y_render);
-	RenderBoundingBox();
+	RenderBoundingBox(x_render, y_render);
 }
 
 void CPortal::GetBoundingBox(float &l, float &t, float &r, float &b)

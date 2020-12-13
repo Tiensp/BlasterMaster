@@ -122,7 +122,7 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 					x += dx;
 					health -= 1;
 				}
-				else if (e->obj->objTag == Portal)
+				else if (e->obj->objTag == PORTAL)
 				{
 					x += dx;
 					CPortal* por = dynamic_cast<CPortal*>(e->obj);
@@ -184,11 +184,11 @@ void CSophia::Render()
 			}
 		}
 
-		/*if (renderFrame)
+		if (renderFrame)
 			currentAni->RenderFrame(frameID, x_render, y_render);
-		else*/
+		else
 			currentAni->Render(x_render, y_render);
-		//RenderBoundingBox();
+		RenderBoundingBox(x_render, y_render);
 
 		for (int i = 0; i < p_bullet_list.size(); i++)
 		{
@@ -214,7 +214,7 @@ void CSophia::OnKeyDown(int keycode)
 		break;
 			
 	case DIK_SPACE:
-		if (!isJumping && !isFalling)
+		//if (!isJumping && !isFalling)
 		{
 			/*if (isGunUp)
 			{

@@ -139,6 +139,7 @@
     <ClCompile Include="GameDefine.cpp" />
     <ClCompile Include="Domes.cpp" />
     <ClCompile Include="Golem.cpp" />
+    <ClCompile Include="Grid.cpp" />
     <ClCompile Include="HP.cpp" />
     <ClCompile Include="HUD.cpp" />
     <ClCompile Include="Insect.cpp" />
@@ -194,6 +195,7 @@
     <ClInclude Include="FollowBullets.h" />
     <ClInclude Include="GameDefine.h" />
     <ClInclude Include="Golem.h" />
+    <ClInclude Include="Grid.h" />
     <ClInclude Include="Insect.h" />
     <ClInclude Include="HP.h" />
     <ClInclude Include="HUD.h" />

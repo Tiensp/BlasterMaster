@@ -164,7 +164,7 @@ void CFloaters::Render()
 
 
 
-	//RenderBoundingBox();
+	RenderBoundingBox(x,y);
 }
 
 void CFloaters::flowPlayer(LPGAMEOBJECT player)

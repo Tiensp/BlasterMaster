@@ -23,8 +23,12 @@ using namespace std;
 		-15 cho chiều rộng 
 		-38 cho chiều cao
 */
-#define SCREEN_WIDTH 315
-#define SCREEN_HEIGHT 310
+#define SCREEN_WIDTH 271
+#define SCREEN_HEIGHT 278
+
+/////// CAMERA ////////
+#define CAMERA_WIDTH 256
+#define CAMERA_HEIGHT 240
 
 #define W_CAM_BOUND 150
 
@@ -41,11 +45,11 @@ using namespace std;
 */
 extern enum ObjectTAG
 {
-	None, //Default Object
-	Player,
-	//Enemy,
-	Misc,
-	Portal
+	NONE, //Default Object
+	PLAYER,
+	ENEMY,
+	MISC,
+	PORTAL
 };
 
 extern enum ObjectTYPE

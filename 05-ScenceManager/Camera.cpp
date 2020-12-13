@@ -3,20 +3,20 @@
 #include "Sophia.h"
 #include "Jason.h"
 #include "BigJason.h"
+#include "PlayScence.h"
 
-#define PULL_SCREEN_Y	28
+#define PULL_SCREEN_Y	44
 
-CCamera* CCamera::__intance = NULL;
+CCamera* CCamera::__instance = NULL;
 
 CCamera* CCamera::GetInstance()
 {
-	if (__intance == NULL)
+	if (__instance == NULL)
 	{
-		__intance = new CCamera(CGame::GetInstance()->GetScreenWidth(), 
-								CGame::GetInstance()->GetScreenWidth());
+		__instance = new CCamera(CAMERA_WIDTH, CAMERA_HEIGHT);
 	}
 		
-	return __intance;
+	return __instance;
 }
 
 CCamera::CCamera(int width, int height)
@@ -95,17 +95,26 @@ void CCamera::Update()
 {
 	if (!isSwitchScene)
 	{
+		D3DXVECTOR2 playerPos;
 		if (_ACTIVE[SOPHIA])
-			CSophia::GetInstance()->GetPosition(camPos.x, camPos.y);
+			CSophia::GetInstance()->GetPosition(playerPos.x, playerPos.y);
 		else if (_ACTIVE[JASON])
 		{
-			CJason::GetInstance()->GetPosition(camPos.x, camPos.y);
+			CJason::GetInstance()->GetPosition(playerPos.x, playerPos.y);
 		}
 		else if (_ACTIVE[BIG_JASON])
-			CBigJason::GetInstance()->GetPosition(camPos.x, camPos.y);
+			CBigJason::GetInstance()->GetPosition(playerPos.x, playerPos.y);
 
-		camPos.x -= width / 2;
-		camPos.y -= height / 2;
+		if (playerPos.x > camPos.x + width * 0.55)
+			camPos.x += playerPos.x - (camPos.x + width * 0.55);
+		else if (playerPos.x < camPos.x + width * 0.35)
+			camPos.x -= (camPos.x + width * 0.35) - playerPos.x;
+
+		if (playerPos.y > camPos.y + height * 0.75)
+			camPos.y += playerPos.y - (camPos.y + height * 0.75);
+		else if (playerPos.y < camPos.y + height * 0.25)
+			camPos.y -= (camPos.y + height * 0.25) - playerPos.y;
+
 		/*
 			Kiểm tra xem Camera có bị vượt ra ngoài map không
 			Vượt quá giới hạn thì đặt lại vị trí Camera
@@ -121,29 +130,23 @@ void CCamera::Update()
 
 		if (camPos.y < camBound.top)
 			camPos.y = camBound.top;
-		/*
-			Khi đặt lại camPos nếu vượt qua camBound sẽ dẫn đến việc không render hết được map
-			nguyên nhân do độ kích thước map đôi lúc không chia hết cho kích thước camera
-			nên ở đây mình + Pull screen (có thể theo chiều x or y) để có thể nhìn thấy toàn bộ map
-		*/
+
 		if (camPos.x > camBound.right - width)
 			camPos.x = camBound.right - width;
 
-		if (camPos.y > camBound.bottom - height + PULL_SCREEN_Y)
-			camPos.y = camBound.bottom - height + PULL_SCREEN_Y;
+		if (camPos.y > camBound.bottom - height /*+ PULL_SCREEN_Y*/)
+			camPos.y = camBound.bottom - height /*+ PULL_SCREEN_Y*/;
 	}
 	else
 	{
 		if (camPos.x != SwitchScenePos.x)
 			if (camPos.x > SwitchScenePos.x)
-				camPos.x -= 3.0f;
+				camPos.x -= 2.0f;
 			else
-				camPos.x += 3.0f;
+				camPos.x += 2.0f;
 		else
 		{
 			isSwitchScene = false;
-			camBound.left = SwitchScenePos.x;
-			camBound.right = SwitchScenePos.x + width;
 		}
 	}
 }
