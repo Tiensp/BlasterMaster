@@ -456,9 +456,9 @@ void CPlayScene::Update(DWORD dt)
 		}
 	}
 
-	DebugOut(L"size %d\n", listBullet.size());
+	//DebugOut(L"size %d\n", listBullet.size());
 
-	listBullet = sophia->Get_Bullet_List();
+	//listBullet = sophia->Get_Bullet_List();
 
 
 	//for (int i = 0; i < listBullet.size(); i++)
@@ -470,7 +470,7 @@ void CPlayScene::Update(DWORD dt)
 	{
 		listBullet[i]->Update(dt, &coObjects);
 				
-	}
+	}*/
 
 
 
@@ -509,8 +509,8 @@ void CPlayScene::Render()
 
 	for (int i = 0; i < listPortals.size(); i++)
 		listPortals[i]->Render();
-	for (int i = 0; i < listBullet.size(); i++)
-		listBullet[i]->Render();
+	/*for (int i = 0; i < listBullet.size(); i++)
+		listBullet[i]->Render();*/
 	/*for (int i = 0; i < bulletFloater.size(); i++)
 		bulletFloater[i]->Render();*/
 	hud->Render();

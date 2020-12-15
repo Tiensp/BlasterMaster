@@ -5,6 +5,7 @@
 #include "Camera.h"
 #include "Brick.h"
 #include "Portal.h"
+#include "Enemy.h"
 
 
 using namespace std;

@@ -139,6 +139,6 @@ void ThunderBullet::Render()
 	{
 		isDone = true;
 	}
-	RenderBoundingBox();
+	RenderBoundingBox(x,y);
 	
 }

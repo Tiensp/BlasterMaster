@@ -72,9 +72,32 @@ void CCamera::SetPosition(const D3DXVECTOR2 &pos)
 bool CCamera::isContain(RECT rect)
 {
 	//Lấy biên giới hạn camera
-	RECT camRect = GetCamBound();
+	RECT camRect;
+	camRect.left = camPos.x;
+	camRect.top = camPos.y;
+	camRect.right = camPos.x + width;
+	camRect.bottom = camPos.y + height;
+
 	//Kiểm tra rect có giao với Camera hay không
 	if (rect.left > camRect.right || rect.right < camRect.left || rect.top > camRect.bottom || rect.bottom < camRect.top)
+	{
+		return false;
+	}
+
+	return true;
+}
+
+bool CCamera::isContain(D3DXVECTOR2 pos)
+{
+	//Lấy biên giới hạn camera
+	RECT camRect;
+	camRect.left = camPos.x;
+	camRect.top = camPos.y;
+	camRect.right = camPos.x + width;
+	camRect.bottom = camPos.y + height;
+
+	//Kiểm tra Pos có nằm trong Camera hay không
+	if (pos.x > camRect.right || pos.x < camRect.left || pos.y > camRect.bottom || pos.y < camRect.top)
 	{
 		return false;
 	}

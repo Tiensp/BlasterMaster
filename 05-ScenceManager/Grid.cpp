@@ -19,8 +19,8 @@ CGrid::~CGrid()
 
 void CGrid::AddObject(LPGAMEOBJECT obj)
 {
-	float left, right, top, bottom;
-	obj->GetBoundingBox(left, right, top, bottom);
+	float left, top, right, bottom;
+	obj->GetBoundingBox(left, top, right, bottom);
 
 	int start_col = left / CELL_SIZE;
 	int start_row = top / CELL_SIZE;
@@ -40,12 +40,20 @@ void CGrid::AddObject(LPGAMEOBJECT obj)
 void CGrid::RemoveObject(LPGAMEOBJECT obj)
 {
 	float left, right, top, bottom;
-	obj->GetBoundingBox(left, right, top, bottom);
+	obj->GetBoundingBox(left, top, right, bottom);
 
 	int start_col = left / CELL_SIZE - 2;
 	int start_row = top / CELL_SIZE + 2;
 	int end_col = right / CELL_SIZE - 2;
 	int end_row = bottom / CELL_SIZE + 2;
+	if (start_col < 0)
+		start_col = 0;
+	if (end_col >= Columns)
+		end_col = Columns - 1;
+	if (start_row < 0)
+		start_row = 0;
+	if (end_row >= Rows)
+		end_row = Rows - 1;
 
 	for (int i = start_row; i <= end_row; i++)
 	{
@@ -68,6 +76,13 @@ void CGrid::Update(vector<LPGAMEOBJECT> obj)
 	{
 		if (!dynamic_cast<CBrick*>(obj.at(i)) && !dynamic_cast<CPortal*>(obj.at(i)))
 		{
+			if (dynamic_cast<Enemy*>(obj.at(i)))
+			{
+				Enemy* e = dynamic_cast<Enemy*>(obj.at(i));
+				if (e->GetIsDeath())
+					continue;
+			}
+
 			RemoveObject(obj.at(i));
 			AddObject(obj.at(i));
 		}
@@ -103,13 +118,20 @@ vector<LPGAMEOBJECT> CGrid::GetActiveObj()
 	int end_row = (camPos.y + camera->GetHeight()) / CELL_SIZE;
 	
 	vector<LPGAMEOBJECT> activeObj;
+	CGameObject* obj;
 	for (int i = start_row; i <= end_row; i++)
 	{
 		for (int j = start_col; j <= end_col; j++)
 		{
 			for (int index = 0; index < Cell[i][j].size(); index++)
 			{
-				activeObj.push_back(Cell[i][j].at(index));
+				obj = Cell[i][j].at(index);
+				if (dynamic_cast<Enemy*>(obj))
+				{
+					if (!camera->isContain(D3DXVECTOR2(obj->x, obj->y)))
+						continue;
+				}
+					activeObj.push_back(obj);
 			}
 		}
 	}

@@ -31,6 +31,7 @@ public:
 	D3DXVECTOR2 GetCamPos() { return camPos; }
 
 	bool isContain(RECT rect);
+	bool isContain(D3DXVECTOR2 pos);
 
 	int GetWidth() { return this->width; }
 	int GetHeight() { return this->height; }
