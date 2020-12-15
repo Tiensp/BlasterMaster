@@ -128,15 +128,15 @@ void CCamera::Update()
 		else if (_ACTIVE[BIG_JASON])
 			CBigJason::GetInstance()->GetPosition(playerPos.x, playerPos.y);
 
-		if (playerPos.x > camPos.x + width * 0.55)
-			camPos.x += playerPos.x - (camPos.x + width * 0.55);
-		else if (playerPos.x < camPos.x + width * 0.35)
-			camPos.x -= (camPos.x + width * 0.35) - playerPos.x;
+		if (playerPos.x > camPos.x + width / 2)
+			camPos.x += playerPos.x - (camPos.x + width / 2);
+		else if (playerPos.x < camPos.x + width / 3)
+			camPos.x -= (camPos.x + width / 3) - playerPos.x;
 
 		if (playerPos.y > camPos.y + height * 0.75)
 			camPos.y += playerPos.y - (camPos.y + height * 0.75);
-		else if (playerPos.y < camPos.y + height * 0.25)
-			camPos.y -= (camPos.y + height * 0.25) - playerPos.y;
+		else if (playerPos.y < camPos.y + height / 4)
+			camPos.y -= (camPos.y + height / 4) - playerPos.y;
 
 		/*
 			Kiểm tra xem Camera có bị vượt ra ngoài map không
