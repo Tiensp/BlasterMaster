@@ -22,7 +22,7 @@
 #include "Insect.h"
 #include "MiniScene.h"
 #include "Portal.h"
-
+#include "Item.h"
 class CPlayScene: public CScene
 {
 protected: 

@@ -132,6 +132,18 @@ extern enum ANISET_OBJ
 	ANISET_HP_BAR = 0
 };
 
+extern enum ITEM_OBJ
+{
+	HPITEM = 0,
+	FOLLOWBULLET = 1,
+	THUNDERBULLET =2,
+	THREEBULLET = 3,
+	POWER = 4
+
+};
+
+
+
 ///Game Global
 extern std::unordered_map<int, bool> _KEYCODE;
 extern std::unordered_map<ObjectTYPE, bool> _ACTIVE;

@@ -47,95 +47,84 @@ void SophiaBullet::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			return;
 		}
 	}
+	CheckCollisionWithEnemy(coObjects);
+	//for (int i = 0; i < coObjects->size(); i++)
+	//{
+	//		if (this->IsCollidingObject(coObjects->at(i)))
+	//		{
+	//			if (dynamic_cast<Enemy*>(coObjects->at(i)))
+	//			{
+	//				coObjects->at(i)->SetHp(bulletDame);
+	//				isMove = false;
+	//				isColEnemy = true;
+	//			}
+	//			else
+	//			{
+	//				x += dx;
+	//				y += dy;
+	//			}
+	//		}
+	//}
 
-	for (int i = 0; i < coObjects->size(); i++)
-	{
-		if (dynamic_cast<Enemy*>(coObjects->at(i)))
-		{
-			if (this->IsCollidingObject(coObjects->at(i)))
-			{
-				coObjects->at(i)->SetHp(bulletDame);
-				isMove = false;
-				isColEnemy = true;
-			}
-			
-		}
-	}
+	//vector<LPCOLLISIONEVENT> coEvents;
+	//vector<LPCOLLISIONEVENT> coEventsResult;
 
-	vector<LPCOLLISIONEVENT> coEvents;
-	vector<LPCOLLISIONEVENT> coEventsResult;
+	//coEvents.clear();
 
-	coEvents.clear();
+	//// turn off collision when die 
+	////nếu không chết thì kiểm tra toàn bộ va chạm với các đối tượng khác
+	//CalcPotentialCollisions(coObjects, coEvents);
 
-	// turn off collision when die 
-	//nếu không chết thì kiểm tra toàn bộ va chạm với các đối tượng khác
-	CalcPotentialCollisions(coObjects, coEvents);
+	//// reset untouchable timer if untouchable time has passed
 
-	// reset untouchable timer if untouchable time has passed
+	//// No collision occured, proceed normally
 
-	// No collision occured, proceed normally
+	//if (coEvents.size() == 0)  //nếu không có va chạm, update bình thường
+	//{
+	//	x += dx;
+	//	y += dy;
+	//}
+	//else //có va chạm
+	//{
+	//	float min_tx, min_ty, nx = 0, ny = 0;
+	//	float rdx = 0;
+	//	float rdy = 0;
 
-	if (coEvents.size() == 0)  //nếu không có va chạm, update bình thường
-	{
-		x += dx;
-		y += dy;
-	}
-	else //có va chạm
-	{
-		float min_tx, min_ty, nx = 0, ny = 0;
-		float rdx = 0;
-		float rdy = 0;
+	//	FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);  // sắp xếp lại các sự kiện va chạm đầu tiên theo trục x, y 
 
-		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);  // sắp xếp lại các sự kiện va chạm đầu tiên theo trục x, y 
+	//	for (UINT i = 0; i < coEventsResult.size(); i++)
+	//	{
+	//		LPCOLLISIONEVENT e = coEventsResult[i];
 
-		for (UINT i = 0; i < coEventsResult.size(); i++)
-		{
-			LPCOLLISIONEVENT e = coEventsResult[i];
-
-			if (dynamic_cast<CBrick*>(e->obj)) // if e->obj is Goomba 
-			{
-				
-
-			/*	if (nx != 0) vx = 0;
-				if (ny != 0) vy = 0;*/
-				if (this->type == 0)
-				{
-					x += min_tx * dx + nx * 0.4f;
-					y += min_ty * dy + ny * 0.4f;
-					isColBrick = true;
-				}
-				else
-				{
-					x += dx;
-					y += dy;
-				}
-			
-			}
-			else if (dynamic_cast<Enemy*>(e->obj))
-			{
-				/*e->obj->SetState(DOMES_STATE_DIE);*/
-			/*	x += min_tx * dx + nx * 0.4f;
-				y += min_ty * dy + ny * 0.4f;
-
-				if (nx != 0) vx = 0;
-				if (ny != 0) vy = 0;*/
-				e->obj->SetHp(bulletDame);
-				isMove = false;
-				isColEnemy = true;
-				/*	isColBrick = true;*/
-			}
+	//		if (dynamic_cast<CBrick*>(e->obj)) // if e->obj is Goomba 
+	//		{
+	//			if (this->type == 0)
+	//			{
+	//				x += min_tx * dx + nx * 0.4f;
+	//				y += min_ty * dy + ny * 0.4f;
+	//				isColBrick = true;
+	//			}
+	//			else
+	//			{
+	//				x += dx;
+	//				y += dy;
+	//			}
+	//		
+	//		}
+	//		else if (dynamic_cast<Enemy*>(e->obj))
+	//		{
+	//			e->obj->SetHp(bulletDame);
+	//			isMove = false;
+	//			isColEnemy = true;
+	//		}
 
 
-			//else if (dynamic_cast<CGolem*>(e->obj))
-			//{
-			//	/*e->obj->SetState(DOMES_STATE_DIE);*/
-			//	isMove = false;
-			//}
-		}
+	//	
+	//	}
 
 
-	}
-	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
+	//}
+	//for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
 }
 
 void SophiaBullet::GetBoundingBox(float& left, float& top, float& right, float& bottom)

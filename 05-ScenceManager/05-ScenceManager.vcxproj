@@ -142,6 +142,7 @@
     <ClCompile Include="HP.cpp" />
     <ClCompile Include="HUD.cpp" />
     <ClCompile Include="Insect.cpp" />
+    <ClCompile Include="Item.cpp" />
     <ClCompile Include="JasonBullet.cpp" />
     <ClCompile Include="Koopas.cpp" />
     <ClCompile Include="Map.cpp" />
@@ -197,6 +198,7 @@
     <ClInclude Include="Insect.h" />
     <ClInclude Include="HP.h" />
     <ClInclude Include="HUD.h" />
+    <ClInclude Include="Item.h" />
     <ClInclude Include="JasonBullet.h" />
     <ClInclude Include="Koopas.h" />
     <ClInclude Include="Map.h" />

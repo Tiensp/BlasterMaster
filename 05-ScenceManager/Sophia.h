@@ -8,6 +8,7 @@
 #include "ThreeBullet.h"
 #include "ThunderBullet.h"
 #include "FollowBullets.h"
+#include "Item.h"
 #define SOPHIA_WALKING_SPEED		0.09f 
 //0.1f
 #define SOPHIA_JUMP_SPEED_Y		0.5f
@@ -41,7 +42,7 @@
 #define SOPHIA_BIG_BBOX_WIDTH  26
 #define SOPHIA_BIG_BBOX_HEIGHT 34
 
-#define SOPHIA_UNTOUCHABLE_TIME 5000
+#define SOPHIA_UNTOUCHABLE_TIME 3000
 
 
 class CSophia : public CGameObject
@@ -63,6 +64,7 @@ protected:
 	bool isJumping;
 	bool isFalling;
 	bool isAllowFire = true;
+	bool isInjured;
 
 	bool isColliBrick;
 	int numberThreeBullet = 5;
@@ -122,6 +124,10 @@ public:
 	bool AllowFire();
 	
 	vector<BulletObject*> Get_Bullet_List()  { return p_bullet_list; }
+	void CheckCollisionWithBrick(vector<LPGAMEOBJECT>* coObjects);
+	void CheckCollisionWithPortal(vector<LPGAMEOBJECT>* coObjects);
+	void CheckCollisionWithItem(vector<LPGAMEOBJECT>* coObjects);
+	void CheckCollisionWithEnemy(vector<LPGAMEOBJECT>* coObjects);
 
 	virtual void GetBoundingBox(float &left, float &top, float &right, float &bottom);
 	static CSophia* GetInstance();

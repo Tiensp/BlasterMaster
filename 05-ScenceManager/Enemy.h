@@ -4,8 +4,8 @@ class Enemy : public CGameObject
 {
 protected:
 	LPGAMEOBJECT target;
-	bool isDeath;
-	bool isDone;
+	
+	//bool isDone;
 public:
 	Enemy();
 	~Enemy();
