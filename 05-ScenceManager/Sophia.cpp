@@ -15,6 +15,9 @@
 #include "StateFALL.h"
 #include "StateJUMP.h"
 #include "Brick.h"
+#include "Lava.h"
+#include "ThornOVERHEAD.h"
+#include "ThornOVERWORLD.h"
 #include <vector>
 CSophia* CSophia::__instance = NULL;
 
@@ -128,6 +131,24 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 						D3DXVECTOR2 camPos = camera->GetCamPos();
 						camera->SwitchScenePos = D3DXVECTOR2(camPos.x - camera->GetWidth(), camPos.y);
 					}
+				}
+				else if (dynamic_cast<CLava*>(e->obj))
+				{
+					x += min_tx * dx + nx * 0.4f;
+					y -= min_ty * dy + ny * 0.55f;
+					health -= 1;
+				}
+				//Chưa làm va chạm gai cho BigJason (đá thì có rồi)
+				/*else if (dynamic_cast<CThornOVH*>(e->obj))
+				{
+					x += min_tx * dx + nx * 0.4f;
+					y -= min_ty * dy + ny * 0.55f;
+					health -= 1;
+				}*/
+				else if (dynamic_cast<CThornOVW*>(e->obj))
+				{
+					x += min_tx * dx + nx * 0.4f;
+					health -= 1;
 				}
 			}
 

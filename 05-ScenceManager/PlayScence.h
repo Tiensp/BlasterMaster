@@ -28,6 +28,10 @@
 #include "Eyeballs.h"
 #include "Teleporters.h"
 #include "Cannons.h"
+#include "Lava.h"
+#include "ThornOVERHEAD.h"
+#include "ThornOVERWORLD.h"
+#include "RockOVH.h"
 
 class CPlayScene: public CScene
 {

@@ -2,6 +2,8 @@
 #include "BulletObject.h"
 #include "Enemy.h"
 #include "Brick.h"
+#include "Lava.h"
+#include "RockOVH.h"
 class SophiaBullet : public BulletObject
 {
 	int type = 0;

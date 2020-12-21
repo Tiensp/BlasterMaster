@@ -146,11 +146,13 @@
     <ClCompile Include="Insect.cpp" />
     <ClCompile Include="JasonBullet.cpp" />
     <ClCompile Include="Koopas.cpp" />
+    <ClCompile Include="Lava.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Jason.cpp" />
     <ClCompile Include="MiniScene.cpp" />
     <ClCompile Include="Orbs.cpp" />
     <ClCompile Include="Portal.cpp" />
+    <ClCompile Include="RockOVH.cpp" />
     <ClCompile Include="Ship.cpp" />
     <ClCompile Include="Skulls.cpp" />
     <ClCompile Include="SophiaBullet.cpp" />
@@ -167,6 +169,8 @@
     <ClCompile Include="StateTURN.cpp" />
     <ClCompile Include="StateWALKING.cpp" />
     <ClCompile Include="StateWALKINGGunUP.cpp" />
+    <ClCompile Include="ThornOVERHEAD.cpp" />
+    <ClCompile Include="ThornOVERWORLD.cpp" />
     <ClCompile Include="ThreeBullet.cpp" />
     <ClCompile Include="ThunderBullet.cpp" />
     <ClCompile Include="Teleporters.cpp" />
@@ -204,11 +208,13 @@
     <ClInclude Include="HUD.h" />
     <ClInclude Include="JasonBullet.h" />
     <ClInclude Include="Koopas.h" />
+    <ClInclude Include="Lava.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="Jason.h" />
     <ClInclude Include="MiniScene.h" />
     <ClInclude Include="Orbs.h" />
     <ClInclude Include="Portal.h" />
+    <ClInclude Include="RockOVH.h" />
     <ClInclude Include="Ship.h" />
     <ClInclude Include="Skulls.h" />
     <ClInclude Include="resource.h" />
@@ -227,6 +233,8 @@
     <ClInclude Include="State.h" />
     <ClInclude Include="StateIDLE.h" />
     <ClInclude Include="StateWALKINGGunUP.h" />
+    <ClInclude Include="ThornOVERHEAD.h" />
+    <ClInclude Include="ThornOVERWORLD.h" />
     <ClInclude Include="ThreeBullet.h" />
     <ClInclude Include="Teleporters.h" />
     <ClInclude Include="ThunderBullet.h" />

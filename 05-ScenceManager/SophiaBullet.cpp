@@ -58,7 +58,6 @@ void SophiaBullet::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				isMove = false;
 				isColEnemy = true;
 			}
-			
 		}
 	}
 
@@ -118,6 +117,16 @@ void SophiaBullet::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				isMove = false;
 				isColEnemy = true;
 				/*	isColBrick = true;*/
+			}
+			else if (dynamic_cast<CLava*>(e->obj))
+			{
+				x += dx;
+				y += dy;
+			}
+			else if (dynamic_cast<CRockOVH*>(e->obj))
+			{
+				e->obj->SetHp(bulletDame);
+				isColBrick = true;
 			}
 
 

@@ -279,6 +279,18 @@
     <ClCompile Include="BulletEyeball.cpp">
       <Filter>BulletObject</Filter>
     </ClCompile>
+    <ClCompile Include="Lava.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ThornOVERWORLD.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ThornOVERHEAD.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RockOVH.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Brick.h">
@@ -469,6 +481,18 @@
     </ClInclude>
     <ClInclude Include="BulletEyeball.h">
       <Filter>BulletObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Lava.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ThornOVERWORLD.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ThornOVERHEAD.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RockOVH.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
