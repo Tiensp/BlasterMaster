@@ -13,6 +13,7 @@
 #include "StateFALL.h"
 #include "StateJUMP.h"
 #include "Brick.h"
+#include "RockOVH.h"
 #include "BigJasonBullet.h"
 
 CBigJason* CBigJason::__instance = NULL;
@@ -92,6 +93,12 @@ void CBigJason::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				{
 					y += min_ty * dy + ny * 0.4f;
 				}
+				else if (dynamic_cast<CRockOVH*>(e->obj)) // if e->obj is Goomba 
+				{
+					x = x;
+					y = y;
+				}
+
 			}
 
 			//

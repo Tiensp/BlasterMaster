@@ -1,11 +1,14 @@
 #pragma once
 #include "GameObject.h"
+#include "Enemy.h"
+#include "BulletSkull.h"
 #define SKULL_ANI_WALKING_RIGHT	0
 #define SKULL_ANI_WALKING_LEFT 1
 #define SKULL_ANI_ATTACKING_RIGHT 2
 #define SKULL_ANI_ATTACKING_LEFT 3
-#define SKULL_ANI_COLLISION_LEFT 6
-#define SKULL_ANI_COLLISION_RIGHT 7
+#define SKULL_ANI_COLLISION_LEFT 4
+#define SKULL_ANI_COLLISION_RIGHT 5
+#define SKULL_ANI_DEATH	6
 
 #define SKULL_WALKING_SPEED 0.09f;
 #define	SKULL_JUMPING_SPEED 0.05f;
@@ -19,11 +22,16 @@
 #define SKULL_STATE_ATTACKING 300
 #define SKULL_STATE_COLLISION 400
 
-class CSkull : public CGameObject
+class CSkull : public Enemy
 {
 	bool isFolow;  //theo player 
 	LPGAMEOBJECT target;
+	BulletObject* sk_bullet;
+
+
 	bool isAttack;
+	bool isDoneDeath = false;
+	bool isDeath = false;
 public:
 	CSkull(float x, float y, LPGAMEOBJECT player);
 	virtual void SetState(int state);

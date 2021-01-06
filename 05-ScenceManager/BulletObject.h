@@ -4,7 +4,7 @@
 #include "Brick.h"
 #include "Enemy.h"
 
-#define BULLET_SPEDD 0.25f
+#define BULLET_SPEED 0.25f
 #define BULLETSOPHIA_ANI_RIGHT 0
 #define BULLETSOPHIA_ANI_LEFT 1
 #define BULLETSOPHI_ANI_UP	2
@@ -22,11 +22,17 @@ public:
 	LPANIMATION aniBullet;
 	int bullet_dir;
 	int bullet_type;
+
+	int bullet_dir_x;
+	int bullet_dir_y;
+
 	bool isColBrick;
 	bool isColEnemy;
 	bool isDone;
 	int bulletDame;
 	
+	bool isColPlayer;
+
 public:
 	//BulletObject() {};
 	~BulletObject() {}
@@ -40,12 +46,13 @@ public:
 	void Set_IsMove(const bool& _isMove);
 	bool Get_IsMove() const { return isMove; };
 	void Set_bullet_dir(int bulletDir) { bullet_dir = bulletDir; }
+	void Set_bullet_dir(int bulletDirX, int bulletDirY) { bullet_dir_x = bulletDirX, bullet_dir_y = bulletDirY; }
 	int Get_bullet_dir() { return bullet_dir; }
+	int Get_bullet_dir_XY() { return bullet_dir_x, bullet_dir_y; }
 	void Set_bullet_type(int& bulletType) { bullet_type = bulletType; }
 	void HandleMove(const float x_border, const float y_border);
 	void CheckCollisionWithEnemy(vector<LPGAMEOBJECT>* coObjects);
 	
-
 
 
 };

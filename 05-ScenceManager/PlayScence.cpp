@@ -42,7 +42,15 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):
 #define OBJECT_TYPE_INSECT 9
 #define OBJECT_TYPE_ORB 10
 #define OBJECT_TYPE_SHIP 11
+#define OBJECT_TYPE_EYEBALL 12
+#define OBJECT_TYPE_TELEPORTER 13
+#define OBJECT_TYPE_CANNON 14
 #define OBJECT_TYPE_ITEM 80
+
+#define OBJECT_TYPE_LAVA 90
+#define OBJECT_TYPE_THORN_OVERWORLD 91
+#define OBJECT_TYPE_THORN_OVERHEAD 92
+#define OBJECT_TYPE_ROCK_OVERHEAD 93
 
 
 #define OBJECT_TYPE_PORTAL	52
@@ -293,6 +301,76 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_SHIP:
 	{
 		obj = new CShip(x, y, sophia);
+		obj->SetPosition(x, y);
+		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
+		obj->SetAnimationSet(ani_set);
+		listEnemies.push_back(obj);
+		break;
+	}
+
+	case OBJECT_TYPE_EYEBALL:
+	{
+		obj = new CEyeballs(x, y, sophia);
+		obj->SetPosition(x, y);
+		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
+		obj->SetAnimationSet(ani_set);
+		listEnemies.push_back(obj);
+		break;
+	}
+
+	case OBJECT_TYPE_TELEPORTER:
+	{
+		obj = new CTeleporter(x, y, sophia);
+		obj->SetPosition(x, y);
+		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
+		obj->SetAnimationSet(ani_set);
+		listEnemies.push_back(obj);
+		break;
+	}
+
+	case OBJECT_TYPE_CANNON:
+	{
+		obj = new CCannon(x, y, sophia);
+		obj->SetPosition(x, y);
+		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
+		obj->SetAnimationSet(ani_set);
+		listEnemies.push_back(obj);
+		break;
+	}
+
+	case OBJECT_TYPE_LAVA:
+	{
+		float w = atof(tokens[4].c_str());
+		float h = atof(tokens[5].c_str());
+		obj = new CLava(x, y, w, h);
+		obj->SetPosition(x, y);
+		objects.push_back(obj);
+		break;
+	}
+
+	case OBJECT_TYPE_THORN_OVERWORLD:
+	{
+		float w = atof(tokens[4].c_str());
+		float h = atof(tokens[5].c_str());
+		obj = new CThornOVW(x, y, w, h);
+		obj->SetPosition(x, y);
+		objects.push_back(obj);
+		break;
+	}
+
+	case OBJECT_TYPE_THORN_OVERHEAD:
+	{
+		float w = atof(tokens[4].c_str());
+		float h = atof(tokens[5].c_str());
+		obj = new CThornOVH(x, y, w, h);
+		obj->SetPosition(x, y);
+		objects.push_back(obj);
+		break;
+	}
+
+	case OBJECT_TYPE_ROCK_OVERHEAD:
+	{
+		obj = new CRockOVH(x, y,16,16);
 		obj->SetPosition(x, y);
 		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
 		obj->SetAnimationSet(ani_set);

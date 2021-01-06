@@ -4,8 +4,11 @@
 #define FLOATER_ANI_WALKING_LEFT_UP 1
 #define FLOATER_ANI_WALKING_RIGHT_DOWN 2
 #define FLOATER_ANI_WALKING_LEFT_DOWN 3
-#define FLOATER_ANI_ATTACKING_RIGHT 4
-#define FLOATER_ANI_ATTACKING_LEFT 5
+#define FLOATER_ANI_ATTACKING_RIGHT_UP 4
+#define FLOATER_ANI_ATTACKING_RIGHT_DOWN 5
+#define FLOATER_ANI_ATTACKING_LEFT_UP 6 
+#define FLOATER_ANI_ATTACKING_LEFT_DOWN 7 
+#define FLOATER_ANI_DEATH 8 
 #define FLOATER_WALKING_SPEED 0.05f;
 #define	FLOATER_JUMPING_SPEED 0.035f;
 
@@ -21,11 +24,13 @@
 
 class CFloaters : public Enemy
 {
-	bool isFolow;  //theo player 
+protected:
 	LPGAMEOBJECT target;
 	bool isAttack;
 	BulletObject* p_bullet;
 
+	bool isDoneDeath;
+	bool isDeath;
 public:
 	CFloaters(float x, float y, LPGAMEOBJECT player);
 	virtual void SetState(int state);

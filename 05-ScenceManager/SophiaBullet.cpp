@@ -28,18 +28,18 @@ void SophiaBullet::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		{
 			if (bullet_dir == 1)
 			{
-				vx = BULLET_SPEDD;
+				vx = BULLET_SPEED;
 				vy = 0;
 			}
 			else if (bullet_dir == -1)
 			{
-				vx = -BULLET_SPEDD;
+				vx = -BULLET_SPEED;
 				vy = 0;
 			}
 			else
 			{
 				vx = 0;
-				vy = -BULLET_SPEDD;
+				vy = -BULLET_SPEED;
 			}
 		}
 		else
@@ -96,34 +96,60 @@ void SophiaBullet::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	//	{
 	//		LPCOLLISIONEVENT e = coEventsResult[i];
 
-	//		if (dynamic_cast<CBrick*>(e->obj)) // if e->obj is Goomba 
-	//		{
-	//			if (this->type == 0)
-	//			{
-	//				x += min_tx * dx + nx * 0.4f;
-	//				y += min_ty * dy + ny * 0.4f;
-	//				isColBrick = true;
-	//			}
-	//			else
-	//			{
-	//				x += dx;
-	//				y += dy;
-	//			}
-	//		
-	//		}
-	//		else if (dynamic_cast<Enemy*>(e->obj))
-	//		{
-	//			e->obj->SetHp(bulletDame);
-	//			isMove = false;
-	//			isColEnemy = true;
-	//		}
+		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);  // sắp xếp lại các sự kiện va chạm đầu tiên theo trục x, y 
+
+		for (UINT i = 0; i < coEventsResult.size(); i++)
+		{
+			LPCOLLISIONEVENT e = coEventsResult[i];
+
+			if (dynamic_cast<CBrick*>(e->obj)) // if e->obj is Goomba 
+			{
+				
+
+			/*	if (nx != 0) vx = 0;
+				if (ny != 0) vy = 0;*/
+				if (this->type == 0)
+				{
+					x += min_tx * dx + nx * 0.4f;
+					y += min_ty * dy + ny * 0.4f;
+					isColBrick = true;
+				}
+				else
+				{
+					x += dx;
+					y += dy;
+				}
+			
+			}
+			else if (e->obj->objTag == ENEMY)
+			{
+				e->obj->SetHp(bulletDame);
+				e->obj->vx = e->obj->vy = 0;
+				isMove = false;
+				isColEnemy = true;
+				/*	isColBrick = true;*/
+			}
+			else if (dynamic_cast<CLava*>(e->obj))
+			{
+				x += dx;
+				y += dy;
+			}
+			else if (dynamic_cast<CRockOVH*>(e->obj))
+			{
+				e->obj->SetHp(bulletDame);
+				isColBrick = true;
+			}
 
 
-	//	
-	//	}
+			//else if (dynamic_cast<CGolem*>(e->obj))
+			//{
+			//	/*e->obj->SetState(DOMES_STATE_DIE);*/
+			//	isMove = false;
+			//}
+		}
 
 
-	//}
+	}
 	//for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
 }
 

@@ -16,18 +16,28 @@ CSkull::CSkull(float x, float y, LPGAMEOBJECT player)
 	this->y = y;
 	this->target = player;
 
+	hp = 1;
+
+	objTag = ENEMY;
+	objType = SKULLS;
+
 }
 
 void CSkull::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
-	left = x;
-	top = y;
-	right = x + SKULL_BBOX_WIDTH;
+	if (!isDoneDeath)
+	{
+		left = x;
+		top = y;
+		right = x + SKULL_BBOX_WIDTH;
+		bottom = y + SKULL_BBOX_HEIGHT;
+	}
+	else return;
 
-	if (state == SKULL_STATE_DIE)
+	/*if (state == SKULL_STATE_DIE)
 		bottom = y + SKULL_BBOX_HEIGHT_DIE;
 	else
-		bottom = y + SKULL_BBOX_HEIGHT;
+		bottom = y + SKULL_BBOX_HEIGHT;*/
 }
 
 void CSkull::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
@@ -38,7 +48,19 @@ void CSkull::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	//DebugOut(L"golumnvX: %f, golumnvY: %f\n", vx, vy);
 
 	//DebugOut(L"golumnvX: %f, golumnvY: %f\n", target->nx, this->nx);
+	Attack();
 
+	if (sk_bullet != NULL)
+	{
+		if (!sk_bullet->isDone)
+		{
+			sk_bullet->Update(dt, coObjects);
+		}
+		else
+		{
+			sk_bullet = NULL;
+		}
+	}
 
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
@@ -58,7 +80,6 @@ void CSkull::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		x += dx;
 		y += dy;
 
-		Attack();
 	}
 	else //có va chạm
 	{
@@ -72,10 +93,6 @@ void CSkull::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		// how to push back Sophia if collides with a moving objects, what if Sophia is pushed this way into another object?
 		//if (rdx != 0 && rdx!=dx)
 		//	x += nx*abs(rdx); 
-
-
-		x += min_tx * dx + nx * 0.4f;  //cập nhật lại vị trí x
-		y += min_ty * dy + ny * 0.4f;	// cập nhật lại vị trí y  để tránh bị hụt xuống
 
 		// block every object first!
 		{
@@ -98,10 +115,6 @@ void CSkull::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 							{
 								if (this->GetState() == SKULL_ANI_WALKING_LEFT)
 								{
-									this->SetState(SKULL_ANI_COLLISION_LEFT);
-								}
-								else
-								{
 									this->SetState(SKULL_ANI_WALKING_RIGHT);
 								}
 							}
@@ -111,10 +124,6 @@ void CSkull::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 							if (this->nx > 0)
 							{
 								if (this->GetState() == SKULL_ANI_WALKING_RIGHT)
-								{
-									this->SetState(SKULL_ANI_COLLISION_RIGHT);
-								}
-								else
 								{
 									this->SetState(SKULL_ANI_WALKING_LEFT);
 								}
@@ -133,11 +142,13 @@ void CSkull::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 						}
 					}*/
 				}
+				if (e->obj->objTag == ENEMY)
+				{
+					x += dx;  
+					y += dy;
+				}
 			}
 		}
-
-
-		
 	}
 }
 
@@ -149,10 +160,24 @@ void CSkull::Attack()
 		isAttack = true;
 		if (this->GetState() == SKULL_ANI_WALKING_LEFT)
 		{
+			if (sk_bullet == NULL && this->nx)
+			{
+				sk_bullet = new BulletSkull(this->x, this->y, this->target);
+				sk_bullet->SetPosition(this->x + width + 10, this->y + height + 15);
+				sk_bullet->Set_bullet_dir(3);
+				sk_bullet->Set_IsMove(true);
+			}
 			this->SetState(SKULL_ANI_ATTACKING_LEFT);
 		}
 		else if (this->GetState() == SKULL_ANI_WALKING_RIGHT)
 		{
+			if (sk_bullet == NULL && this->nx)
+			{
+				sk_bullet = new BulletSkull(this->x, this->y, this->target);
+				sk_bullet->SetPosition(this->x + width + 10, this->y + height + 15);
+				sk_bullet->Set_bullet_dir(3);
+				sk_bullet->Set_IsMove(true);
+			}
 			this->SetState(SKULL_ANI_ATTACKING_RIGHT);
 		}
 	}
@@ -176,6 +201,20 @@ void CSkull::Attack()
 void CSkull::Render()
 {
 	int ani = SKULL_ANI_WALKING_LEFT;
+
+	if (isDoneDeath) return;
+	if (hp == 0) isDeath = true;
+
+	if (isDeath)
+	{
+		ani = SKULL_ANI_DEATH;
+		animation_set->at(ani)->Render(x, y);
+		if (animation_set->at(ani)->GetCurrentFrame() == 3)
+		{
+			isDoneDeath = true;
+		}
+		return;
+	}
 	
 	if (isAttack)
 	{
@@ -204,6 +243,11 @@ void CSkull::Render()
 				ani = SKULL_ANI_WALKING_LEFT;
 			}
 		}
+	}
+
+	if (sk_bullet != NULL)
+	{
+		sk_bullet->Render();
 	}
 
 	DebugOut(L"ani: %d\n", ani);

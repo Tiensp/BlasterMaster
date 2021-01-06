@@ -15,6 +15,9 @@
 #include "StateFALL.h"
 #include "StateJUMP.h"
 #include "Brick.h"
+#include "Lava.h"
+#include "ThornOVERHEAD.h"
+#include "ThornOVERWORLD.h"
 #include <vector>
 CSophia* CSophia::__instance = NULL;
 
@@ -29,6 +32,8 @@ CSophia::CSophia() : CGameObject()
 	this->x = x; 
 	this->y = y; 
 	y_render = y;
+
+	objTag = Player;
 
 
 
@@ -67,6 +72,87 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		CheckCollisionWithPortal(coObjects);
 		CheckCollisionWithItem(coObjects);
 		CheckCollisionWithEnemy(coObjects);
+			float min_tx, min_ty, nx = 0, ny;
+			float rdx = 0;
+			float rdy = 0;
+
+			// TODO: This is a very ugly designed function!!!!
+			FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
+
+			// how to push back Sophia if collides with a moving objects, what if Sophia is pushed this way into another object?
+			//if (rdx != 0 && rdx!=dx)
+			//	x += nx*abs(rdx); 
+
+			// block every object first!
+			
+			/*y += min_ty*dy + ny*0.4f;*/
+
+			if (nx != 0) vx = 0;
+			if (ny != 0) vy = 0;
+			for (UINT i = 0; i < coEventsResult.size(); i++)
+			{
+				LPCOLLISIONEVENT e = coEventsResult[i];
+				if (dynamic_cast<CBrick*>(e->obj)) // if e->obj is Goomba 
+				{
+					CBrick* br = dynamic_cast<CBrick*>(e->obj);
+					lastColliObj.left = br->x;
+					lastColliObj.top = br->y;
+					lastColliObj.right = lastColliObj.left + br->width;
+					lastColliObj.bottom = lastColliObj.top + br->height;
+					x += min_tx * dx + nx * 0.4f;
+					y += min_ty * dy + ny * 0.4f;
+					isColliBrick = true;
+				}
+				else if (e->obj->objTag == ENEMY) // if e->obj is Goomba 
+				{
+					x += dx;
+					health -= 1;
+				}
+				else if (e->obj->objTag == Portal)
+				{
+					x += dx;
+					CPortal* por = dynamic_cast<CPortal*>(e->obj);
+					if (e->nx == -1 && por->nx == 1)
+					{
+						CCamera* camera = CCamera::GetInstance();
+						camera->isSwitchScene = true;
+						D3DXVECTOR2 camPos = camera->GetCamPos();
+						camera->SwitchScenePos = D3DXVECTOR2(camPos.x + camera->GetWidth(), camPos.y);
+					}
+					else if (e->nx == 1 && por->nx == -1)
+					{
+						CCamera* camera = CCamera::GetInstance();
+						camera->isSwitchScene = true;
+						D3DXVECTOR2 camPos = camera->GetCamPos();
+						camera->SwitchScenePos = D3DXVECTOR2(camPos.x - camera->GetWidth(), camPos.y);
+					}
+				}
+				else if (dynamic_cast<CLava*>(e->obj))
+				{
+					x += min_tx * dx + nx * 0.4f;
+					y -= min_ty * dy + ny * 0.55f;
+					health -= 1;
+				}
+				//Chưa làm va chạm gai cho BigJason (đá thì có rồi)
+				/*else if (dynamic_cast<CThornOVH*>(e->obj))
+				{
+					x += min_tx * dx + nx * 0.4f;
+					y -= min_ty * dy + ny * 0.55f;
+					health -= 1;
+				}*/
+				else if (dynamic_cast<CThornOVW*>(e->obj))
+				{
+					x += min_tx * dx + nx * 0.4f;
+					health -= 1;
+				}
+			}
+
+			//
+			// Collision logic with other objects
+			//
+
+
+		}
 		x_render = x;
 		y_render = y;
 		currentState->Update();

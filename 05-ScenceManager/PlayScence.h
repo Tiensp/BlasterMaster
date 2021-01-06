@@ -19,9 +19,19 @@
 #include "Ship.h"
 #include "Orbs.h"
 #include "BulletFloaters.h"
+#include "BulletSkull.h"
+#include "BulletShip.h"
+#include "BulletEyeball.h"
 #include "Insect.h"
 #include "MiniScene.h"
 #include "Portal.h"
+#include "Eyeballs.h"
+#include "Teleporters.h"
+#include "Cannons.h"
+#include "Lava.h"
+#include "ThornOVERHEAD.h"
+#include "ThornOVERWORLD.h"
+#include "RockOVH.h"
 #include "Item.h"
 #include "Grid.h"
 
@@ -41,8 +51,12 @@ protected:
 	vector<LPGAMEOBJECT> objects;	//một list obj lưu trữ các GameObj có trong Play Scene
 	vector<LPGAMEOBJECT> listEnemies;
 	vector<LPBulletObject> listBullet;
-	vector<MiniScene*>	listScenes;
-	vector<LPGAMEOBJECT> listPortals;
+	vector<LPBulletObject> bulletFloater;
+	vector<LPBulletObject> bulletSkull;
+	vector<LPBulletObject> bulletShip;
+	vector<LPBulletObject> bulletEyeball;
+	vector<MiniScene*>	listScene;
+	vector<LPGAMEOBJECT> listPortal;
 	
 	/* Các hàm ParsSection dùng để đọc file */
 	void _ParseSection_TEXTURES(string line);

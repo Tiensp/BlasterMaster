@@ -3,6 +3,8 @@
 #include "Enemy.h"
 #define WORM_ANI_WALKING_LEFT	1
 #define WORM_ANI_WALKING_RIGHT	0
+#define WORM_ANI_DEATH 2
+
 #define WORM_WALKING_SPEED 0.03f;
 #define	WORM_JUMPING_SPEED 0.163f;
 
@@ -17,6 +19,8 @@ class CWorm : public Enemy
 {
 	bool isFolow;  //theo player 
 
+	bool isDoneDeath = false;
+	bool isDeath = false;
 
 
 
