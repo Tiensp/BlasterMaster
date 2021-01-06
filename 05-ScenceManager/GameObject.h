@@ -66,6 +66,9 @@ public:
 
 	int hp;
 
+	bool isDone = false;
+	bool isDeath;
+
 
 	int state;
 

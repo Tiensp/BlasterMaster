@@ -22,6 +22,7 @@
 #include "Insect.h"
 #include "MiniScene.h"
 #include "Portal.h"
+#include "Item.h"
 #include "Grid.h"
 
 class CPlayScene: public CScene

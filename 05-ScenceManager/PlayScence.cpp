@@ -8,6 +8,7 @@
 #include "Portal.h"
 
 
+
 using namespace std;
 
 CPlayScene::CPlayScene(int id, LPCWSTR filePath):
@@ -41,6 +42,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):
 #define OBJECT_TYPE_INSECT 9
 #define OBJECT_TYPE_ORB 10
 #define OBJECT_TYPE_SHIP 11
+#define OBJECT_TYPE_ITEM 80
 
 
 #define OBJECT_TYPE_PORTAL	52
@@ -297,7 +299,16 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		AllObjs.push_back(obj);
 		break;
 	}
-
+	case OBJECT_TYPE_ITEM:
+	{
+		int type = atoi(tokens[4].c_str());
+		obj = new CItem(type);
+		obj->SetPosition(x, y);
+		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
+		obj->SetAnimationSet(ani_set);
+		listEnemies.push_back(obj);
+		break;
+	}
 	case OBJECT_TYPE_PORTAL:
 	{
 		int sceneID = atoi(tokens[3].c_str());

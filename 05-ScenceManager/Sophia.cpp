@@ -38,10 +38,9 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
 	if (_ACTIVE[SOPHIA])
 	{
-		// Calculate dx, dy 
+		DWORD now = GetTickCount();
 		CGameObject::Update(dt);
-	
-		DebugOut(L"size: %d\n", list_enemy_contain.size());
+	/*	DebugOut(L"size: %d\n", list_enemy_contain.size());*/
 		if (isSetFollowBullet)
 		{
 			BulletObject* p_bullet = new BulletObject();
@@ -56,106 +55,21 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		{
 			p_bullet_list[i]->Update(dt, coObjects);
 		}
-		
-
-		// Simple fall down
 		vy += SOPHIA_GRAVITY*dt;	
-		
-		vector<LPCOLLISIONEVENT> coEvents;
-		vector<LPCOLLISIONEVENT> coEventsResult;
-
-		coEvents.clear();
-
-		// turn off collision when die 
-		if (state != SOPHIA_STATE_DIE)
-			CalcPotentialCollisions(coObjects, coEvents);
-
-		// reset untouchable timer if untouchable time has passed
-		if (GetTickCount64() - untouchable_start > SOPHIA_UNTOUCHABLE_TIME)
+		if (GetTickCount() - untouchable_start > SOPHIA_UNTOUCHABLE_TIME)
 		{
-			untouchable_start = 0;
+			if (untouchable == 1)
+				isInjured = false;
 			untouchable = 0;
+			untouchable_start = 0;
 		}
-
-		// No collision occured, proceed normally
-		if (coEvents.size() == 0)
-		{
-			x += dx;
-			y += dy;
-			isColliBrick = false;
-		}
-		else
-		{
-			float min_tx, min_ty, nx = 0, ny;
-			float rdx = 0;
-			float rdy = 0;
-
-			// TODO: This is a very ugly designed function!!!!
-			FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
-
-			// how to push back Sophia if collides with a moving objects, what if Sophia is pushed this way into another object?
-			//if (rdx != 0 && rdx!=dx)
-			//	x += nx*abs(rdx); 
-
-			// block every object first!
-			
-			/*y += min_ty*dy + ny*0.4f;*/
-
-			if (nx != 0) vx = 0;
-			if (ny != 0) vy = 0;
-			for (UINT i = 0; i < coEventsResult.size(); i++)
-			{
-				LPCOLLISIONEVENT e = coEventsResult[i];
-				if (dynamic_cast<CBrick*>(e->obj)) // if e->obj is Goomba 
-				{
-					CBrick* br = dynamic_cast<CBrick*>(e->obj);
-					lastColliObj.left = br->x;
-					lastColliObj.top = br->y;
-					lastColliObj.right = lastColliObj.left + br->width;
-					lastColliObj.bottom = lastColliObj.top + br->height;
-					x += min_tx * dx + nx * 0.4f;
-					y += min_ty * dy + ny * 0.4f;
-					isColliBrick = true;
-				}
-				else if (dynamic_cast<Enemy*>(e->obj)) // if e->obj is Goomba 
-				{
-					x += dx;
-					health -= 1;
-				}
-				else if (e->obj->objTag == PORTAL)
-				{
-					x += dx;
-					CPortal* por = dynamic_cast<CPortal*>(e->obj);
-					if (e->nx == -1 && por->nx == 1)
-					{
-						CCamera* camera = CCamera::GetInstance();
-						camera->isSwitchScene = true;
-						D3DXVECTOR2 camPos = camera->GetCamPos();
-						camera->SwitchScenePos = D3DXVECTOR2(camPos.x + camera->GetWidth(), camPos.y);
-					}
-					else if (e->nx == 1 && por->nx == -1)
-					{
-						CCamera* camera = CCamera::GetInstance();
-						camera->isSwitchScene = true;
-						D3DXVECTOR2 camPos = camera->GetCamPos();
-						camera->SwitchScenePos = D3DXVECTOR2(camPos.x - camera->GetWidth(), camPos.y);
-					}
-				}
-			}
-
-			//
-			// Collision logic with other objects
-			//
-
-
-		}
+		CheckCollisionWithBrick(coObjects);
+		CheckCollisionWithPortal(coObjects);
+		CheckCollisionWithItem(coObjects);
+		CheckCollisionWithEnemy(coObjects);
 		x_render = x;
 		y_render = y;
-
 		currentState->Update();
-
-		// clean up collision events
-		for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
 	}
 }
 
@@ -322,6 +236,209 @@ void CSophia::SetStartPos(float startx, float starty)
 
 #pragma endregion
 
+
+void CSophia::CheckCollisionWithBrick(vector<LPGAMEOBJECT>* coObjects)
+{
+
+	vector<LPCOLLISIONEVENT> coEvents;
+	vector<LPCOLLISIONEVENT> coEventsResult;
+
+	coEvents.clear();
+
+	vector<LPGAMEOBJECT> ListBrick;
+	ListBrick.clear();
+	for (UINT i = 0; i < coObjects->size(); i++)
+		if (dynamic_cast<CBrick*>(coObjects->at(i)))
+			ListBrick.push_back(coObjects->at(i));
+
+	CalcPotentialCollisions(&ListBrick, coEvents);
+
+	if (coEvents.size() == 0)
+	{
+		x += dx;
+		y += dy;
+	}
+	else
+	{
+		float min_tx, min_ty, nx = 0, ny;
+		float rdx = 0;
+		float rdy = 0;
+
+		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
+
+		if (nx != 0) vx = 0;
+		if (ny != 0) vy = 0;
+		LPCOLLISIONEVENT e = coEventsResult[0];
+		CBrick* br = dynamic_cast<CBrick*>(e->obj);
+		lastColliObj.left = br->x;
+		lastColliObj.top = br->y;
+		lastColliObj.right = lastColliObj.left + br->width;
+		lastColliObj.bottom = lastColliObj.top + br->height;
+		x += min_tx * dx + nx * 0.4f;
+		y += min_ty * dy + ny * 0.4f;
+		isColliBrick = true;
+	}
+}
+
+void CSophia::CheckCollisionWithPortal(vector<LPGAMEOBJECT>* coObjects)
+{
+	vector<LPCOLLISIONEVENT> coEvents;
+	vector<LPCOLLISIONEVENT> coEventsResult;
+
+	coEvents.clear();
+
+	vector<LPGAMEOBJECT> ListPortal;
+	ListPortal.clear();
+	for (UINT i = 0; i < coObjects->size(); i++)
+		if (dynamic_cast<CPortal*>(coObjects->at(i)))
+			ListPortal.push_back(coObjects->at(i));
+
+	CalcPotentialCollisions(&ListPortal, coEvents);
+
+	if (coEvents.size() == 0)
+	{
+		return;
+	}
+	else
+	{
+		float min_tx, min_ty, nx = 0, ny;
+		float rdx = 0;
+		float rdy = 0;
+		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
+		LPCOLLISIONEVENT e = coEventsResult[0];
+		CPortal* por = dynamic_cast<CPortal*>(e->obj);
+
+		if (e->nx == -1 && por->nx == 1)
+		{
+			CCamera* camera = CCamera::GetInstance();
+			camera->isSwitchScene = true;
+			D3DXVECTOR2 camPos = camera->GetCamPos();
+			camera->SwitchScenePos = D3DXVECTOR2(camPos.x + camera->GetWidth(), camPos.y);
+		}
+		else if (e->nx == 1 && por->nx == -1)
+		{
+			CCamera* camera = CCamera::GetInstance();
+			camera->isSwitchScene = true;
+			D3DXVECTOR2 camPos = camera->GetCamPos();
+			camera->SwitchScenePos = D3DXVECTOR2(camPos.x - camera->GetWidth(), camPos.y);
+		}	
+	}
+
+}
+
+void CSophia::CheckCollisionWithItem(vector<LPGAMEOBJECT>* coObjects)
+{
+	vector<LPCOLLISIONEVENT> coEvents;
+	vector<LPCOLLISIONEVENT> coEventsResult;
+	bool isColideUsingAABB = false;
+	int type;
+	coEvents.clear();
+	vector<LPGAMEOBJECT> ListItem;
+	ListItem.clear();
+	for (UINT i = 0; i < coObjects->size(); i++)
+	{
+		if (dynamic_cast<CItem*>(coObjects->at(i)))
+		{
+			ListItem.push_back(coObjects->at(i));
+		}
+
+	}
+		
+
+	for (int i = 0; i < ListItem.size(); i++)
+	{
+		if (this->IsCollidingObject(ListItem.at(i)))
+		{
+			isColideUsingAABB = true;
+			CItem* Item = dynamic_cast<CItem*>(ListItem.at(i));
+			type = Item->GetType();
+			Item->isDeath = true;
+		}
+	}
+	if (isColideUsingAABB !=true)
+	{
+		CalcPotentialCollisions(&ListItem, coEvents);
+		if (coEvents.size() == 0)
+		{
+			return;
+		}
+		else
+		{
+			float min_tx, min_ty, nx = 0, ny;
+			float rdx = 0;
+			float rdy = 0;
+
+			// TODO: This is a very ugly designed function!!!!
+			FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
+			LPCOLLISIONEVENT e = coEventsResult[0];
+			CItem* Item = dynamic_cast<CItem*>(e->obj);
+			type = Item->GetType();
+			/*Item->IsDead = true;*/
+		}
+	}
+	if (type == 0)
+	{
+		this->hp += 1;
+	}
+	else if (type == 1)
+	{
+		this->numberFollowBullet += 1;
+	}
+	else if (type == 2)
+	{
+		this->numberThunderBullet += 1;
+	}
+	else if (type == 3)
+	{
+		this->numberThreeBullet += 1;
+	}
+}
+
+void CSophia::CheckCollisionWithEnemy(vector<LPGAMEOBJECT>* coObjects)
+{
+	vector<LPCOLLISIONEVENT> coEvents;
+	vector<LPCOLLISIONEVENT> coEventsResult;
+	bool isColideUsingAABB = false;
+	coEvents.clear();
+	vector<LPGAMEOBJECT> ListEnemy;
+	ListEnemy.clear();
+	for (UINT i = 0; i < coObjects->size(); i++)
+		if (dynamic_cast<Enemy*>(coObjects->at(i)))
+			ListEnemy.push_back(coObjects->at(i));
+	for (int i = 0; i < ListEnemy.size(); i++)
+	{
+		if (this->IsCollidingObject(ListEnemy.at(i)))
+		{
+			isColideUsingAABB = true;
+			if (untouchable == 1 || isInjured)
+				continue;
+			health -= 1;
+			StartUntouchable();
+			return;
+		}
+	}
+	if (!isColideUsingAABB)
+	{
+		CalcPotentialCollisions(&ListEnemy, coEvents);
+
+		if (coEvents.size() == 0)
+		{
+			return;
+		}
+		else
+		{
+			float min_tx, min_ty, nx = 0, ny;
+			float rdx = 0;
+			float rdy = 0;
+			FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
+			/*LPCOLLISIONEVENT e = coEventsResult[0];
+			Enemy* enemy = dynamic_cast<Enemy*>(e->obj);*/
+			health -= 1;
+		}
+
+	}
+	
+}
 
 void CSophia::GetBoundingBox(float &left, float &top, float &right, float &bottom)
 {

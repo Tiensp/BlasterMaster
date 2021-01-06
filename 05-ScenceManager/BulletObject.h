@@ -43,6 +43,7 @@ public:
 	int Get_bullet_dir() { return bullet_dir; }
 	void Set_bullet_type(int& bulletType) { bullet_type = bulletType; }
 	void HandleMove(const float x_border, const float y_border);
+	void CheckCollisionWithEnemy(vector<LPGAMEOBJECT>* coObjects);
 	
 
 
