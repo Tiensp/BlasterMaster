@@ -34,7 +34,6 @@ void CGrid::AddObject(LPGAMEOBJECT obj)
 			Cell[i][j].push_back(obj);
 		}
 	}
-
 }
 
 void CGrid::RemoveObject(LPGAMEOBJECT obj)
