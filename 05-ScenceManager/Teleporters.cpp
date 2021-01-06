@@ -95,7 +95,7 @@ void CTeleporter::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			{
 				LPCOLLISIONEVENT e = coEventsResult[i];
 
-				if (e->obj->objTag == Player)
+				if (e->obj->objTag == PLAYER)
 				{
 					x += min_tx * dx + nx * 0.4f;  //cập nhật lại vị trí x
 					y += min_ty * dy + ny * 0.4f;	// cập nhật lại vị trí y  để tránh bị hụt xuống

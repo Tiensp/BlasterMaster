@@ -140,7 +140,7 @@ void BulletEyeball::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				x += min_tx * dx + nx * 0.4f;
 				y += min_ty * dy + ny * 0.4f;
 			}
-			else if (e->obj->objTag == Player)
+			else if (e->obj->objTag == PLAYER)
 			{
 				isColPlayer = true;
 				/*x += min_tx * dx + nx * 0.4f;

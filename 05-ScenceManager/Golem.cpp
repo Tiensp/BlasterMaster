@@ -126,7 +126,7 @@ void CGolem::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					x += dx;
 					y += dy;
 				}
-				if (e->obj->objTag == Player)
+				if (e->obj->objTag == PLAYER)
 				{
 					x += dx;
 					y += dy;

@@ -408,7 +408,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		int width = atoi(tokens[5].c_str());
 		int height = atoi(tokens[6].c_str());
 		MiniScene* miniS = new MiniScene(sceneID, x, y, width, height);
-		listScenes.push_back(miniS);
+		listScene.push_back(miniS);
 		break;
 	}
 	default:
@@ -492,7 +492,7 @@ void CPlayScene::Load()
 	DebugOut(L"[INFO] Done loading scene resources %s\n", sceneFilePath);
 	
 	// Khởi tạo camera
-	MiniScene* miniScene = listScenes.at(0);
+	MiniScene* miniScene = listScene.at(0);
 	camera = CCamera::GetInstance();
 	camera->SetCamBound(miniScene->x, miniScene->y, miniScene->width, miniScene->height);
 	camera->SetPosition(D3DXVECTOR2(miniScene->x, miniScene->y));
@@ -596,8 +596,8 @@ void CPlayScene::Render()
 		bigJason->Render();
 	}
 
-	for (int i = 0; i < listPortals.size(); i++)
-		listPortals[i]->Render();
+	for (int i = 0; i < listPortal.size(); i++)
+		listPortal[i]->Render();
 	/*for (int i = 0; i < listBullet.size(); i++)
 		listBullet[i]->Render();*/
 	/*for (int i = 0; i < bulletFloater.size(); i++)
@@ -627,7 +627,7 @@ void CPlayScene::ClassifyOBJECT(vector<LPGAMEOBJECT> obj)
 {
 	objects.clear();
 	listEnemies.clear();
-	listPortals.clear();
+	listPortal.clear();
 	for (int i = 0; i < obj.size(); i++)
 	{
 		switch (obj.at(i)->objTag)
@@ -639,7 +639,7 @@ void CPlayScene::ClassifyOBJECT(vector<LPGAMEOBJECT> obj)
 		}
 		case PORTAL:
 		{
-			listPortals.push_back(obj.at(i));
+			listPortal.push_back(obj.at(i));
 			break;
 		}
 		default:

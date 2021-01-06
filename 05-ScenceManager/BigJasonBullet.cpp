@@ -24,23 +24,23 @@ void BigJasonBullet::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	{
 		if (bullet_dir == 1)
 		{
-			vx = BULLET_SPEDD;
+			vx = BULLET_SPEED;
 			vy = 0;
 		}
 		else if (bullet_dir == -1)
 		{
-			vx = -BULLET_SPEDD;
+			vx = -BULLET_SPEED;
 			vy = 0;
 		}
 		else if (bullet_dir == 3)
 		{
 			vx = 0;
-			vy = -BULLET_SPEDD;
+			vy = -BULLET_SPEED;
 		}
 		else if (bullet_dir == 4)
 		{
 			vx = 0;
-			vy = BULLET_SPEDD;
+			vy = BULLET_SPEED;
 		}
 	}
 

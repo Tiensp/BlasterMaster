@@ -153,7 +153,7 @@ void CFloaters::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					}
 				}
 			}
-			if (e->obj->objTag == Player)
+			if (e->obj->objTag == PLAYER)
 			{
 				x += dx;
 				y += dy;

@@ -142,7 +142,7 @@ void COrb::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 						}
 					}
 				}
-				else if (e->obj->objTag == Player)
+				else if (e->obj->objTag == PLAYER)
 				{
 					isDeath = true;
 					this->SetState(ORB_ANI_DEATH);

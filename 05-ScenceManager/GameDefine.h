@@ -49,7 +49,7 @@ extern enum ObjectTAG
 	PLAYER,
 	ENEMY,
 	MISC,
-	PORTAL
+	PORTAL,
 	BULLET_ENEMIES
 };
 

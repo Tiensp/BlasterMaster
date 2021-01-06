@@ -137,7 +137,7 @@ void CEyeballs::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 					// jump on top >> kill Goomba and deflect a bit 
 				}
-				if (e->obj->objTag == Player)
+				if (e->obj->objTag == PLAYER)
 				{
 					x += dx;
 					y += dy;
@@ -201,7 +201,7 @@ void CEyeballs::Render()
 
 	animation_set->at(ani)->Render(x, y);
 	
-	RenderBoundingBox();
+	//RenderBoundingBox();
 }
 
 void CEyeballs::SetState(int state)

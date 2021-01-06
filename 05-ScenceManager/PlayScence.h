@@ -81,7 +81,7 @@ public:
 	CBigJason* GetBigJason() { return this->bigJason; }
 	CCamera* GetCamera() { return this->camera; }
 	CMap* GetMap() { return this->map; }
-	vector<MiniScene*> GetlistScenes() { return listScenes; }
+	vector<MiniScene*> GetlistScenes() { return listScene; }
 	void ClassifyOBJECT(vector<LPGAMEOBJECT> obj);	//Phân loại các obj
 	//friend class CPlayScenceKeyHandler;
 };
