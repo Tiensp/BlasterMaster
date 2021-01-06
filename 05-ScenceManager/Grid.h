@@ -6,6 +6,7 @@
 #include "Brick.h"
 #include "Portal.h"
 #include "Enemy.h"
+#include "Item.h"
 
 
 using namespace std;

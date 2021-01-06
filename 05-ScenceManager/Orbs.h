@@ -31,7 +31,7 @@ class COrb : public Enemy
 	LPGAMEOBJECT target;
 	bool isAttack = false;
 	bool isDoneDeath = false;
-	bool isDeath = false;
+	//bool isDeath = false;
 public:
 	COrb(float x, float y, LPGAMEOBJECT player);
 	virtual void SetState(int state);

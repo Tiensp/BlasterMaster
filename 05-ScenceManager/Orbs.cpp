@@ -44,7 +44,8 @@ void COrb::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 
 	CGameObject::Update(dt, coObjects);
-
+	if (hp <= 0) 
+		isDeath = true;
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
 

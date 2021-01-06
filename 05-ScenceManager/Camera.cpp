@@ -157,8 +157,8 @@ void CCamera::Update()
 		if (camPos.x > camBound.right - width)
 			camPos.x = camBound.right - width;
 
-		if (camPos.y > camBound.bottom - height /*+ PULL_SCREEN_Y*/)
-			camPos.y = camBound.bottom - height /*+ PULL_SCREEN_Y*/;
+		if (camPos.y > camBound.bottom - height)
+			camPos.y = camBound.bottom - height;
 	}
 	else
 	{

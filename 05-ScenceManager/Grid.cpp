@@ -81,6 +81,12 @@ void CGrid::Update(vector<LPGAMEOBJECT> obj)
 				if (e->GetIsDeath())
 					continue;
 			}
+			else if (dynamic_cast<CItem*>(obj.at(i)))
+			{
+				CItem* e = dynamic_cast<CItem*>(obj.at(i));
+				if (e->isDeath)
+					continue;
+			}
 
 			RemoveObject(obj.at(i));
 			AddObject(obj.at(i));

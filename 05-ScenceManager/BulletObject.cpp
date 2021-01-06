@@ -68,5 +68,6 @@ void BulletObject::CheckCollisionWithEnemy(vector<LPGAMEOBJECT>* coObjects)
 			
 		}
 	}
+
 }
 

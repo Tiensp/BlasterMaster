@@ -390,7 +390,7 @@ void CSophia::CheckCollisionWithItem(vector<LPGAMEOBJECT>* coObjects)
 	}
 	if (type == 0)
 	{
-		this->hp += 1;
+		this->health += 1;
 	}
 	else if (type == 1)
 	{
