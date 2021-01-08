@@ -34,6 +34,8 @@
 #include "RockOVH.h"
 #include "Item.h"
 #include "Grid.h"
+#include "Boss.h"
+#include "BulletBoss.h"
 
 class CPlayScene: public CScene
 {
@@ -55,6 +57,7 @@ protected:
 	vector<LPBulletObject> bulletSkull;
 	vector<LPBulletObject> bulletShip;
 	vector<LPBulletObject> bulletEyeball;
+	vector<LPBulletObject> bulletBoss;
 	vector<MiniScene*>	listScene;
 	vector<LPGAMEOBJECT> listPortal;
 	

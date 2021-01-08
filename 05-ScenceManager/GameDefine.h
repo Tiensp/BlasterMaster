@@ -50,7 +50,7 @@ extern enum ObjectTAG
 	ENEMY,
 	MISC,
 	PORTAL,
-	BULLET_ENEMIES
+	BULLET_ENEMIES,
 };
 
 extern enum ObjectTYPE
@@ -78,6 +78,9 @@ extern enum ObjectTYPE
 	EYEBALLS = 12,
 	TELEPORTERS = 13,
 	CANNONS = 14,
+	
+	/*BOSS*/
+	BOSS = 100,
 
 
 	/* Portal */

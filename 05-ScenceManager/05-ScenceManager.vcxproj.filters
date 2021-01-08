@@ -97,6 +97,9 @@
     <Filter Include="Framework\GameObject\Item">
       <UniqueIdentifier>{493282e1-84e4-4066-af06-f73c3b46a572}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Framework\GameObject\Boss">
+      <UniqueIdentifier>{411666c7-505c-4291-b391-b80ef2ecdb15}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Brick.cpp">
@@ -288,15 +291,6 @@
     <ClCompile Include="Grid.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="BulletSkull.cpp">
-      <Filter>BulletObject</Filter>
-    </ClCompile>
-    <ClCompile Include="BulletShip.cpp">
-      <Filter>BulletObject</Filter>
-    </ClCompile>
-    <ClCompile Include="BulletEyeball.cpp">
-      <Filter>BulletObject</Filter>
-    </ClCompile>
     <ClCompile Include="Lava.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -308,6 +302,21 @@
     </ClCompile>
     <ClCompile Include="RockOVH.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Boss.cpp">
+      <Filter>Framework\GameObject\Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="BulletEyeball.cpp">
+      <Filter>Framework\GameObject\BulletObject</Filter>
+    </ClCompile>
+    <ClCompile Include="BulletShip.cpp">
+      <Filter>Framework\GameObject\BulletObject</Filter>
+    </ClCompile>
+    <ClCompile Include="BulletSkull.cpp">
+      <Filter>Framework\GameObject\BulletObject</Filter>
+    </ClCompile>
+    <ClCompile Include="BulletBoss.cpp">
+      <Filter>Framework\GameObject\BulletObject</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -506,15 +515,6 @@
     <ClInclude Include="Grid.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="BulletSkull.h">
-      <Filter>BulletObject</Filter>
-    </ClInclude>
-    <ClInclude Include="BulletShip.h">
-      <Filter>BulletObject</Filter>
-    </ClInclude>
-    <ClInclude Include="BulletEyeball.h">
-      <Filter>BulletObject</Filter>
-    </ClInclude>
     <ClInclude Include="Lava.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -526,6 +526,21 @@
     </ClInclude>
     <ClInclude Include="RockOVH.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Boss.h">
+      <Filter>Framework\GameObject\Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="BulletEyeball.h">
+      <Filter>Framework\GameObject\BulletObject</Filter>
+    </ClInclude>
+    <ClInclude Include="BulletShip.h">
+      <Filter>Framework\GameObject\BulletObject</Filter>
+    </ClInclude>
+    <ClInclude Include="BulletSkull.h">
+      <Filter>Framework\GameObject\BulletObject</Filter>
+    </ClInclude>
+    <ClInclude Include="BulletBoss.h">
+      <Filter>Framework\GameObject\BulletObject</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
