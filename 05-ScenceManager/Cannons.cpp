@@ -41,23 +41,21 @@ void CCannon::GetBoundingBox(float& left, float& top, float& right, float& botto
 void CCannon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 
-
+	
 	Enemy::Update(dt, coObjects);
-
+	if (isDone) return;
 	Attack();
 	if (bullet1 != NULL)
 	{
-		if (!bullet1->isDone && !bullet2->isDone)
-		{
+		if (!bullet1->isDone)
 			bullet1->Update(dt, coObjects);
+		else bullet1 = NULL;
+	}
+	if (bullet2 != NULL)
+	{
+		if (!bullet2->isDone)
 			bullet2->Update(dt, coObjects);
-
-		}
-		else
-		{
-			bullet1 = NULL;
-			bullet2 = NULL;
-		}
+		else bullet2 = NULL;
 	}
 
 
@@ -133,12 +131,16 @@ void CCannon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 void CCannon::Render()
 {
 	int ani = CANNON_ANI_SHOOT_TOP_BOTTOM;
-
+	if (isDone) return;
 	if (hp <= 0) isDeath = true;
-	if (bullet1 != NULL && bullet2 != NULL)
+	if (bullet1 != NULL)
 	{
-		bullet1->Render();
-		bullet2->Render();
+		if (!bullet1->isDone) bullet1->Render();
+	}
+	if (bullet2 != NULL)
+	{
+		if (!bullet2->isDone) bullet2->Render();
+
 	}
 	if (isDeath)
 	{
@@ -146,7 +148,7 @@ void CCannon::Render()
 		animation_set->at(ani)->Render(x, y);
 		if (animation_set->at(ani)->GetCurrentFrame() == 3)
 		{
-			isDoneDeath = true;
+			isDone = true;
 		}
 		return;
 	}
@@ -167,24 +169,24 @@ void CCannon::Attack()
 	if (abs(this->x - target->x) <= 200)
 	{
 		isAttack = true;
-		if (bullet1 == NULL)
+		if (bullet1 == NULL && bullet2 == NULL)
 		{
 			if (this->GetState() == CANNON_ANI_SHOOT_TOP_BOTTOM)
 			{
-				bullet1 = new CCannonBullet(this->x + width +10, this->y  - 5);
-	/*			bullet1->SetPosition(this->x + width + 10, this->y + height - 15);*/
+				bullet1 = new CCannonBullet(this->x + width + 10, this->y - 5);
+				/*			bullet1->SetPosition(this->x + width + 10, this->y + height - 15);*/
 				bullet1->Set_bullet_dir(2);
 				bullet1->Set_IsMove(true);
-				bullet2 = new CCannonBullet(this->x + width +10 , this->y + height + 5 );
+				bullet2 = new CCannonBullet(this->x + width + 10, this->y + height + 5);
 				bullet2->Set_bullet_dir(-2);
 				bullet2->Set_IsMove(true);
 			}
 			if (this->GetState() == CANNON_ANI_SHOOT_RIGHT_LEFT)
 			{
-				bullet1 = new CCannonBullet(this->x +width , this->y +9);	
+				bullet1 = new CCannonBullet(this->x + width, this->y + 9);
 				bullet1->Set_bullet_dir(1);
 				bullet1->Set_IsMove(true);
-				bullet2 = new CCannonBullet(this->x, this->y +9);
+				bullet2 = new CCannonBullet(this->x, this->y + 9);
 				bullet2->Set_bullet_dir(-1);
 				bullet2->Set_IsMove(true);
 			}

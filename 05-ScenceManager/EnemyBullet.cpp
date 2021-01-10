@@ -17,29 +17,28 @@ void CEnemyBullet::CheckCollisionWithPlayer(vector<LPGAMEOBJECT>* coObjects)
 	vector<LPCOLLISIONEVENT> coEventsResult;
 	bool isColideUsingAABB = false;
 	coEvents.clear();
-	vector<LPGAMEOBJECT> player;
-	player.clear();
+	vector<LPGAMEOBJECT> ListEnemy;
+	ListEnemy.clear();
 	for (UINT i = 0; i < coObjects->size(); i++)
 		if (dynamic_cast<CSophia*>(coObjects->at(i)))
 		{
-			player.push_back(coObjects->at(i));
+			ListEnemy.push_back(coObjects->at(i));
 		}
-	for (UINT i = 0; i < player.size() && isColideUsingAABB == false; i++)
+	for (UINT i = 0; i < ListEnemy.size() && isColideUsingAABB == false; i++)
 	{
-		if (this->IsCollidingObject(player.at(i)))
+		if (this->IsCollidingObject(ListEnemy.at(i)))
 		{
 			isColideUsingAABB = true;
-			CSophia* sophia = dynamic_cast<CSophia*>(player.at(i));
-			sophia->SetHealthWithBullet(this->bulletDame);
+			CSophia* sophia = dynamic_cast<CSophia*>(ListEnemy.at(i));
+			sophia->SetHealthWithBullet(bulletDame);
 			/*this->isMove = false;*/
-			this->isColEnemy = true;
 			this->isDone = true;
 		}
 
 	}
 	if (isColideUsingAABB != true)
 	{
-		CalcPotentialCollisions(&player, coEvents);
+		CalcPotentialCollisions(&ListEnemy, coEvents);
 		if (coEvents.size() == 0)
 		{
 			x += dx;
@@ -56,8 +55,9 @@ void CEnemyBullet::CheckCollisionWithPlayer(vector<LPGAMEOBJECT>* coObjects)
 			FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
 			LPCOLLISIONEVENT e = coEventsResult[0];
 			CSophia* sophia = dynamic_cast<CSophia*>(e->obj);
-			sophia->SetHealthWithBullet(this->bulletDame);
+			sophia->SetHealthWithBullet(bulletDame);
 			this->isDone = true;
+			/*Item->IsDead = true;*/
 
 		}
 	}
