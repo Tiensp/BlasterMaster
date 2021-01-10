@@ -331,6 +331,7 @@ void CSophia::CheckCollisionWithPortal(vector<LPGAMEOBJECT>* coObjects)
 		{
 			CCamera* camera = CCamera::GetInstance();
 			camera->isSwitchScene = true;
+			//camera->destinationMiniScene;
 			D3DXVECTOR2 camPos = camera->GetCamPos();
 			camera->SwitchScenePos = D3DXVECTOR2(camPos.x - camera->GetWidth(), camPos.y);
 		}	

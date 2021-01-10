@@ -47,7 +47,10 @@ public:
 	void UnlockCam();
 	void SetCamBound(float x, float y, float mapWidth, float mapHeight);
 	void Update();
+
+	////////// PUBLIC VARIABLE //////////
 	bool isSwitchScene;
+	int destinationMiniScene;
 	D3DXVECTOR2 SwitchScenePos;
 };
 

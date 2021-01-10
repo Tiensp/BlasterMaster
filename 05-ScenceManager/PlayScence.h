@@ -47,8 +47,6 @@ protected:
 	HUD* hud;
 	CGrid* grid;
 
-	int currentMiniScene;
-
 	vector<LPGAMEOBJECT> AllObjs;
 	vector<LPGAMEOBJECT> objects;	//một list obj lưu trữ các GameObj có trong Play Scene
 	vector<LPGAMEOBJECT> listEnemies;
@@ -85,7 +83,9 @@ public:
 	CMap* GetMap() { return this->map; }
 	vector<MiniScene*> GetlistScenes() { return listScene; }
 	void ClassifyOBJECT(vector<LPGAMEOBJECT> obj);	//Phân loại các obj
-	//friend class CPlayScenceKeyHandler;
+	
+	//////// PUBLIC VARIABLE //////////
+	int currentMiniScene;
 };
 
 class CPlayScenceKeyHandler : public CScenceKeyHandler
