@@ -12,7 +12,7 @@ CRockOVH::CRockOVH(float X, float Y, int W, int H)
 
 void CRockOVH::Render()
 {
-	if (hp == 0)
+	if (hp <= 0)
 	{
 		return;
 	}

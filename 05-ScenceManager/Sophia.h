@@ -108,6 +108,7 @@ public:
 	bool GetIsFalling() { return isFalling; }
 
 	void SetHealth(int hp) { health = hp; }
+	void SetHealthWithBullet(int dame) { health -= dame; }
 	int GetHealth() { return health; }
 
 

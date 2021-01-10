@@ -18,10 +18,11 @@ SophiaBullet::~SophiaBullet()
 
 void SophiaBullet::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	CGameObject::Update(dt, coObjects);
+	BulletObject::Update(dt, coObjects);
+	if (isDone) return;
 
 	HandleMove(SCREEN_WIDTH / 3, SCREEN_HEIGHT / 3);
-	if (isDone) return;
+	
 	if (type == 0)
 	{
 		if (isMove)
@@ -42,12 +43,8 @@ void SophiaBullet::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				vy = -BULLET_SPEED;
 			}
 		}
-		else
-		{
-			return;
-		}
+	
 	}
-	CheckCollisionWithEnemy(coObjects);
 
 }
 

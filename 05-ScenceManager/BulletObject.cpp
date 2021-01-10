@@ -5,6 +5,12 @@
 
 
 
+void BulletObject::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
+{
+	CGameObject::Update(dt, coObjects);
+	CheckCollisionWithEnemy(coObjects);
+}
+
 void BulletObject::Set_IsMove(const bool& _isMove)
 {
 	this->isMove = _isMove;
@@ -14,7 +20,7 @@ void BulletObject::HandleMove(const float x_border, const float y_border)
 {
 	if (x > start_x + x_border || x < start_x - x_border || y < start_y - y_border || y > start_y + y_border)
 	{
-		isMove = false;
+	/*	isMove = false;*/
 		isDone = true;
 	}
 
@@ -33,14 +39,16 @@ void BulletObject::CheckCollisionWithEnemy(vector<LPGAMEOBJECT>* coObjects)
 		{
 			ListEnemy.push_back(coObjects->at(i));
 		}
-	for (UINT i = 0; i < ListEnemy.size(); i++)
+	for (UINT i = 0; i < ListEnemy.size() && isColideUsingAABB ==false; i++)
 	{
 		if (this->IsCollidingObject(ListEnemy.at(i)))
 		{
 			isColideUsingAABB = true;
-			ListEnemy.at(i)->SetHp(bulletDame);
-			this->isMove = false;
+			Enemy* enemy = dynamic_cast<Enemy*>(ListEnemy.at(i));
+			enemy->Set_hp(bulletDame);
+			/*this->isMove = false;*/
 			this->isColEnemy = true;
+			this->isDone = true;
 		}
 
 	}
@@ -63,7 +71,8 @@ void BulletObject::CheckCollisionWithEnemy(vector<LPGAMEOBJECT>* coObjects)
 			FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
 			LPCOLLISIONEVENT e = coEventsResult[0];
 			Enemy* enemy = dynamic_cast<Enemy*>(e->obj);
-			enemy->SetHp(bulletDame);
+			enemy->Set_hp(bulletDame);
+			this->isDone = true;
 			/*Item->IsDead = true;*/
 			
 		}

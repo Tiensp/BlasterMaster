@@ -19,7 +19,7 @@ FollowBullet::~FollowBullet()
 
 void FollowBullet::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	CGameObject::Update(dt, coObjects);
+	BulletObject::Update(dt, coObjects);
 	HandleMove(SCREEN_WIDTH / 3, SCREEN_HEIGHT / 3);
 	//if (isDone) return;
 	if (isMove)
@@ -52,59 +52,6 @@ void FollowBullet::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	
 	x += dx;
 	y += dy;
-	/*DebugOut(L"XFollow: %f\n",x);*/
-	for (int i = 0; i < coObjects->size(); i++)
-	{
-		if (dynamic_cast<Enemy*>(coObjects->at(i)))
-		{
-			if (this->IsCollidingObject(coObjects->at(i)))
-			{
-				coObjects->at(i)->SetHp(bulletDame);
-				isMove = false;
-				isColEnemy = true;
-				isDone = true;
-			}
-
-		}
-	}
-	vector<LPCOLLISIONEVENT> coEvents;
-	vector<LPCOLLISIONEVENT> coEventsResult;
-
-	coEvents.clear();
-	CalcPotentialCollisions(coObjects, coEvents);
-	if (coEvents.size() == 0)  //nếu không có va chạm, update bình thường
-	{
-		x += dx;
-		y += dy;
-	}
-	else //có va chạm
-	{
-		float min_tx, min_ty, nx = 0, ny = 0;
-		float rdx = 0;
-		float rdy = 0;
-
-		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);  // sắp xếp lại các sự kiện va chạm đầu tiên theo trục x, y 
-
-		for (UINT i = 0; i < coEventsResult.size(); i++)
-		{
-			LPCOLLISIONEVENT e = coEventsResult[i];
-
-			if (dynamic_cast<CBrick*>(e->obj)) // if e->obj is Goomba 
-			{
-				x += dx;
-				y += dy;
-			}
-			else if (dynamic_cast<Enemy*>(e->obj))
-			{
-		
-				e->obj->SetHp(bulletDame);
-				isMove = false;
-				isColEnemy = true;
-				isDone = true;
-			}
-		}
-	}
-	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
 }
 void FollowBullet::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {

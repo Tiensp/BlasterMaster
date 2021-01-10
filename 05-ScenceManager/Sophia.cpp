@@ -19,6 +19,7 @@
 #include "ThornOVERHEAD.h"
 #include "ThornOVERWORLD.h"
 #include <vector>
+#include "EnemyBullet.h"
 CSophia* CSophia::__instance = NULL;
 
 CSophia::CSophia() : CGameObject()
@@ -196,6 +197,7 @@ void CSophia::OnKeyDown(int keycode)
 		if (AllowFire() && numberThreeBullet > 0 )
 		{
 			p_bullet = new ThreeBullet(this->x, this->y, this->nx);
+			p_bullet->SetPosition(this->x, this->y);
 			p_bullet->Set_IsMove(true);
 			isAllowFire = false;
 			p_bullet_list.push_back(p_bullet);
@@ -364,7 +366,7 @@ void CSophia::CheckCollisionWithItem(vector<LPGAMEOBJECT>* coObjects)
 			isColideUsingAABB = true;
 			CItem* Item = dynamic_cast<CItem*>(ListItem.at(i));
 			type = Item->GetType();
-			Item->isDeath = true;
+			Item->SetIsVanish();
 		}
 	}
 	if (isColideUsingAABB !=true)
@@ -390,7 +392,7 @@ void CSophia::CheckCollisionWithItem(vector<LPGAMEOBJECT>* coObjects)
 	}
 	if (type == 0)
 	{
-		this->hp += 1;
+		this->health += 1;
 	}
 	else if (type == 1)
 	{
@@ -413,10 +415,16 @@ void CSophia::CheckCollisionWithEnemy(vector<LPGAMEOBJECT>* coObjects)
 	bool isColideUsingAABB = false;
 	coEvents.clear();
 	vector<LPGAMEOBJECT> ListEnemy;
+	vector<LPGAMEOBJECT> ListBullet;
 	ListEnemy.clear();
 	for (UINT i = 0; i < coObjects->size(); i++)
-		if (dynamic_cast<Enemy*>(coObjects->at(i)))
+	{
+		if (dynamic_cast<Enemy*>(coObjects->at(i)) || dynamic_cast<CEnemyBullet*>(coObjects->at(i)))
 			ListEnemy.push_back(coObjects->at(i));
+		
+	}
+		
+
 	for (int i = 0; i < ListEnemy.size(); i++)
 	{
 		if (this->IsCollidingObject(ListEnemy.at(i)))
@@ -428,6 +436,7 @@ void CSophia::CheckCollisionWithEnemy(vector<LPGAMEOBJECT>* coObjects)
 			StartUntouchable();
 			return;
 		}
+		
 	}
 	if (!isColideUsingAABB)
 	{
@@ -443,10 +452,10 @@ void CSophia::CheckCollisionWithEnemy(vector<LPGAMEOBJECT>* coObjects)
 			float rdx = 0;
 			float rdy = 0;
 			FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
-			/*LPCOLLISIONEVENT e = coEventsResult[0];
-			Enemy* enemy = dynamic_cast<Enemy*>(e->obj);*/
+			
 			health -= 1;
 		}
+		
 
 	}
 	
@@ -522,8 +531,7 @@ void CSophia::set_bullet_list()
 				{
 					delete p_bullet;
 					p_bullet = NULL;
-				}
-				
+				}				
 			}
 		}
 		

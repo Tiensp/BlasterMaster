@@ -25,26 +25,26 @@ ThreeBullet::ThreeBullet(float _start_x, float _start_y, int _nx)
 void ThreeBullet::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	
-	CGameObject::Update(dt, coObjects);
+	/*BulletObject::Update(dt, coObjects);*/
 	if (bullet1->isDone && bullet2->isDone && bullet3->isDone)
 	{
 		this->isDone = true;
 	}
 	if (bullet1->bullet_dir == 1)
 	{
-		bullet1->vx = 0.2f;
+		bullet1->vx = 0.125f;
 		/*	bullet1->x += bullet1->vx * dt;*/
-		bullet2->vx = 0.2f;
+		bullet2->vx = 0.125f;
 		bullet2->vy = 0.05f;
-		bullet3->vx = 0.2f;
+		bullet3->vx = 0.125f;
 		bullet3->vy = -0.05f;
 	}
 	else
 	{
-		bullet1->vx = -0.2f;
-		bullet2->vx = -0.2f;
+		bullet1->vx = -0.125f;
+		bullet2->vx = -0.125f;
 		bullet2->vy = 0.05f;
-		bullet3->vx = -0.2f;
+		bullet3->vx = -0.125f;
 		bullet3->vy = -0.05f;
 	}
 

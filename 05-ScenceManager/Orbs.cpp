@@ -43,7 +43,8 @@ void COrb::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 
 
-	CGameObject::Update(dt, coObjects);
+
+	Enemy::Update(dt, coObjects);
 
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
@@ -198,9 +199,9 @@ void COrb::Render()
 	int ani = ORB_ANI_WALKING_RIGHT;
 
 	if (isDoneDeath) return;
-	if (hp == 0) isDeath = true;
+	if (hp <= 0) isDeath = true;
 	
-	if (isAttack || hp == 0)
+	if (isAttack || hp <= 0)
 	{
 		if (isDeath)
 		{

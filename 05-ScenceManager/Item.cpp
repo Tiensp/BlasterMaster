@@ -4,6 +4,7 @@ CItem::CItem(int type)
 {
 	//this->SetAnimationSet(CAnimationSets::GetInstance()->Get(80));
 	this->ItemType = type;
+	this->isVanish = false;
 	this->isDone = false;
 }
 
@@ -13,7 +14,7 @@ CItem::~CItem()
 
 void CItem::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
-	if (!isDeath)
+	if (!isVanish)
 	{
 		left = x;
 		top = y;
@@ -25,7 +26,7 @@ void CItem::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 void CItem::Render()
 {
 	int ani;
-	if (!isDeath)
+	if (!isVanish)
 	{
 		if (ItemType == 0)
 		{

@@ -160,7 +160,7 @@ int Run()
 			game->ProcessKeyboard();
 			
 			Update(dt);
-			DebugOut(L"FPS: %f\n", 1000.0 / dt);
+		/*	DebugOut(L"FPS: %f\n", 1000.0 / dt);*/
 			Render();
 		}
 		else

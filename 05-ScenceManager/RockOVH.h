@@ -4,7 +4,7 @@
 class CRockOVH : public CGameObject
 {
 protected:
-
+	int hp;
 public:
 	CRockOVH(float X, float Y, int W, int H);
 	virtual void Render();

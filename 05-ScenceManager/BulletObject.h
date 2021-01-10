@@ -4,7 +4,7 @@
 #include "Brick.h"
 #include "Enemy.h"
 
-#define BULLET_SPEED 0.25f
+#define BULLET_SPEED 0.125f
 #define BULLETSOPHIA_ANI_RIGHT 0
 #define BULLETSOPHIA_ANI_LEFT 1
 #define BULLETSOPHI_ANI_UP	2
@@ -38,7 +38,7 @@ public:
 	~BulletObject() {}
 
 	virtual void Render() {};
-	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = NULL) {};
+	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = NULL);
 	virtual void GetBoundingBox(float& l, float& t, float& r, float& b) {};
 
 

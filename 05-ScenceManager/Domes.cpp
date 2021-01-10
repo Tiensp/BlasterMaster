@@ -45,7 +45,7 @@ void CDomes::GetBoundingBox(float& left, float& top, float& right, float& bottom
 
 void CDomes::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	CGameObject::Update(dt, coObjects);
+	Enemy::Update(dt, coObjects);
 	Atack();
 	if (!isAtack)
 	{
@@ -240,7 +240,7 @@ void CDomes::Render()
 		return;
 	}
 	if (isDoneDeath) return;
-	if (hp == 0) isDeath = true;
+	if (hp <= 0) isDeath = true;
 	if (isAtack)
 	{
 		if (this->GetState() == DOMES_STATE_ATACK_NX)

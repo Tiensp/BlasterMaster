@@ -5,7 +5,7 @@ BulletFloaters::BulletFloaters(float _start_x, float _start_y)
 	this->start_y = _start_y;
 	isMove = true;
 	isDone = false;
-	bulletDame = 1;
+	bulletDame = 0;
 	this->SetAnimationSet(CAnimationSets::GetInstance()->Get(20));
 }
 

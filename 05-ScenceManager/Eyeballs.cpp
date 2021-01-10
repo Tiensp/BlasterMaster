@@ -50,7 +50,7 @@ void CEyeballs::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 
 	//DebugOut(L"golumnvX: %f, golumnvY: %f\n", vx, vy);
-	CGameObject::Update(dt, coObjects);
+	Enemy::Update(dt, coObjects);
 	//DebugOut(L"golumnvX: %f, golumnvY: %f\n", vx, vy);
 
 	//DebugOut(L"golumnvX: %f, golumnvY: %f\n", target->nx, this->nx);
@@ -158,7 +158,7 @@ void CEyeballs::Render()
 	int ani = EYEBALL_ANI_WALKING;
 
 	if (isDoneDeath) return;
-	if (hp == 0) isDeath = true;
+	if (hp <= 0) isDeath = true;
 
 	if (isDeath)
 	{

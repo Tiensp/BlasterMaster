@@ -43,7 +43,7 @@ void CTeleporter::GetBoundingBox(float& left, float& top, float& right, float& b
 void CTeleporter::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 
-	CGameObject::Update(dt, coObjects);
+	Enemy::Update(dt, coObjects);
 
 
 
@@ -130,7 +130,7 @@ void CTeleporter::Render()
 	int ani = TELEPORTER_ANI_GRAY_MODE_ON;
 
 	if (isDoneDeath) return;
-	if (hp == 0) isDeath = true;
+	if (hp <= 0) isDeath = true;
 
 	if (isDeath)
 	{
