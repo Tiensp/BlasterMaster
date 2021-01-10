@@ -53,7 +53,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):
 #define OBJECT_TYPE_ROCK_OVERHEAD 93
 
 
-#define OBJECT_TYPE_PORTAL	52
+#define OBJECT_TYPE_PORTAL	84
 #define OBJECT_TYPE_SCENE 53
 
 #define MAX_SCENE_LINE 1024
@@ -391,12 +391,13 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	{
 		int sceneID = atoi(tokens[3].c_str());
 		int porID = atoi(tokens[4].c_str());
-		int dir = atoi(tokens[5].c_str());
-		int type = atoi(tokens[6].c_str());
-		float xDes = atof(tokens[7].c_str());
-		float yDes = atof(tokens[8].c_str());
-		ani_set_id = atoi(tokens[9].c_str());
-		obj = new CPortal(x, y, sceneID, porID, dir, type, xDes, yDes);
+		int desScene = atoi(tokens[5].c_str());
+		int dir = atoi(tokens[6].c_str());
+		int type = atoi(tokens[7].c_str());
+		float xDes = atof(tokens[8].c_str());
+		float yDes = atof(tokens[9].c_str());
+		ani_set_id = atoi(tokens[10].c_str());
+		obj = new CPortal(x, y, sceneID, porID, desScene, dir, type, xDes, yDes);
 		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
 		obj->SetAnimationSet(ani_set);
 		AllObjs.push_back(obj);

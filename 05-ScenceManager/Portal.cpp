@@ -1,10 +1,12 @@
 ﻿#include "Portal.h"
 
 
-CPortal::CPortal(float _x, float _y, int sceneID, int portalID, int _nx, int type, float xDes, float yDes)
+
+CPortal::CPortal(float _x, float _y, int sceneID, int portalID, int desScene, int _nx, int type, float xDes, float yDes)
 {
 	scene_id = sceneID;
 	portal_id = portalID;
+	des_scene = desScene;
 	x = _x; 
 	y = _y;
 	x_des = xDes;
@@ -27,7 +29,7 @@ CPortal::CPortal(float _x, float _y, int sceneID, int portalID, int _nx, int typ
 			+ Xem lại Sprite Portal để hiểu cách tính tọa độ x_render, y_render
 		*/
 
-		if (nx > 0)	
+		if (nx < 0)	
 		{
 			x_render = x + width / 2;
 		}
@@ -36,13 +38,19 @@ CPortal::CPortal(float _x, float _y, int sceneID, int portalID, int _nx, int typ
 			x_render = x - 32 ;	//32 là độ dày của tường :D
 		}
 	}
+	else if (objType == SpecialPortal)
+	{
+		x_render = x + width / 2 - 2;
+	}
 }
 
 void CPortal::Render()
 {
 	if (objType == OverWorld)
 		animation_set->at(scene_id)->RenderFrame(portal_id, x_render, y_render);
-	RenderBoundingBox(x_render, y_render);
+	else if (objType == SpecialPortal)
+		animation_set->at(scene_id)->RenderFrame(portal_id, x_render, y_render);
+	RenderBoundingBox(x, y);
 }
 
 void CPortal::GetBoundingBox(float &l, float &t, float &r, float &b)

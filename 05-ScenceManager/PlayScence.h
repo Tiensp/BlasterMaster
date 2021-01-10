@@ -45,7 +45,7 @@ protected:
 	CMap* map;			//Cần một đối tượng lưu trữ MAP
 	CCamera* camera;	//Và một đối tượng lưu trữ camera của Play Scene
 	HUD* hud;
-	CGrid* grid;
+	CGrid *grid;
 
 	vector<LPGAMEOBJECT> AllObjs;
 	vector<LPGAMEOBJECT> objects;	//một list obj lưu trữ các GameObj có trong Play Scene

@@ -1,15 +1,12 @@
 ﻿#include <algorithm>
 #include <assert.h>
 #include "Utils.h"
-
 #include "Sophia.h"
 #include "Game.h"
-
 #include "Goomba.h"
 #include "Portal.h"
 #include "Domes.h"
 #include "Camera.h"
-
 #include "StateIDLE.h"
 #include "StateTURN.h"
 #include "StateFALL.h"
@@ -19,6 +16,8 @@
 #include "ThornOVERHEAD.h"
 #include "ThornOVERWORLD.h"
 #include <vector>
+#include "PlayScence.h"
+
 CSophia* CSophia::__instance = NULL;
 
 CSophia::CSophia() : CGameObject()
@@ -72,16 +71,14 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		CheckCollisionWithPortal(coObjects);
 		CheckCollisionWithItem(coObjects);
 		CheckCollisionWithEnemy(coObjects);
+	}
 
-			
+	if (isAutoGo)
+		AutoGo(autoGoDes);
 
-
-
-		}
-		
-		x_render = x;
-		y_render = y;
-		currentState->Update();
+	x_render = x;
+	y_render = y;
+	currentState->Update();
 	
 }
 
@@ -320,20 +317,27 @@ void CSophia::CheckCollisionWithPortal(vector<LPGAMEOBJECT>* coObjects)
 		LPCOLLISIONEVENT e = coEventsResult[0];
 		CPortal* por = dynamic_cast<CPortal*>(e->obj);
 
-		if (e->nx == -1 && por->nx == 1)
+		if (e->nx == -1 && por->nx == -1)
 		{
 			CCamera* camera = CCamera::GetInstance();
 			camera->isSwitchScene = true;
+			isAutoGo = true;
+			autoGoDes = por->x_des;
+			camera->miniScene_des = por->GetDesScene();
 			D3DXVECTOR2 camPos = camera->GetCamPos();
 			camera->SwitchScenePos = D3DXVECTOR2(camPos.x + camera->GetWidth(), camPos.y);
+			((CPlayScene*)CGame::GetInstance()->GetCurrentScene())->currentMiniScene = por->GetDesScene();
 		}
-		else if (e->nx == 1 && por->nx == -1)
+		else if (e->nx == 1 && por->nx == 1)
 		{
 			CCamera* camera = CCamera::GetInstance();
 			camera->isSwitchScene = true;
-			//camera->destinationMiniScene;
+			isAutoGo = true;
+			autoGoDes = por->x_des;
+			camera->miniScene_des = por->GetDesScene();
 			D3DXVECTOR2 camPos = camera->GetCamPos();
 			camera->SwitchScenePos = D3DXVECTOR2(camPos.x - camera->GetWidth(), camPos.y);
+			((CPlayScene*)CGame::GetInstance()->GetCurrentScene())->currentMiniScene = por->GetDesScene();
 		}	
 	}
 
@@ -507,6 +511,24 @@ void CSophia::Reset()
 	SetPosition(start_x, start_y);
 	SwitchState(new StateIDLE());
 	SetSpeed(0, 0);
+}
+
+void CSophia::AutoGo(float x_des)
+{
+	if (x != x_des) {
+		if (x > x_des)
+		{
+			x -= SOPHIA_WALKING_SPEED * dt;
+			if (x <= x_des)
+				isAutoGo = false;
+		}
+		else
+		{
+			x += SOPHIA_WALKING_SPEED * dt;
+			if (x >= x_des)
+				isAutoGo = false;
+		}
+	}
 }
 
 void CSophia::set_bullet_list()

@@ -66,11 +66,14 @@ protected:
 	bool isAllowFire = true;
 	bool isInjured;
 
+	bool isAutoGo = false;
 	bool isColliBrick;
+	float autoGoDes;
 	int numberThreeBullet = 5;
 	int numberThunderBullet = 5;
 	int numberFollowBullet = 5;
 	int health = 8;	// Máu nhân vật
+
 	RECT lastColliObj;
 	bool isSetFollowBullet;
 	vector<BulletObject* > p_bullet_list;
@@ -119,6 +122,7 @@ public:
 
 	void Reset();
 
+	void AutoGo(float x_des);
 	void set_bullet_list();
 	int Get_Sophia_Normal_bullet();
 	bool AllowFire();

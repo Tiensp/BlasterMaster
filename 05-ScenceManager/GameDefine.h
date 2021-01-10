@@ -81,6 +81,7 @@ extern enum ObjectTYPE
 
 
 	/* Portal */
+	SpecialPortal = 400,
 	OverWorld = 500,
 	OverHead = 600
 };

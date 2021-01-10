@@ -170,6 +170,9 @@ void CCamera::Update()
 		else
 		{
 			isSwitchScene = false;
+			CPlayScene* playScene = ((CPlayScene*)CGame::GetInstance()->GetCurrentScene());
+			MiniScene* miniScene = playScene->GetlistScenes().at(playScene->currentMiniScene);
+			SetCamBound(miniScene->x, miniScene->y, miniScene->width, miniScene->height);
 		}
 	}
 }

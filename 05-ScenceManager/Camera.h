@@ -50,7 +50,7 @@ public:
 
 	////////// PUBLIC VARIABLE //////////
 	bool isSwitchScene;
-	int destinationMiniScene;
+	int miniScene_des;
 	D3DXVECTOR2 SwitchScenePos;
 };
 
