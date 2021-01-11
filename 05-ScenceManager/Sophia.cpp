@@ -12,6 +12,7 @@
 #include "StateTURN.h"
 #include "StateFALL.h"
 #include "StateJUMP.h"
+#include "StateOPENCabin.h"
 #include "Brick.h"
 #include "Lava.h"
 #include "ThornOVERHEAD.h"
@@ -34,16 +35,15 @@ CSophia::CSophia() : CGameObject()
 	y_render = y;
 
 	objTag = PLAYER;
-
-
+	objType = SOPHIA;
 
 }
 
 void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
-	if (_ACTIVE[SOPHIA])
+	if (_ACTIVE[SOPHIA] && !isFrozen)
 	{
-		DWORD now = GetTickCount();
+		DWORD now = GetTickCount64();
 		CGameObject::Update(dt);
 		vy += SOPHIA_GRAVITY * dt;
 	/*	DebugOut(L"size: %d\n", list_enemy_contain.size());*/
@@ -77,6 +77,7 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 	x_render = x;
 	y_render = y;
+
 	if (!isAutoGo)
 		currentState->Update();
 	else
@@ -86,8 +87,7 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 void CSophia::Render()
 {
-	
-	if (_ACTIVE[SOPHIA])
+	if (_ACTIVE[SOPHIA] && !isFrozen)
 	{
 		int alpha = 255;
 		if (untouchable) alpha = 128;
@@ -125,6 +125,42 @@ void CSophia::Render()
 					p_bullet->Render();
 				}
 			}
+		}
+	}
+	else if (_ACTIVE[SOPHIA] && isFrozen)
+	{
+		switch (frameID)
+		{
+		case -1:
+		{
+			lastFrameTime = GetTickCount64();
+			frameID = 0;
+			RECT r = currentAni->GetFrameRect(frameID);
+			y_render = y + SOPHIA_SMALL_BBOX_HEIGHT - (r.bottom - r.top);
+
+			currentAni->RenderFrame(frameID, x, y_render);
+			break;
+		}
+		case 0:
+		{
+			DWORD t = currentAni->GetFrameTime(frameID);
+			if (GetTickCount64() - lastFrameTime > t)
+			{
+				frameID = 1;
+				lastFrameTime = GetTickCount64();
+			}
+			RECT r = currentAni->GetFrameRect(frameID);
+			y_render = y + SOPHIA_SMALL_BBOX_HEIGHT - (r.bottom - r.top);
+
+			currentAni->RenderFrame(frameID, x, y_render);
+			break;
+		}
+		case 1:
+		{
+			currentAni->RenderFrame(frameID, x, y_render);
+			RenderBoundingBox(x, y_render);
+			break;
+		}
 		}
 	}
 }
@@ -226,6 +262,14 @@ void CSophia::OnKeyDown(int keycode)
 	
 		break;
 	}
+	case DIK_Q:
+	{
+		SwitchState(new StateOPENCabin());
+		CJason* jason = CJason::GetInstance();
+		_ACTIVE[JASON] = true;
+		jason->ResetAtPos(x + SOPHIA_BIG_BBOX_WIDTH / 2, y);
+		break;
+	}
 
 	}
 	
@@ -318,7 +362,10 @@ void CSophia::CheckCollisionWithPortal(vector<LPGAMEOBJECT>* coObjects)
 		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
 		LPCOLLISIONEVENT e = coEventsResult[0];
 		CPortal* por = dynamic_cast<CPortal*>(e->obj);
-
+		
+		/// <summary>
+		/// CHUYỂN SCENE KHI CHẠM PORTAL
+		/// </summary>
 		if (e->nx == -1 && por->nx == -1)
 		{
 			CCamera* camera = CCamera::GetInstance();
@@ -387,12 +434,10 @@ void CSophia::CheckCollisionWithItem(vector<LPGAMEOBJECT>* coObjects)
 			float rdx = 0;
 			float rdy = 0;
 
-			// TODO: This is a very ugly designed function!!!!
 			FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
 			LPCOLLISIONEVENT e = coEventsResult[0];
 			CItem* Item = dynamic_cast<CItem*>(e->obj);
 			type = Item->GetType();
-			/*Item->IsDead = true;*/
 		}
 	}
 	if (type == 0)
@@ -511,6 +556,14 @@ void CSophia::Reset()
 {
 	SetLevel(SOPHIA_LEVEL_BIG);
 	SetPosition(start_x, start_y);
+	SwitchState(new StateIDLE());
+	SetSpeed(0, 0);
+}
+
+void CSophia::ResetAtPos(float _x, float _y)
+{
+	SetLevel(SOPHIA_LEVEL_BIG);
+	SetPosition(_x, _y);
 	SwitchState(new StateIDLE());
 	SetSpeed(0, 0);
 }

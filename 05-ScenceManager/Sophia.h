@@ -39,6 +39,8 @@
 #define SOPHIA_SMALL_BBOX_WIDTH  26
 #define SOPHIA_SMALL_BBOX_HEIGHT 18
 
+#define SOPHIA_OPEN_CABIN_BBOX_HEIGHT 26
+
 #define SOPHIA_BIG_BBOX_WIDTH  26
 #define SOPHIA_BIG_BBOX_HEIGHT 34
 
@@ -53,6 +55,7 @@ protected:
 	int untouchable;
 	DWORD untouchable_start;
 	DWORD lifeTimeAni;
+	DWORD lastFrameTime;
 
 	float start_x;			// initial position of Sophia at scene
 	float start_y; 
@@ -68,6 +71,7 @@ protected:
 
 	bool isAutoGo = false;
 	bool isColliBrick;
+	bool isFrozen = false;
 	float autoGoDes;
 	int numberThreeBullet = 5;
 	int numberThunderBullet = 5;
@@ -116,6 +120,9 @@ public:
 	void SetIsAutoGo(bool autoGo) { isAutoGo = autoGo; }
 	bool GetIsAutoGo() { return isAutoGo; }
 
+	void SetIsFrozen(bool frozen) { isFrozen = frozen; }
+	bool GetIsFrozen() { return isFrozen; }
+
 
 	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount64(); }
 
@@ -124,6 +131,7 @@ public:
 
 
 	void Reset();
+	void ResetAtPos(float _x, float _y);
 
 	void AutoGo(float x_des);
 	void set_bullet_list();

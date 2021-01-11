@@ -40,6 +40,7 @@ public:
 	int GetCurrentFrame();
 	int GetAniSize() { return frames->size(); }
 	int GetLastFrame();
+	int GetFrameTime(int frameID);
 	int GetAniTime();
 	bool IsFinalFrame();
 	bool GetIsComplete() { return isComplete; }

@@ -83,6 +83,8 @@ public:
 
 
 	void Reset();
+	void ResetAtPos(float _x, float _y);
+
 	int Get_Jason_Normal_bullet();
 	void set_bullet_list();
 	vector<BulletObject*> Get_Bullet_List() { return p_bullet_list; }

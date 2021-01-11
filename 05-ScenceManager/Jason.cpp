@@ -36,6 +36,9 @@ void CJason::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	{
 		// Calculate dx, dy 
 		CGameObject::Update(dt);
+		// Simple fall down
+		vy += SOPHIA_GRAVITY * dt;
+
 		set_bullet_list();
 		for (int i = 0; i < p_bullet_list.size(); i++)
 		{
@@ -43,8 +46,6 @@ void CJason::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 		}
 		
-		// Simple fall down
-		vy += SOPHIA_GRAVITY * dt;
 		vector<LPCOLLISIONEVENT> coEvents;
 		vector<LPCOLLISIONEVENT> coEventsResult;
 
@@ -224,6 +225,13 @@ void CJason::Reset()
 {
 	SetLevel(JASON_LEVEL_BIG);
 	SetPosition(start_x, start_y);
+	SwitchState(new StateIDLE());
+	SetSpeed(0, 0);
+}
+
+void CJason::ResetAtPos(float _x, float _y)
+{
+	SetPosition(_x, _y);
 	SwitchState(new StateIDLE());
 	SetSpeed(0, 0);
 }

@@ -126,6 +126,11 @@ int CAnimation::GetLastFrame()	/* Get the last frame of ani */
 	return frames->size() - 1;
 }
 
+int CAnimation::GetFrameTime(int frameID)
+{
+	return frames->at(frameID)->GetTime();
+}
+
 int CAnimation::GetAniTime()
 {
 	int Sum = 0;

@@ -526,7 +526,7 @@ void CPlayScene::Update(DWORD dt)
 	vector<LPGAMEOBJECT> coObjects = grid->GetActiveObj();
 	ClassifyOBJECT(coObjects);
 	
-	if (_ACTIVE[SOPHIA])
+	if (_ACTIVE[SOPHIA] && !sophia->GetIsFrozen())
 	{
 		sophia->Update(dt, &coObjects);
 	}
@@ -589,11 +589,13 @@ void CPlayScene::Render()
 	{
 		sophia->Render();
 	}
-	else if (_ACTIVE[JASON])
+	
+	if (_ACTIVE[JASON])
 	{
 		jason->Render();
 	}
-	else if (_ACTIVE[BIG_JASON])
+	
+	if (_ACTIVE[BIG_JASON])
 	{
 		bigJason->Render();
 	}
@@ -655,6 +657,9 @@ void CPlayScene::ClassifyOBJECT(vector<LPGAMEOBJECT> obj)
 
 void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 {
+	CSophia* sophia = ((CPlayScene*)scence)->GetSophia();
+	CJason* jason = ((CPlayScene*)scence)->GetJason();
+	CBigJason* bigJason = ((CPlayScene*)scence)->GetBigJason();
 	DebugOut(L"[INFO] KeyDown: %d\n", KeyCode);
 	switch (KeyCode)
 	{
@@ -663,7 +668,7 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 			_ACTIVE[SOPHIA] = true;
 			_ACTIVE[JASON] = false;
 			_ACTIVE[BIG_JASON] = false;
-			CSophia::GetInstance()->Reset();
+			sophia->Reset();
 		}
 		break;
 	case DIK_O:
@@ -671,7 +676,7 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 			_ACTIVE[SOPHIA] = false;
 			_ACTIVE[JASON] = true;
 			_ACTIVE[BIG_JASON] = false;
-			CJason::GetInstance()->Reset();
+			jason->Reset();
 		}
 		break;
 	case DIK_P:
@@ -679,7 +684,7 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 			_ACTIVE[SOPHIA] = false;
 			_ACTIVE[JASON] = false;
 			_ACTIVE[BIG_JASON] = true;
-			CBigJason::GetInstance()->Reset();
+			bigJason->Reset();
 		}
 		break;
 	case DIK_M:
@@ -713,9 +718,9 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 			break;
 		}
 	}
-
 	}
-	if (_ACTIVE[SOPHIA])
+	////////// KEY DOWN ///////////
+	if (_ACTIVE[SOPHIA] && !sophia->GetIsFrozen())
 	{
 		CSophia* sophia = ((CPlayScene*)scence)->GetSophia();
 		_KEYCODE[KeyCode] = true;

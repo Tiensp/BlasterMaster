@@ -99,6 +99,7 @@ public:
 
 	void SetHp(int dameBullet);
 	int Get_Hp() { return hp; }
+
 	bool IsCollidingObject(CGameObject* Obj);
 	LPCOLLISIONEVENT SweptAABBEx(LPGAMEOBJECT coO);
 	void CalcPotentialCollisions(vector<LPGAMEOBJECT> *coObjects, vector<LPCOLLISIONEVENT> &coEvents);

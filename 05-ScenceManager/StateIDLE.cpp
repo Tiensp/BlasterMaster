@@ -6,17 +6,9 @@
 
 StateIDLE::StateIDLE()
 {
-	if (_ACTIVE[SOPHIA])
+	CSophia* sophia = CSophia::GetInstance();
+	if (_ACTIVE[SOPHIA] && !sophia->GetIsFrozen())
 	{
-		CSophia* sophia = CSophia::GetInstance();
-		/*if (sophia->currentState != NULL)
-		{
-			sophia->frameID = sophia->currentAni->GetCurrentFrame();
-			sophia->frameID = (sophia->frameID == -1) ? 0 : sophia->frameID;
-		}
-		else
-			sophia->frameID = 0;
-		sophia->renderFrame = true;*/
 		sophia->SetIsJumping(false);
 		sophia->SetIsFalling(false);
 		sophia->vx = 0;
@@ -78,11 +70,12 @@ void StateIDLE::Update()
 
 void StateIDLE::HandleKeyboard()
 {
+	CSophia* sophia = CSophia::GetInstance();
+
 	if (_KEYCODE[DIK_RIGHT])
 	{
-		if (_ACTIVE[SOPHIA])
+		if (_ACTIVE[SOPHIA] && !sophia->GetIsFrozen())
 		{
-			CSophia* sophia = CSophia::GetInstance();
 			sophia->renderFrame = false;
 			if (sophia->nx < 0)
 			{
@@ -111,9 +104,8 @@ void StateIDLE::HandleKeyboard()
 	}
 	else if (_KEYCODE[DIK_LEFT])
 	{
-		if (_ACTIVE[SOPHIA])
+		if (_ACTIVE[SOPHIA] && !sophia->GetIsFrozen())
 		{
-			CSophia* sophia = CSophia::GetInstance();
 			sophia->renderFrame = false;
 			if (sophia->nx > 0)
 			{
@@ -142,9 +134,8 @@ void StateIDLE::HandleKeyboard()
 	}
 	else if (_KEYCODE[DIK_UP])
 	{
-		if (_ACTIVE[SOPHIA])
+		if (_ACTIVE[SOPHIA] && !sophia->GetIsFrozen())
 		{
-			CSophia* sophia = CSophia::GetInstance();
 			sophia->frameID = 0;
 			sophia->SwitchState(new StateRAISEDGun());
 			sophia->currentAni->ResetCurrentFrame();
@@ -170,9 +161,8 @@ void StateIDLE::HandleKeyboard()
 	}
 	else
 	{
-		if (_ACTIVE[SOPHIA]) 
+		if (_ACTIVE[SOPHIA] && !sophia->GetIsFrozen()) 
 		{
-			CSophia* sophia = CSophia::GetInstance();
 			sophia->SwitchState(new StateIDLE());
 		}
 		else if (_ACTIVE[JASON])
