@@ -531,22 +531,22 @@ void CPlayScene::Update(DWORD dt)
 	vector<LPGAMEOBJECT> coObjects = grid->GetActiveObj();
 	ClassifyOBJECT(coObjects);
 	
-	//if (_ACTIVE[SOPHIA])
-	//{
-	//	sophia->Update(dt, &coObjects);
-	//}
-	//else if (_ACTIVE[JASON])
-	//{
-	//	jason->Update(dt, &coObjects);
-	//}
-	//else if (_ACTIVE[BIG_JASON])
-	//{
-	//	bigJason->Update(dt, &coObjects);
-	//}
+	if (_ACTIVE[SOPHIA])
+	{
+		sophia->Update(dt, &coObjects);
+	}
+	else if (_ACTIVE[JASON])
+	{
+		jason->Update(dt, &coObjects);
+	}
+	else if (_ACTIVE[BIG_JASON])
+	{
+		bigJason->Update(dt, &coObjects);
+	}
 
 	for (int i = 0; i < coObjects.size(); i++)
 	{
-		if (!dynamic_cast<CBrick*>(coObjects.at(i)) && !dynamic_cast<CPortal*>(coObjects.at(i)))
+		if (!dynamic_cast<CBrick*>(coObjects.at(i)) && !dynamic_cast<CPortal*>(coObjects.at(i)) && !dynamic_cast<CSophia*>(coObjects.at(i)))
 		{
 			coObjects.at(i)->Update(dt, &coObjects);
 		}
