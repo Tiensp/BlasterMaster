@@ -719,7 +719,8 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 	{
 		CSophia* sophia = ((CPlayScene*)scence)->GetSophia();
 		_KEYCODE[KeyCode] = true;
-		sophia->OnKeyDown(KeyCode);
+		if (!sophia->GetIsAutoGo())
+			sophia->OnKeyDown(KeyCode);
 	}
 	else if (_ACTIVE[JASON])
 	{

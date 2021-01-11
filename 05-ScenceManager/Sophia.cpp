@@ -8,6 +8,7 @@
 #include "Domes.h"
 #include "Camera.h"
 #include "StateIDLE.h"
+#include "StateWALKING.h"
 #include "StateTURN.h"
 #include "StateFALL.h"
 #include "StateJUMP.h"
@@ -44,6 +45,7 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	{
 		DWORD now = GetTickCount();
 		CGameObject::Update(dt);
+		vy += SOPHIA_GRAVITY * dt;
 	/*	DebugOut(L"size: %d\n", list_enemy_contain.size());*/
 		if (isSetFollowBullet)
 		{
@@ -52,14 +54,14 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			p_bullet->SetPosition(this->x, this->y);
 			p_bullet->Set_IsMove(true);
 			p_bullet_list.push_back(p_bullet);
-			isSetFollowBullet = false;
+			isSetFollowBullet = false;    
 		}
 		set_bullet_list();
 		for (int i = 0; i < p_bullet_list.size(); i++)
 		{
 			p_bullet_list[i]->Update(dt, coObjects);
 		}
-		vy += SOPHIA_GRAVITY*dt;	
+		
 		if (GetTickCount() - untouchable_start > SOPHIA_UNTOUCHABLE_TIME)
 		{
 			if (untouchable == 1)
@@ -73,12 +75,12 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		CheckCollisionWithEnemy(coObjects);
 	}
 
-	if (isAutoGo)
-		AutoGo(autoGoDes);
-
 	x_render = x;
 	y_render = y;
-	currentState->Update();
+	if (!isAutoGo)
+		currentState->Update();
+	else
+		AutoGo(autoGoDes);
 	
 }
 
@@ -322,7 +324,7 @@ void CSophia::CheckCollisionWithPortal(vector<LPGAMEOBJECT>* coObjects)
 			CCamera* camera = CCamera::GetInstance();
 			camera->isSwitchScene = true;
 			isAutoGo = true;
-			autoGoDes = por->x_des;
+			autoGoDes = por->x_des + 2;
 			camera->miniScene_des = por->GetDesScene();
 			D3DXVECTOR2 camPos = camera->GetCamPos();
 			camera->SwitchScenePos = D3DXVECTOR2(camPos.x + camera->GetWidth(), camPos.y);
@@ -333,7 +335,7 @@ void CSophia::CheckCollisionWithPortal(vector<LPGAMEOBJECT>* coObjects)
 			CCamera* camera = CCamera::GetInstance();
 			camera->isSwitchScene = true;
 			isAutoGo = true;
-			autoGoDes = por->x_des;
+			autoGoDes = por->x_des - SOPHIA_BIG_BBOX_WIDTH;
 			camera->miniScene_des = por->GetDesScene();
 			D3DXVECTOR2 camPos = camera->GetCamPos();
 			camera->SwitchScenePos = D3DXVECTOR2(camPos.x - camera->GetWidth(), camPos.y);
@@ -515,19 +517,17 @@ void CSophia::Reset()
 
 void CSophia::AutoGo(float x_des)
 {
-	if (x != x_des) {
-		if (x > x_des)
-		{
-			x -= SOPHIA_WALKING_SPEED * dt;
-			if (x <= x_des)
-				isAutoGo = false;
-		}
-		else
-		{
-			x += SOPHIA_WALKING_SPEED * dt;
-			if (x >= x_des)
-				isAutoGo = false;
-		}
+	if (nx > 0)
+	{
+		SwitchState(new StateWALKING());
+		if (x >= x_des)
+			isAutoGo = false;
+	}
+	else
+	{
+		SwitchState(new StateWALKING());
+		if (x <= x_des)
+			isAutoGo = false;
 	}
 }
 
