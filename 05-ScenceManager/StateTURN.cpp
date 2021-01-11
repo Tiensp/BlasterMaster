@@ -32,12 +32,12 @@ void StateTURN::HandleKeyboard()
 	{
 		if (!_KEYCODE[DIK_RIGHT] && !_KEYCODE[DIK_LEFT])
 		{
-			if (_ACTIVE[SOPHIA])
+			if (_ACTIVE[SOPHIA] && !sophia->GetIsFrozen())
 				sophia->SwitchState(new StateIDLE());
 		}
 		else if (_KEYCODE[DIK_RIGHT])
 		{
-			if (_ACTIVE[SOPHIA])
+			if (_ACTIVE[SOPHIA] && !sophia->GetIsFrozen())
 			{
 				if (sophia->nx < 0)
 				{
@@ -53,7 +53,7 @@ void StateTURN::HandleKeyboard()
 		}
 		else if (_KEYCODE[DIK_LEFT])
 		{
-			if (_ACTIVE[SOPHIA])
+			if (_ACTIVE[SOPHIA] && !sophia->GetIsFrozen())
 			{
 				if (sophia->nx > 0)
 				{

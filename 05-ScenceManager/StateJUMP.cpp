@@ -8,10 +8,10 @@
 
 StateJUMP::StateJUMP()
 {
-	if (_ACTIVE[SOPHIA])
-	{
-		CSophia* sophia = CSophia::GetInstance();
+	CSophia* sophia = CSophia::GetInstance();
 
+	if (_ACTIVE[SOPHIA] && !sophia->GetIsFrozen())
+	{
 		if (!sophia->GetIsJumping())	// Nếu chưa nhảy thì cho nhảy
 		{
 			sophia->SetIsJumping(true);
@@ -47,7 +47,7 @@ void StateJUMP::HandleKeyboard()
 
 	if (_KEYCODE[DIK_RIGHT])
 	{
-		if (_ACTIVE[SOPHIA])
+		if (_ACTIVE[SOPHIA] && !sophia->GetIsFrozen())
 		{
 			if (sophia->nx < 0)
 			{
@@ -63,7 +63,7 @@ void StateJUMP::HandleKeyboard()
 	}
 	else if (_KEYCODE[DIK_LEFT])
 	{
-		if (_ACTIVE[SOPHIA])
+		if (_ACTIVE[SOPHIA] && !sophia->GetIsFrozen())
 		{
 			if (sophia->nx > 0)
 			{
@@ -79,7 +79,7 @@ void StateJUMP::HandleKeyboard()
 	}
 	else if (_KEYCODE[DIK_UP])
 	{
-		if (_ACTIVE[SOPHIA])
+		if (_ACTIVE[SOPHIA] && !sophia->GetIsFrozen())
 		{
 			sophia->frameID = 0;
 			sophia->SwitchState(new StateRAISEDGun());

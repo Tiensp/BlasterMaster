@@ -313,7 +313,7 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="StateOPENCabin.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Framework\GameObject\State Machine\State OPEN Cabin</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -534,7 +534,7 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="StateOPENCabin.h">
-      <Filter>Header Files</Filter>
+      <Filter>Framework\GameObject\State Machine\State OPEN Cabin</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

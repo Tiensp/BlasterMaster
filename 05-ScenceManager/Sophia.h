@@ -72,6 +72,7 @@ protected:
 	bool isAutoGo = false;
 	bool isColliBrick;
 	bool isFrozen = false;
+	bool isOpenCabin = false;
 	float autoGoDes;
 	int numberThreeBullet = 5;
 	int numberThunderBullet = 5;
@@ -123,6 +124,9 @@ public:
 	void SetIsFrozen(bool frozen) { isFrozen = frozen; }
 	bool GetIsFrozen() { return isFrozen; }
 
+	void SetIsOpenCabin(bool open) { isOpenCabin = open; }
+	bool GetIsOpenCabin() { return isOpenCabin; }
+
 
 	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount64(); }
 
@@ -137,6 +141,7 @@ public:
 	void set_bullet_list();
 	int Get_Sophia_Normal_bullet();
 	bool AllowFire();
+	void RenderOPENCabinAni();
 	
 	vector<BulletObject*> Get_Bullet_List()  { return p_bullet_list; }
 	void CheckCollisionWithBrick(vector<LPGAMEOBJECT>* coObjects);

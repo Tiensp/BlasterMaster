@@ -7,9 +7,9 @@
 
 StateWALKING::StateWALKING()
 {
-	if (_ACTIVE[SOPHIA])
+	CSophia* sophia = CSophia::GetInstance();
+	if (_ACTIVE[SOPHIA] && !sophia->GetIsFrozen())
 	{
-		CSophia* sophia = CSophia::GetInstance();
 		if (sophia->nx > 0)
 		{
 			sophia->vx = SOPHIA_WALKING_SPEED;
@@ -72,13 +72,14 @@ void StateWALKING::Update()
 
 void StateWALKING::HandleKeyboard()
 {
+	CSophia* sophia = CSophia::GetInstance();
+
 	if (_ACTIVE[SOPHIA] || _ACTIVE[JASON])
 	{
 		if (_KEYCODE[DIK_UP] && _KEYCODE[DIK_RIGHT])
 		{
-			if (_ACTIVE[SOPHIA])
+			if (_ACTIVE[SOPHIA] && !sophia->GetIsFrozen())
 			{
-				CSophia* sophia = CSophia::GetInstance();
 				if (sophia->GetIsGunUp())
 				{
 					sophia->SwitchState(new StateWALKINGGunUP());
@@ -93,7 +94,7 @@ void StateWALKING::HandleKeyboard()
 		}
 		else if (_KEYCODE[DIK_UP] && _KEYCODE[DIK_LEFT])
 		{
-			if (_ACTIVE[SOPHIA])
+			if (_ACTIVE[SOPHIA] && !sophia->GetIsFrozen())
 			{
 				CSophia* sophia = CSophia::GetInstance();
 				if (sophia->GetIsGunUp())
@@ -110,7 +111,7 @@ void StateWALKING::HandleKeyboard()
 		}
 		else if (_KEYCODE[DIK_RIGHT])
 		{
-			if (_ACTIVE[SOPHIA])
+			if (_ACTIVE[SOPHIA] && !sophia->GetIsFrozen())
 			{
 				CSophia* sophia = CSophia::GetInstance();
 				if (sophia->nx < 0)
@@ -132,7 +133,7 @@ void StateWALKING::HandleKeyboard()
 		}
 		else if (_KEYCODE[DIK_LEFT])
 		{
-			if (_ACTIVE[SOPHIA])
+			if (_ACTIVE[SOPHIA] && !sophia->GetIsFrozen())
 			{
 				CSophia* sophia = CSophia::GetInstance();
 				if (sophia->nx > 0)
@@ -154,7 +155,7 @@ void StateWALKING::HandleKeyboard()
 		}
 		else if (_KEYCODE[DIK_UP])
 		{
-			if (_ACTIVE[SOPHIA])
+			if (_ACTIVE[SOPHIA] && !sophia->GetIsFrozen())
 			{
 				CSophia* sophia = CSophia::GetInstance();
 				if (sophia->GetIsGunUp())
@@ -171,7 +172,7 @@ void StateWALKING::HandleKeyboard()
 		}
 		else
 		{
-			if (_ACTIVE[SOPHIA])
+			if (_ACTIVE[SOPHIA] && !sophia->GetIsFrozen())
 			{
 				CSophia* sophia = CSophia::GetInstance();
 				sophia->SwitchState(new StateIDLE());

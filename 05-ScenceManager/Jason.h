@@ -51,6 +51,7 @@ protected:
 
 	bool isCrawling;
 	bool isTouchingPortal;
+	bool jumpIntoCabin = false;
 
 	int health = 8;	// Máu nhân vật
 	vector<BulletObject* > p_bullet_list;

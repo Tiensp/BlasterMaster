@@ -92,7 +92,13 @@ void CSophia::Render()
 		int alpha = 255;
 		if (untouchable) alpha = 128;
 
-		//currentAni->Render(x, y_render);
+		if (isOpenCabin)
+		{
+			RenderOPENCabinAni();
+			RenderBoundingBox(x, y_render);
+			return;
+		}
+
 		if (isRaisedGun || isLoweredGun)
 		{
 			if (currentAni->GetCurrentFrame() == currentAni->GetLastFrame() - 1)
@@ -129,39 +135,7 @@ void CSophia::Render()
 	}
 	else if (_ACTIVE[SOPHIA] && isFrozen)
 	{
-		switch (frameID)
-		{
-		case -1:
-		{
-			lastFrameTime = GetTickCount64();
-			frameID = 0;
-			RECT r = currentAni->GetFrameRect(frameID);
-			y_render = y + SOPHIA_SMALL_BBOX_HEIGHT - (r.bottom - r.top);
-
-			currentAni->RenderFrame(frameID, x, y_render);
-			break;
-		}
-		case 0:
-		{
-			DWORD t = currentAni->GetFrameTime(frameID);
-			if (GetTickCount64() - lastFrameTime > t)
-			{
-				frameID = 1;
-				lastFrameTime = GetTickCount64();
-			}
-			RECT r = currentAni->GetFrameRect(frameID);
-			y_render = y + SOPHIA_SMALL_BBOX_HEIGHT - (r.bottom - r.top);
-
-			currentAni->RenderFrame(frameID, x, y_render);
-			break;
-		}
-		case 1:
-		{
-			currentAni->RenderFrame(frameID, x, y_render);
-			RenderBoundingBox(x, y_render);
-			break;
-		}
-		}
+		RenderOPENCabinAni();
 	}
 }
 #pragma region Xử lý phím
@@ -264,10 +238,13 @@ void CSophia::OnKeyDown(int keycode)
 	}
 	case DIK_Q:
 	{
+		SetIsFrozen(true);
 		SwitchState(new StateOPENCabin());
 		CJason* jason = CJason::GetInstance();
 		_ACTIVE[JASON] = true;
-		jason->ResetAtPos(x + SOPHIA_BIG_BBOX_WIDTH / 2, y);
+		jason->nx = nx;
+		jason->ResetAtPos(x + SOPHIA_BIG_BBOX_WIDTH / 2 - JASON_BIG_BBOX_WIDTH / 2, 
+						  y - (SOPHIA_OPEN_CABIN_BBOX_HEIGHT - SOPHIA_SMALL_BBOX_HEIGHT));
 		break;
 	}
 
@@ -537,6 +514,52 @@ bool CSophia::AllowFire()
 		}
 	}
 	return true;
+}
+
+void CSophia::RenderOPENCabinAni()
+{
+	switch (frameID)
+	{
+	case -1:
+	{
+		lastFrameTime = GetTickCount64();
+		frameID = 0;
+		RECT r = currentAni->GetFrameRect(frameID);
+		y_render = y + SOPHIA_SMALL_BBOX_HEIGHT - (r.bottom - r.top);
+
+		currentAni->RenderFrame(frameID, x, y_render);
+		break;
+	}
+	case 0:
+	{
+		DWORD t = currentAni->GetFrameTime(frameID);
+		if (GetTickCount64() - lastFrameTime > t)
+		{
+			frameID = 1;
+			lastFrameTime = GetTickCount64();
+		}
+		RECT r = currentAni->GetFrameRect(frameID);
+		y_render = y + SOPHIA_SMALL_BBOX_HEIGHT - (r.bottom - r.top);
+
+		currentAni->RenderFrame(frameID, x, y_render);
+		break;
+	}
+	case 1:
+	{
+		DWORD t = currentAni->GetFrameTime(frameID);
+		if (GetTickCount64() - lastFrameTime > t)
+		{
+			frameID = 1;
+			lastFrameTime = GetTickCount64();
+			isOpenCabin = false;
+		}
+		RECT r = currentAni->GetFrameRect(frameID);
+		y_render = y + SOPHIA_SMALL_BBOX_HEIGHT - (r.bottom - r.top);
+
+		currentAni->RenderFrame(frameID, x, y_render);
+		break;
+	}
+	}
 }
 
 void CSophia::SwitchState(CState* state)

@@ -13,6 +13,7 @@
 #include "StateFALL.h"
 #include "StateJUMP.h"
 #include "StateCRAWL.h"
+#include "StateOPENCabin.h"
 #include "Brick.h"
 
 CJason* CJason::__instance = NULL;
@@ -94,6 +95,7 @@ void CJason::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				{
 					y += min_ty * dy + ny * 0.4f;
 				}
+		
 			}
 
 			//
@@ -103,7 +105,22 @@ void CJason::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 		}
 
-		currentState->Update();
+		if (jumpIntoCabin)
+		{
+			CSophia* sophia = CSophia::GetInstance();
+			if (y + JASON_BIG_BBOX_HEIGHT >= sophia->y + SOPHIA_SMALL_BBOX_HEIGHT * 0.75)
+			{
+				jumpIntoCabin = false;
+				_ACTIVE[JASON] = false;
+				sophia->SetIsFrozen(false);
+				sophia->SetIsOpenCabin(true);
+				sophia->frameID = -1;
+				sophia->SwitchState(new StateOPENCabin());
+			}
+			
+		}
+		else 
+			currentState->Update();
 
 
 		// clean up collision events
@@ -177,6 +194,19 @@ void CJason::OnKeyDown(int keycode)
 		}
 	}
 	break;
+	case DIK_Q:
+	{
+		CSophia* sophia = CSophia::GetInstance();
+		if (IsCollidingObject(sophia))
+		{
+			nx = sophia->nx;
+			jumpIntoCabin = true;
+			ResetAtPos(sophia->x + SOPHIA_BIG_BBOX_WIDTH / 2 - JASON_BIG_BBOX_WIDTH / 2,
+				sophia->y - (SOPHIA_OPEN_CABIN_BBOX_HEIGHT - SOPHIA_SMALL_BBOX_HEIGHT)
+				- JASON_BIG_BBOX_HEIGHT * 0.25);
+		}
+		break;
+	}
 	}
 }
 

@@ -39,7 +39,7 @@ void StateFALL::HandleKeyboard()
 
 	if (_KEYCODE[DIK_RIGHT])
 	{
-		if (_ACTIVE[SOPHIA])
+		if (_ACTIVE[SOPHIA] && !sophia->GetIsFrozen())
 		{
 			if (sophia->nx < 0)
 			{
@@ -54,7 +54,7 @@ void StateFALL::HandleKeyboard()
 	}
 	else if (_KEYCODE[DIK_LEFT])
 	{
-		if (_ACTIVE[SOPHIA])
+		if (_ACTIVE[SOPHIA] && !sophia->GetIsFrozen())
 		{
 			if (sophia->nx > 0)
 			{
@@ -69,7 +69,7 @@ void StateFALL::HandleKeyboard()
 	}
 	else if (_KEYCODE[DIK_UP])
 	{
-		if (_ACTIVE[SOPHIA])
+		if (_ACTIVE[SOPHIA] && !sophia->GetIsFrozen())
 		{
 			sophia->frameID = 0;
 			sophia->SwitchState(new StateRAISEDGun());
@@ -80,7 +80,11 @@ void StateFALL::HandleKeyboard()
 	{
 	}
 	else
-		sophia->SwitchState(new StateFALL());
+	{
+		if (_ACTIVE[SOPHIA] && !sophia->GetIsFrozen())
+			sophia->SwitchState(new StateFALL());
+	}
+		
 }
 
 StateFALL::~StateFALL()
