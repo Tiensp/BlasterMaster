@@ -5,6 +5,7 @@
 #include "Utils.h"
 
 #include "PlayScence.h"
+#include "Intro.h"
 
 CGame * CGame::__instance = NULL;
 
@@ -77,6 +78,14 @@ void CGame::Draw(D3DXVECTOR2 pos, LPDIRECT3DTEXTURE9 texture, RECT rect, int alp
 	D3DXVECTOR2 posTrans = CCamera::GetInstance()->World2Cam(pos);
 	D3DXVECTOR3 pInt((int)(posTrans.x), (int)(posTrans.y), 0); // Giúp không bị viền
 	spriteHandler->Draw(texture, &rect, NULL, &pInt, D3DCOLOR_ARGB(alpha, 255, 255, 255));
+}
+
+void CGame::Draw(D3DXVECTOR2 pos, LPDIRECT3DTEXTURE9 texture, RECT rect, D3DCOLOR color)
+{
+	//Transform tọa độ World về tọa độ Camera trước khi vẽ
+	D3DXVECTOR2 posTrans = CCamera::GetInstance()->World2Cam(pos);
+	D3DXVECTOR3 pInt((int)(posTrans.x), (int)(posTrans.y), 0); // Giúp không bị viền
+	spriteHandler->Draw(texture, &rect, NULL, &pInt, color);
 }
 
 int CGame::IsKeyDown(int KeyCode)
@@ -342,8 +351,11 @@ void CGame::_ParseSection_SCENES(string line)
 	if (tokens.size() < 2) return;
 	int id = atoi(tokens[0].c_str());
 	LPCWSTR path = ToLPCWSTR(tokens[1]);
-
-	LPSCENE scene = new CPlayScene(id, path);
+	LPSCENE scene;
+	if (id == 0)
+		scene = new CIntro(id, path);
+	else
+		scene = new CPlayScene(id, path);
 	scenes[id] = scene;
 }
 

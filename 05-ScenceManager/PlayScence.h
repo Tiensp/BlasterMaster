@@ -47,6 +47,7 @@ protected:
 	HUD* hud;
 	CGrid *grid;
 
+
 	vector<LPGAMEOBJECT> AllObjs;
 	vector<LPGAMEOBJECT> objects;	//một list obj lưu trữ các GameObj có trong Play Scene
 	vector<LPGAMEOBJECT> listEnemies;

@@ -315,6 +315,9 @@
     <ClCompile Include="StateOPENCabin.cpp">
       <Filter>Framework\GameObject\State Machine\State OPEN Cabin</Filter>
     </ClCompile>
+    <ClCompile Include="Intro.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Brick.h">
@@ -535,6 +538,9 @@
     </ClInclude>
     <ClInclude Include="StateOPENCabin.h">
       <Filter>Framework\GameObject\State Machine\State OPEN Cabin</Filter>
+    </ClInclude>
+    <ClInclude Include="Intro.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

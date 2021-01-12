@@ -26,6 +26,14 @@ using namespace std;
 #define SCREEN_WIDTH 271
 #define SCREEN_HEIGHT 278
 
+/////// SCENE  ////////
+#define SCENE_TYPE_TITLE_SCENE 0
+#define SCENE_TYPE_OPENING_CUTSCENE 1
+#define SCENE_TYPE_ROLL_OUT_SCENE 2
+
+#define ID_KHUNG_VIEN	16000
+#define ID_BACKGROUND	16001
+
 /////// CAMERA ////////
 #define CAMERA_WIDTH 256
 #define CAMERA_HEIGHT 240
@@ -39,6 +47,7 @@ using namespace std;
 /////// PORTAL ///////
 #define PORTAL_WIDTH	32
 #define PORTAL_HEIGHT	32
+
 
 /*
 	Lí do sử dụng Extern có thể tìm hiểu qua mã lỗi LNK2005
@@ -162,6 +171,14 @@ extern enum ITEM_OBJ
 	THREEBULLET = 3,
 	POWER = 4
 
+};
+
+extern enum SCENE_TYPE
+{
+	SCENE_TYPE_INTRO = 0,
+	SCENE_TYPE_OVERWORLD = 1,
+	SCENE_TYPE_OVERHEAD = 2,
+	SCENE_TYPE_ENDSCENE = 3
 };
 
 

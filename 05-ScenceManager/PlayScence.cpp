@@ -515,7 +515,7 @@ void CPlayScene::Load()
 		bigJason->Reset();
 	//Sau khi active và khởi tạo xong xong đối tượng player thì khởi tạo thanh HUD 
 	hud = new HUD();
-	
+
 }
 
 void CPlayScene::Update(DWORD dt)
@@ -607,6 +607,7 @@ void CPlayScene::Render()
 	/*for (int i = 0; i < bulletFloater.size(); i++)
 		bulletFloater[i]->Render();*/
 	hud->Render();
+
 }
 
 /*
