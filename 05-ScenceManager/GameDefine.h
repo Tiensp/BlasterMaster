@@ -74,6 +74,8 @@ extern enum ObjectTYPE
 	/* HP */
 	Health = 50,
 	HealthBar = 51,
+	/* SELECT BULLET SCREEN */
+	SELECT_BULLET = 54,
 
 	/*ENEMIES*/
 	GOLEM = 4,
@@ -160,7 +162,7 @@ extern enum ANISET_OBJ
 {
 	/* HP */
 	ANISET_HP = 0,
-	ANISET_HP_BAR = 0
+	ANISET_HP_BAR = 0,
 };
 
 extern enum ITEM_OBJ

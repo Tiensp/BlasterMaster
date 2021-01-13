@@ -47,7 +47,7 @@ protected:
 	HUD* hud;
 	CGrid *grid;
 
-
+	
 	vector<LPGAMEOBJECT> AllObjs;
 	vector<LPGAMEOBJECT> objects;	//một list obj lưu trữ các GameObj có trong Play Scene
 	vector<LPGAMEOBJECT> listEnemies;
@@ -87,6 +87,8 @@ public:
 	
 	//////// PUBLIC VARIABLE //////////
 	int currentMiniScene;
+	bool isSelectBulletScr = false;
+	int currentSELECT = 0;
 };
 
 class CPlayScenceKeyHandler : public CScenceKeyHandler

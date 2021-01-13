@@ -141,6 +141,7 @@
     <ClCompile Include="Floaters.cpp" />
     <ClCompile Include="FollowBullet.cpp" />
     <ClCompile Include="FollowBullets.cpp" />
+    <ClCompile Include="Font.cpp" />
     <ClCompile Include="GameDefine.cpp" />
     <ClCompile Include="Domes.cpp" />
     <ClCompile Include="Golem.cpp" />
@@ -211,6 +212,7 @@
     <ClInclude Include="Floaters.h" />
     <ClInclude Include="FollowBullet.h" />
     <ClInclude Include="FollowBullets.h" />
+    <ClInclude Include="Font.h" />
     <ClInclude Include="GameDefine.h" />
     <ClInclude Include="Golem.h" />
     <ClInclude Include="Grid.h" />

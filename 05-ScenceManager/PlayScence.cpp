@@ -522,92 +522,110 @@ void CPlayScene::Update(DWORD dt)
 {
 	// We know that Sophia is the first object in the list hence we won't add him into the colliable object list
 	// TO-DO: This is a "dirty" way, need a more organized way 
+	if (!isSelectBulletScr)
+	{
+		vector<LPGAMEOBJECT> coObjects = grid->GetActiveObj();
+		ClassifyOBJECT(coObjects);
 
-	vector<LPGAMEOBJECT> coObjects = grid->GetActiveObj();
-	ClassifyOBJECT(coObjects);
-	
-	if (_ACTIVE[SOPHIA] && !sophia->GetIsFrozen())
-	{
-		sophia->Update(dt, &coObjects);
-	}
-	else if (_ACTIVE[JASON])
-	{
-		jason->Update(dt, &coObjects);
-	}
-	else if (_ACTIVE[BIG_JASON])
-	{
-		bigJason->Update(dt, &coObjects);
-	}
-
-	for (int i = 0; i < coObjects.size(); i++)
-	{
-		if (!dynamic_cast<CBrick*>(coObjects.at(i)) && !dynamic_cast<CPortal*>(coObjects.at(i)))
+		if (_ACTIVE[SOPHIA] && !sophia->GetIsFrozen())
 		{
-			coObjects.at(i)->Update(dt, &coObjects);
+			sophia->Update(dt, &coObjects);
 		}
+		else if (_ACTIVE[JASON])
+		{
+			jason->Update(dt, &coObjects);
+		}
+		else if (_ACTIVE[BIG_JASON])
+		{
+			bigJason->Update(dt, &coObjects);
+		}
+
+		for (int i = 0; i < coObjects.size(); i++)
+		{
+			if (!dynamic_cast<CBrick*>(coObjects.at(i)) && !dynamic_cast<CPortal*>(coObjects.at(i)))
+			{
+				coObjects.at(i)->Update(dt, &coObjects);
+			}
+		}
+
+		//DebugOut(L"size %d\n", listBullet.size());
+
+		//listBullet = sophia->Get_Bullet_List();
+
+
+		//for (int i = 0; i < listBullet.size(); i++)
+		//{
+		//	listBullet[i]->Update(dt, &coObjects);
+		//	
+		//}
+		/*for (int i = 0; i < bulletFloater.size(); i++)
+		{
+			listBullet[i]->Update(dt, &coObjects);
+
+		}*/
+
+
+
+		// skip the rest if scene was already unloaded (Sophia::Update might trigger PlayScene::Unload)
+		//if (sophia == NULL && jason == NULL && bigJason == NULL) return;
+
+		// Update camera to follow player
+		camera->Update();
+		//Update HUD
+		hud->Update();
+		//Grid Update
+		grid->Update(coObjects);
 	}
-
-	//DebugOut(L"size %d\n", listBullet.size());
-
-	//listBullet = sophia->Get_Bullet_List();
-
-
-	//for (int i = 0; i < listBullet.size(); i++)
-	//{
-	//	listBullet[i]->Update(dt, &coObjects);
-	//	
-	//}
-	/*for (int i = 0; i < bulletFloater.size(); i++)
+	else
 	{
-		listBullet[i]->Update(dt, &coObjects);
-				
-	}*/
-
-
-
-	// skip the rest if scene was already unloaded (Sophia::Update might trigger PlayScene::Unload)
-	//if (sophia == NULL && jason == NULL && bigJason == NULL) return;
-
-	// Update camera to follow player
-	camera->Update();
-	//Update HUD
-	hud->Update();
-	//Grid Update
-	grid->Update(coObjects);
+		/// Update màn hình chọn đạn
+		
+	}
 
 }
 
 void CPlayScene::Render()
 {
-	map->DrawMap();
-	for (int i = 0; i < objects.size(); i++)
-		objects[i]->Render();
-	for (int i = 0; i < listEnemies.size(); i++)
-		listEnemies[i]->Render();
-	// Thứ tự Render của Player chỉ sau Portal và Enemy
-	if (_ACTIVE[SOPHIA])
+	if (!isSelectBulletScr)
 	{
-		sophia->Render();
+		map->DrawMap();
+		for (int i = 0; i < objects.size(); i++)
+			objects[i]->Render();
+		for (int i = 0; i < listEnemies.size(); i++)
+			listEnemies[i]->Render();
+		// Thứ tự Render của Player chỉ sau Portal và Enemy
+		if (_ACTIVE[SOPHIA])
+		{
+			sophia->Render();
+		}
+
+		if (_ACTIVE[JASON])
+		{
+			jason->Render();
+		}
+
+		if (_ACTIVE[BIG_JASON])
+		{
+			bigJason->Render();
+		}
+
+		for (int i = 0; i < listPortal.size(); i++)
+			listPortal[i]->Render();
+		/*for (int i = 0; i < listBullet.size(); i++)
+			listBullet[i]->Render();*/
+			/*for (int i = 0; i < bulletFloater.size(); i++)
+				bulletFloater[i]->Render();*/
+		hud->Render();
+
+	}
+	else
+	{
+		/// Render màn hình chọn đạn
+		D3DXVECTOR2 camPos = camera->GetCamPos();
+		LPANIMATION_SET aniSet = CAnimationSets::GetInstance()->Get(SELECT_BULLET);
+		aniSet->at(currentSELECT)->Render(camPos.x, camPos.y);
 	}
 	
-	if (_ACTIVE[JASON])
-	{
-		jason->Render();
-	}
-	
-	if (_ACTIVE[BIG_JASON])
-	{
-		bigJason->Render();
-	}
-
-	for (int i = 0; i < listPortal.size(); i++)
-		listPortal[i]->Render();
-	/*for (int i = 0; i < listBullet.size(); i++)
-		listBullet[i]->Render();*/
-	/*for (int i = 0; i < bulletFloater.size(); i++)
-		bulletFloater[i]->Render();*/
-	hud->Render();
-
 }
 
 /*
@@ -658,13 +676,16 @@ void CPlayScene::ClassifyOBJECT(vector<LPGAMEOBJECT> obj)
 
 void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 {
-	CSophia* sophia = ((CPlayScene*)scence)->GetSophia();
-	CJason* jason = ((CPlayScene*)scence)->GetJason();
-	CBigJason* bigJason = ((CPlayScene*)scence)->GetBigJason();
-	DebugOut(L"[INFO] KeyDown: %d\n", KeyCode);
-	switch (KeyCode)
+	/// KIỂM TRA XEM CÓ PHẢI ĐANG LÀ MÀN HÌNH CHỌN ĐẠN KHÔNG ?
+	if (!((CPlayScene*)scence)->isSelectBulletScr)
 	{
-	case DIK_I:
+		CSophia* sophia = ((CPlayScene*)scence)->GetSophia();
+		CJason* jason = ((CPlayScene*)scence)->GetJason();
+		CBigJason* bigJason = ((CPlayScene*)scence)->GetBigJason();
+		DebugOut(L"[INFO] KeyDown: %d\n", KeyCode);
+		switch (KeyCode)
+		{
+		case DIK_I:
 		{
 			_ACTIVE[SOPHIA] = true;
 			_ACTIVE[JASON] = false;
@@ -672,7 +693,7 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 			sophia->Reset();
 		}
 		break;
-	case DIK_O:
+		case DIK_O:
 		{
 			_ACTIVE[SOPHIA] = false;
 			_ACTIVE[JASON] = true;
@@ -680,7 +701,7 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 			jason->Reset();
 		}
 		break;
-	case DIK_P:
+		case DIK_P:
 		{
 			_ACTIVE[SOPHIA] = false;
 			_ACTIVE[JASON] = false;
@@ -688,58 +709,95 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 			bigJason->Reset();
 		}
 		break;
-	case DIK_M:
-	{
-		CCamera* camera = CCamera::GetInstance();
-		camera->isSwitchScene = true;
-		D3DXVECTOR2 camPos = camera->GetCamPos();
-		camera->SwitchScenePos = D3DXVECTOR2(camPos.x - camera->GetWidth(), camPos.y);
-		break;
-	}
-	case DIK_N:
-	{
-		CCamera* camera = CCamera::GetInstance();
-		camera->isSwitchScene = true;
-		D3DXVECTOR2 camPos = camera->GetCamPos();
-		camera->SwitchScenePos = D3DXVECTOR2(camPos.x + camera->GetWidth(), camPos.y);
-		break;
-	}
-	case DIK_B:
-	{
-		if (_ACTIVE[SOPHIA])
+		case DIK_M:
 		{
-			CPlayScene* scene = ((CPlayScene*)scence);
-			MiniScene* miniScene = scene->GetlistScenes().at(0);
 			CCamera* camera = CCamera::GetInstance();
-			camera->SetCamBound(miniScene->x, miniScene->y, miniScene->width, miniScene->height);
-			CSophia* sophia = CSophia::GetInstance();
-			sophia->SetStartPos(1100, 800);
-			sophia->Reset();
-
+			camera->isSwitchScene = true;
+			D3DXVECTOR2 camPos = camera->GetCamPos();
+			camera->SwitchScenePos = D3DXVECTOR2(camPos.x - camera->GetWidth(), camPos.y);
 			break;
 		}
+		case DIK_N:
+		{
+			CCamera* camera = CCamera::GetInstance();
+			camera->isSwitchScene = true;
+			D3DXVECTOR2 camPos = camera->GetCamPos();
+			camera->SwitchScenePos = D3DXVECTOR2(camPos.x + camera->GetWidth(), camPos.y);
+			break;
+		}
+		case DIK_B:
+		{
+			if (_ACTIVE[SOPHIA])
+			{
+				CPlayScene* scene = ((CPlayScene*)scence);
+				MiniScene* miniScene = scene->GetlistScenes().at(0);
+				CCamera* camera = CCamera::GetInstance();
+				camera->SetCamBound(miniScene->x, miniScene->y, miniScene->width, miniScene->height);
+				CSophia* sophia = CSophia::GetInstance();
+				sophia->SetStartPos(1100, 800);
+				sophia->Reset();
+
+				break;
+			}
+		}
+		/// Bấm W: Thì mở màn hình tạm dừng - chọn đạn
+		case DIK_W:
+		{
+			((CPlayScene*)scence)->isSelectBulletScr = true;
+			break;
+		}
+		}
+		////////// KEY DOWN ///////////
+		if (_ACTIVE[SOPHIA] && !sophia->GetIsFrozen())
+		{
+			CSophia* sophia = ((CPlayScene*)scence)->GetSophia();
+			_KEYCODE[KeyCode] = true;
+			if (!sophia->GetIsAutoGo())
+				sophia->OnKeyDown(KeyCode);
+		}
+		else if (_ACTIVE[JASON])
+		{
+			CJason* jason = ((CPlayScene*)scence)->GetJason();
+			_KEYCODE[KeyCode] = true;
+			jason->OnKeyDown(KeyCode);
+		}
+		else if (_ACTIVE[BIG_JASON])
+		{
+			CBigJason* bigJason = ((CPlayScene*)scence)->GetBigJason();
+			_KEYCODE[KeyCode] = true;
+			bigJason->OnKeyDown(KeyCode);
+		}
 	}
-	}
-	////////// KEY DOWN ///////////
-	if (_ACTIVE[SOPHIA] && !sophia->GetIsFrozen())
+	else
 	{
-		CSophia* sophia = ((CPlayScene*)scence)->GetSophia();
-		_KEYCODE[KeyCode] = true;
-		if (!sophia->GetIsAutoGo())
-			sophia->OnKeyDown(KeyCode);
+		switch (KeyCode)
+		{
+		case DIK_RIGHT:
+		{
+			CPlayScene* plScene = ((CPlayScene*)scence);
+			if (plScene->currentSELECT != 2)
+			{
+				plScene->currentSELECT++;
+			}
+			break;
+		}
+		case DIK_LEFT:
+		{
+			CPlayScene* plScene = ((CPlayScene*)scence);
+			if (plScene->currentSELECT != 0)
+			{
+				plScene->currentSELECT--;
+			}
+			break;
+		}
+		case DIK_W:
+		{
+			((CPlayScene*)scence)->isSelectBulletScr = false;
+			break;
+		}
+		}
 	}
-	else if (_ACTIVE[JASON])
-	{
-		CJason* jason = ((CPlayScene*)scence)->GetJason();
-		_KEYCODE[KeyCode] = true;
-		jason->OnKeyDown(KeyCode);
-	}
-	else if (_ACTIVE[BIG_JASON])
-	{
-		CBigJason* bigJason = ((CPlayScene*)scence)->GetBigJason();
-		_KEYCODE[KeyCode] = true;
-		bigJason->OnKeyDown(KeyCode);
-	}
+	
 }
 
 void CPlayScenceKeyHandler::OnKeyUp(int KeyCode)
