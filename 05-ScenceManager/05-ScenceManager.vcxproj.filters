@@ -555,5 +555,8 @@
     <Text Include="mario-sample.txt">
       <Filter>Resource Files</Filter>
     </Text>
+    <Text Include="scene-test.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>

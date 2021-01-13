@@ -269,6 +269,7 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="mario-sample.txt" />
+    <Text Include="scene-test.txt" />
     <Text Include="scene2.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
