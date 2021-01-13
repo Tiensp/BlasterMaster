@@ -549,13 +549,16 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="scene2.txt">
+    <Text Include="text\Overhead.txt">
       <Filter>Resource Files</Filter>
     </Text>
-    <Text Include="mario-sample.txt">
+    <Text Include="text\Intro.txt">
       <Filter>Resource Files</Filter>
     </Text>
-    <Text Include="scene-test.txt">
+    <Text Include="text\Overworld.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="text\Setting.txt">
       <Filter>Resource Files</Filter>
     </Text>
   </ItemGroup>

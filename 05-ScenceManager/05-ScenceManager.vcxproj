@@ -268,9 +268,10 @@
     <ResourceCompile Include="BlasterMaster.rc" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="mario-sample.txt" />
-    <Text Include="scene-test.txt" />
-    <Text Include="scene2.txt" />
+    <Text Include="text\Intro.txt" />
+    <Text Include="text\Overhead.txt" />
+    <Text Include="text\Overworld.txt" />
+    <Text Include="text\Setting.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
