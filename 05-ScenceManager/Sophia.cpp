@@ -92,6 +92,7 @@ void CSophia::Render()
 		int alpha = 255;
 		if (untouchable) alpha = 128;
 
+		/// CHECK OPEN CABIN: Nếu không open cabin thì không chạy code bên dưới mà return
 		if (isOpenCabin)
 		{
 			RenderOPENCabinAni();
@@ -101,26 +102,52 @@ void CSophia::Render()
 
 		if (isRaisedGun || isLoweredGun)
 		{
+			// Nếu đang giương súng hoặc hạ súng thì kiểm tra xem 
+			// currFR = bao nhiêu? để đặt lại biến về false
 			if (currentAni->GetCurrentFrame() == currentAni->GetLastFrame() - 1)
 			{
 				isRaisedGun = false;
 				isLoweredGun = false;
 			}
 		}
-		if (isTurning) 
+		if (isTurning)
 		{
+			// Tương tự với giương và hạ súng 
 			if (currentAni->IsFinalFrame())
 			{
 				isTurning = false;
 			}
 		}
-
+		/// <summary>
+		/// CODE RENDER ANIMATION (RENDER COLOR hoặc NORMAL RENDER) 
+		/// </summary>
 		if (renderFrame)
-			currentAni->RenderFrame(frameID, x_render, y_render);
+		{
+			if (isInjured)
+			{
+				currentAni->RenderFrame(frameID, x_render, y_render);
+			}
+			else
+			{
+				currentAni->RenderFrame(frameID, x_render, y_render, GetRENDERColor());
+			}
+		}
 		else
-			currentAni->Render(x_render, y_render);
+		{
+			if (isInjured)
+			{
+				currentAni->Render(x_render, y_render);
+			}
+			else
+			{
+				currentAni->Render(x_render, y_render, GetRENDERColor());
+			}
+		}
 		RenderBoundingBox(x_render, y_render);
 
+		/// <summary>
+		/// CODE RENDER ĐẠN
+		/// </summary>
 		for (int i = 0; i < p_bullet_list.size(); i++)
 		{
 			BulletObject* p_bullet = p_bullet_list.at(i);
@@ -236,6 +263,7 @@ void CSophia::OnKeyDown(int keycode)
 	
 		break;
 	}
+	/// Nhấn Q: Mở nắp xe cho Jason nhảy ra
 	case DIK_Q:
 	{
 		SetIsFrozen(true);
@@ -268,7 +296,9 @@ void CSophia::SetStartPos(float startx, float starty)
 
 #pragma endregion
 
-
+/// <summary>
+/// KIỂM TRA VA CHẠM VỚI BRICK
+/// </summary>
 void CSophia::CheckCollisionWithBrick(vector<LPGAMEOBJECT>* coObjects)
 {
 
@@ -312,6 +342,9 @@ void CSophia::CheckCollisionWithBrick(vector<LPGAMEOBJECT>* coObjects)
 	}
 }
 
+/// <summary>
+/// KIỂM TRA VA CHẠM VỚI PORTAL
+/// </summary>
 void CSophia::CheckCollisionWithPortal(vector<LPGAMEOBJECT>* coObjects)
 {
 	vector<LPCOLLISIONEVENT> coEvents;
@@ -369,6 +402,9 @@ void CSophia::CheckCollisionWithPortal(vector<LPGAMEOBJECT>* coObjects)
 
 }
 
+/// <summary>
+/// KIỂM TRA VA CHẠM VỚI VẬT PHẨM
+/// </summary>
 void CSophia::CheckCollisionWithItem(vector<LPGAMEOBJECT>* coObjects)
 {
 	vector<LPCOLLISIONEVENT> coEvents;
@@ -435,6 +471,9 @@ void CSophia::CheckCollisionWithItem(vector<LPGAMEOBJECT>* coObjects)
 	}
 }
 
+/// <summary>
+/// KIỂM TRA VA CHẠM VỚI QUÁI
+/// </summary>
 void CSophia::CheckCollisionWithEnemy(vector<LPGAMEOBJECT>* coObjects)
 {
 	vector<LPCOLLISIONEVENT> coEvents;
@@ -501,8 +540,9 @@ void CSophia::GetBoundingBox(float &left, float &top, float &right, float &botto
 	}
 }
 
-
-
+/// <summary>
+/// HÀM TRẢ CHECK & CHO PHÉP NHÂN VẬT BẮN ĐẠN
+/// </summary>
 bool CSophia::AllowFire()
 {
 	for (int i = 0; i < p_bullet_list.size(); i++)
@@ -516,6 +556,9 @@ bool CSophia::AllowFire()
 	return true;
 }
 
+/// <summary>
+/// HÀM RENDER OPEN CABIN STATE
+/// </summary>
 void CSophia::RenderOPENCabinAni()
 {
 	switch (frameID)
@@ -562,6 +605,61 @@ void CSophia::RenderOPENCabinAni()
 	}
 }
 
+/// <summary>
+/// HÀM TRẢ VỀ MÃ MÀU CẦN RENDER
+/// </summary>
+D3DCOLOR CSophia::GetRENDERColor()
+{
+	D3DCOLOR color;
+	int alpha = 255;
+	D3DCOLOR Orange = D3DCOLOR_ARGB(alpha, 250, 120, 90);
+	D3DCOLOR Green = D3DCOLOR_ARGB(alpha, 0, 255, 153);
+	D3DCOLOR Grey = D3DCOLOR_ARGB(alpha, 102, 153, 153);
+	switch (colorID)
+	{
+	case 0:
+	{
+		color = Grey;
+		colorID = 1;
+		break;
+	}
+	case 1:
+	{
+		color = Grey;
+		colorID = 2;
+		break;
+	}
+	case 2:
+	{
+		color = Green;
+		colorID = 3;
+		break;
+	}
+	case 3:
+	{
+		color = Green;
+		colorID = 4;
+		break;
+	}
+	case 4:
+	{
+		color = Orange;
+		colorID = 5;
+		break;
+	}
+	case 5:
+	{
+		color = Orange;
+		colorID = 0;
+		break;
+	}
+	}
+	return color;
+}
+
+/// <summary>
+/// HÀM CHUYỂN ĐỔI TRẠNG THÁI NHÂN VẬT
+/// </summary>
 void CSophia::SwitchState(CState* state)
 {
 	/*
@@ -577,7 +675,6 @@ void CSophia::SwitchState(CState* state)
 */
 void CSophia::Reset()
 {
-	SetLevel(SOPHIA_LEVEL_BIG);
 	SetPosition(start_x, start_y);
 	SwitchState(new StateIDLE());
 	SetSpeed(0, 0);
@@ -585,12 +682,14 @@ void CSophia::Reset()
 
 void CSophia::ResetAtPos(float _x, float _y)
 {
-	SetLevel(SOPHIA_LEVEL_BIG);
 	SetPosition(_x, _y);
 	SwitchState(new StateIDLE());
 	SetSpeed(0, 0);
 }
 
+/// <summary>
+/// HÀM AUTO DI CHUYỂN
+/// </summary>
 void CSophia::AutoGo(float x_des)
 {
 	if (nx > 0)

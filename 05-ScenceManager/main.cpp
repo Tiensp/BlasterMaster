@@ -26,8 +26,8 @@
 #include "GameDefine.h"
 #include "PlayScence.h"
 
-#define WINDOW_CLASS_NAME L"SampleWindow"
-#define MAIN_WINDOW_TITLE L"SAMPLE 05 - SCENCE MANAGER"
+#define WINDOW_CLASS_NAME L"GAME"
+#define MAIN_WINDOW_TITLE L"BLASTER MASTER"
 
 #define BACKGROUND_COLOR D3DCOLOR_XRGB(255, 255, 200)
 
@@ -178,7 +178,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	game->Init(hWnd);
 	game->InitKeyboard();
 
-	game->Load(L"mario-sample.txt");
+	game->Load(L"text/Setting.txt");
 
 	SetWindowPos(hWnd, 0, 0, 0, SCREEN_WIDTH*2, SCREEN_HEIGHT*2, SWP_NOMOVE | SWP_NOOWNERZORDER | SWP_NOZORDER);
 

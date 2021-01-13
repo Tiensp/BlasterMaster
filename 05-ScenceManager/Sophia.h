@@ -67,7 +67,7 @@ protected:
 	bool isJumping;
 	bool isFalling;
 	bool isAllowFire = true;
-	bool isInjured;
+	bool isInjured = false;
 
 	bool isAutoGo = false;
 	bool isColliBrick;
@@ -115,6 +115,9 @@ public:
 	void SetIsFalling(bool fall) { isFalling = fall; }
 	bool GetIsFalling() { return isFalling; }
 
+	void SetIsInjured(bool _injured) { isInjured = _injured; }
+	bool GetIsInjured() { return isInjured; }
+
 	void SetHealth(int hp) { health = hp; }
 	int GetHealth() { return health; }
 
@@ -142,6 +145,7 @@ public:
 	int Get_Sophia_Normal_bullet();
 	bool AllowFire();
 	void RenderOPENCabinAni();
+	D3DCOLOR GetRENDERColor();
 	
 	vector<BulletObject*> Get_Bullet_List()  { return p_bullet_list; }
 	void CheckCollisionWithBrick(vector<LPGAMEOBJECT>* coObjects);
@@ -158,6 +162,7 @@ public:
 	bool renderFrame;	// Biến renderFrame để xác định khi nào cần render 1 frame
 
 	int frameID;
+	int colorID = 0;
 
 	float x_render;		// Vì sophia có cần render vị trí cho từng hình nên mình dùng 
 	float y_render;		// x/y_render làm pos render thay vì đổi trực tiếp tọa độ x,y
