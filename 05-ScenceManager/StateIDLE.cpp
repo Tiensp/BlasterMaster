@@ -6,13 +6,15 @@
 
 StateIDLE::StateIDLE()
 {
-	CSophia* sophia = CSophia::GetInstance();
+	
+	CSophia* sophia = INSTANCE_SOPHIA;
+	sophia->renderFrame = true;
 	if (_ACTIVE[SOPHIA] && !sophia->GetIsFrozen())
 	{
 		sophia->SetIsJumping(false);
 		sophia->SetIsFalling(false);
 		sophia->vx = 0;
-
+		
 		if (sophia->nx > 0)
 		{
 			StateName = SOPHIA_IDLE_RIGHT;
@@ -21,10 +23,11 @@ StateIDLE::StateIDLE()
 		{
 			StateName = SOPHIA_IDLE_LEFT;
 		}
+		
 	}
 	else if (_ACTIVE[JASON])
 	{
-		CJason* jason = CJason::GetInstance();
+		CJason* jason = INSTANCE_JASON;
 
 		jason->vx = 0;
 
@@ -39,7 +42,7 @@ StateIDLE::StateIDLE()
 	}
 	else if (_ACTIVE[BIG_JASON])
 	{
-		CBigJason* bigJason = CBigJason::GetInstance();
+		CBigJason* bigJason = INSTANCE_BIGJASON;
 
 		bigJason->vx = 0;
 		bigJason->vy = 0;
@@ -70,33 +73,32 @@ void StateIDLE::Update()
 
 void StateIDLE::HandleKeyboard()
 {
-	CSophia* sophia = CSophia::GetInstance();
+	CSophia* sophia = INSTANCE_SOPHIA;
 
 	if (_KEYCODE[DIK_RIGHT])
 	{
 		if (_ACTIVE[SOPHIA] && !sophia->GetIsFrozen())
 		{
-			sophia->renderFrame = false;
 			if (sophia->nx < 0)
 			{
-				sophia->SwitchState(new StateTURN());
+				sophia->SwitchState(new StateTURN(), NORMAL_STATE);
 				sophia->currentAni->ResetCurrentFrame();
 			}
 			else
 			{
-				sophia->SwitchState(new StateWALKING());
+				sophia->SwitchState(new StateWALKING(), IDLE2WALK);
 				sophia->currentAni->ResetCurrentFrame();
 			}
 		}
 		else if (_ACTIVE[JASON])
 		{
-			CJason* jason = CJason::GetInstance();
+			CJason* jason = INSTANCE_JASON;
 			jason->nx = 1;
 			jason->SwitchState(new StateWALKING());
 		}
 		else if (_ACTIVE[BIG_JASON])
 		{
-			CBigJason* bigJason = CBigJason::GetInstance();
+			CBigJason* bigJason = INSTANCE_BIGJASON;
 			bigJason->nx = 1;
 			bigJason->ny = 0;
 			bigJason->SwitchState(new StateWALKING());
@@ -106,27 +108,26 @@ void StateIDLE::HandleKeyboard()
 	{
 		if (_ACTIVE[SOPHIA] && !sophia->GetIsFrozen())
 		{
-			sophia->renderFrame = false;
 			if (sophia->nx > 0)
 			{
-				sophia->SwitchState(new StateTURN());
+				sophia->SwitchState(new StateTURN(), NORMAL_STATE);
 				sophia->currentAni->ResetCurrentFrame();
 			}
 			else
 			{
-				sophia->SwitchState(new StateWALKING());
+				sophia->SwitchState(new StateWALKING(), IDLE2WALK);
 				sophia->currentAni->ResetCurrentFrame();
 			}
 		}
 		else if (_ACTIVE[JASON])
 		{
-			CJason* jason = CJason::GetInstance();
+			CJason* jason = INSTANCE_JASON;
 			jason->nx = -1;
 			jason->SwitchState(new StateWALKING());
 		}
 		else if (_ACTIVE[BIG_JASON])
 		{
-			CBigJason* bigJason = CBigJason::GetInstance();
+			CBigJason* bigJason = INSTANCE_BIGJASON;
 			bigJason->nx = -1;
 			bigJason->ny = 0;
 			bigJason->SwitchState(new StateWALKING());
@@ -136,14 +137,12 @@ void StateIDLE::HandleKeyboard()
 	{
 		if (_ACTIVE[SOPHIA] && !sophia->GetIsFrozen())
 		{
-			sophia->frameID = 0;
-			sophia->SwitchState(new StateRAISEDGun());
+			sophia->SwitchState(new StateRAISEDGun(), NORMAL_STATE);
 			sophia->currentAni->ResetCurrentFrame();
-			sophia->renderFrame = false;
 		}
 		else if (_ACTIVE[BIG_JASON])
 		{
-			CBigJason* bigJason = CBigJason::GetInstance();
+			CBigJason* bigJason = INSTANCE_BIGJASON;
 			bigJason->nx = 0;
 			bigJason->ny = 1;
 			bigJason->SwitchState(new StateWALKING());
@@ -153,7 +152,7 @@ void StateIDLE::HandleKeyboard()
 	{
 		if (_ACTIVE[BIG_JASON])
 		{
-			CBigJason* bigJason = CBigJason::GetInstance();
+			CBigJason* bigJason = INSTANCE_BIGJASON;
 			bigJason->nx = 0;
 			bigJason->ny = -1;
 			bigJason->SwitchState(new StateWALKING());
@@ -163,16 +162,16 @@ void StateIDLE::HandleKeyboard()
 	{
 		if (_ACTIVE[SOPHIA] && !sophia->GetIsFrozen()) 
 		{
-			sophia->SwitchState(new StateIDLE());
+			sophia->SwitchState(new StateIDLE(), NORMAL_STATE);
 		}
 		else if (_ACTIVE[JASON])
 		{
-			CJason* jason = CJason::GetInstance();
+			CJason* jason = INSTANCE_JASON;
 			jason->SwitchState(new StateIDLE());
 		}
 		else if (_ACTIVE[BIG_JASON])
 		{
-			CBigJason* bigJason = CBigJason::GetInstance();
+			CBigJason* bigJason = INSTANCE_BIGJASON;
 			bigJason->SwitchState(new StateIDLE());
 		}
 	}

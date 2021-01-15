@@ -8,7 +8,9 @@
 
 StateJUMP::StateJUMP()
 {
-	CSophia* sophia = CSophia::GetInstance();
+	
+	CSophia* sophia = INSTANCE_SOPHIA;
+	sophia->renderFrame = false;
 
 	if (_ACTIVE[SOPHIA] && !sophia->GetIsFrozen())
 	{
@@ -31,11 +33,11 @@ StateJUMP::StateJUMP()
 
 void StateJUMP::Update()
 {
-	CSophia* sophia = CSophia::GetInstance();
+	CSophia* sophia = INSTANCE_SOPHIA;
 	if (sophia->vy >= 0)
 	{
 		sophia->SetIsJumping(false);
-		sophia->SwitchState(new StateFALL());
+		sophia->SwitchState(new StateFALL(), NORMAL_STATE);
 	}
 	else
 		this->HandleKeyboard();
@@ -43,7 +45,7 @@ void StateJUMP::Update()
 
 void StateJUMP::HandleKeyboard()
 {
-	CSophia* sophia = CSophia::GetInstance();
+	CSophia* sophia = INSTANCE_SOPHIA;
 
 	if (_KEYCODE[DIK_RIGHT])
 	{
@@ -51,7 +53,7 @@ void StateJUMP::HandleKeyboard()
 		{
 			if (sophia->nx < 0)
 			{
-				sophia->SwitchState(new StateJUMPTurn());
+				sophia->SwitchState(new StateJUMPTurn(), NORMAL_STATE);
 				sophia->currentAni->ResetCurrentFrame();
 				sophia->vx = SOPHIA_WALKING_SPEED;
 			}
@@ -67,7 +69,7 @@ void StateJUMP::HandleKeyboard()
 		{
 			if (sophia->nx > 0)
 			{
-				sophia->SwitchState(new StateJUMPTurn());
+				sophia->SwitchState(new StateJUMPTurn(), NORMAL_STATE);
 				sophia->currentAni->ResetCurrentFrame();
 				sophia->vx = -SOPHIA_WALKING_SPEED;
 			}
@@ -81,8 +83,7 @@ void StateJUMP::HandleKeyboard()
 	{
 		if (_ACTIVE[SOPHIA] && !sophia->GetIsFrozen())
 		{
-			sophia->frameID = 0;
-			sophia->SwitchState(new StateRAISEDGun());
+			sophia->SwitchState(new StateRAISEDGun(), NORMAL_STATE);
 			sophia->currentAni->ResetCurrentFrame();
 		}
 	}

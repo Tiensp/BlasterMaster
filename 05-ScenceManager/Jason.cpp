@@ -83,8 +83,7 @@ void CJason::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			//	x += nx*abs(rdx); 
 
 			// block every object first!
-			x += min_tx * dx + nx * 0.4f;
-			/*y += min_ty*dy + ny*0.4f;*/
+			//y += min_ty*dy + ny*0.4f;
 
 			if (nx != 0) vx = 0;
 			if (ny != 0) vy = 0;
@@ -93,9 +92,13 @@ void CJason::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				LPCOLLISIONEVENT e = coEventsResult[i];
 				if (dynamic_cast<CBrick*>(e->obj)) // if e->obj is Goomba 
 				{
+					x += min_tx * dx + nx * 0.4f;
 					y += min_ty * dy + ny * 0.4f;
 				}
-		
+				else
+				{
+					x += dx;
+				}
 			}
 
 			//
@@ -107,7 +110,7 @@ void CJason::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 		if (jumpIntoCabin)
 		{
-			CSophia* sophia = CSophia::GetInstance();
+			CSophia* sophia = INSTANCE_SOPHIA;
 			if (y + JASON_BIG_BBOX_HEIGHT >= sophia->y + SOPHIA_SMALL_BBOX_HEIGHT * 0.75)
 			{
 				jumpIntoCabin = false;
@@ -115,7 +118,7 @@ void CJason::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				sophia->SetIsFrozen(false);
 				sophia->SetIsOpenCabin(true);
 				sophia->frameID = -1;
-				sophia->SwitchState(new StateOPENCabin());
+				sophia->SwitchState(new StateOPENCabin(), NORMAL_STATE);
 			}
 			
 		}
@@ -196,7 +199,7 @@ void CJason::OnKeyDown(int keycode)
 	break;
 	case DIK_Q:
 	{
-		CSophia* sophia = CSophia::GetInstance();
+		CSophia* sophia = INSTANCE_SOPHIA;
 		if (IsCollidingObject(sophia))
 		{
 			nx = sophia->nx;
@@ -301,7 +304,7 @@ void CJason::set_bullet_list()
 	}
 }
 
-CJason* CJason::GetInstance()
+CJason* INSTANCE_JASON
 {
 	if (__instance == NULL) {
 		__instance = new CJason();

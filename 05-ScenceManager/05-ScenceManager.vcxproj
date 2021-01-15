@@ -153,6 +153,7 @@
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="JasonBullet.cpp" />
     <ClCompile Include="Koopas.cpp" />
+    <ClCompile Include="Ladder.cpp" />
     <ClCompile Include="Lava.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Jason.cpp" />
@@ -223,6 +224,7 @@
     <ClInclude Include="Item.h" />
     <ClInclude Include="JasonBullet.h" />
     <ClInclude Include="Koopas.h" />
+    <ClInclude Include="Ladder.h" />
     <ClInclude Include="Lava.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="Jason.h" />

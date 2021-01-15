@@ -4,8 +4,9 @@
 
 StateTURN::StateTURN()
 {
-	CSophia* sophia = CSophia::GetInstance();
+	CSophia* sophia = INSTANCE_SOPHIA;
 	sophia->SetIsTurning(true);
+	sophia->renderFrame = false;
 	sophia->vx = 0;
 
 	if (sophia->nx < 0)
@@ -27,13 +28,13 @@ void StateTURN::Update()
 
 void StateTURN::HandleKeyboard()
 {
-	CSophia* sophia = CSophia::GetInstance();
+	CSophia* sophia = INSTANCE_SOPHIA;
 	if (!sophia->GetIsTurning())
 	{
 		if (!_KEYCODE[DIK_RIGHT] && !_KEYCODE[DIK_LEFT])
 		{
 			if (_ACTIVE[SOPHIA] && !sophia->GetIsFrozen())
-				sophia->SwitchState(new StateIDLE());
+				sophia->SwitchState(new StateIDLE(), WALK2IDLE);
 		}
 		else if (_KEYCODE[DIK_RIGHT])
 		{
@@ -41,12 +42,12 @@ void StateTURN::HandleKeyboard()
 			{
 				if (sophia->nx < 0)
 				{
-					sophia->SwitchState(new StateTURN());
+					sophia->SwitchState(new StateTURN(), NORMAL_STATE);
 					sophia->currentAni->ResetCurrentFrame();
 				}
 				else
 				{
-					sophia->SwitchState(new StateWALKING());
+					sophia->SwitchState(new StateWALKING(), IDLE2WALK);
 				}
 			}
 
@@ -57,12 +58,12 @@ void StateTURN::HandleKeyboard()
 			{
 				if (sophia->nx > 0)
 				{
-					sophia->SwitchState(new StateTURN());
+					sophia->SwitchState(new StateTURN(), NORMAL_STATE);
 					sophia->currentAni->ResetCurrentFrame();
 				}
 				else
 				{
-					sophia->SwitchState(new StateWALKING());
+					sophia->SwitchState(new StateWALKING(), IDLE2WALK);
 				}
 			}
 		}

@@ -7,7 +7,8 @@
 
 StateWALKINGGunUP::StateWALKINGGunUP()
 {
-	CSophia* sophia = CSophia::GetInstance();
+	CSophia* sophia = INSTANCE_SOPHIA;
+	sophia->renderFrame = false;
 	sophia->SetIsGunUp(true);
 	if (sophia->nx > 0)
 	{
@@ -25,7 +26,7 @@ StateWALKINGGunUP::StateWALKINGGunUP()
 
 void StateWALKINGGunUP::Update()
 {
-	CSophia* sophia = CSophia::GetInstance();
+	CSophia* sophia = INSTANCE_SOPHIA;
 	if (sophia->nx > 0)
 		sophia->x_render = sophia->x - 4;
 	else
@@ -46,29 +47,28 @@ void StateWALKINGGunUP::Update()
 
 void StateWALKINGGunUP::HandleKeyboard()
 {
-	CSophia* sophia = CSophia::GetInstance();
+	CSophia* sophia = INSTANCE_SOPHIA;
 	if (_KEYCODE[DIK_UP])
 	{
 		if (_KEYCODE[DIK_RIGHT])
 		{
 			sophia->nx = 1;
-			sophia->SwitchState(new StateWALKINGGunUP());
+			sophia->SwitchState(new StateWALKINGGunUP(), NORMAL_STATE);
 		}
 		else if (_KEYCODE[DIK_LEFT])
 		{
 			sophia->nx = -1;
-			sophia->SwitchState(new StateWALKINGGunUP());
+			sophia->SwitchState(new StateWALKINGGunUP(), NORMAL_STATE);
 		}
 		else
 		{
-			sophia->SwitchState(new StateIDLEGunUP());
+			sophia->SwitchState(new StateIDLEGunUP(), WALK2IDLE);
 		}
 	}
 	else
 	{
 		sophia->SetIsGunUp(false);
-		sophia->frameID = 0;
-		sophia->SwitchState(new StateLOWEREDGun());
+		sophia->SwitchState(new StateLOWEREDGun(), NORMAL_STATE);
 		sophia->currentAni->ResetCurrentFrame();
 	}
 }

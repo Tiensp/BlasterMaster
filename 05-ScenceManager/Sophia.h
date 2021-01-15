@@ -134,7 +134,7 @@ public:
 	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount64(); }
 
 	/* State */
-	void SwitchState(CState* state);
+	void SwitchState(CState* state, int changeType);
 
 
 	void Reset();
@@ -163,6 +163,8 @@ public:
 
 	int frameID;
 	int colorID = 0;
+	int wheelID = 0;
+	int changeStateType = NORMAL_STATE;
 
 	float x_render;		// Vì sophia có cần render vị trí cho từng hình nên mình dùng 
 	float y_render;		// x/y_render làm pos render thay vì đổi trực tiếp tọa độ x,y

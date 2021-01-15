@@ -34,6 +34,7 @@
 #include "RockOVH.h"
 #include "Item.h"
 #include "Grid.h"
+#include "Ladder.h"
 
 class CPlayScene: public CScene
 {

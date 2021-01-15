@@ -268,7 +268,7 @@ void CBigJason::Reset()
 	SetSpeed(0, 0);
 }
 
-CBigJason* CBigJason::GetInstance()
+CBigJason* INSTANCE_BIGJASON
 {
 	if (__instance == NULL) {
 		__instance = new CBigJason();

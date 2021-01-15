@@ -7,7 +7,10 @@
 
 StateIDLEGunUP::StateIDLEGunUP()
 {
-	CSophia* sophia = CSophia::GetInstance();
+	
+
+	CSophia* sophia = INSTANCE_SOPHIA;
+	sophia->renderFrame = true;
 	sophia->SetIsJumping(false);
 	sophia->SetIsFalling(false);
 	sophia->SetIsGunUp(true);
@@ -35,7 +38,7 @@ StateIDLEGunUP::StateIDLEGunUP()
 
 void StateIDLEGunUP::Update()
 {
-	CSophia* sophia = CSophia::GetInstance();
+	CSophia* sophia = INSTANCE_SOPHIA;
 
 #pragma region Thay đổi x/y_render
 	// Xem lại chú thích y_render ở StateRAISEDGun
@@ -61,7 +64,7 @@ void StateIDLEGunUP::Update()
 
 void StateIDLEGunUP::HandleKeyboard()
 {
-	CSophia* sophia = CSophia::GetInstance();
+	CSophia* sophia = INSTANCE_SOPHIA;
 	if (!sophia->GetIsRaisedGun())
 	{
 		if (_KEYCODE[DIK_UP])
@@ -69,24 +72,23 @@ void StateIDLEGunUP::HandleKeyboard()
 			if (_KEYCODE[DIK_RIGHT])
 			{
 				sophia->nx = 1;
-				sophia->SwitchState(new StateWALKINGGunUP());
+				sophia->SwitchState(new StateWALKINGGunUP(), IDLE2WALK);
 			}
 			else if (_KEYCODE[DIK_LEFT])
 			{
 				sophia->nx = -1;
-				sophia->SwitchState(new StateWALKINGGunUP());
+				sophia->SwitchState(new StateWALKINGGunUP(), IDLE2WALK);
 			}
 			else
 			{
-				sophia->SwitchState(new StateIDLEGunUP());
+				sophia->SwitchState(new StateIDLEGunUP(), WALK2IDLE);
 			}
 			
 		}
 		else
 		{
 			sophia->SetIsGunUp(false);
-			sophia->frameID = 0;
-			sophia->SwitchState(new StateLOWEREDGun());
+			sophia->SwitchState(new StateLOWEREDGun(), NORMAL_STATE);
 			sophia->currentAni->ResetCurrentFrame();
 		}
 			

@@ -41,18 +41,18 @@ void CGrid::RemoveObject(LPGAMEOBJECT obj)
 	float left, right, top, bottom;
 	obj->GetBoundingBox(left, top, right, bottom);
 
-	int start_col = left / CELL_SIZE - 2;
-	int start_row = top / CELL_SIZE + 2;
-	int end_col = right / CELL_SIZE - 2;
-	int end_row = bottom / CELL_SIZE + 2;
+	int start_col = left / CELL_SIZE - 1;
+	int start_row = top / CELL_SIZE - 1;
+	int end_col = right / CELL_SIZE + 1;
+	int end_row = bottom / CELL_SIZE + 1;
 	if (start_col < 0)
 		start_col = 0;
-	if (end_col >= Columns)
-		end_col = Columns - 1;
+	if (end_col > Columns)
+		end_col = Columns;
 	if (start_row < 0)
 		start_row = 0;
-	if (end_row >= Rows)
-		end_row = Rows - 1;
+	if (end_row > Rows)
+		end_row = Rows;
 
 	for (int i = start_row; i <= end_row; i++)
 	{
@@ -73,7 +73,8 @@ void CGrid::Update(vector<LPGAMEOBJECT> obj)
 {
 	for (int i = 0; i < obj.size(); i++) 
 	{
-		if (!dynamic_cast<CBrick*>(obj.at(i)) && !dynamic_cast<CPortal*>(obj.at(i)))
+		if (!dynamic_cast<CBrick*>(obj.at(i)) && !dynamic_cast<CPortal*>(obj.at(i)) &&
+			!dynamic_cast<CItem*>(obj.at(i)) && !dynamic_cast<CLadder*>(obj.at(i)))
 		{
 			if (dynamic_cast<Enemy*>(obj.at(i)))
 			{
@@ -81,12 +82,12 @@ void CGrid::Update(vector<LPGAMEOBJECT> obj)
 				if (e->GetIsDeath())
 					continue;
 			}
-			else if (dynamic_cast<CItem*>(obj.at(i)))
+			/*else if (dynamic_cast<CItem*>(obj.at(i)))
 			{
 				CItem* e = dynamic_cast<CItem*>(obj.at(i));
 				if (e->isDeath)
 					continue;
-			}
+			}*/
 
 			RemoveObject(obj.at(i));
 			AddObject(obj.at(i));

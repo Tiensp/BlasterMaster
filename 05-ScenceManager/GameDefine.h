@@ -48,6 +48,15 @@ using namespace std;
 #define PORTAL_WIDTH	32
 #define PORTAL_HEIGHT	32
 
+/////// SYNTAX ///////
+#define INSTANCE_SOPHIA CSophia::GetInstance()
+#define INSTANCE_JASON CJason::GetInstance()
+#define INSTANCE_BIGJASON CBigJason::GetInstance()
+
+/////// STATE ////////
+#define IDLE2WALK 0
+#define WALK2IDLE 1
+#define NORMAL_STATE 2 
 
 /*
 	Lí do sử dụng Extern có thể tìm hiểu qua mã lỗi LNK2005

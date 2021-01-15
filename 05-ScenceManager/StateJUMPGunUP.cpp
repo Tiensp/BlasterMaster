@@ -5,7 +5,9 @@
 
 StateJUMPGunUP::StateJUMPGunUP()
 {
-	CSophia* sophia = CSophia::GetInstance();
+	
+	CSophia* sophia = INSTANCE_SOPHIA;
+	sophia->renderFrame = false;
 	sophia->SetIsGunUp(true);
 
 	if (!sophia->GetIsJumping())	// Nếu chưa nhảy thì cho nhảy
@@ -28,7 +30,7 @@ StateJUMPGunUP::StateJUMPGunUP()
 
 void StateJUMPGunUP::Update()
 {
-	CSophia* sophia = CSophia::GetInstance();
+	CSophia* sophia = INSTANCE_SOPHIA;
 
 #pragma region Thay đổi x/y_render
 	// Xem lại chú thích y_render ở StateRAISEDGun
@@ -52,7 +54,7 @@ void StateJUMPGunUP::Update()
 	if (sophia->vy >= 0)
 	{
 		sophia->SetIsJumping(false);
-		sophia->SwitchState(new StateFALL());
+		sophia->SwitchState(new StateFALL(), NORMAL_STATE);
 	}
 	else
 		this->HandleKeyboard();
@@ -60,24 +62,24 @@ void StateJUMPGunUP::Update()
 
 void StateJUMPGunUP::HandleKeyboard()
 {
-	CSophia* sophia = CSophia::GetInstance();
+	CSophia* sophia = INSTANCE_SOPHIA;
 
 	if (_KEYCODE[DIK_UP])
 	{
 		if (!_KEYCODE[DIK_RIGHT] && !_KEYCODE[DIK_LEFT])
 		{
-			sophia->SwitchState(new StateJUMPGunUP());
+			sophia->SwitchState(new StateJUMPGunUP(), NORMAL_STATE);
 		}
 		else if (_KEYCODE[DIK_RIGHT])
 		{
 			sophia->nx = 1;
-			sophia->SwitchState(new StateJUMPGunUP());
+			sophia->SwitchState(new StateJUMPGunUP(), NORMAL_STATE);
 			sophia->vx = SOPHIA_WALKING_SPEED;
 		}
 		else if (_KEYCODE[DIK_LEFT])
 		{
 			sophia->nx = -1;
-			sophia->SwitchState(new StateJUMPGunUP());
+			sophia->SwitchState(new StateJUMPGunUP(), NORMAL_STATE);
 			sophia->vx = SOPHIA_WALKING_SPEED;
 		}
 	}

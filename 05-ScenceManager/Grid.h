@@ -7,6 +7,7 @@
 #include "Portal.h"
 #include "Enemy.h"
 #include "Item.h"
+#include "Ladder.h"
 
 
 using namespace std;

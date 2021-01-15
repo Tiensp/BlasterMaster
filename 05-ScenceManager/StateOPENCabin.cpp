@@ -6,7 +6,8 @@
 
 StateOPENCabin::StateOPENCabin()
 {
-	CSophia* sophia = CSophia::GetInstance();
+	
+	CSophia* sophia = INSTANCE_SOPHIA;
 	sophia->frameID = -1;
 	sophia->vx = 0;
 	if (sophia->nx > 0)
@@ -21,9 +22,9 @@ StateOPENCabin::StateOPENCabin()
 
 void StateOPENCabin::Update()
 {
-	CSophia* sophia = CSophia::GetInstance();
+	CSophia* sophia = INSTANCE_SOPHIA;
 		if (!sophia->GetIsOpenCabin())
-			sophia->SwitchState(new StateIDLE());
+			sophia->SwitchState(new StateIDLE(), NORMAL_STATE);
 }
 
 void StateOPENCabin::HandleKeyboard()

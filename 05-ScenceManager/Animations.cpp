@@ -76,7 +76,7 @@ void CAnimation::Render(float x, float y, D3DCOLOR color)
 
 void CAnimation::RenderFrame(int frameID, float x, float y, int alpha) /* Render mot ani_frame theo id */
 {
-	if (frameID == -1 || frameID >= frames->size())
+	if (frameID <= -1 || frameID >= frames->size())
 		frameID = 0;
 	frames->at(frameID)->GetSprite()->Draw(x, y, alpha);
 }

@@ -7,7 +7,8 @@
 
 StateWALKING::StateWALKING()
 {
-	CSophia* sophia = CSophia::GetInstance();
+	CSophia* sophia = INSTANCE_SOPHIA;
+	sophia->renderFrame = false;
 	if (_ACTIVE[SOPHIA] && !sophia->GetIsFrozen())
 	{
 		if (sophia->nx > 0)
@@ -23,7 +24,7 @@ StateWALKING::StateWALKING()
 	}
 	else if (_ACTIVE[JASON])
 	{
-		CJason* jason = CJason::GetInstance();
+		CJason* jason = INSTANCE_JASON;
 		if (jason->nx > 0)
 		{
 			jason->vx = JASON_WALKING_SPEED;
@@ -37,7 +38,7 @@ StateWALKING::StateWALKING()
 	}
 	else if (_ACTIVE[BIG_JASON])
 	{
-		CBigJason* bigJason = CBigJason::GetInstance();
+		CBigJason* bigJason = INSTANCE_BIGJASON;
 		if (bigJason->nx > 0)
 		{
 			bigJason->vx = BIG_JASON_WALKING_SPEED;
@@ -72,7 +73,7 @@ void StateWALKING::Update()
 
 void StateWALKING::HandleKeyboard()
 {
-	CSophia* sophia = CSophia::GetInstance();
+	CSophia* sophia = INSTANCE_SOPHIA;
 
 	if (_ACTIVE[SOPHIA] || _ACTIVE[JASON])
 	{
@@ -82,12 +83,11 @@ void StateWALKING::HandleKeyboard()
 			{
 				if (sophia->GetIsGunUp())
 				{
-					sophia->SwitchState(new StateWALKINGGunUP());
+					sophia->SwitchState(new StateWALKINGGunUP(), NORMAL_STATE);
 				}
 				else
 				{
-					sophia->frameID = 0;
-					sophia->SwitchState(new StateRAISEDGun());
+					sophia->SwitchState(new StateRAISEDGun(), NORMAL_STATE);
 					sophia->currentAni->ResetCurrentFrame();
 				}
 			}
@@ -96,15 +96,14 @@ void StateWALKING::HandleKeyboard()
 		{
 			if (_ACTIVE[SOPHIA] && !sophia->GetIsFrozen())
 			{
-				CSophia* sophia = CSophia::GetInstance();
+				CSophia* sophia = INSTANCE_SOPHIA;
 				if (sophia->GetIsGunUp())
 				{
-					sophia->SwitchState(new StateWALKINGGunUP());
+					sophia->SwitchState(new StateWALKINGGunUP(), NORMAL_STATE);
 				}
 				else
 				{
-					sophia->frameID = 0;
-					sophia->SwitchState(new StateRAISEDGun());
+					sophia->SwitchState(new StateRAISEDGun(), NORMAL_STATE);
 					sophia->currentAni->ResetCurrentFrame();
 				}
 			}
@@ -113,20 +112,20 @@ void StateWALKING::HandleKeyboard()
 		{
 			if (_ACTIVE[SOPHIA] && !sophia->GetIsFrozen())
 			{
-				CSophia* sophia = CSophia::GetInstance();
+				CSophia* sophia = INSTANCE_SOPHIA;
 				if (sophia->nx < 0)
 				{
-					sophia->SwitchState(new StateTURN());
+					sophia->SwitchState(new StateTURN(), WALK2IDLE);
 					sophia->currentAni->ResetCurrentFrame();
 				}
 				else
 				{
-					sophia->SwitchState(new StateWALKING());
+					sophia->SwitchState(new StateWALKING(), NORMAL_STATE);
 				}
 			}
 			else if (_ACTIVE[JASON])
 			{
-				CJason* jason = CJason::GetInstance();
+				CJason* jason = INSTANCE_JASON;
 				jason->nx = 1;
 				jason->SwitchState(new StateWALKING());
 			}
@@ -135,20 +134,20 @@ void StateWALKING::HandleKeyboard()
 		{
 			if (_ACTIVE[SOPHIA] && !sophia->GetIsFrozen())
 			{
-				CSophia* sophia = CSophia::GetInstance();
+				CSophia* sophia = INSTANCE_SOPHIA;
 				if (sophia->nx > 0)
 				{
-					sophia->SwitchState(new StateTURN());
+					sophia->SwitchState(new StateTURN(), WALK2IDLE);
 					sophia->currentAni->ResetCurrentFrame();
 				}
 				else
 				{
-					sophia->SwitchState(new StateWALKING());
+					sophia->SwitchState(new StateWALKING(), NORMAL_STATE);
 				}
 			}
 			else if (_ACTIVE[JASON])
 			{
-				CJason* jason = CJason::GetInstance();
+				CJason* jason = INSTANCE_JASON;
 				jason->nx = -1;
 				jason->SwitchState(new StateWALKING());
 			}
@@ -157,15 +156,14 @@ void StateWALKING::HandleKeyboard()
 		{
 			if (_ACTIVE[SOPHIA] && !sophia->GetIsFrozen())
 			{
-				CSophia* sophia = CSophia::GetInstance();
+				CSophia* sophia = INSTANCE_SOPHIA;
 				if (sophia->GetIsGunUp())
 				{
-					sophia->SwitchState(new StateIDLEGunUP());
+					sophia->SwitchState(new StateIDLEGunUP(), WALK2IDLE);
 				}
 				else
 				{
-					sophia->frameID = 0;
-					sophia->SwitchState(new StateRAISEDGun());
+					sophia->SwitchState(new StateRAISEDGun(), NORMAL_STATE);
 					sophia->currentAni->ResetCurrentFrame();
 				}
 			}
@@ -174,19 +172,19 @@ void StateWALKING::HandleKeyboard()
 		{
 			if (_ACTIVE[SOPHIA] && !sophia->GetIsFrozen())
 			{
-				CSophia* sophia = CSophia::GetInstance();
-				sophia->SwitchState(new StateIDLE());
+				CSophia* sophia = INSTANCE_SOPHIA;
+				sophia->SwitchState(new StateIDLE(), WALK2IDLE);
 			}
 			else if (_ACTIVE[JASON])
 			{
-				CJason* jason = CJason::GetInstance();
+				CJason* jason = INSTANCE_JASON;
 				jason->SwitchState(new StateIDLE());
 			}
 		}
 	}
 	else if (_ACTIVE[BIG_JASON])
 	{
-		CBigJason* bigJason = CBigJason::GetInstance();
+		CBigJason* bigJason = INSTANCE_BIGJASON;
 		if (_KEYCODE[DIK_RIGHT] && _KEYCODE[DIK_UP])
 		{
 			bigJason->SwitchState(new StateWALKING());

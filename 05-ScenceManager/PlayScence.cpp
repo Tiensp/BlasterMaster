@@ -46,6 +46,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):
 #define OBJECT_TYPE_TELEPORTER 13
 #define OBJECT_TYPE_CANNON 14
 #define OBJECT_TYPE_ITEM 80
+#define OBJECT_TYPE_LADDER 49
 
 #define OBJECT_TYPE_LAVA 90
 #define OBJECT_TYPE_THORN_OVERWORLD 91
@@ -173,7 +174,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		}
 
 
-		obj = CSophia::GetInstance();
+		obj = INSTANCE_SOPHIA;
 		sophia = (CSophia*)obj;
 		sophia->SetStartPos(x, y);
 		bool active = atoi(tokens[4].c_str());
@@ -192,7 +193,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 			return;
 		}
 
-		obj = CJason::GetInstance();
+		obj = INSTANCE_JASON;
 		jason = (CJason*)obj;
 		jason->SetStartPos(x, y);
 		bool active = atoi(tokens[4].c_str());
@@ -211,7 +212,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 			return;
 		}
 
-		obj = CBigJason::GetInstance();
+		obj = INSTANCE_BIGJASON;
 		bigJason = (CBigJason*)obj;
 		bigJason->SetStartPos(x, y);
 		bool active = atoi(tokens[4].c_str());
@@ -227,6 +228,15 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		float w = atof(tokens[4].c_str());
 		float h = atof(tokens[5].c_str());
 		obj = new CBrick(x, y, w, h);
+		obj->SetPosition(x, y);
+		AllObjs.push_back(obj);
+		break;
+	}
+	case OBJECT_TYPE_LADDER:
+	{
+		float w = atof(tokens[4].c_str());
+		float h = atof(tokens[5].c_str());
+		obj = new CLadder(x, y, w, h);
 		obj->SetPosition(x, y);
 		AllObjs.push_back(obj);
 		break;
@@ -542,7 +552,8 @@ void CPlayScene::Update(DWORD dt)
 
 		for (int i = 0; i < coObjects.size(); i++)
 		{
-			if (!dynamic_cast<CBrick*>(coObjects.at(i)) && !dynamic_cast<CPortal*>(coObjects.at(i)))
+			if (!dynamic_cast<CBrick*>(coObjects.at(i)) && !dynamic_cast<CPortal*>(coObjects.at(i)) && 
+				!dynamic_cast<CLadder*>(coObjects.at(i)))
 			{
 				coObjects.at(i)->Update(dt, &coObjects);
 			}
@@ -733,7 +744,7 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 				MiniScene* miniScene = scene->GetlistScenes().at(0);
 				CCamera* camera = CCamera::GetInstance();
 				camera->SetCamBound(miniScene->x, miniScene->y, miniScene->width, miniScene->height);
-				CSophia* sophia = CSophia::GetInstance();
+				CSophia* sophia = INSTANCE_SOPHIA;
 				sophia->SetStartPos(1100, 800);
 				sophia->Reset();
 

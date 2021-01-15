@@ -7,7 +7,8 @@
 
 StateRAISEDGun::StateRAISEDGun()
 {
-	CSophia* sophia = CSophia::GetInstance();
+	CSophia* sophia = INSTANCE_SOPHIA;
+	sophia->renderFrame = false;
 	sophia->SetIsRaisedGun(true);
 
 	if (sophia->nx > 0)
@@ -24,13 +25,13 @@ StateRAISEDGun::StateRAISEDGun()
 		Vị trí ở đây mình + BBOX height khi đứng yên để lấy được y.Bottom của nhân vật
 		Sau đó trừ lấy chiều cao của sprite cần vẽ từ RECT sprite để tìm ra y_render
 	*/
-	RECT r = sophia->animation_set->at(StateName)->GetFrameRect(sophia->frameID);
+	RECT r = sophia->animation_set->at(StateName)->GetFrameRect(0);
 	sophia->y_render = sophia->y + SOPHIA_SMALL_BBOX_HEIGHT - (r.bottom - r.top);
 }
 
 void StateRAISEDGun::Update()
 {
-	CSophia* sophia = CSophia::GetInstance();
+	CSophia* sophia = INSTANCE_SOPHIA;
 #pragma region Thay đổi vị trí Render Animation
 
 	/* 
@@ -41,16 +42,15 @@ void StateRAISEDGun::Update()
 	*/
 
 	// Nếu currentFrame == -1 thì y_render = y_render của frame đầu tiên (frames[0])
-	sophia->frameID = sophia->currentAni->GetCurrentFrame();  
+	int frameID = sophia->currentAni->GetCurrentFrame();  
 	if (sophia->currentAni->GetCurrentFrame() > -1)
 	{
-		RECT r = sophia->currentAni->GetFrameRect(sophia->frameID);	
+		RECT r = sophia->currentAni->GetFrameRect(frameID);	
 		sophia->y_render = sophia->y + SOPHIA_SMALL_BBOX_HEIGHT - (r.bottom - r.top) - 2;
 	}
 	else
 	{
-		sophia->frameID = 0;
-		RECT r = sophia->currentAni->GetFrameRect(sophia->frameID);
+		RECT r = sophia->currentAni->GetFrameRect(0);
 		sophia->y_render = sophia->y + SOPHIA_SMALL_BBOX_HEIGHT - (r.bottom - r.top);
 	}
 
@@ -60,17 +60,16 @@ void StateRAISEDGun::Update()
 
 void StateRAISEDGun::HandleKeyboard()
 {
-	CSophia* sophia = CSophia::GetInstance();
+	CSophia* sophia = INSTANCE_SOPHIA;
 	if (!sophia->GetIsRaisedGun())
 	{
 		if (_KEYCODE[DIK_UP])
 		{
-			sophia->SwitchState(new StateIDLEGunUP());
+			sophia->SwitchState(new StateIDLEGunUP(), WALK2IDLE);
 		}
 		else
 		{
-			sophia->frameID = 0;
-			sophia->SwitchState(new StateLOWEREDGun());
+			sophia->SwitchState(new StateLOWEREDGun(), NORMAL_STATE);
 			sophia->currentAni->ResetCurrentFrame();
 		}
 			

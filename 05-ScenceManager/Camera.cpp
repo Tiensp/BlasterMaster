@@ -119,14 +119,14 @@ void CCamera::Update()
 	if (!isSwitchScene)
 	{
 		D3DXVECTOR2 playerPos;
-		if (_ACTIVE[SOPHIA])
-			CSophia::GetInstance()->GetPosition(playerPos.x, playerPos.y);
+		if (_ACTIVE[SOPHIA] && !INSTANCE_SOPHIA->GetIsFrozen())
+			INSTANCE_SOPHIA->GetPosition(playerPos.x, playerPos.y);
 		else if (_ACTIVE[JASON])
 		{
-			CJason::GetInstance()->GetPosition(playerPos.x, playerPos.y);
+			INSTANCE_JASON->GetPosition(playerPos.x, playerPos.y);
 		}
 		else if (_ACTIVE[BIG_JASON])
-			CBigJason::GetInstance()->GetPosition(playerPos.x, playerPos.y);
+			INSTANCE_BIGJASON->GetPosition(playerPos.x, playerPos.y);
 
 		if (playerPos.x > camPos.x + width / 2)
 			camPos.x += playerPos.x - (camPos.x + width / 2);

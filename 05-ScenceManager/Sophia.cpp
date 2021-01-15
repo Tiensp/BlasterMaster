@@ -123,7 +123,11 @@ void CSophia::Render()
 		/// </summary>
 		if (renderFrame)
 		{
-			if (isInjured)
+			/*if (changeStateType == WALK2IDLE)
+			{
+				frameID = wheelID;
+			}*/
+			if (!isInjured)
 			{
 				currentAni->RenderFrame(frameID, x_render, y_render);
 			}
@@ -134,7 +138,7 @@ void CSophia::Render()
 		}
 		else
 		{
-			if (isInjured)
+			if (!isInjured)
 			{
 				currentAni->Render(x_render, y_render);
 			}
@@ -159,6 +163,8 @@ void CSophia::Render()
 				}
 			}
 		}
+		// Get WheelID
+
 	}
 	else if (_ACTIVE[SOPHIA] && isFrozen)
 	{
@@ -183,7 +189,7 @@ void CSophia::OnKeyDown(int keycode)
 				SwitchState(new StateI());
 				currentAni->ResetCurrentFrame();
 			}*/
-			SwitchState(new StateJUMP());
+			SwitchState(new StateJUMP(), NORMAL_STATE);
 			currentAni->ResetCurrentFrame();
 		}
 		break;
@@ -267,8 +273,8 @@ void CSophia::OnKeyDown(int keycode)
 	case DIK_Q:
 	{
 		SetIsFrozen(true);
-		SwitchState(new StateOPENCabin());
-		CJason* jason = CJason::GetInstance();
+		SwitchState(new StateOPENCabin(), NORMAL_STATE);
+		CJason* jason = INSTANCE_JASON;
 		_ACTIVE[JASON] = true;
 		jason->nx = nx;
 		jason->ResetAtPos(x + SOPHIA_BIG_BBOX_WIDTH / 2 - JASON_BIG_BBOX_WIDTH / 2, 
@@ -494,6 +500,7 @@ void CSophia::CheckCollisionWithEnemy(vector<LPGAMEOBJECT>* coObjects)
 				continue;
 			health -= 1;
 			StartUntouchable();
+			isInjured = true;
 			return;
 		}
 	}
@@ -514,6 +521,7 @@ void CSophia::CheckCollisionWithEnemy(vector<LPGAMEOBJECT>* coObjects)
 			/*LPCOLLISIONEVENT e = coEventsResult[0];
 			Enemy* enemy = dynamic_cast<Enemy*>(e->obj);*/
 			health -= 1;
+			isInjured = true;
 		}
 
 	}
@@ -660,12 +668,22 @@ D3DCOLOR CSophia::GetRENDERColor()
 /// <summary>
 /// HÀM CHUYỂN ĐỔI TRẠNG THÁI NHÂN VẬT
 /// </summary>
-void CSophia::SwitchState(CState* state)
+void CSophia::SwitchState(CState* state, int changeType)
 {
 	/*
 		Tại hàm này, ta sẽ thay đổi state và animation hiện tại của player sang state, ani mới
 	*/
 	delete currentState;
+	changeStateType = changeType;
+	
+	/* NẾU STATE CHUYỂN TỪ WALK -> IDLE: Set lại frameID để render đúng bánh xe */
+	if (changeStateType == WALK2IDLE)
+	{
+		frameID = currentAni->GetCurrentFrame();
+		if (state->StateName == SOPHIA_IDLE_LEFT)
+			frameID -= 1;
+	}
+
 	currentState = state;
 	currentAni = animation_set->at(state->StateName);
 }
@@ -676,14 +694,14 @@ void CSophia::SwitchState(CState* state)
 void CSophia::Reset()
 {
 	SetPosition(start_x, start_y);
-	SwitchState(new StateIDLE());
+	SwitchState(new StateIDLE(), NORMAL_STATE);
 	SetSpeed(0, 0);
 }
 
 void CSophia::ResetAtPos(float _x, float _y)
 {
 	SetPosition(_x, _y);
-	SwitchState(new StateIDLE());
+	SwitchState(new StateIDLE(), NORMAL_STATE);
 	SetSpeed(0, 0);
 }
 
@@ -694,13 +712,13 @@ void CSophia::AutoGo(float x_des)
 {
 	if (nx > 0)
 	{
-		SwitchState(new StateWALKING());
+		SwitchState(new StateWALKING(), NORMAL_STATE);
 		if (x >= x_des)
 			isAutoGo = false;
 	}
 	else
 	{
-		SwitchState(new StateWALKING());
+		SwitchState(new StateWALKING(), NORMAL_STATE);
 		if (x <= x_des)
 			isAutoGo = false;
 	}
@@ -741,7 +759,7 @@ int CSophia::Get_Sophia_Normal_bullet()
 	return count;
 }
 
-CSophia* CSophia::GetInstance()
+CSophia* INSTANCE_SOPHIA
 {
 	if (__instance == NULL) {
 		__instance = new CSophia();

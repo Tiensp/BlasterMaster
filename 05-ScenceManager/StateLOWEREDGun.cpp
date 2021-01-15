@@ -8,7 +8,9 @@
 
 StateLOWEREDGun::StateLOWEREDGun()
 {
-	CSophia* sophia = CSophia::GetInstance();
+	
+	CSophia* sophia = INSTANCE_SOPHIA;
+	sophia->renderFrame = false;
 	sophia->SetIsLoweredGun(true);
 
 	if (sophia->nx > 0)
@@ -21,33 +23,24 @@ StateLOWEREDGun::StateLOWEREDGun()
 	}
 
 	sophia->x_render = sophia->x;
-	RECT r = sophia->animation_set->at(StateName)->GetFrameRect(sophia->frameID);
+	RECT r = sophia->animation_set->at(StateName)->GetFrameRect(0);
 	sophia->y_render = sophia->y + SOPHIA_SMALL_BBOX_HEIGHT - (r.bottom - r.top);
 }
 
 void StateLOWEREDGun::Update()
 {
-	CSophia* sophia = CSophia::GetInstance();
+	CSophia* sophia = INSTANCE_SOPHIA;
 #pragma region Thay đổi x/y_render
 	// Xem lại chú thích ở StateRAISEDGun
-	sophia->frameID = sophia->currentAni->GetCurrentFrame();
+	int frameID = sophia->currentAni->GetCurrentFrame();
 	if (sophia->currentAni->GetCurrentFrame() > -1)
 	{
-		if (sophia->currentAni->GetCurrentFrame() == 2)
-		{
-			RECT r = sophia->currentAni->GetFrameRect(sophia->frameID);
-			sophia->y_render = sophia->y + SOPHIA_SMALL_BBOX_HEIGHT - (r.bottom - r.top) + 2;
-		}
-		else
-		{
-			RECT r = sophia->currentAni->GetFrameRect(sophia->frameID);
-			sophia->y_render = sophia->y + SOPHIA_SMALL_BBOX_HEIGHT - (r.bottom - r.top) + 2;
-		}
+		RECT r = sophia->currentAni->GetFrameRect(frameID);
+		sophia->y_render = sophia->y + SOPHIA_SMALL_BBOX_HEIGHT - (r.bottom - r.top) + 2;	
 	}
 	else
 	{
-		sophia->frameID = 0;
-		RECT r = sophia->currentAni->GetFrameRect(sophia->frameID);
+		RECT r = sophia->currentAni->GetFrameRect(0);
 		sophia->y_render = sophia->y + SOPHIA_SMALL_BBOX_HEIGHT - (r.bottom - r.top);
 	}
 #pragma endregion
@@ -56,20 +49,20 @@ void StateLOWEREDGun::Update()
 
 void StateLOWEREDGun::HandleKeyboard()
 {
-	CSophia* sophia = CSophia::GetInstance();
+	CSophia* sophia = INSTANCE_SOPHIA;
 	if (!sophia->GetIsLoweredGun())
 	{
 		if (sophia->GetIsJumping())
 		{
-			sophia->SwitchState(new StateJUMP());
+			sophia->SwitchState(new StateJUMP(), NORMAL_STATE);
 		}
 		else if (sophia->GetIsFalling())
 		{
-			sophia->SwitchState(new StateFALL());
+			sophia->SwitchState(new StateFALL(), NORMAL_STATE);
 		}
 		else
 		{
-			sophia->SwitchState(new StateIDLE());
+			sophia->SwitchState(new StateIDLE(), WALK2IDLE);
 		}
 	}
 }
