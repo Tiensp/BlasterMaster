@@ -60,6 +60,7 @@ protected:
 	float start_x;			// initial position of Sophia at scene
 	float start_y; 
 
+	bool isWalking;
 	bool isGunUp;
 	bool isRaisedGun;
 	bool isLoweredGun;
@@ -79,8 +80,9 @@ protected:
 	int numberFollowBullet = 5;
 	int health = 8;	// Máu nhân vật
 
-	RECT lastColliObj;
+	float lastColliBrick_y = NULL;
 	bool isSetFollowBullet;
+	float rectL, rectT, rectR, rectB;
 	vector<BulletObject* > p_bullet_list;
 	vector<LPGAMEOBJECT> list_enemy_contain;
 public: 
@@ -96,6 +98,9 @@ public:
 	void SetStartPos(float startx, float starty);
 
 	void SetLevel(int l) { level = l; }
+
+	void SetIsWalking(bool walk) { isWalking = walk; }
+	bool GetIsWalking() { return isWalking; }
 
 	void SetIsTurning(bool turn) { isTurning = turn; }
 	bool GetIsTurning() { return isTurning; }

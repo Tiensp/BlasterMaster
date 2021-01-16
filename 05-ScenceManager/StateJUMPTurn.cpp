@@ -5,11 +5,10 @@
 
 StateJUMPTurn::StateJUMPTurn()
 {
-	
-
 	CSophia* sophia = INSTANCE_SOPHIA;
 	sophia->renderFrame = false;
 	sophia->SetIsTurning(true);
+
 	if (sophia->nx < 0)
 	{
 		sophia->nx = 1;

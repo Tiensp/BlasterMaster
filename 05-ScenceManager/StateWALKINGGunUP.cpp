@@ -9,7 +9,9 @@ StateWALKINGGunUP::StateWALKINGGunUP()
 {
 	CSophia* sophia = INSTANCE_SOPHIA;
 	sophia->renderFrame = false;
+	sophia->SetIsWalking(true);
 	sophia->SetIsGunUp(true);
+
 	if (sophia->nx > 0)
 	{
 		sophia->x_render = sophia->x - 4;

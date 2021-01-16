@@ -2,6 +2,7 @@
 #include "StateJUMP.h"
 #include "StateIDLE.h"
 #include "StateFALL.h"
+#include "StateFALLGunUP.h"
 
 StateJUMPGunUP::StateJUMPGunUP()
 {
@@ -26,6 +27,9 @@ StateJUMPGunUP::StateJUMPGunUP()
 		sophia->x_render = sophia->x + 3;
 		StateName = SOPHIA_IDLE_GUN_UP_LEFT;
 	}
+
+	RECT r = sophia->animation_set->at(StateName)->GetFrameRect(0);
+	sophia->y_render = sophia->y + SOPHIA_SMALL_BBOX_HEIGHT - (r.bottom - r.top);
 }
 
 void StateJUMPGunUP::Update()
@@ -54,7 +58,10 @@ void StateJUMPGunUP::Update()
 	if (sophia->vy >= 0)
 	{
 		sophia->SetIsJumping(false);
-		sophia->SwitchState(new StateFALL(), NORMAL_STATE);
+		if (!sophia->GetIsGunUp())
+			sophia->SwitchState(new StateFALL(), NORMAL_STATE);
+		else
+			sophia->SwitchState(new StateFALLGunUP(), NORMAL_STATE);
 	}
 	else
 		this->HandleKeyboard();
@@ -66,11 +73,7 @@ void StateJUMPGunUP::HandleKeyboard()
 
 	if (_KEYCODE[DIK_UP])
 	{
-		if (!_KEYCODE[DIK_RIGHT] && !_KEYCODE[DIK_LEFT])
-		{
-			sophia->SwitchState(new StateJUMPGunUP(), NORMAL_STATE);
-		}
-		else if (_KEYCODE[DIK_RIGHT])
+		if (_KEYCODE[DIK_RIGHT])
 		{
 			sophia->nx = 1;
 			sophia->SwitchState(new StateJUMPGunUP(), NORMAL_STATE);
@@ -80,12 +83,20 @@ void StateJUMPGunUP::HandleKeyboard()
 		{
 			sophia->nx = -1;
 			sophia->SwitchState(new StateJUMPGunUP(), NORMAL_STATE);
-			sophia->vx = SOPHIA_WALKING_SPEED;
+			sophia->vx = -SOPHIA_WALKING_SPEED;
 		}
 	}
 	else
 	{
-
+		/// Chưa có code hạ súng
+		if (_ACTIVE[SOPHIA] && !sophia->GetIsFrozen())
+		{
+			sophia->vx = 0;
+		}
+		else if (_ACTIVE[JASON])
+		{
+			INSTANCE_JASON->vx = 0;
+		}
 	}
 }
 

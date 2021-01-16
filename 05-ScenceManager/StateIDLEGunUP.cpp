@@ -11,8 +11,10 @@ StateIDLEGunUP::StateIDLEGunUP()
 
 	CSophia* sophia = INSTANCE_SOPHIA;
 	sophia->renderFrame = true;
+	sophia->SetIsWalking(false);
 	sophia->SetIsJumping(false);
 	sophia->SetIsFalling(false);
+	sophia->SetIsRaisedGun(false);
 	sophia->SetIsGunUp(true);
 	sophia->vx = 0;
 
@@ -34,6 +36,8 @@ StateIDLEGunUP::StateIDLEGunUP()
 		StateName = SOPHIA_IDLE_GUN_UP_LEFT;
 	}
 
+	RECT r = sophia->animation_set->at(StateName)->GetFrameRect(0);
+	sophia->y_render = sophia->y + SOPHIA_SMALL_BBOX_HEIGHT - (r.bottom - r.top);
 }
 
 void StateIDLEGunUP::Update()

@@ -11,6 +11,7 @@ StateIDLE::StateIDLE()
 	sophia->renderFrame = true;
 	if (_ACTIVE[SOPHIA] && !sophia->GetIsFrozen())
 	{
+		sophia->SetIsWalking(false);
 		sophia->SetIsJumping(false);
 		sophia->SetIsFalling(false);
 		sophia->vx = 0;
@@ -75,10 +76,12 @@ void StateIDLE::HandleKeyboard()
 {
 	CSophia* sophia = INSTANCE_SOPHIA;
 
-	if (_KEYCODE[DIK_RIGHT])
+	// ACTIVE SOPHIA
+	if (_ACTIVE[SOPHIA] && !sophia->GetIsFrozen())
 	{
-		if (_ACTIVE[SOPHIA] && !sophia->GetIsFrozen())
+		if (_KEYCODE[DIK_RIGHT])
 		{
+
 			if (sophia->nx < 0)
 			{
 				sophia->SwitchState(new StateTURN(), NORMAL_STATE);
@@ -90,23 +93,7 @@ void StateIDLE::HandleKeyboard()
 				sophia->currentAni->ResetCurrentFrame();
 			}
 		}
-		else if (_ACTIVE[JASON])
-		{
-			CJason* jason = INSTANCE_JASON;
-			jason->nx = 1;
-			jason->SwitchState(new StateWALKING());
-		}
-		else if (_ACTIVE[BIG_JASON])
-		{
-			CBigJason* bigJason = INSTANCE_BIGJASON;
-			bigJason->nx = 1;
-			bigJason->ny = 0;
-			bigJason->SwitchState(new StateWALKING());
-		}
-	}
-	else if (_KEYCODE[DIK_LEFT])
-	{
-		if (_ACTIVE[SOPHIA] && !sophia->GetIsFrozen())
+		else if (_KEYCODE[DIK_LEFT])
 		{
 			if (sophia->nx > 0)
 			{
@@ -119,38 +106,53 @@ void StateIDLE::HandleKeyboard()
 				sophia->currentAni->ResetCurrentFrame();
 			}
 		}
-		else if (_ACTIVE[JASON])
+		else if (_KEYCODE[DIK_UP])
+		{
+			sophia->SwitchState(new StateRAISEDGun(), NORMAL_STATE);
+			sophia->currentAni->ResetCurrentFrame();
+		}
+	}
+	// ACTIVE JASON
+	else if (_ACTIVE[JASON])
+	{
+		if (_KEYCODE[DIK_RIGHT])
+		{
+			CJason* jason = INSTANCE_JASON;
+			jason->nx = 1;
+			jason->SwitchState(new StateWALKING());
+		}
+		else if (_KEYCODE[DIK_LEFT])
 		{
 			CJason* jason = INSTANCE_JASON;
 			jason->nx = -1;
 			jason->SwitchState(new StateWALKING());
 		}
-		else if (_ACTIVE[BIG_JASON])
+	}
+	// ACTIVE BIG JASON
+	else if (_ACTIVE[BIG_JASON])
+	{
+		if (_KEYCODE[DIK_RIGHT])
+		{
+			CBigJason* bigJason = INSTANCE_BIGJASON;
+			bigJason->nx = 1;
+			bigJason->ny = 0;
+			bigJason->SwitchState(new StateWALKING());
+		}
+		else if (_KEYCODE[DIK_LEFT])
 		{
 			CBigJason* bigJason = INSTANCE_BIGJASON;
 			bigJason->nx = -1;
 			bigJason->ny = 0;
 			bigJason->SwitchState(new StateWALKING());
 		}
-	}
-	else if (_KEYCODE[DIK_UP])
-	{
-		if (_ACTIVE[SOPHIA] && !sophia->GetIsFrozen())
-		{
-			sophia->SwitchState(new StateRAISEDGun(), NORMAL_STATE);
-			sophia->currentAni->ResetCurrentFrame();
-		}
-		else if (_ACTIVE[BIG_JASON])
+		else if (_KEYCODE[DIK_UP])
 		{
 			CBigJason* bigJason = INSTANCE_BIGJASON;
 			bigJason->nx = 0;
 			bigJason->ny = 1;
 			bigJason->SwitchState(new StateWALKING());
 		}
-	}
-	else if (_KEYCODE[DIK_DOWN])
-	{
-		if (_ACTIVE[BIG_JASON])
+		else if (_KEYCODE[DIK_DOWN])
 		{
 			CBigJason* bigJason = INSTANCE_BIGJASON;
 			bigJason->nx = 0;
@@ -158,24 +160,6 @@ void StateIDLE::HandleKeyboard()
 			bigJason->SwitchState(new StateWALKING());
 		}
 	}
-	else
-	{
-		if (_ACTIVE[SOPHIA] && !sophia->GetIsFrozen()) 
-		{
-			sophia->SwitchState(new StateIDLE(), NORMAL_STATE);
-		}
-		else if (_ACTIVE[JASON])
-		{
-			CJason* jason = INSTANCE_JASON;
-			jason->SwitchState(new StateIDLE());
-		}
-		else if (_ACTIVE[BIG_JASON])
-		{
-			CBigJason* bigJason = INSTANCE_BIGJASON;
-			bigJason->SwitchState(new StateIDLE());
-		}
-	}
-		
 }
 
 StateIDLE::~StateIDLE()

@@ -4,6 +4,8 @@
 #include "StateWALKING.h"
 #include "StateRAISEDGUN.h"
 #include "StateIDLE.h"
+#include "StateJUMP.h"
+#include "StateIDLEGunUP.h"
 
 StateFALL::StateFALL()
 {
@@ -11,7 +13,7 @@ StateFALL::StateFALL()
 	CSophia* sophia = INSTANCE_SOPHIA;
 	sophia->renderFrame = false;
 	sophia->SetIsFalling(true);
-
+	sophia->SetIsJumping(false);
 
 	if (sophia->nx > 0)
 	{
@@ -21,6 +23,7 @@ StateFALL::StateFALL()
 	{
 		StateName = SOPHIA_FALL_LEFT;
 	}
+
 }
 
 void StateFALL::Update()
@@ -29,7 +32,10 @@ void StateFALL::Update()
 	if (sophia->vy == 0)
 	{
 		sophia->SetIsFalling(false);
-		sophia->SwitchState(new StateIDLE(), WALK2IDLE);
+		if (!sophia->GetIsGunUp())
+			sophia->SwitchState(new StateIDLE(), WALK2IDLE);
+		else
+			sophia->SwitchState(new StateIDLEGunUP(), WALK2IDLE);
 	}
 	else
 		this->HandleKeyboard();
@@ -73,8 +79,16 @@ void StateFALL::HandleKeyboard()
 	{
 		if (_ACTIVE[SOPHIA] && !sophia->GetIsFrozen())
 		{
-			sophia->SwitchState(new StateRAISEDGun(), NORMAL_STATE);
-			sophia->currentAni->ResetCurrentFrame();
+			if (!sophia->GetIsGunUp())
+			{
+				sophia->SwitchState(new StateRAISEDGun(), NORMAL_STATE);
+				sophia->currentAni->ResetCurrentFrame();
+			}
+			else
+			{
+				sophia->SwitchState(new StateFALL(), NORMAL_STATE);
+				sophia->currentAni->ResetCurrentFrame();
+			}
 		}
 	}
 	else if (_KEYCODE[DIK_DOWN])

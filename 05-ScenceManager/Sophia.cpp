@@ -19,6 +19,7 @@
 #include "ThornOVERWORLD.h"
 #include <vector>
 #include "PlayScence.h"
+#include "StateJUMPGunUP.h"
 
 CSophia* CSophia::__instance = NULL;
 
@@ -45,6 +46,7 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	{
 		DWORD now = GetTickCount64();
 		CGameObject::Update(dt);
+
 		vy += SOPHIA_GRAVITY * dt;
 	/*	DebugOut(L"size: %d\n", list_enemy_contain.size());*/
 		if (isSetFollowBullet)
@@ -74,10 +76,28 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		CheckCollisionWithItem(coObjects);
 		CheckCollisionWithEnemy(coObjects);
 	}
-
+	/// <summary>
+	/// Check Nhân vật có đang chạm gạch hay không
+	/// </summary>
+	GetBoundingBox(rectL, rectT, rectR, rectB);
+	if (lastColliBrick_y == NULL)
+	{
+		// Túc khởi tạo thì chưa chạm gạch lần nào nên biến này sẽ == NULL
+		isColliBrick = false;
+	}
+	else if (lastColliBrick_y - rectB <= 0.4f  && rectB <= lastColliBrick_y)
+	{
+		// Vì code xử lý SweptAABB đẩy nhân vật lên 0.4f nên hầu như lúc nào nhân vật cũng 
+		// trong trạng thái không va chạm => cần check tọa độ để biết có va chạm với gạch không
+		isColliBrick = true;
+	}
+	else
+		isColliBrick = false;
+	// Cập nhật x_render, y_render
 	x_render = x;
 	y_render = y;
 
+	// Nếu không phải AutoGo thì cập nhật state bình thường 
 	if (!isAutoGo)
 		currentState->Update();
 	else
@@ -182,15 +202,19 @@ void CSophia::OnKeyDown(int keycode)
 		break;
 			
 	case DIK_SPACE:
-		//if (!isJumping && !isFalling)
+		if (isColliBrick)
 		{
-			/*if (isGunUp)
+			if (!isGunUp)
 			{
-				SwitchState(new StateI());
+				SwitchState(new StateJUMP(), NORMAL_STATE);
 				currentAni->ResetCurrentFrame();
-			}*/
-			SwitchState(new StateJUMP(), NORMAL_STATE);
-			currentAni->ResetCurrentFrame();
+			}
+			else
+			{
+				SwitchState(new StateJUMPGunUP(), NORMAL_STATE);
+				currentAni->ResetCurrentFrame();
+			}
+			
 		}
 		break;
 	case DIK_Z:
@@ -310,7 +334,7 @@ void CSophia::CheckCollisionWithBrick(vector<LPGAMEOBJECT>* coObjects)
 
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
-
+	bool isColideUsingAABB = false;
 	coEvents.clear();
 
 	vector<LPGAMEOBJECT> ListBrick;
@@ -337,15 +361,14 @@ void CSophia::CheckCollisionWithBrick(vector<LPGAMEOBJECT>* coObjects)
 		if (nx != 0) vx = 0;
 		if (ny != 0) vy = 0;
 		LPCOLLISIONEVENT e = coEventsResult[0];
-		CBrick* br = dynamic_cast<CBrick*>(e->obj);
-		lastColliObj.left = br->x;
-		lastColliObj.top = br->y;
-		lastColliObj.right = lastColliObj.left + br->width;
-		lastColliObj.bottom = lastColliObj.top + br->height;
 		x += min_tx * dx + nx * 0.4f;
 		y += min_ty * dy + ny * 0.4f;
-		isColliBrick = true;
+
+		if (e->ny < 0)
+			lastColliBrick_y = e->obj->y;
+		
 	}
+
 }
 
 /// <summary>
@@ -548,6 +571,7 @@ void CSophia::GetBoundingBox(float &left, float &top, float &right, float &botto
 	}
 }
 
+
 /// <summary>
 /// HÀM TRẢ CHECK & CHO PHÉP NHÂN VẬT BẮN ĐẠN
 /// </summary>
@@ -680,8 +704,6 @@ void CSophia::SwitchState(CState* state, int changeType)
 	if (changeStateType == WALK2IDLE)
 	{
 		frameID = currentAni->GetCurrentFrame();
-		if (state->StateName == SOPHIA_IDLE_LEFT)
-			frameID -= 1;
 	}
 
 	currentState = state;

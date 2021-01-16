@@ -11,6 +11,8 @@ StateWALKING::StateWALKING()
 	sophia->renderFrame = false;
 	if (_ACTIVE[SOPHIA] && !sophia->GetIsFrozen())
 	{
+		sophia->SetIsWalking(true);
+
 		if (sophia->nx > 0)
 		{
 			sophia->vx = SOPHIA_WALKING_SPEED;
@@ -182,6 +184,7 @@ void StateWALKING::HandleKeyboard()
 			}
 		}
 	}
+	// ACTIVE BIG JASON
 	else if (_ACTIVE[BIG_JASON])
 	{
 		CBigJason* bigJason = INSTANCE_BIGJASON;
