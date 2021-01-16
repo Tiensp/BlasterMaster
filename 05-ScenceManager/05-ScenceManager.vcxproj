@@ -163,6 +163,7 @@
     <ClCompile Include="Ship.cpp" />
     <ClCompile Include="Skulls.cpp" />
     <ClCompile Include="SophiaBullet.cpp" />
+    <ClCompile Include="Sound.cpp" />
     <ClCompile Include="StateCRAWL.cpp" />
     <ClCompile Include="StateFALL.cpp" />
     <ClCompile Include="StateFALLTurn.cpp" />
@@ -233,6 +234,7 @@
     <ClInclude Include="Skulls.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="SophiaBullet.h" />
+    <ClInclude Include="Sound.h" />
     <ClInclude Include="StateCRAWL.h" />
     <ClInclude Include="StateFALL.h" />
     <ClInclude Include="StateFALLTurn.h" />
@@ -272,6 +274,5 @@
     <Text Include="scene2.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
-  <ImportGroup Label="ExtensionTargets">
-  </ImportGroup>
+  <ImportGroup Label="ExtensionTargets" />
 </Project>

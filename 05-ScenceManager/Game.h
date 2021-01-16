@@ -55,8 +55,9 @@ public:
 	void Draw(D3DXVECTOR2 pos, LPDIRECT3DTEXTURE9 texture, RECT rect, int alpha = 255);
 	int IsKeyDown(int KeyCode);
 	void ProcessKeyboard();
-
+	HWND GetHWND() { return hWnd; };
 	void Load(LPCWSTR gameFile);
+	void LoadSound();
 	LPSCENE GetCurrentScene() { return scenes[current_scene]; }
 	void SwitchScene(int scene_id);
 

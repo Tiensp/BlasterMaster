@@ -8,7 +8,7 @@
 void BulletObject::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	CGameObject::Update(dt, coObjects);
-	/*CheckCollisionWithEnemy(coObjects);*/
+	CheckCollisionWithEnemy(coObjects);
 }
 
 void BulletObject::Set_IsMove(const bool& _isMove)
@@ -57,8 +57,8 @@ void BulletObject::CheckCollisionWithEnemy(vector<LPGAMEOBJECT>* coObjects)
 		CalcPotentialCollisions(&ListEnemy, coEvents);
 		if (coEvents.size() == 0)
 		{
-			/*x += dx;
-			y += dy;*/
+			x += dx;
+			y += dy;
 		}
 		else
 		{

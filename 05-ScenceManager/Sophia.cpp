@@ -20,6 +20,7 @@
 #include "ThornOVERWORLD.h"
 #include <vector>
 #include "EnemyBullet.h"
+#include "Sound.h"
 CSophia* CSophia::__instance = NULL;
 
 CSophia::CSophia() : CGameObject()
@@ -148,6 +149,7 @@ void CSophia::OnKeyDown(int keycode)
 				SwitchState(new StateI());
 				currentAni->ResetCurrentFrame();
 			}*/
+			Sound::GetInstance()->Play("PlayerJump", 0, 1);
 			SwitchState(new StateJUMP());
 			currentAni->ResetCurrentFrame();
 		}
@@ -188,6 +190,7 @@ void CSophia::OnKeyDown(int keycode)
 			{
 				p_bullet->Set_IsMove(true);
 				p_bullet_list.push_back(p_bullet);
+				Sound::GetInstance()->Play("PlayerFireUnderWorld", 0, 1);
 			}
 		}
 		break;	
