@@ -515,7 +515,7 @@ void CPlayScene::Load()
 	grid = new CGrid(map->GetMapWidth(), map->GetMapHeight());
 	for (int i = 0; i < AllObjs.size(); i++)
 	{
-		if (!AllObjs.at(i)->objTag == PLAYER)
+		if (AllObjs.at(i)->objTag != PLAYER)
 			grid->AddObject(AllObjs.at(i));
 	}
 

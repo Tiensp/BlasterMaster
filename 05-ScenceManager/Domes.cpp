@@ -211,19 +211,12 @@ void CDomes::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			
 			
 			}
-			if (e->obj->objTag == ENEMY)
-			{
-				x += dx;
-				y += dy;
-			}
-			if (e->obj->objTag == PLAYER)
+			else
 			{
 				x += dx;
 				y += dy;
 			}
 		}
-
-
 
 	}
 	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
