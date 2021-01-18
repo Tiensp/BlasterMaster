@@ -106,7 +106,8 @@ public:
 	
 	void SetIsFalling(bool fall) { isFalling = fall; }
 	bool GetIsFalling() { return isFalling; }
-
+	int GetUntouchable() { return untouchable; }
+	bool GetisInjured() { return isInjured; }
 	void SetHealth(int hp) { health = hp; }
 	void SetHealthWithBullet(int dame) { health -= dame; }
 	int GetHealth() { return health; }

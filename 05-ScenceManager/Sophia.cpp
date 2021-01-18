@@ -204,6 +204,7 @@ void CSophia::OnKeyDown(int keycode)
 			p_bullet->Set_IsMove(true);
 			isAllowFire = false;
 			p_bullet_list.push_back(p_bullet);
+			Sound::GetInstance()->Play("PlayerInjured", 0, 1);
 			numberThreeBullet--;
 		}
 		break;
@@ -217,6 +218,7 @@ void CSophia::OnKeyDown(int keycode)
 			isAllowFire = false;
 			p_bullet->Set_IsMove(true);
 			p_bullet_list.push_back(p_bullet);
+			Sound::GetInstance()->Play("Thunder", 0, 1);
 			numberThunderBullet--;
 		}
 		break;
@@ -436,6 +438,7 @@ void CSophia::CheckCollisionWithEnemy(vector<LPGAMEOBJECT>* coObjects)
 			if (untouchable == 1 || isInjured)
 				continue;
 			health -= 1;
+			Sound::GetInstance()->Play("PlayerInjured", 0, 1);
 			StartUntouchable();
 			return;
 		}
@@ -457,6 +460,7 @@ void CSophia::CheckCollisionWithEnemy(vector<LPGAMEOBJECT>* coObjects)
 			FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
 			
 			health -= 1;
+			Sound::GetInstance()->Play("PlayerInjured", 0, 1);
 		}
 		
 

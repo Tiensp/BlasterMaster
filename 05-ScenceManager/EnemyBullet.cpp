@@ -1,5 +1,6 @@
 #include "EnemyBullet.h"
 #include "Sophia.h"
+#include "Sound.h"
 
 CEnemyBullet::~CEnemyBullet()
 {
@@ -30,7 +31,11 @@ void CEnemyBullet::CheckCollisionWithPlayer(vector<LPGAMEOBJECT>* coObjects)
 		{
 			isColideUsingAABB = true;
 			CSophia* sophia = dynamic_cast<CSophia*>(ListEnemy.at(i));
+			
+			if (sophia->GetUntouchable() == 1 || sophia->GetisInjured())
+				continue;
 			sophia->SetHealthWithBullet(bulletDame);
+			Sound::GetInstance()->Play("PlayerInjured", 0, 1);
 			/*this->isMove = false;*/
 			this->isDone = true;
 		}
