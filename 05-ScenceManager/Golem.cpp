@@ -42,7 +42,7 @@ void CGolem::GetBoundingBox(float& left, float& top, float& right, float& bottom
 
 void CGolem::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	CGameObject::Update(dt, coObjects);
+	Enemy::Update(dt, coObjects);
 	vy += 0.0005f * dt;
 	//DebugOut(L"golumnvX: %f, golumnvY: %f\n", vx, vy);
 
@@ -146,7 +146,7 @@ void CGolem::Render()
 	int ani = GOLEM_ANI_WALKING_RIGHT;
 
 	if (isDoneDeath) return;
-	if (hp == 0) isDeath = true;
+	if (hp <= 0) isDeath = true;
 
 	if (vx > 0) ani = GOLEM_ANI_WALKING_RIGHT;
 	else if (vx <= 0) ani = GOLEM_ANI_WALKING_LEFT;

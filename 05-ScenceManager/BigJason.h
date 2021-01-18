@@ -48,8 +48,8 @@ protected:
 
 	float start_x;			// initial position of BigJason at scene
 	float start_y;
-
-	int health = 8;	// Máu nhân vật
+	int energy=7;
+	int health = 4;	// Máu nhân vật
 	vector<BulletObject*> p_bullet_list;
 public:
 	CBigJason();

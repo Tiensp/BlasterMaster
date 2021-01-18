@@ -182,6 +182,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 
 		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
 		obj->SetAnimationSet(ani_set);
+		AllObjs.push_back(obj);
 		DebugOut(L"[INFO] SOPHIA object created!\n");
 	}
 	break;
@@ -201,6 +202,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 
 		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
 		obj->SetAnimationSet(ani_set);
+		AllObjs.push_back(obj);
 		DebugOut(L"[INFO] JASON object created!\n");
 	}
 	break;
@@ -220,6 +222,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 
 		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
 		obj->SetAnimationSet(ani_set);
+		AllObjs.push_back(obj);
 		DebugOut(L"[INFO] BIG JASON object created!\n");
 	}
 	break;
@@ -334,7 +337,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj->SetPosition(x, y);
 		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
 		obj->SetAnimationSet(ani_set);
-		listEnemies.push_back(obj);
+	/*	AllObjs.push_back(obj);*/
 		break;
 	}
 
@@ -518,7 +521,11 @@ void CPlayScene::Load()
 
 	//Thiết lập trạng thái, vị trí khởi đầu,... cho đối tượng đang active
 	if (_ACTIVE[SOPHIA])
+	{
 		sophia->Reset();
+		grid->AddObject(sophia);
+	}
+		
 	else if (_ACTIVE[JASON])
 		jason->Reset();
 	else if (_ACTIVE[BIG_JASON])
@@ -559,26 +566,8 @@ void CPlayScene::Update(DWORD dt)
 			}
 		}
 
-		//DebugOut(L"size %d\n", listBullet.size());
-
-		//listBullet = sophia->Get_Bullet_List();
-
-
-		//for (int i = 0; i < listBullet.size(); i++)
-		//{
-		//	listBullet[i]->Update(dt, &coObjects);
-		//	
-		//}
-		/*for (int i = 0; i < bulletFloater.size(); i++)
-		{
-			listBullet[i]->Update(dt, &coObjects);
-
-		}*/
-
-
-
-		// skip the rest if scene was already unloaded (Sophia::Update might trigger PlayScene::Unload)
-		//if (sophia == NULL && jason == NULL && bigJason == NULL) return;
+	// skip the rest if scene was already unloaded (Sophia::Update might trigger PlayScene::Unload)
+	//if (sophia == NULL && jason == NULL && bigJason == NULL) return;
 
 		// Update camera to follow player
 		camera->Update();

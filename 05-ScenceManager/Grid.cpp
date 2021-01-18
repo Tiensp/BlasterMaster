@@ -1,4 +1,6 @@
 #include "Grid.h"
+#include "Item.h"
+#include "Sophia.h"
 
 
 CGrid::CGrid(int map_w, int map_h)
@@ -132,7 +134,7 @@ vector<LPGAMEOBJECT> CGrid::GetActiveObj()
 			for (int index = 0; index < Cell[i][j].size(); index++)
 			{
 				obj = Cell[i][j].at(index);
-				if (dynamic_cast<Enemy*>(obj))
+				if (dynamic_cast<Enemy*>(obj)|| dynamic_cast<CSophia*>(obj) )
 				{
 					if (!camera->isContain(D3DXVECTOR2(obj->x, obj->y)))
 						continue;

@@ -44,7 +44,7 @@ void CShip::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 
 	//DebugOut(L"golumnvX: %f, golumnvY: %f\n", vx, vy);
-	CGameObject::Update(dt, coObjects);
+	Enemy::Update(dt, coObjects);
 	//DebugOut(L"golumnvX: %f, golumnvY: %f\n", vx, vy);
 
 	//DebugOut(L"golumnvX: %f, golumnvY: %f\n", target->nx, this->nx);
@@ -202,7 +202,7 @@ void CShip::Render()
 	int ani = SHIP_ANI_WALKING_LEFT;
 
 	if (isDoneDeath) return;
-	if (hp == 0) isDeath = true;
+	if (hp <= 0) isDeath = true;
 
 	if (isDeath)
 	{

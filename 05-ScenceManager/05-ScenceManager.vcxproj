@@ -135,8 +135,10 @@
     <ClCompile Include="BulletShip.cpp" />
     <ClCompile Include="BulletSkull.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="CannonBullet.cpp" />
     <ClCompile Include="Cannons.cpp" />
     <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="EnemyBullet.cpp" />
     <ClCompile Include="Eyeballs.cpp" />
     <ClCompile Include="Floaters.cpp" />
     <ClCompile Include="FollowBullet.cpp" />
@@ -164,6 +166,7 @@
     <ClCompile Include="Ship.cpp" />
     <ClCompile Include="Skulls.cpp" />
     <ClCompile Include="SophiaBullet.cpp" />
+    <ClCompile Include="Sound.cpp" />
     <ClCompile Include="StateCRAWL.cpp" />
     <ClCompile Include="StateFALL.cpp" />
     <ClCompile Include="StateFALLGunUP.cpp" />
@@ -207,9 +210,11 @@
     <ClInclude Include="BulletShip.h" />
     <ClInclude Include="BulletSkull.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="CannonBullet.h" />
     <ClInclude Include="Cannons.h" />
     <ClInclude Include="Domes.h" />
     <ClInclude Include="Enemy.h" />
+    <ClInclude Include="EnemyBullet.h" />
     <ClInclude Include="Eyeballs.h" />
     <ClInclude Include="Floaters.h" />
     <ClInclude Include="FollowBullet.h" />
@@ -237,6 +242,7 @@
     <ClInclude Include="Skulls.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="SophiaBullet.h" />
+    <ClInclude Include="Sound.h" />
     <ClInclude Include="StateCRAWL.h" />
     <ClInclude Include="StateFALL.h" />
     <ClInclude Include="StateFALLGunUP.h" />
@@ -280,6 +286,5 @@
     <Text Include="text\Setting.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
-  <ImportGroup Label="ExtensionTargets">
-  </ImportGroup>
+  <ImportGroup Label="ExtensionTargets" />
 </Project>

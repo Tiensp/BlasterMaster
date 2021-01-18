@@ -64,10 +64,10 @@ public:
 	int width;
 	int height;
 
-	int hp;
+	
 
 	bool isDone = false;
-	bool isDeath;
+	
 
 
 	int state;
@@ -97,9 +97,8 @@ public:
 
 	void SetAnimationSet(LPANIMATION_SET ani_set) { animation_set = ani_set; }
 
-	void SetHp(int dameBullet);
-	int Get_Hp() { return hp; }
-
+	
+	/*int Get_Hp() { return hp; }*/
 	bool IsCollidingObject(CGameObject* Obj);
 	LPCOLLISIONEVENT SweptAABBEx(LPGAMEOBJECT coO);
 	void CalcPotentialCollisions(vector<LPGAMEOBJECT> *coObjects, vector<LPCOLLISIONEVENT> &coEvents);

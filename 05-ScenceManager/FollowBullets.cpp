@@ -26,7 +26,7 @@ FollowBullets::~FollowBullets()
 
 void FollowBullets::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	CGameObject::Update(dt, coObjects);
+	BulletObject::Update(dt, coObjects);
 
 	for (int i = 0; i < listFollowBullet.size(); i++)
 	{

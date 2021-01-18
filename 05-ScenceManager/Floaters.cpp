@@ -42,16 +42,7 @@ void CFloaters::GetBoundingBox(float& left, float& top, float& right, float& bot
 
 void CFloaters::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-
-	CGameObject::Update(dt, coObjects);
-	//khởi tạo đạn cho con fullet, để trong hàm Atack
-	
-	/*if (p_bullet==NULL)
-	{
-		p_bullet = new BulletFloaters(x, y);
-		p_bullet->SetPosition(this->x + width + 15, this->y + height * 0.3);
-		p_bullet->Set_IsMove(true);
-	}*/
+	Enemy::Update(dt, coObjects);
 	Attack();
 
 	if(p_bullet != NULL)
@@ -225,7 +216,7 @@ void CFloaters::Render()
 	int ani = FLOATER_ANI_WALKING_LEFT_UP;
 
 	if (isDoneDeath) return;
-	if (hp == 0) isDeath = true;
+	if (hp <= 0) isDeath = true;
 	
 	if (isAttack)
 	{

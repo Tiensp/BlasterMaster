@@ -97,6 +97,15 @@
     <Filter Include="Framework\GameObject\Item">
       <UniqueIdentifier>{493282e1-84e4-4066-af06-f73c3b46a572}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Framework\GameObject\BulletObject\PlayerBullet">
+      <UniqueIdentifier>{1738968d-0d5c-4c38-9c71-f7b0ce3d69e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\GameObject\BulletObject\EnemyBullet">
+      <UniqueIdentifier>{52b2a088-9935-4a86-b9db-4b2f581dcbfe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\Game\Sound">
+      <UniqueIdentifier>{a701a5d1-bef8-48fe-b5cc-e133c3973674}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Framework\GameObject\State Machine\State OPEN Cabin">
       <UniqueIdentifier>{b9fa223a-f81e-4f13-a89c-3a62861efc3f}</UniqueIdentifier>
     </Filter>
@@ -228,12 +237,6 @@
     <ClCompile Include="Skulls.cpp">
       <Filter>Framework\GameObject\Enemy</Filter>
     </ClCompile>
-    <ClCompile Include="BulletObject.cpp">
-      <Filter>Framework\GameObject\BulletObject</Filter>
-    </ClCompile>
-    <ClCompile Include="BulletFloaters.cpp">
-      <Filter>Framework\GameObject\BulletObject</Filter>
-    </ClCompile>
     <ClCompile Include="Enemy.cpp">
       <Filter>Framework\GameObject\Enemy</Filter>
     </ClCompile>
@@ -255,9 +258,6 @@
     <ClCompile Include="MiniScene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SophiaBullet.cpp">
-      <Filter>Framework\GameObject\BulletObject</Filter>
-    </ClCompile>
     <ClCompile Include="Eyeballs.cpp">
       <Filter>Framework\GameObject\Enemy</Filter>
     </ClCompile>
@@ -267,26 +267,8 @@
     <ClCompile Include="Cannons.cpp">
       <Filter>Framework\GameObject\Enemy</Filter>
     </ClCompile>
-    <ClCompile Include="ThreeBullet.cpp">
-      <Filter>Framework\GameObject\BulletObject</Filter>
-    </ClCompile>
-    <ClCompile Include="ThunderBullet.cpp">
-      <Filter>Framework\GameObject\BulletObject</Filter>
-    </ClCompile>
-    <ClCompile Include="JasonBullet.cpp">
-      <Filter>Framework\GameObject\BulletObject</Filter>
-    </ClCompile>
     <ClCompile Include="BigJason.cpp">
       <Filter>Framework\GameObject\Player</Filter>
-    </ClCompile>
-    <ClCompile Include="BigJasonBullet.cpp">
-      <Filter>Framework\GameObject\BulletObject</Filter>
-    </ClCompile>
-    <ClCompile Include="FollowBullet.cpp">
-      <Filter>Framework\GameObject\BulletObject</Filter>
-    </ClCompile>
-    <ClCompile Include="FollowBullets.cpp">
-      <Filter>Framework\GameObject\BulletObject</Filter>
     </ClCompile>
     <ClCompile Include="Item.cpp">
       <Filter>Source Files</Filter>
@@ -327,8 +309,50 @@
     <ClCompile Include="Ladder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="StateFALLGunUP.cpp">
-      <Filter>Framework\GameObject\State Machine\State FALL Gun UP</Filter>
+    <ClCompile Include="BulletEyeball.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BulletShip.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BulletSkull.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BigJasonBullet.cpp">
+      <Filter>Framework\GameObject\BulletObject\PlayerBullet</Filter>
+    </ClCompile>
+    <ClCompile Include="BulletObject.cpp">
+      <Filter>Framework\GameObject\BulletObject\PlayerBullet</Filter>
+    </ClCompile>
+    <ClCompile Include="FollowBullet.cpp">
+      <Filter>Framework\GameObject\BulletObject\PlayerBullet</Filter>
+    </ClCompile>
+    <ClCompile Include="FollowBullets.cpp">
+      <Filter>Framework\GameObject\BulletObject\PlayerBullet</Filter>
+    </ClCompile>
+    <ClCompile Include="JasonBullet.cpp">
+      <Filter>Framework\GameObject\BulletObject\PlayerBullet</Filter>
+    </ClCompile>
+    <ClCompile Include="SophiaBullet.cpp">
+      <Filter>Framework\GameObject\BulletObject\PlayerBullet</Filter>
+    </ClCompile>
+    <ClCompile Include="ThreeBullet.cpp">
+      <Filter>Framework\GameObject\BulletObject\PlayerBullet</Filter>
+    </ClCompile>
+    <ClCompile Include="ThunderBullet.cpp">
+      <Filter>Framework\GameObject\BulletObject\PlayerBullet</Filter>
+    </ClCompile>
+    <ClCompile Include="BulletFloaters.cpp">
+      <Filter>Framework\GameObject\BulletObject\EnemyBullet</Filter>
+    </ClCompile>
+    <ClCompile Include="CannonBullet.cpp">
+      <Filter>Framework\GameObject\BulletObject\EnemyBullet</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyBullet.cpp">
+      <Filter>Framework\GameObject\BulletObject\EnemyBullet</Filter>
+    </ClCompile>
+    <ClCompile Include="Sound.cpp">
+      <Filter>Framework</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -443,12 +467,6 @@
     <ClInclude Include="Worms.h">
       <Filter>Framework\GameObject\Enemy</Filter>
     </ClInclude>
-    <ClInclude Include="BulletObject.h">
-      <Filter>Framework\GameObject\BulletObject</Filter>
-    </ClInclude>
-    <ClInclude Include="BulletFloaters.h">
-      <Filter>Framework\GameObject\BulletObject</Filter>
-    </ClInclude>
     <ClInclude Include="Enemy.h">
       <Filter>Framework\GameObject\Enemy</Filter>
     </ClInclude>
@@ -479,9 +497,6 @@
     <ClInclude Include="Ship.h">
       <Filter>Framework\GameObject\Enemy</Filter>
     </ClInclude>
-    <ClInclude Include="SophiaBullet.h">
-      <Filter>Framework\GameObject\BulletObject</Filter>
-    </ClInclude>
     <ClInclude Include="Golem.h">
       <Filter>Framework\GameObject\Enemy</Filter>
     </ClInclude>
@@ -502,24 +517,6 @@
     </ClInclude>
     <ClInclude Include="Cannons.h">
       <Filter>Framework\GameObject\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="ThreeBullet.h">
-      <Filter>Framework\GameObject\BulletObject</Filter>
-    </ClInclude>
-    <ClInclude Include="ThunderBullet.h">
-      <Filter>Framework\GameObject\BulletObject</Filter>
-    </ClInclude>
-    <ClInclude Include="JasonBullet.h">
-      <Filter>Framework\GameObject\BulletObject</Filter>
-    </ClInclude>
-    <ClInclude Include="BigJasonBullet.h">
-      <Filter>Framework\GameObject\BulletObject</Filter>
-    </ClInclude>
-    <ClInclude Include="FollowBullet.h">
-      <Filter>Framework\GameObject\BulletObject</Filter>
-    </ClInclude>
-    <ClInclude Include="FollowBullets.h">
-      <Filter>Framework\GameObject\BulletObject</Filter>
     </ClInclude>
     <ClInclude Include="Item.h">
       <Filter>Header Files</Filter>
@@ -548,15 +545,65 @@
     <ClInclude Include="BulletSkull.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="BigJasonBullet.h">
+      <Filter>Framework\GameObject\BulletObject\PlayerBullet</Filter>
+    </ClInclude>
+    <ClInclude Include="BulletObject.h">
+      <Filter>Framework\GameObject\BulletObject\PlayerBullet</Filter>
+    </ClInclude>
+    <ClInclude Include="FollowBullet.h">
+      <Filter>Framework\GameObject\BulletObject\PlayerBullet</Filter>
+    </ClInclude>
+    <ClInclude Include="FollowBullets.h">
+      <Filter>Framework\GameObject\BulletObject\PlayerBullet</Filter>
+    </ClInclude>
+    <ClInclude Include="JasonBullet.h">
+      <Filter>Framework\GameObject\BulletObject\PlayerBullet</Filter>
+    </ClInclude>
+    <ClInclude Include="SophiaBullet.h">
+      <Filter>Framework\GameObject\BulletObject\PlayerBullet</Filter>
+    <ClInclude Include="Lava.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ThornOVERWORLD.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ThornOVERHEAD.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RockOVH.h">
+      <Filter>Header Files</Filter>
+    <ClInclude Include="ThreeBullet.h">
+      <Filter>Framework\GameObject\BulletObject\PlayerBullet</Filter>
+    </ClInclude>
+    <ClInclude Include="BulletEyeball.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BulletShip.h">
+      <Filter>Header Files</Filter>
+    <ClInclude Include="ThunderBullet.h">
+      <Filter>Framework\GameObject\BulletObject\PlayerBullet</Filter>
+    </ClInclude>
+    <ClInclude Include="BulletFloaters.h">
+      <Filter>Framework\GameObject\BulletObject\EnemyBullet</Filter>
+    <ClInclude Include="BulletSkull.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="StateOPENCabin.h">
       <Filter>Framework\GameObject\State Machine\State OPEN Cabin</Filter>
     </ClInclude>
     <ClInclude Include="Intro.h">
       <Filter>Header Files</Filter>
+    <ClInclude Include="CannonBullet.h">
+      <Filter>Framework\GameObject\BulletObject\EnemyBullet</Filter>
     </ClInclude>
+    <ClInclude Include="EnemyBullet.h">
+      <Filter>Framework\GameObject\BulletObject\EnemyBullet</Filter>
     <ClInclude Include="Font.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Sound.h">
+      <Filter>Framework</Filter>
     <ClInclude Include="Ladder.h">
       <Filter>Header Files</Filter>
     </ClInclude>

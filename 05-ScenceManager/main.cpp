@@ -152,15 +152,15 @@ int Run()
 		// dt: the time between (beginning of last frame) and now
 		// this frame: the frame we are about to render
 		DWORD dt = now - frameStart;
-
+		
 		if (dt >= tickPerFrame)
 		{
 			frameStart = now;
-
+		
 			game->ProcessKeyboard();
 			
 			Update(dt);
-			DebugOut(L"FPS: %f\n", 1000.0 / dt);
+		/*	DebugOut(L"FPS: %f\n", 1000.0 / dt);*/
 			Render();
 		}
 		else

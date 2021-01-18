@@ -43,7 +43,7 @@ void CWorm::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 
 void CWorm::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	CGameObject::Update(dt, coObjects);
+	Enemy::Update(dt, coObjects);
 	vy += 0.0005f * dt;
 	//DebugOut(L"golumnvX: %f, golumnvY: %f\n", vx, vy);
 
@@ -140,7 +140,7 @@ void CWorm::Render()
 	int ani = WORM_ANI_WALKING_RIGHT;
 
 	if (isDoneDeath) return;
-	if (hp == 0) isDeath = true;
+	if (hp <= 0) isDeath = true;
 
 	if (isDeath)
 	{

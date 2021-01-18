@@ -119,11 +119,13 @@ public:
 	
 	void SetIsFalling(bool fall) { isFalling = fall; }
 	bool GetIsFalling() { return isFalling; }
+	int GetUntouchable() { return untouchable; }
 
 	void SetIsInjured(bool _injured) { isInjured = _injured; }
 	bool GetIsInjured() { return isInjured; }
 
 	void SetHealth(int hp) { health = hp; }
+	void SetHealthWithBullet(int dame) { health -= dame; }
 	int GetHealth() { return health; }
 
 	void SetIsAutoGo(bool autoGo) { isAutoGo = autoGo; }
