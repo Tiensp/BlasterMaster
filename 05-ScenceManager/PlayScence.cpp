@@ -179,7 +179,6 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		sophia->SetStartPos(x, y);
 		bool active = atoi(tokens[4].c_str());
 		_ACTIVE[SOPHIA] = active;
-
 		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
 		obj->SetAnimationSet(ani_set);
 		AllObjs.push_back(obj);
@@ -516,7 +515,8 @@ void CPlayScene::Load()
 	grid = new CGrid(map->GetMapWidth(), map->GetMapHeight());
 	for (int i = 0; i < AllObjs.size(); i++)
 	{
-		grid->AddObject(AllObjs.at(i));
+		if (!AllObjs.at(i)->objTag == PLAYER)
+			grid->AddObject(AllObjs.at(i));
 	}
 
 	//Thiết lập trạng thái, vị trí khởi đầu,... cho đối tượng đang active
@@ -527,9 +527,15 @@ void CPlayScene::Load()
 	}
 		
 	else if (_ACTIVE[JASON])
+	{
 		jason->Reset();
+		grid->AddObject(jason);
+	}
 	else if (_ACTIVE[BIG_JASON])
+	{
 		bigJason->Reset();
+		grid->AddObject(bigJason);
+	}
 	//Sau khi active và khởi tạo xong xong đối tượng player thì khởi tạo thanh HUD 
 	hud = new HUD();
 
@@ -560,7 +566,7 @@ void CPlayScene::Update(DWORD dt)
 		for (int i = 0; i < coObjects.size(); i++)
 		{
 			if (!dynamic_cast<CBrick*>(coObjects.at(i)) && !dynamic_cast<CPortal*>(coObjects.at(i)) && 
-				!dynamic_cast<CLadder*>(coObjects.at(i)))
+				!dynamic_cast<CLadder*>(coObjects.at(i)) && coObjects.at(i)->objTag != PLAYER)
 			{
 				coObjects.at(i)->Update(dt, &coObjects);
 			}

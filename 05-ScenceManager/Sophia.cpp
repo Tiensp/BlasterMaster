@@ -50,7 +50,7 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		CGameObject::Update(dt);
 
 		vy += SOPHIA_GRAVITY * dt;
-	/*	DebugOut(L"size: %d\n", list_enemy_contain.size());*/
+	
 		if (isSetFollowBullet)
 		{
 			BulletObject* p_bullet = new BulletObject();
@@ -104,7 +104,7 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		currentState->Update();
 	else
 		AutoGo(autoGoDes);
-	
+	DebugOut(L"Van toc: %d\n", vx);
 }
 
 void CSophia::Render()
