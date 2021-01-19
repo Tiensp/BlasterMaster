@@ -1,4 +1,4 @@
-#include "StateFALLGunUP.h"
+﻿#include "StateFALLGunUP.h"
 #include "StateFALL.h"
 #include "StateFALLTurn.h"
 #include "StateTURN.h"
@@ -34,6 +34,26 @@ StateFALLGunUP::StateFALLGunUP()
 void StateFALLGunUP::Update()
 {
 	CSophia* sophia = INSTANCE_SOPHIA;
+
+#pragma region Thay đổi x/y_render
+	// Xem lại chú thích y_render ở StateRAISEDGun
+	if (sophia->nx > 0)
+		sophia->x_render = sophia->x - 4;
+	else
+		sophia->x_render = sophia->x + 3;
+
+	if (sophia->currentAni->GetCurrentFrame() > -1)
+	{
+		RECT r = sophia->currentAni->GetFrameRect(sophia->currentAni->GetCurrentFrame());
+		sophia->y_render = sophia->y + SOPHIA_SMALL_BBOX_HEIGHT - (r.bottom - r.top);
+	}
+	else
+	{
+		RECT r = sophia->currentAni->GetFrameRect(0);
+		sophia->y_render = sophia->y + SOPHIA_SMALL_BBOX_HEIGHT - (r.bottom - r.top);
+	}
+#pragma endregion
+
 	if (sophia->vy == 0)
 	{
 		if (!sophia->GetIsGunUp())

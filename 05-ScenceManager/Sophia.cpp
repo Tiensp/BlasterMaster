@@ -216,7 +216,7 @@ void CSophia::OnKeyDown(int keycode)
 				SwitchState(new StateJUMPGunUP(), NORMAL_STATE);
 				currentAni->ResetCurrentFrame();
 			}
-			
+			Sound::GetInstance()->Play("PlayerJump", 0, 1);
 		}
 		break;
 	case DIK_Z:
@@ -337,7 +337,7 @@ void CSophia::SetStartPos(float startx, float starty)
 /// </summary>
 void CSophia::CheckCollisionWithBrick(vector<LPGAMEOBJECT>* coObjects)
 {
-
+/*
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
 	bool isColideUsingAABB = false;
@@ -349,32 +349,173 @@ void CSophia::CheckCollisionWithBrick(vector<LPGAMEOBJECT>* coObjects)
 		if (dynamic_cast<CBrick*>(coObjects->at(i)))
 			ListBrick.push_back(coObjects->at(i));
 
-	CalcPotentialCollisions(&ListBrick, coEvents);
+	//for (int i = 0; i < ListBrick.size(); i++)
+	//{
+	//	float brL, brT, brR, brB, plL, plT, plR, plB;
+	//	ListBrick.at(i)->GetBoundingBox(brL, brT, brR, brB);
+	//	GetBoundingBox(plL, plT, plR, plB);
+	//	isColideUsingAABB =
+	//		CGame::GetInstance()->IsCollidingAABB(plL, plT, plR, plB, brL, brT, brR, brB);
+	//	
+	//	if (isColideUsingAABB == true) 
+	//	{
+	//		if (plT < brT)	//TOP
+	//		{
+	//			if (plL < brL) //TOP LEFT
+	//			{
+	//				x = brL - SOPHIA_SMALL_BBOX_WIDTH - 0.4f;
+	//			}
+	//			else if (plR < brR) //TOP MID
+	//			{
+	//				y = brT - SOPHIA_SMALL_BBOX_HEIGHT - 0.4f;
+	//			}
+	//			else  //TOP RIGHT
+	//			{
+	//				x = brR + 0.4f;
+	//			}
 
-	if (coEvents.size() == 0)
+	//		}
+	//		else if (brT < plT && plB > brB)  //BOT
+	//		{
+	//			if (plL < brL) //BOT LEFT
+	//			{
+	//				x = brL - SOPHIA_SMALL_BBOX_WIDTH - 0.4f;
+	//			}
+	//			else if (plR < brR) //BOT MID
+	//			{
+	//				y = brB + 0.4f;
+	//			}
+	//			else  //BOT RIGHT
+	//			{
+	//				x = brR + 0.4f;
+	//			}
+	//		}
+	//		else if (plL < brL)  //LEFT
+	//		{
+	//			x = brL - SOPHIA_SMALL_BBOX_WIDTH - 0.4f;
+	//		}
+	//		else if (plR < brR) //MID
+	//		{
+	//			//do nothing
+	//		}
+	//		else  //RIGHR
+	//		{
+	//			x = brR + 0.4f;
+	//		}
+
+
+	//	}
+	//
+	//}
+		
+	if (isColideUsingAABB != true)
 	{
-		x += dx;
-		y += dy;
+		CalcPotentialCollisions(&ListBrick, coEvents);
+
+		if (coEvents.size() == 0)
+		{
+			x += dx;
+			y += dy;
+		}
+		else
+		{
+			float min_tx, min_ty, nx = 0, ny;
+			float rdx = 0;
+			float rdy = 0;
+
+			FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
+
+			if (nx != 0) vx = 0;
+			if (ny != 0) vy = 0;
+			LPCOLLISIONEVENT e = coEventsResult[0];
+			x += min_tx * dx + nx * 0.4f;
+			y += min_ty * dy + ny * 0.4f;
+
+			if (e->ny < 0)
+				lastColliBrick_y = e->obj->y;
+
+		}
 	}
-	else
+	*/
+vector<LPCOLLISIONEVENT> coEvents;
+vector<LPCOLLISIONEVENT> coEventsResult;
+
+coEvents.clear();
+CalcPotentialCollisions(coObjects, coEvents);
+
+if (coEvents.size() == 0)  
+{
+	x += dx;
+	y += dy;
+}
+else //có va chạm
+{
+	float min_tx, min_ty, nx = 0, ny = 0;
+	float rdx = 0;
+	float rdy = 0;
+
+	// TODO: This is a very ugly designed function!!!!
+	FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);  // sắp xếp lại các sự kiện va chạm đầu tiên theo trục x, y 
+
+	// block every object first!
 	{
-		float min_tx, min_ty, nx = 0, ny;
-		float rdx = 0;
-		float rdy = 0;
-
-		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
-
 		if (nx != 0) vx = 0;
 		if (ny != 0) vy = 0;
-		LPCOLLISIONEVENT e = coEventsResult[0];
-		x += min_tx * dx + nx * 0.4f;
-		y += min_ty * dy + ny * 0.4f;
+		for (UINT i = 0; i < coEventsResult.size(); i++)
+		{
+			LPCOLLISIONEVENT e = coEventsResult[i];
 
-		if (e->ny < 0)
-			lastColliBrick_y = e->obj->y;
-		
+			if (dynamic_cast<CBrick*>(e->obj)) // if e->obj is Goomba 
+			{
+
+				CBrick* brick = dynamic_cast<CBrick*>(e->obj);
+
+				// jump on top >> kill Goomba and deflect a bit 
+				/*if (e->nx != 0)
+				{
+					if (e->nx > 0)
+					{
+						if (this->ny > 0)
+						{
+						}
+						else if (this->ny < 0)
+						{
+						}
+					}
+					else if (e->nx < 0)
+					{
+						if (this->ny > 0)
+						{
+						}
+						else if (this->ny < 0)
+						{
+						}
+					}
+				}
+				else if (e->ny != 0)
+				{
+					if (e->ny > 0)
+					{
+
+					}
+					else if (e->ny < 0)
+					{
+
+					}
+				}*/
+
+				x += min_tx * dx + nx * 0.4f;
+				//y += min_ty * dy + ny * 0.4f;
+				if (e->ny < 0)
+					lastColliBrick_y = e->obj->y;
+			}
+			else
+			{
+				x += dx;
+			}
+		}
 	}
-
+}
 }
 
 /// <summary>
@@ -568,22 +709,42 @@ void CSophia::CheckCollisionWithEnemy(vector<LPGAMEOBJECT>* coObjects)
 
 void CSophia::GetBoundingBox(float &left, float &top, float &right, float &bottom)
 {
-
-	if (isRaisedGun || isGunUp)
+	/*if (currentAni->GetCurrentFrame() > -1)
 	{
-		left = x;
-		top = y - SOPHIA_BIG_BBOX_HEIGHT + SOPHIA_SMALL_BBOX_HEIGHT;
-		right = x + SOPHIA_BIG_BBOX_WIDTH;
-		bottom = top + SOPHIA_BIG_BBOX_HEIGHT;
-		
+		RECT r = currentAni->GetFrameRect(currentAni->GetCurrentFrame());
+		if (isGunUp)
+		{
+			if (nx > 0)
+				left = x - 4;
+			else
+				left = x + 3;
+		}
+		else
+			left = x;
+		top = y + SOPHIA_SMALL_BBOX_HEIGHT - (r.bottom - r.top);
+		right = left + (r.right - r.left);
+		bottom = top + (r.bottom - r.top);
 	}
 	else
 	{
-		left = x;
-		top = y;
-		right = x + SOPHIA_SMALL_BBOX_WIDTH;
-		bottom = y + SOPHIA_SMALL_BBOX_HEIGHT;
-	}
+		RECT r = currentAni->GetFrameRect(0);
+		if (isGunUp)
+		{
+			if (nx > 0)
+				left = x - 4;
+			else
+				left = x + 3;
+		}
+		else
+			left = x;
+		top = y + SOPHIA_SMALL_BBOX_HEIGHT - (r.bottom - r.top);
+		right = left + (r.right - r.left);
+		bottom = top + (r.bottom - r.top);
+	}*/
+	left = x;
+	top = y;
+	right = left + SOPHIA_SMALL_BBOX_WIDTH;
+	bottom = top + SOPHIA_SMALL_BBOX_HEIGHT;
 }
 
 

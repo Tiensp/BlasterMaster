@@ -505,7 +505,7 @@ void CPlayScene::Load()
 	DebugOut(L"[INFO] Done loading scene resources %s\n", sceneFilePath);
 	
 	// Khởi tạo camera
-	currentMiniScene = 0;
+	currentMiniScene = 8;
 	MiniScene* miniScene = listScene.at(currentMiniScene);
 	camera = CCamera::GetInstance();
 	camera->SetCamBound(miniScene->x, miniScene->y, miniScene->width, miniScene->height);
