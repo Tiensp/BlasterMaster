@@ -112,6 +112,9 @@
     <Filter Include="Framework\GameObject\State Machine\State FALL Gun UP">
       <UniqueIdentifier>{0b3851a1-228c-45de-87e3-0f3d4c133e14}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Framework\GameObject\Boss">
+      <UniqueIdentifier>{411666c7-505c-4291-b391-b80ef2ecdb15}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Brick.cpp">
@@ -307,6 +310,7 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Ladder.cpp">
+    <ClCompile Include="Lava.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="BulletEyeball.cpp">
@@ -353,6 +357,21 @@
     </ClCompile>
     <ClCompile Include="Sound.cpp">
       <Filter>Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="Boss.cpp">
+      <Filter>Framework\GameObject\Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="BulletEyeball.cpp">
+      <Filter>Framework\GameObject\BulletObject</Filter>
+    </ClCompile>
+    <ClCompile Include="BulletShip.cpp">
+      <Filter>Framework\GameObject\BulletObject</Filter>
+    </ClCompile>
+    <ClCompile Include="BulletSkull.cpp">
+      <Filter>Framework\GameObject\BulletObject</Filter>
+    </ClCompile>
+    <ClCompile Include="BulletBoss.cpp">
+      <Filter>Framework\GameObject\BulletObject</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -609,6 +628,21 @@
     </ClInclude>
     <ClInclude Include="StateFALLGunUP.h">
       <Filter>Framework\GameObject\State Machine\State FALL Gun UP</Filter>
+    </ClInclude>
+    <ClInclude Include="Boss.h">
+      <Filter>Framework\GameObject\Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="BulletEyeball.h">
+      <Filter>Framework\GameObject\BulletObject</Filter>
+    </ClInclude>
+    <ClInclude Include="BulletShip.h">
+      <Filter>Framework\GameObject\BulletObject</Filter>
+    </ClInclude>
+    <ClInclude Include="BulletSkull.h">
+      <Filter>Framework\GameObject\BulletObject</Filter>
+    </ClInclude>
+    <ClInclude Include="BulletBoss.h">
+      <Filter>Framework\GameObject\BulletObject</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

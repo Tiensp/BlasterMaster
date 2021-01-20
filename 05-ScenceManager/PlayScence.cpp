@@ -53,6 +53,8 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):
 #define OBJECT_TYPE_THORN_OVERHEAD 92
 #define OBJECT_TYPE_ROCK_OVERHEAD 93
 
+#define OBJECT_TYPE_BOSS 100
+
 
 #define OBJECT_TYPE_PORTAL	84
 #define OBJECT_TYPE_SCENE 53
@@ -422,6 +424,15 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		int height = atoi(tokens[6].c_str());
 		MiniScene* miniS = new MiniScene(sceneID, x, y, width, height);
 		listScene.push_back(miniS);
+		break;
+	}
+	case OBJECT_TYPE_BOSS:
+	{
+		obj = new CBoss(x, y, sophia);
+		obj->SetPosition(x, y);
+		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
+		obj->SetAnimationSet(ani_set);
+		AllObjs.push_back(obj);
 		break;
 	}
 	default:
