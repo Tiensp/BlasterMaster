@@ -76,7 +76,7 @@ tex_ID	x	y	scene portal des_scene dir	type	x_des	y_des	ani_set
 
 [MAP]
 #id		pathMatrix			pathTileSet
-1	textures\Map\mapAreaOverhead.txt	textures\Map\mapAreaOverhead.png
+2	textures\Map\mapAreaOverhead.txt	textures\Map\mapAreaOverhead.png
 
 
 

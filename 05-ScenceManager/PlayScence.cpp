@@ -418,7 +418,6 @@ void CPlayScene::Load()
 	camera = CCamera::GetInstance();
 	camera->SetCamBound(miniScene->x, miniScene->y, miniScene->width, miniScene->height);
 	camera->SetPosition(D3DXVECTOR2(miniScene->x, miniScene->y));
-	//camera->SetCamBound(0, 0, map->GetMapWidth(), map->GetMapHeight());
 
 	grid = new CGrid(map->GetMapWidth(), map->GetMapHeight());
 	for (int i = 0; i < AllObjs.size(); i++)
@@ -547,16 +546,14 @@ void CPlayScene::Render()
 */
 void CPlayScene::Unload()
 {
-	for (int i = 0; i < objects.size(); i++)
-		delete objects[i];
-
-	objects.clear();
-	sophia = NULL;
-	jason = NULL;
-	bigJason = NULL;
+	delete map;
 	map = NULL;
+
+	delete camera;
 	camera = NULL;
 
+	delete hud;
+	hud = NULL;
 	DebugOut(L"[INFO] Scene %s unloaded! \n", sceneFilePath);
 }
 
@@ -684,7 +681,7 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 			bigJason->OnKeyDown(KeyCode);
 		}
 	}
-	else
+	else // SELECT BULLET SCREEN
 	{
 		switch (KeyCode)
 		{
