@@ -304,11 +304,20 @@ void CJason::set_bullet_list()
 	}
 }
 
-CJason* INSTANCE_JASON
+CJason* CJason::GetInstance()
 {
 	if (__instance == NULL) {
 		__instance = new CJason();
 	}
 	return __instance;
+}
+
+void CJason::Clear()
+{
+	if (__instance != NULL)
+	{
+		delete __instance;
+		__instance = NULL;
+	}
 }
 

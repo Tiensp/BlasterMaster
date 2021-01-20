@@ -162,6 +162,7 @@ public:
 
 	virtual void GetBoundingBox(float &left, float &top, float &right, float &bottom);
 	static CSophia* GetInstance();
+	void Clear();
 	/* Variable */
 	CState* currentState;
 	CAnimation* currentAni;

@@ -19,6 +19,15 @@ CCamera* CCamera::GetInstance()
 	return __instance;
 }
 
+void CCamera::Clear()
+{
+	if (__instance != NULL)
+	{
+		delete __instance;
+		__instance = NULL;
+	}
+}
+
 CCamera::CCamera(int width, int height)
 {
 	this->width = width;

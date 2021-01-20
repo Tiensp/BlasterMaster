@@ -77,6 +77,7 @@ public:
 
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	static CBigJason* GetInstance();
+	void Clear();
 	/* Variable */
 	CState* currentState;
 	CAnimation* currentAni;

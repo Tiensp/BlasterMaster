@@ -91,6 +91,7 @@ public:
 	vector<BulletObject*> Get_Bullet_List() { return p_bullet_list; }
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	static CJason* GetInstance();
+	void Clear();
 	/* Variable */
 	CState* currentState;
 	CAnimation* currentAni;

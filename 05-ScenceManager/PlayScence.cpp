@@ -431,8 +431,7 @@ void CPlayScene::Load()
 	{
 		sophia->Reset();
 		grid->AddObject(sophia);
-	}
-		
+	}	
 	else if (_ACTIVE[JASON])
 	{
 		jason->Reset();
@@ -549,8 +548,7 @@ void CPlayScene::Unload()
 	delete map;
 	map = NULL;
 
-	delete camera;
-	camera = NULL;
+	camera->Clear();
 
 	delete hud;
 	hud = NULL;
@@ -657,6 +655,15 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 		case DIK_W:
 		{
 			((CPlayScene*)scence)->isSelectBulletScr = true;
+			break;
+		}
+		case DIK_NUMPAD0:
+		{
+			_ACTIVE[SOPHIA] = false;
+			_ACTIVE[JASON] = false;
+			CGame::GetInstance()->SwitchScene(2);
+			((CPlayScene*)scence)->currentMiniScene = 0;
+			
 			break;
 		}
 		}

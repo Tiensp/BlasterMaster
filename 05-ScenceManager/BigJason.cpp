@@ -247,6 +247,15 @@ void CBigJason::GetBoundingBox(float& left, float& top, float& right, float& bot
 	bottom = y + BIG_JASON_BIG_BBOX_HEIGHT;
 }
 
+void CBigJason::Clear()
+{
+	if (__instance != NULL)
+	{
+		delete __instance;
+		__instance = NULL;
+	}
+}
+
 
 
 void CBigJason::SwitchState(CState* state)
@@ -302,7 +311,7 @@ void CBigJason::Reset()
 	SetSpeed(0, 0);
 }
 
-CBigJason* INSTANCE_BIGJASON
+CBigJason* CBigJason::GetInstance()
 {
 	if (__instance == NULL) {
 		__instance = new CBigJason();

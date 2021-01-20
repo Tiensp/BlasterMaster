@@ -7,7 +7,7 @@
 # Jason
 #1	0	0	1	0
 # BigJason
-2	0	0	2	1
+2	110	1875	2	1
 # Golem
 #4	1300	1120	4
 #4	1100	1120	4
@@ -45,7 +45,7 @@
 #80	1400	1160	80	4
 
 #BOSS
-100	150	2930	100	
+#100	110	1785	100	
 
 # BRICK 
 # --- platform (hint: I created the list using Excel!) ----
@@ -68,11 +68,11 @@
 
 
 # --- SCENE PORTAL ----
-tex_ID	x	y	scene portal des_scene dir	type	x_des	y_des	ani_set
+#tex_ID	x	y	scene portal des_scene dir	type	x_des	y_des	ani_set
 
 #======Scene INFO========
 #ID	X	Y	AniSet	SceneID	W	H (Scene không có aniset nên để số linh tinh cho vui thôi)
-53	0	0	50	0	2048	2048
+53	0	1760	50	0	256	288
 
 [MAP]
 #id		pathMatrix			pathTileSet

@@ -882,11 +882,20 @@ int CSophia::Get_Sophia_Normal_bullet()
 	return count;
 }
 
-CSophia* INSTANCE_SOPHIA
+CSophia* CSophia::GetInstance()
 {
 	if (__instance == NULL) {
 		__instance = new CSophia();
 	}
 	return __instance;
+}
+
+void CSophia::Clear()
+{
+	if (__instance != NULL)
+	{
+		delete __instance;
+		__instance = NULL;
+	}
 }
 

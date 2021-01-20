@@ -21,6 +21,7 @@ class CCamera
 
 public:
 	static CCamera* GetInstance();
+	void Clear();
 	CCamera(int w, int h);
 	~CCamera();
 	D3DXVECTOR2 World2Cam(const D3DXVECTOR2& pos);
