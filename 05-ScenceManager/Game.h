@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <unordered_map>
 
@@ -43,9 +43,13 @@ class CGame
 
 	unordered_map<int, LPSCENE> scenes;
 	int current_scene; 
-
+	/* Các hàm parseSection dùng đọc file */
 	void _ParseSection_SETTINGS(string line);
 	void _ParseSection_SCENES(string line);
+	void _ParseSection_TEXTURES(string line);
+	void _ParseSection_SPRITES(string line);
+	void _ParseSection_ANIMATIONS(string line);
+	void _ParseSection_ANIMATION_SETS(string line);
 
 public:
 	void InitKeyboard();
@@ -58,6 +62,7 @@ public:
 	void ProcessKeyboard();
 	HWND GetHWND() { return hWnd; };
 	void Load(LPCWSTR gameFile);
+	void LoadGameResources(LPCWSTR resourcesFile);
 	void LoadSound();
 	LPSCENE GetCurrentScene() { return scenes[current_scene]; }
 	void SwitchScene(int scene_id);
