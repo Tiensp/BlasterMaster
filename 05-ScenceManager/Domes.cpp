@@ -10,7 +10,7 @@
 #include "Portal.h"
 #include "Brick.h"
 #include "BulletFloaters.h"
-CDomes::CDomes(float x, float y,float boundingHeight, float boundingWight, LPGAMEOBJECT player)
+CDomes::CDomes(float x, float y, float boundingHeight, float boundingWight, LPGAMEOBJECT player, int ItemType)
 {
 	SetState(DOMES_ANI_WALKING_LEFT_UP);
 	this->x = x;
@@ -18,6 +18,15 @@ CDomes::CDomes(float x, float y,float boundingHeight, float boundingWight, LPGAM
 	this->boundingHeigt = boundingHeight;
 	this->boundingWight = boundingWight;
 	this->target = player;
+	if (ItemType == 0)
+	{
+		Item = NULL;
+	}
+	else
+	{
+		Item = new CItem(ItemType);
+
+	}
 
 	hp = 1;
 
@@ -46,6 +55,11 @@ void CDomes::GetBoundingBox(float& left, float& top, float& right, float& bottom
 void CDomes::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	Enemy::Update(dt, coObjects);
+	if (isDeath)
+	{
+		Item->x = this->x;
+		Item->y = this->y;
+	}
 	Atack();
 	if (!isAtack)
 	{
@@ -68,31 +82,31 @@ void CDomes::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		float min_tx, min_ty, nx = 0, ny = 0;
 		float rdx = 0;
 		float rdy = 0;
-		
+
 		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);  // sắp xếp lại các sự kiện va chạm đầu tiên theo trục x, y 
-	
+
 		for (UINT i = 0; i < coEventsResult.size(); i++)
 		{
 			LPCOLLISIONEVENT e = coEventsResult[i];
-		
+
 			if (dynamic_cast<CBrick*>(e->obj)) // if e->obj is Goomba 
 			{
 				isAtack = false;
 				numberCollisionBrick++;
 
-			
+
 				x += min_tx * dx + nx * 0.4f;
 				y += min_ty * dy + ny * 0.4f;
 
 				if (nx != 0) vx = 0;
 				if (ny != 0) vy = 0;
-				
-				CBrick* brick = dynamic_cast<CBrick*>(e->obj); 
 
-				
+				CBrick* brick = dynamic_cast<CBrick*>(e->obj);
 
-				if (e->ny != 0 )
-				{			
+
+
+				if (e->ny != 0)
+				{
 					if (e->ny < 0)
 					{
 						if (this->GetState() == DOMES_ANI_WALKING_DOWN_RIGHT)
@@ -140,17 +154,17 @@ void CDomes::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 							}
 						}
 					}
-											
-						
-					
-					
-				
+
+
+
+
+
 				}
-				else if (e->nx != 0 )
+				else if (e->nx != 0)
 				{
 					if (e->nx > 0)
 					{
-						if (this->GetState()==DOMES_ANI_WALKING_LEFT_UP)
+						if (this->GetState() == DOMES_ANI_WALKING_LEFT_UP)
 						{
 							this->SetState(DOMES_ANI_WALKING_UP_RIGHT);
 						}
@@ -169,9 +183,9 @@ void CDomes::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 								this->SetState(DOMES_ANI_WALKING_DOWN_RIGHT);
 							}
 						}
-						
+
 					}
-					else 
+					else
 					{
 						if (this->GetState() == DOMES_ANI_WALKING_RIGHT_UP)
 						{
@@ -186,13 +200,13 @@ void CDomes::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 							if (this->ny < 0)
 							{
 								this->SetState(DOMES_ANI_WALKING_DOWN_LEFT);
-								
+
 							}
 							else
 							{
 								this->SetState(DOMES_ANI_WALKING_UP_LEFT);
 							}
-						}	
+						}
 					}
 				}
 
@@ -201,15 +215,15 @@ void CDomes::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				rectBrick.top = brick->y;
 				rectBrick.bottom = brick->y + brick->height;
 
-				
 
 
 
-				
+
+
 
 				// jump on top >> kill Goomba and deflect a bit 
-			
-			
+
+
 			}
 			if (e->obj->objTag == ENEMY)
 			{
@@ -311,14 +325,14 @@ void CDomes::Render()
 
 
 	animation_set->at(ani)->Render(x, y);
-	
-	
-	
-	
-	
 
 
-	RenderBoundingBox(x,y);
+
+
+
+
+
+	RenderBoundingBox(x, y);
 }
 
 void CDomes::Wall()
@@ -378,7 +392,7 @@ void CDomes::SetState(int state)
 	switch (state)
 	{
 	case DOMES_STATE_START:
-		vx= -DOMES_WALKING_SPEED;
+		vx = -DOMES_WALKING_SPEED;
 		vy = 0;
 		ny = -1;
 		nx = 1;
@@ -387,7 +401,7 @@ void CDomes::SetState(int state)
 		nx = 1;
 		ny = 1;
 		vx = 0;
-		vy =DOMES_WALKING_SPEED;
+		vy = DOMES_WALKING_SPEED;
 		break;
 	case DOMES_ANI_WALKING_UP_LEFT:
 		nx = 1;
@@ -449,7 +463,7 @@ void CDomes::SetState(int state)
 		if (ny < 0)
 		{
 			vy = 0.1f;
-			ny= 1;
+			ny = 1;
 		}
 		else
 		{

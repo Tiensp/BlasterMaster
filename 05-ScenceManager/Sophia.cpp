@@ -34,11 +34,7 @@ CSophia::CSophia() : CGameObject()
 	this->x = x; 
 	this->y = y; 
 	y_render = y;
-
 	objTag = PLAYER;
-
-
-
 }
 
 void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
@@ -397,7 +393,11 @@ void CSophia::CheckCollisionWithItem(vector<LPGAMEOBJECT>* coObjects)
 	}
 	if (type == 0)
 	{
-		this->health += 1;
+		if (this->health <= 8)
+		{
+			this->health += 1;
+		}
+		
 	}
 	else if (type == 1)
 	{
