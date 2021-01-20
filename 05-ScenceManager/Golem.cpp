@@ -15,6 +15,7 @@ CGolem::CGolem(float x, float y, LPGAMEOBJECT player)
 	this->x = x;
 	this->y = y;
 	this->target = player;
+	isJumping = false;
 
 	hp = 2;
 
@@ -46,7 +47,7 @@ void CGolem::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	vy += 0.0005f * dt;
 	//DebugOut(L"golumnvX: %f, golumnvY: %f\n", vx, vy);
 
-	if (abs(this->x - target->x) <= 300 && abs(this->y - target->y) <= 20)
+	if (abs(this->x - target->x) <= 300 && abs(this->y - target->y) <= 20 && isJumping == false)
 	{
 		if (this->x - target->x <= 0)
 		{
@@ -59,6 +60,7 @@ void CGolem::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		if (abs(this->x - target->x) <= 70)
 		{
 			this->SetState(GOLEM_STATE_JUMPING);
+			isJumping = true;
 		}
 		else
 		{
@@ -101,9 +103,9 @@ void CGolem::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			{
 				LPCOLLISIONEVENT e = coEventsResult[i];
 
-				if (dynamic_cast<CBrick*>(e->obj)) // if e->obj is Goomba 
+				if (dynamic_cast<CBrick*>(e->obj)||dynamic_cast<CPortal*>(e->obj)) // if e->obj is Goomba 
 				{
-					
+					isJumping = false;
 				
 					x += min_tx * dx + nx * 0.4f;
 
@@ -120,8 +122,13 @@ void CGolem::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					}
 
 				}
+				else
+				{
+					x += dx;
+					y += dy;
+				}
 
-				if (e->obj->objTag == ENEMY)
+			/*	if (e->obj->objTag == ENEMY)
 				{
 					x += dx;
 					y += dy;
@@ -130,12 +137,12 @@ void CGolem::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				{
 					x += dx;
 					y += dy;
-				}
+				}*/
 			
 			}
 
 		}
-		//for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
+		for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
 	}
 }
 
@@ -208,11 +215,11 @@ void CGolem::SetState(int state)
 	case GOLEM_STATE_JUMPING:
 		if (nx > 0)
 		{
-			vx = GOLEM_WALKING_SPEED+0.09f;
+			vx = GOLEM_WALKING_SPEED+5.00f;
 		}
 		else
 		{
-			vx = -GOLEM_WALKING_SPEED - 0.09f;
+			vx = -GOLEM_WALKING_SPEED - 5.00f;
 		}
 		vy = -GOLEM_JUMPING_SPEED;
 		break;

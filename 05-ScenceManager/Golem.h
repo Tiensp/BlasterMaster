@@ -22,6 +22,7 @@ class CGolem : public Enemy
 
 	bool isDoneDeath = false;
 	bool isDeath = false;
+	bool isJumping;
 
 
 public:

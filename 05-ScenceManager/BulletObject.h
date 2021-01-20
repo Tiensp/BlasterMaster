@@ -4,7 +4,7 @@
 #include "Brick.h"
 #include "Enemy.h"
 
-#define BULLET_SPEED 0.125f
+#define BULLET_SPEED 0.25f
 #define BULLETSOPHIA_ANI_RIGHT 0
 #define BULLETSOPHIA_ANI_LEFT 1
 #define BULLETSOPHI_ANI_UP	2

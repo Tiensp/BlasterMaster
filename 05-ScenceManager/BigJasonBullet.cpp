@@ -8,11 +8,12 @@
 BigJasonBullet::BigJasonBullet()
 {
 }
-BigJasonBullet::BigJasonBullet(float _start_x, float _start_y, int direct_round)
+BigJasonBullet::BigJasonBullet(float _start_x, float _start_y,  int type,int direct_round)
 {
 
 	this->start_x = _start_x;
 	this->start_y = _start_y;
+	this->type = type;
 	isMove = true;
 	isDone = false;
 	bulletDame = 2;

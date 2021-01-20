@@ -21,7 +21,7 @@ class BigJasonBullet : public BulletObject
 
 public:
 	BigJasonBullet();
-	BigJasonBullet(float _start_x, float _start_y, int direct_round);
+	BigJasonBullet(float _start_x, float _start_y, int type,int direct_round );
 	~BigJasonBullet();
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
