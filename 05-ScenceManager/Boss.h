@@ -2,6 +2,8 @@
 #include "GameObject.h"
 #include "Enemy.h"
 #include "BulletBoss.h"
+#include "BossHand.h"
+#include "BossArm.h"
 #define BOSS_ANI_WALKING_RIGHT_DOWN	0
 #define BOSS_ANI_WALKING_RIGHT_UP 1
 #define BOSS_ANI_WALKING_LEFT_DOWN 2
@@ -17,6 +19,8 @@ class CBoss : public Enemy
 protected:
 	LPGAMEOBJECT target;
 	BulletObject* boss_bullet;
+	vector<CBossHand*> listBossHand;
+	vector<CBossArm*> listBossArm;
 
 	bool isAttack;
 

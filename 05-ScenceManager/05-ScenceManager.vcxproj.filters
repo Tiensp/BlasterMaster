@@ -1,667 +1,172 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
-    </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
-    <Filter Include="Framework">
-      <UniqueIdentifier>{16fc35ec-36ad-40ed-8d41-9608615f2a3a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Framework\Game">
-      <UniqueIdentifier>{85600d58-6777-4cd2-a691-77f77f4f8a62}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Framework\GameObject">
-      <UniqueIdentifier>{7d4427f5-ff0f-4bfa-8cee-24604a2b8f16}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Framework\GameObject\Player">
-      <UniqueIdentifier>{b4c460b1-5dd8-4ede-aed1-5108e41d31ce}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Framework\GameObject\GameObject">
-      <UniqueIdentifier>{037eda8a-4994-4fe9-8d04-2d8e2cb0d81d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Framework\Game\GameDefine">
-      <UniqueIdentifier>{183570da-78ad-4454-9f57-f498c6a0a68a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Framework\Game\Graphics">
-      <UniqueIdentifier>{c79f6e6b-5182-4f07-9f60-4c17cbc81ff6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Framework\Game\Scence">
-      <UniqueIdentifier>{4ef561ba-0058-4368-82cc-7175539f1ff4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Framework\Game\Scence\Map">
-      <UniqueIdentifier>{f3a90e3d-1025-44ac-a56a-6242d4a945c0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Framework\Game\Scence\Camera">
-      <UniqueIdentifier>{ea0938a0-fe8b-4b5a-a58e-ae9bc42e7d6c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Framework\GameObject\State Machine">
-      <UniqueIdentifier>{060cb22e-7598-4e80-8f3c-c9dbf8c74ac9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Framework\GameObject\State Machine\State IDLE">
-      <UniqueIdentifier>{15ee7e43-a922-40d1-bddd-b594233e598d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Framework\GameObject\State Machine\State TURN">
-      <UniqueIdentifier>{64b356af-bea3-4fec-b82c-1f064eb033ba}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Framework\GameObject\State Machine\State WALKING">
-      <UniqueIdentifier>{12f561f6-587b-4497-9fad-037cb2e4f00b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Framework\GameObject\State Machine\State IDLE Gun UP">
-      <UniqueIdentifier>{9c945057-c536-475f-b97f-2f1f563f1dac}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Framework\GameObject\State Machine\State RAISED Gun">
-      <UniqueIdentifier>{31d13ad0-c06e-4bc8-9a71-3e854273f68c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Framework\GameObject\State Machine\State LOWERED Gun">
-      <UniqueIdentifier>{49aa362d-3c5d-4e41-810d-369f4f346f6a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Framework\GameObject\State Machine\State WALKING Gun UP">
-      <UniqueIdentifier>{4008bf78-bd65-4153-aaf8-fc99d30826ad}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Framework\GameObject\State Machine\State JUMP">
-      <UniqueIdentifier>{d5488222-049a-4020-9497-03334cfa5389}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Framework\GameObject\State Machine\State FALL">
-      <UniqueIdentifier>{c0bc5542-d818-4acf-8097-53a3cdaf7210}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Framework\GameObject\State Machine\State JUMP TURN">
-      <UniqueIdentifier>{dfc045a9-1afd-4df6-99ea-a163093ec34c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Framework\GameObject\Enemy">
-      <UniqueIdentifier>{0d9cca50-9b83-4b36-a7e8-90bf6b4fd716}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Framework\Game\HUD">
-      <UniqueIdentifier>{7d86c7b4-4ccd-4b3a-91de-01b33efb6013}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Framework\GameObject\State Machine\State CRAWL">
-      <UniqueIdentifier>{e75ae9b0-c422-49e8-8058-96944f8ea047}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Framework\GameObject\State Machine\State FALL TURN">
-      <UniqueIdentifier>{60f0c8dd-e888-4afe-9fa7-207d480b4dd7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Framework\GameObject\State Machine\State JUMP Gun UP">
-      <UniqueIdentifier>{4c661279-301f-4445-a9ae-49b6945bafe4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Framework\GameObject\BulletObject">
-      <UniqueIdentifier>{ef335510-ccd3-4917-b591-c1170ce0a5d0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Framework\GameObject\Item">
-      <UniqueIdentifier>{493282e1-84e4-4066-af06-f73c3b46a572}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Framework\GameObject\BulletObject\PlayerBullet">
-      <UniqueIdentifier>{1738968d-0d5c-4c38-9c71-f7b0ce3d69e0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Framework\GameObject\BulletObject\EnemyBullet">
-      <UniqueIdentifier>{52b2a088-9935-4a86-b9db-4b2f581dcbfe}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Framework\Game\Sound">
-      <UniqueIdentifier>{a701a5d1-bef8-48fe-b5cc-e133c3973674}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Framework\GameObject\State Machine\State OPEN Cabin">
-      <UniqueIdentifier>{b9fa223a-f81e-4f13-a89c-3a62861efc3f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Framework\GameObject\State Machine\State FALL Gun UP">
-      <UniqueIdentifier>{0b3851a1-228c-45de-87e3-0f3d4c133e14}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Framework\GameObject\Boss">
-      <UniqueIdentifier>{411666c7-505c-4291-b391-b80ef2ecdb15}</UniqueIdentifier>
-    </Filter>
+    <ClCompile Include="Animations.cpp" />
+    <ClCompile Include="BigJason.cpp" />
+    <ClCompile Include="BigJasonBullet.cpp" />
+    <ClCompile Include="Boss.cpp" />
+    <ClCompile Include="Brick.cpp" />
+    <ClCompile Include="BulletBoss.cpp" />
+    <ClCompile Include="BulletEyeball.cpp" />
+    <ClCompile Include="BulletFloaters.cpp" />
+    <ClCompile Include="BulletObject.cpp" />
+    <ClCompile Include="BulletShip.cpp" />
+    <ClCompile Include="BulletSkull.cpp" />
+    <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="CannonBullet.cpp" />
+    <ClCompile Include="Cannons.cpp" />
+    <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="EnemyBullet.cpp" />
+    <ClCompile Include="Eyeballs.cpp" />
+    <ClCompile Include="Floaters.cpp" />
+    <ClCompile Include="FollowBullet.cpp" />
+    <ClCompile Include="FollowBullets.cpp" />
+    <ClCompile Include="Font.cpp" />
+    <ClCompile Include="GameDefine.cpp" />
+    <ClCompile Include="Domes.cpp" />
+    <ClCompile Include="Golem.cpp" />
+    <ClCompile Include="Grid.cpp" />
+    <ClCompile Include="HP.cpp" />
+    <ClCompile Include="HUD.cpp" />
+    <ClCompile Include="Insect.cpp" />
+    <ClCompile Include="Intro.cpp" />
+    <ClCompile Include="Item.cpp" />
+    <ClCompile Include="JasonBullet.cpp" />
+    <ClCompile Include="Koopas.cpp" />
+    <ClCompile Include="Ladder.cpp" />
+    <ClCompile Include="Lava.cpp" />
+    <ClCompile Include="Map.cpp" />
+    <ClCompile Include="Jason.cpp" />
+    <ClCompile Include="MiniScene.cpp" />
+    <ClCompile Include="Orbs.cpp" />
+    <ClCompile Include="Portal.cpp" />
+    <ClCompile Include="RockOVH.cpp" />
+    <ClCompile Include="Ship.cpp" />
+    <ClCompile Include="Skulls.cpp" />
+    <ClCompile Include="SophiaBullet.cpp" />
+    <ClCompile Include="Sound.cpp" />
+    <ClCompile Include="StateCRAWL.cpp" />
+    <ClCompile Include="StateFALL.cpp" />
+    <ClCompile Include="StateFALLGunUP.cpp" />
+    <ClCompile Include="StateFALLTurn.cpp" />
+    <ClCompile Include="StateIDLE.cpp" />
+    <ClCompile Include="StateIDLEGunUP.cpp" />
+    <ClCompile Include="StateJUMP.cpp" />
+    <ClCompile Include="StateJUMPGunUP.cpp" />
+    <ClCompile Include="StateJUMPTurn.cpp" />
+    <ClCompile Include="StateLOWEREDGun.cpp" />
+    <ClCompile Include="StateOPENCabin.cpp" />
+    <ClCompile Include="StateRAISEDGun.cpp" />
+    <ClCompile Include="StateTURN.cpp" />
+    <ClCompile Include="StateWALKING.cpp" />
+    <ClCompile Include="StateWALKINGGunUP.cpp" />
+    <ClCompile Include="ThornOVERHEAD.cpp" />
+    <ClCompile Include="ThornOVERWORLD.cpp" />
+    <ClCompile Include="ThreeBullet.cpp" />
+    <ClCompile Include="ThunderBullet.cpp" />
+    <ClCompile Include="Teleporters.cpp" />
+    <ClCompile Include="Utils.cpp" />
+    <ClCompile Include="Game.cpp" />
+    <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="Goomba.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Sophia.cpp" />
+    <ClCompile Include="PlayScence.cpp" />
+    <ClCompile Include="Scence.cpp" />
+    <ClCompile Include="Sprites.cpp" />
+    <ClCompile Include="Textures.cpp" />
+    <ClCompile Include="Worms.cpp" />
+    <ClCompile Include="Bosshand.cpp" />
+    <ClCompile Include="BossArm.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Brick.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Goomba.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Koopas.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Portal.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Sophia.cpp">
-      <Filter>Framework\GameObject\Player</Filter>
-    </ClCompile>
-    <ClCompile Include="Camera.cpp">
-      <Filter>Framework\Game\Scence\Camera</Filter>
-    </ClCompile>
-    <ClCompile Include="Map.cpp">
-      <Filter>Framework\Game\Scence\Map</Filter>
-    </ClCompile>
-    <ClCompile Include="Utils.cpp">
-      <Filter>Framework\Game\GameDefine</Filter>
-    </ClCompile>
-    <ClCompile Include="Animations.cpp">
-      <Filter>Framework\Game\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="Sprites.cpp">
-      <Filter>Framework\Game\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="Textures.cpp">
-      <Filter>Framework\Game\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayScence.cpp">
-      <Filter>Framework\Game\Scence</Filter>
-    </ClCompile>
-    <ClCompile Include="Scence.cpp">
-      <Filter>Framework\Game\Scence</Filter>
-    </ClCompile>
-    <ClCompile Include="Game.cpp">
-      <Filter>Framework\Game</Filter>
-    </ClCompile>
-    <ClCompile Include="main.cpp">
-      <Filter>Framework\Game</Filter>
-    </ClCompile>
-    <ClCompile Include="GameDefine.cpp">
-      <Filter>Framework\Game\GameDefine</Filter>
-    </ClCompile>
-    <ClCompile Include="Jason.cpp">
-      <Filter>Framework\GameObject\Player</Filter>
-    </ClCompile>
-    <ClCompile Include="GameObject.cpp">
-      <Filter>Framework\GameObject\GameObject</Filter>
-    </ClCompile>
-    <ClCompile Include="StateIDLE.cpp">
-      <Filter>Framework\GameObject\State Machine\State IDLE</Filter>
-    </ClCompile>
-    <ClCompile Include="StateWALKING.cpp">
-      <Filter>Framework\GameObject\State Machine\State WALKING</Filter>
-    </ClCompile>
-    <ClCompile Include="StateTURN.cpp">
-      <Filter>Framework\GameObject\State Machine\State TURN</Filter>
-    </ClCompile>
-    <ClCompile Include="StateIDLEGunUP.cpp">
-      <Filter>Framework\GameObject\State Machine\State IDLE Gun UP</Filter>
-    </ClCompile>
-    <ClCompile Include="StateRAISEDGun.cpp">
-      <Filter>Framework\GameObject\State Machine\State RAISED Gun</Filter>
-    </ClCompile>
-    <ClCompile Include="StateLOWEREDGun.cpp">
-      <Filter>Framework\GameObject\State Machine\State LOWERED Gun</Filter>
-    </ClCompile>
-    <ClCompile Include="StateWALKINGGunUP.cpp">
-      <Filter>Framework\GameObject\State Machine\State WALKING Gun UP</Filter>
-    </ClCompile>
-    <ClCompile Include="StateJUMP.cpp">
-      <Filter>Framework\GameObject\State Machine\State JUMP</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayScence.cpp">
-      <Filter>Scence</Filter>
-    </ClCompile>
-    <ClCompile Include="Scence.cpp">
-      <Filter>Scence</Filter>
-    </ClCompile>
-    <ClCompile Include="Game.cpp">
-      <Filter>Game</Filter>
-    </ClCompile>
-    <ClCompile Include="main.cpp">
-      <Filter>Game</Filter>
-    </ClCompile>
-    <ClCompile Include="GameObject.cpp">
-      <Filter>GameObject\GameObject</Filter>
-    </ClCompile>
-    <ClCompile Include="Golem.cpp">
-      <Filter>Framework\GameObject\Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="Domes.cpp">
-      <Filter>Framework\GameObject\Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="StateFALL.cpp">
-      <Filter>Framework\GameObject\State Machine\State FALL</Filter>
-    </ClCompile>
-    <ClCompile Include="StateJUMPTurn.cpp">
-      <Filter>Framework\GameObject\State Machine\State JUMP TURN</Filter>
-    </ClCompile>
-    <ClCompile Include="HP.cpp">
-      <Filter>Framework\Game\HUD</Filter>
-    </ClCompile>
-    <ClCompile Include="HUD.cpp">
-      <Filter>Framework\Game\HUD</Filter>
-    </ClCompile>
-    <ClCompile Include="StateCRAWL.cpp">
-      <Filter>Framework\GameObject\State Machine\State CRAWL</Filter>
-    </ClCompile>
-    <ClCompile Include="Worms.cpp">
-      <Filter>Framework\GameObject\Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="Floaters.cpp">
-      <Filter>Framework\GameObject\Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="Skulls.cpp">
-      <Filter>Framework\GameObject\Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="Enemy.cpp">
-      <Filter>Framework\GameObject\Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="Insect.cpp">
-      <Filter>Framework\GameObject\Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="Orbs.cpp">
-      <Filter>Framework\GameObject\Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="Ship.cpp">
-      <Filter>Framework\GameObject\Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="StateFALLTurn.cpp">
-      <Filter>Framework\GameObject\State Machine\State FALL TURN</Filter>
-    </ClCompile>
-    <ClCompile Include="StateJUMPGunUP.cpp">
-      <Filter>Framework\GameObject\State Machine\State JUMP Gun UP</Filter>
-    </ClCompile>
-    <ClCompile Include="MiniScene.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Eyeballs.cpp">
-      <Filter>Framework\GameObject\Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="Teleporters.cpp">
-      <Filter>Framework\GameObject\Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="Cannons.cpp">
-      <Filter>Framework\GameObject\Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="BigJason.cpp">
-      <Filter>Framework\GameObject\Player</Filter>
-    </ClCompile>
-    <ClCompile Include="Item.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Grid.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Lava.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ThornOVERWORLD.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ThornOVERHEAD.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="RockOVH.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="BulletEyeball.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="BulletShip.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="BulletSkull.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="StateOPENCabin.cpp">
-      <Filter>Framework\GameObject\State Machine\State OPEN Cabin</Filter>
-    </ClCompile>
-    <ClCompile Include="Intro.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Font.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Ladder.cpp">
-    <ClCompile Include="Lava.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="BulletEyeball.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="BulletShip.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="BulletSkull.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="BigJasonBullet.cpp">
-      <Filter>Framework\GameObject\BulletObject\PlayerBullet</Filter>
-    </ClCompile>
-    <ClCompile Include="BulletObject.cpp">
-      <Filter>Framework\GameObject\BulletObject\PlayerBullet</Filter>
-    </ClCompile>
-    <ClCompile Include="FollowBullet.cpp">
-      <Filter>Framework\GameObject\BulletObject\PlayerBullet</Filter>
-    </ClCompile>
-    <ClCompile Include="FollowBullets.cpp">
-      <Filter>Framework\GameObject\BulletObject\PlayerBullet</Filter>
-    </ClCompile>
-    <ClCompile Include="JasonBullet.cpp">
-      <Filter>Framework\GameObject\BulletObject\PlayerBullet</Filter>
-    </ClCompile>
-    <ClCompile Include="SophiaBullet.cpp">
-      <Filter>Framework\GameObject\BulletObject\PlayerBullet</Filter>
-    </ClCompile>
-    <ClCompile Include="ThreeBullet.cpp">
-      <Filter>Framework\GameObject\BulletObject\PlayerBullet</Filter>
-    </ClCompile>
-    <ClCompile Include="ThunderBullet.cpp">
-      <Filter>Framework\GameObject\BulletObject\PlayerBullet</Filter>
-    </ClCompile>
-    <ClCompile Include="BulletFloaters.cpp">
-      <Filter>Framework\GameObject\BulletObject\EnemyBullet</Filter>
-    </ClCompile>
-    <ClCompile Include="CannonBullet.cpp">
-      <Filter>Framework\GameObject\BulletObject\EnemyBullet</Filter>
-    </ClCompile>
-    <ClCompile Include="EnemyBullet.cpp">
-      <Filter>Framework\GameObject\BulletObject\EnemyBullet</Filter>
-    </ClCompile>
-    <ClCompile Include="Sound.cpp">
-      <Filter>Framework</Filter>
-    </ClCompile>
-    <ClCompile Include="Boss.cpp">
-      <Filter>Framework\GameObject\Boss</Filter>
-    </ClCompile>
-    <ClCompile Include="BulletEyeball.cpp">
-      <Filter>Framework\GameObject\BulletObject</Filter>
-    </ClCompile>
-    <ClCompile Include="BulletShip.cpp">
-      <Filter>Framework\GameObject\BulletObject</Filter>
-    </ClCompile>
-    <ClCompile Include="BulletSkull.cpp">
-      <Filter>Framework\GameObject\BulletObject</Filter>
-    </ClCompile>
-    <ClCompile Include="BulletBoss.cpp">
-      <Filter>Framework\GameObject\BulletObject</Filter>
-    </ClCompile>
+    <ClInclude Include="Animations.h" />
+    <ClInclude Include="BigJason.h" />
+    <ClInclude Include="BigJasonBullet.h" />
+    <ClInclude Include="Boss.h" />
+    <ClInclude Include="Brick.h" />
+    <ClInclude Include="BulletBoss.h" />
+    <ClInclude Include="BulletEyeball.h" />
+    <ClInclude Include="BulletFloaters.h" />
+    <ClInclude Include="BulletObject.h" />
+    <ClInclude Include="BulletShip.h" />
+    <ClInclude Include="BulletSkull.h" />
+    <ClInclude Include="Camera.h" />
+    <ClInclude Include="CannonBullet.h" />
+    <ClInclude Include="Cannons.h" />
+    <ClInclude Include="Domes.h" />
+    <ClInclude Include="Enemy.h" />
+    <ClInclude Include="EnemyBullet.h" />
+    <ClInclude Include="Eyeballs.h" />
+    <ClInclude Include="Floaters.h" />
+    <ClInclude Include="FollowBullet.h" />
+    <ClInclude Include="FollowBullets.h" />
+    <ClInclude Include="Font.h" />
+    <ClInclude Include="GameDefine.h" />
+    <ClInclude Include="Golem.h" />
+    <ClInclude Include="Grid.h" />
+    <ClInclude Include="Insect.h" />
+    <ClInclude Include="HP.h" />
+    <ClInclude Include="HUD.h" />
+    <ClInclude Include="Intro.h" />
+    <ClInclude Include="Item.h" />
+    <ClInclude Include="JasonBullet.h" />
+    <ClInclude Include="Koopas.h" />
+    <ClInclude Include="Ladder.h" />
+    <ClInclude Include="Lava.h" />
+    <ClInclude Include="Map.h" />
+    <ClInclude Include="Jason.h" />
+    <ClInclude Include="MiniScene.h" />
+    <ClInclude Include="Orbs.h" />
+    <ClInclude Include="Portal.h" />
+    <ClInclude Include="RockOVH.h" />
+    <ClInclude Include="Ship.h" />
+    <ClInclude Include="Skulls.h" />
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="SophiaBullet.h" />
+    <ClInclude Include="Sound.h" />
+    <ClInclude Include="StateCRAWL.h" />
+    <ClInclude Include="StateFALL.h" />
+    <ClInclude Include="StateFALLGunUP.h" />
+    <ClInclude Include="StateFALLTurn.h" />
+    <ClInclude Include="StateIDLEGunUP.h" />
+    <ClInclude Include="StateJUMP.h" />
+    <ClInclude Include="StateJUMPGunUP.h" />
+    <ClInclude Include="StateJUMPTurn.h" />
+    <ClInclude Include="StateLOWEREDGun.h" />
+    <ClInclude Include="StateOPENCabin.h" />
+    <ClInclude Include="StateRAISEDGun.h" />
+    <ClInclude Include="StateTURN.h" />
+    <ClInclude Include="StateWALKING.h" />
+    <ClInclude Include="State.h" />
+    <ClInclude Include="StateIDLE.h" />
+    <ClInclude Include="StateWALKINGGunUP.h" />
+    <ClInclude Include="ThornOVERHEAD.h" />
+    <ClInclude Include="ThornOVERWORLD.h" />
+    <ClInclude Include="ThreeBullet.h" />
+    <ClInclude Include="Teleporters.h" />
+    <ClInclude Include="ThunderBullet.h" />
+    <ClInclude Include="Utils.h" />
+    <ClInclude Include="Game.h" />
+    <ClInclude Include="GameObject.h" />
+    <ClInclude Include="Goomba.h" />
+    <ClInclude Include="KeyEventHandler.h" />
+    <ClInclude Include="Sophia.h" />
+    <ClInclude Include="PlayScence.h" />
+    <ClInclude Include="Scence.h" />
+    <ClInclude Include="Sprites.h" />
+    <ClInclude Include="Textures.h" />
+    <ClInclude Include="Worms.h" />
+    <ClInclude Include="BossHand.h" />
+    <ClInclude Include="BossArm.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Brick.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Goomba.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Koopas.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Portal.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Sophia.h">
-      <Filter>Framework\GameObject\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="Camera.h">
-      <Filter>Framework\Game\Scence\Camera</Filter>
-    </ClInclude>
-    <ClInclude Include="Map.h">
-      <Filter>Framework\Game\Scence\Map</Filter>
-    </ClInclude>
-    <ClInclude Include="GameDefine.h">
-      <Filter>Framework\Game\GameDefine</Filter>
-    </ClInclude>
-    <ClInclude Include="Utils.h">
-      <Filter>Framework\Game\GameDefine</Filter>
-    </ClInclude>
-    <ClInclude Include="Sprites.h">
-      <Filter>Framework\Game\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="Textures.h">
-      <Filter>Framework\Game\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="Animations.h">
-      <Filter>Framework\Game\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayScence.h">
-      <Filter>Framework\Game\Scence</Filter>
-    </ClInclude>
-    <ClInclude Include="Scence.h">
-      <Filter>Framework\Game\Scence</Filter>
-    </ClInclude>
-    <ClInclude Include="Game.h">
-      <Filter>Framework\Game</Filter>
-    </ClInclude>
-    <ClInclude Include="KeyEventHandler.h">
-      <Filter>Framework\Game</Filter>
-    </ClInclude>
-    <ClInclude Include="State.h">
-      <Filter>Framework\GameObject\State Machine</Filter>
-    </ClInclude>
-    <ClInclude Include="Jason.h">
-      <Filter>Framework\GameObject\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="BigJason.h">
-      <Filter>Framework\GameObject\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="GameObject.h">
-      <Filter>Framework\GameObject\GameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="StateIDLE.h">
-      <Filter>Framework\GameObject\State Machine\State IDLE</Filter>
-    </ClInclude>
-    <ClInclude Include="StateWALKING.h">
-      <Filter>Framework\GameObject\State Machine\State WALKING</Filter>
-    </ClInclude>
-    <ClInclude Include="StateTURN.h">
-      <Filter>Framework\GameObject\State Machine\State TURN</Filter>
-    </ClInclude>
-    <ClInclude Include="StateIDLEGunUP.h">
-      <Filter>Framework\GameObject\State Machine\State IDLE Gun UP</Filter>
-    </ClInclude>
-    <ClInclude Include="StateRAISEDGun.h">
-      <Filter>Framework\GameObject\State Machine\State RAISED Gun</Filter>
-    </ClInclude>
-    <ClInclude Include="StateLOWEREDGun.h">
-      <Filter>Framework\GameObject\State Machine\State LOWERED Gun</Filter>
-    </ClInclude>
-    <ClInclude Include="StateWALKINGGunUP.h">
-      <Filter>Framework\GameObject\State Machine\State WALKING Gun UP</Filter>
-    </ClInclude>
-    <ClInclude Include="StateJUMP.h">
-      <Filter>Framework\GameObject\State Machine\State JUMP</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayScence.h">
-      <Filter>Scence</Filter>
-    </ClInclude>
-    <ClInclude Include="Scence.h">
-      <Filter>Scence</Filter>
-    </ClInclude>
-    <ClInclude Include="Game.h">
-      <Filter>Game</Filter>
-    </ClInclude>
-    <ClInclude Include="KeyEventHandler.h">
-      <Filter>Game</Filter>
-    </ClInclude>
-    <ClInclude Include="GameObject.h">
-      <Filter>GameObject\GameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="Domes.h">
-      <Filter>Framework\GameObject\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="StateFALL.h">
-      <Filter>Framework\GameObject\State Machine\State FALL</Filter>
-    </ClInclude>
-    <ClInclude Include="StateJUMPTurn.h">
-      <Filter>Framework\GameObject\State Machine\State JUMP TURN</Filter>
-    </ClInclude>
-    <ClInclude Include="Worms.h">
-      <Filter>Framework\GameObject\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="Enemy.h">
-      <Filter>Framework\GameObject\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="Floaters.h">
-      <Filter>Framework\GameObject\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="Skulls.h">
-      <Filter>Framework\GameObject\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="HP.h">
-      <Filter>Framework\Game\HUD</Filter>
-    </ClInclude>
-    <ClInclude Include="HUD.h">
-      <Filter>Framework\Game\HUD</Filter>
-    </ClInclude>
-    <ClInclude Include="StateCRAWL.h">
-      <Filter>Framework\GameObject\State Machine\State CRAWL</Filter>
-    </ClInclude>
-    <ClInclude Include="resource.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Insect.h">
-      <Filter>Framework\GameObject\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="Orbs.h">
-      <Filter>Framework\GameObject\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="Ship.h">
-      <Filter>Framework\GameObject\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="Golem.h">
-      <Filter>Framework\GameObject\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="StateFALLTurn.h">
-      <Filter>Framework\GameObject\State Machine\State FALL TURN</Filter>
-    </ClInclude>
-    <ClInclude Include="StateJUMPGunUP.h">
-      <Filter>Framework\GameObject\State Machine\State JUMP Gun UP</Filter>
-    </ClInclude>
-    <ClInclude Include="MiniScene.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Eyeballs.h">
-      <Filter>Framework\GameObject\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="Teleporters.h">
-      <Filter>Framework\GameObject\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="Cannons.h">
-      <Filter>Framework\GameObject\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="Item.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Grid.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Lava.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ThornOVERWORLD.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ThornOVERHEAD.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="RockOVH.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="BulletEyeball.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="BulletShip.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="BulletSkull.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="BigJasonBullet.h">
-      <Filter>Framework\GameObject\BulletObject\PlayerBullet</Filter>
-    </ClInclude>
-    <ClInclude Include="BulletObject.h">
-      <Filter>Framework\GameObject\BulletObject\PlayerBullet</Filter>
-    </ClInclude>
-    <ClInclude Include="FollowBullet.h">
-      <Filter>Framework\GameObject\BulletObject\PlayerBullet</Filter>
-    </ClInclude>
-    <ClInclude Include="FollowBullets.h">
-      <Filter>Framework\GameObject\BulletObject\PlayerBullet</Filter>
-    </ClInclude>
-    <ClInclude Include="JasonBullet.h">
-      <Filter>Framework\GameObject\BulletObject\PlayerBullet</Filter>
-    </ClInclude>
-    <ClInclude Include="SophiaBullet.h">
-      <Filter>Framework\GameObject\BulletObject\PlayerBullet</Filter>
-    <ClInclude Include="Lava.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ThornOVERWORLD.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ThornOVERHEAD.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="RockOVH.h">
-      <Filter>Header Files</Filter>
-    <ClInclude Include="ThreeBullet.h">
-      <Filter>Framework\GameObject\BulletObject\PlayerBullet</Filter>
-    </ClInclude>
-    <ClInclude Include="BulletEyeball.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="BulletShip.h">
-      <Filter>Header Files</Filter>
-    <ClInclude Include="ThunderBullet.h">
-      <Filter>Framework\GameObject\BulletObject\PlayerBullet</Filter>
-    </ClInclude>
-    <ClInclude Include="BulletFloaters.h">
-      <Filter>Framework\GameObject\BulletObject\EnemyBullet</Filter>
-    <ClInclude Include="BulletSkull.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="StateOPENCabin.h">
-      <Filter>Framework\GameObject\State Machine\State OPEN Cabin</Filter>
-    </ClInclude>
-    <ClInclude Include="Intro.h">
-      <Filter>Header Files</Filter>
-    <ClInclude Include="CannonBullet.h">
-      <Filter>Framework\GameObject\BulletObject\EnemyBullet</Filter>
-    </ClInclude>
-    <ClInclude Include="EnemyBullet.h">
-      <Filter>Framework\GameObject\BulletObject\EnemyBullet</Filter>
-    <ClInclude Include="Font.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Sound.h">
-      <Filter>Framework</Filter>
-    <ClInclude Include="Ladder.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="StateFALLGunUP.h">
-      <Filter>Framework\GameObject\State Machine\State FALL Gun UP</Filter>
-    </ClInclude>
-    <ClInclude Include="Boss.h">
-      <Filter>Framework\GameObject\Boss</Filter>
-    </ClInclude>
-    <ClInclude Include="BulletEyeball.h">
-      <Filter>Framework\GameObject\BulletObject</Filter>
-    </ClInclude>
-    <ClInclude Include="BulletShip.h">
-      <Filter>Framework\GameObject\BulletObject</Filter>
-    </ClInclude>
-    <ClInclude Include="BulletSkull.h">
-      <Filter>Framework\GameObject\BulletObject</Filter>
-    </ClInclude>
-    <ClInclude Include="BulletBoss.h">
-      <Filter>Framework\GameObject\BulletObject</Filter>
-    </ClInclude>
+    <ResourceCompile Include="BlasterMaster.rc" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="BlasterMaster.rc">
-      <Filter>Resource Files</Filter>
-    </ResourceCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="text\Overhead.txt">
-      <Filter>Resource Files</Filter>
-    </Text>
-    <Text Include="text\Intro.txt">
-      <Filter>Resource Files</Filter>
-    </Text>
-    <Text Include="text\Overworld.txt">
-      <Filter>Resource Files</Filter>
-    </Text>
-    <Text Include="text\Setting.txt">
-      <Filter>Resource Files</Filter>
-    </Text>
+    <Text Include="text\Intro.txt" />
+    <Text Include="text\Overhead.txt" />
+    <Text Include="text\Overworld.txt" />
+    <Text Include="text\Setting.txt" />
   </ItemGroup>
 </Project>
