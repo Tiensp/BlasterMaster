@@ -33,21 +33,11 @@ void CSkull::GetBoundingBox(float& left, float& top, float& right, float& bottom
 		bottom = y + SKULL_BBOX_HEIGHT;
 	}
 	else return;
-
-	/*if (state == SKULL_STATE_DIE)
-		bottom = y + SKULL_BBOX_HEIGHT_DIE;
-	else
-		bottom = y + SKULL_BBOX_HEIGHT;*/
 }
 
 void CSkull::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-
-	//DebugOut(L"golumnvX: %f, golumnvY: %f\n", vx, vy);
 	Enemy::Update(dt, coObjects);
-	//DebugOut(L"golumnvX: %f, golumnvY: %f\n", vx, vy);
-
-	//DebugOut(L"golumnvX: %f, golumnvY: %f\n", target->nx, this->nx);
 	Attack();
 
 	if (sk_bullet != NULL)
@@ -67,15 +57,9 @@ void CSkull::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	coEvents.clear();
 
-	// turn off collision when die 
-	//nếu không chết thì kiểm tra toàn bộ va chạm với các đối tượng khác
 	CalcPotentialCollisions(coObjects, coEvents);
 
-	// reset untouchable timer if untouchable time has passed
-
-	// No collision occured, proceed normally
-
-	if (coEvents.size() == 0)  //nếu không có va chạm, update bình thường
+	if (coEvents.size() == 0)
 	{
 		x += dx;
 		y += dy;
@@ -87,26 +71,19 @@ void CSkull::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		float rdx = 0;
 		float rdy = 0;
 
-		// TODO: This is a very ugly designed function!!!!
-		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);  // sắp xếp lại các sự kiện va chạm đầu tiên theo trục x, y 
+		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);  
 
-		// how to push back Sophia if collides with a moving objects, what if Sophia is pushed this way into another object?
-		//if (rdx != 0 && rdx!=dx)
-		//	x += nx*abs(rdx); 
-
-		// block every object first!
 		{
 			for (UINT i = 0; i < coEventsResult.size(); i++)
 			{
 				LPCOLLISIONEVENT e = coEventsResult[i];
 
-				if (dynamic_cast<CBrick*>(e->obj)) // if e->obj is Goomba 
+				if (dynamic_cast<CBrick*>(e->obj))
 				{
 					isAttack = false;
 
 					CBrick* brick = dynamic_cast<CBrick*>(e->obj);
 
-					// jump on top >> kill Goomba and deflect a bit 
 					if (e->nx != 0)
 					{
 						if (e->nx > 0)
@@ -129,22 +106,10 @@ void CSkull::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 								}
 							}
 						}
-
 					}
-					/*else if (e->ny != 0)
-					{
-						if (e->ny > 0)
-						{
-							if (this->GetState() == SKULL_ANI_COLLISION_LEFT)
-							{
-								this->SetState(SKULL_ANI_COLLISION_LEFT);
-							}
-						}
-					}*/
 				}
-				if (e->obj->objTag == ENEMY)
-				{
-					x += dx;  
+				else {
+					x += dx;
 					y += dy;
 				}
 			}
@@ -174,7 +139,7 @@ void CSkull::Attack()
 			if (sk_bullet == NULL && this->nx)
 			{
 				sk_bullet = new BulletSkull(this->x, this->y, this->target);
-				sk_bullet->SetPosition(this->x + width + 10, this->y + height + 15);
+				//sk_bullet->SetPosition(this->x + width + 10, this->y + height + 15);
 				sk_bullet->Set_bullet_dir(3);
 				sk_bullet->Set_IsMove(true);
 			}
@@ -257,34 +222,12 @@ void CSkull::Render()
 	RenderBoundingBox(x,y);
 }
 
-//void CSkull::flowPlayer(LPGAMEOBJECT player)
-//{
-//	if (abs(this->x - player->x) <= 100)
-//	{
-//		if (this->x - player->x <= 0)
-//		{
-//			this->nx = -1;
-//		}
-//		else
-//		{
-//			this->nx = 1;
-//		}
-//	}
-//
-//}
-
-
 
 void CSkull::SetState(int state)
 {
 	CGameObject::SetState(state);
 	switch (state)
 	{
-	case SKULL_STATE_DIE:
-		y += SKULL_BBOX_HEIGHT - SKULL_BBOX_HEIGHT_DIE + 1;
-		vx = 0;
-		vy = 0;
-		break;
 	case SKULL_ANI_WALKING_LEFT:
 		vx = -SKULL_WALKING_SPEED;
 		nx = -1;

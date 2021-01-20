@@ -2,12 +2,13 @@
 #include "BulletObject.h"
 #include "Brick.h"
 #include "Sophia.h"
+#include "EnemyBullet.h"
 
-class BulletSkull : public BulletObject
+class BulletSkull : public CEnemyBullet
 {
 
 protected:
-	CSophia* sophia;
+
 	LPGAMEOBJECT target;
 
 	bool isDrop; 
@@ -17,6 +18,7 @@ protected:
 	int interval = 20;
 	int timeToExplosive = 2000;
 public:
+
 	BulletSkull(float _start_x, float y_start_y, LPGAMEOBJECT player);
 	~BulletSkull();
 

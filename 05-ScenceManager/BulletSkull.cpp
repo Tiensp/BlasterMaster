@@ -4,6 +4,7 @@ BulletSkull::BulletSkull(float _start_x, float _start_y, LPGAMEOBJECT player)
 	this->start_x = _start_x;
 	this->start_y = _start_y;
 	this->target = player;
+	this->SetPosition(start_x, start_y);
 	isMove = true;
 	isDone = false;
 	bulletDame = 1;
@@ -16,9 +17,10 @@ BulletSkull::~BulletSkull()
 
 void BulletSkull::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	CGameObject::Update(dt, coObjects);
+	CEnemyBullet::Update(dt, coObjects);
 	if (isDone) return;
 
+	HandleMove(SCREEN_HEIGHT / 2, SCREEN_HEIGHT / 2);
 	if (isMove)
 	{
 		if (bullet_dir == 1 && ny != 0)
@@ -61,6 +63,7 @@ void BulletSkull::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	{
 		nx = -1;
 	}
+
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
 
@@ -112,13 +115,7 @@ void BulletSkull::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 			if (dynamic_cast<CBrick*>(e->obj)) // if e->obj is Goomba 
 			{
-				/*x += min_tx * dx + nx * 0.4f;
-				y += min_ty * dy + ny * 0.4f;*/
-
-				/*if (nx != 0) vx = 0;
-				if (ny != 0) vy = 0;*/
-
-				//isDone = true; 
+				
 				if (e->ny < 0)
 				{
 					if (this->nx > 0)
@@ -138,6 +135,9 @@ void BulletSkull::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 						else this->SetState(4);
 					}
 				}
+
+				isColBrick = true;
+
 			}
 			else if (e->obj->objTag == ENEMY)
 			{
@@ -147,8 +147,6 @@ void BulletSkull::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			else if (e->obj->objTag == PLAYER)
 			{
 				isColPlayer = true;
-				/*x += min_tx * dx + nx * 0.4f;
-				y += min_ty * dy + ny * 0.4f;*/
 			}
 		}
 
@@ -220,7 +218,7 @@ void BulletSkull::Render()
 
 	animation_set->at(ani)->Render(x, y);
 
-	//RenderBoundingBox();
+	RenderBoundingBox(x,y);
 }
 
 void BulletSkull::GetBoundingBox(float& left, float& top, float& right, float& bottom)
@@ -244,30 +242,35 @@ void BulletSkull::SetState(int state)
 		vy = 0.075f;
 		nx = 0;
 		ny = 1;
+		bullet_dir = 0;
 		break;
 	case 1:
 		vx = 0.505f;
 		vy = -0.505f;
 		nx = 1;
 		ny = -1;
+		bullet_dir = 1;
 		break;
 	case 2:
 		vx = -0.505f;
 		vy = -0.505f;
 		nx = -1;
 		ny = -1;
+		bullet_dir = -1;
 		break;
 	case 3:
 		vx = 0.205f;
 		vy = 0;
 		nx = 1;
 		ny = 0;
+		bullet_dir = 1;
 		break;
 	case 4:
 		vx = -0.205f;
 		vy = 0;
 		nx = -1;
 		ny = 0;
+		bullet_dir = -1;
 		break;
 	case 5:
 		vx = vy = nx = ny = 0;

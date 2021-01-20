@@ -17,21 +17,13 @@
 #define SKULL_BBOX_HEIGHT 19
 #define SKULL_BBOX_HEIGHT_DIE 16
 
-#define SKULL_STATE_DIE 100
-#define SKULL_STATE_WALKING 200
-#define SKULL_STATE_ATTACKING 300
-#define SKULL_STATE_COLLISION 400
-
 class CSkull : public Enemy
 {
 	bool isFolow;  //theo player 
 	LPGAMEOBJECT target;
 	BulletObject* sk_bullet;
 
-
-	bool isAttack;
 	bool isDoneDeath = false;
-	bool isDeath = false;
 public:
 	CSkull(float x, float y, LPGAMEOBJECT player);
 	virtual void SetState(int state);
@@ -39,7 +31,6 @@ public:
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	virtual void Render();
 	void Attack();
-	void flowPlayer(LPGAMEOBJECT player);
 };
 
 

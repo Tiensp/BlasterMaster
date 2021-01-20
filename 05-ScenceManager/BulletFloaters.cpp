@@ -21,17 +21,18 @@ void BulletFloaters::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	if (isDone) return;
 
+	HandleMove(SCREEN_HEIGHT / 3, SCREEN_HEIGHT / 3);
 	if (isMove)
 	{
 		if (bullet_dir == 1)
 		{
 			vx = 0.075f;
-			vy = 0.025f;
+			vy = 0.055f;
 		}
 		else if (bullet_dir == -1)
 		{
 			vx = -0.075f;
-			vy = 0.025f;
+			vy = 0.055f;
 		}
 	}
 	else
