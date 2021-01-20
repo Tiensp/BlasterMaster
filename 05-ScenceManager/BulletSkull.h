@@ -11,12 +11,9 @@ protected:
 
 	LPGAMEOBJECT target;
 
-	bool isDrop; 
-	bool isJump;
-
 	int timer;
 	int interval = 20;
-	int timeToExplosive = 2000;
+	int timeToExplosive = 1000;
 public:
 
 	BulletSkull(float _start_x, float y_start_y, LPGAMEOBJECT player);

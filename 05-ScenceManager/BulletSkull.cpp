@@ -18,35 +18,38 @@ BulletSkull::~BulletSkull()
 void BulletSkull::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	CEnemyBullet::Update(dt, coObjects);
+
+	vy += 0.001f * dt;
+
 	if (isDone) return;
 
-	HandleMove(SCREEN_HEIGHT / 2, SCREEN_HEIGHT / 2);
+	//HandleMove(SCREEN_HEIGHT / 2, SCREEN_HEIGHT / 2);
 	if (isMove)
 	{
-		if (bullet_dir == 1 && ny != 0)
+		if (ny != 0 && this->x - target->x > 0)
 		{
-			vx = 0.505f;
-			vy = -0.505f;
+			vx = 0.105f;
+			vy = -0.105f;
 		}
-		else if (bullet_dir == -1 && ny != 0)
+		else if (ny != 0 && this->x - target->x < 0)
 		{
-			vx = -0.505f;
-			vy = -0.505f;
+			vx = -0.105f;
+			vy = -0.105f;
 		}
 		else if(bullet_dir == 1)
 		{
-			vx = 0.205f;
+			vx = 0.055f;
 			vy = 0;
 		}
 		else if (bullet_dir == -1)
 		{
-			vx = -0.205f;
+			vx = -0.055f;
 			vy = 0;
 		}
 		else
 		{
 			vx = 0;
-			vy = 0.075f;
+			vy = 0.055f;
 		}
 	}
 	else
@@ -54,15 +57,6 @@ void BulletSkull::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		return;
 	}
 
-
-	if (this->x - target->x <= 0)
-	{
-		nx = 1;
-	}
-	else if (this->x - target->x > 0)
-	{
-		nx = -1;
-	}
 
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
@@ -82,7 +76,7 @@ void BulletSkull::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		x += dx;
 		y += dy;
 
-		timer += interval;
+		timer += 10;
 
 		if (timer == timeToExplosive)
 		{
@@ -104,9 +98,7 @@ void BulletSkull::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		float rdx = 0;
 		float rdy = 0;
 
-		// TODO: This is a very ugly designed function!!!!
 		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);  // sắp xếp lại các sự kiện va chạm đầu tiên theo trục x, y 
-
 
 
 		for (UINT i = 0; i < coEventsResult.size(); i++)
@@ -115,8 +107,12 @@ void BulletSkull::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 			if (dynamic_cast<CBrick*>(e->obj)) // if e->obj is Goomba 
 			{
-				
-				if (e->ny < 0)
+				//isColBrick = true;
+
+				x += min_tx * dx + nx * 0.4f;
+				y += min_ty * dy + ny * 0.4f;
+
+				if (e->ny != 0)
 				{
 					if (this->nx > 0)
 					{
@@ -135,8 +131,6 @@ void BulletSkull::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 						else this->SetState(4);
 					}
 				}
-
-				isColBrick = true;
 
 			}
 			else if (e->obj->objTag == ENEMY)
