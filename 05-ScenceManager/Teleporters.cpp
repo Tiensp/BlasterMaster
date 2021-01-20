@@ -49,7 +49,7 @@ void CTeleporter::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	if (hp <= 0)
 		isDeath = true;
 
-	timer += interval;
+	timer += 5;
 
 	CheckCollisionWithRock(coObjects);
 
@@ -66,7 +66,7 @@ void CTeleporter::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	}
 
 
-	if (timer == 3000)
+	if (timer == 1500)
 	{
 		if (this->GetState() == TELEPORTER_ANI_GRAY_MODE_ON)
 		{
@@ -83,10 +83,10 @@ void CTeleporter::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			}
 			this->SetState(TELEPORTER_ANI_GRAY_MODE_ON);
 		}*/
-		timer = 3000;
+		timer = 1500;
 	}
 
-	else if (timer == 3050)
+	else if (timer == 1550)
 	{
 		int r = RandomPosition();
 
@@ -127,9 +127,9 @@ void CTeleporter::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 		}
 
-		timer = 3050;
+		timer = 1550;
 	}
-	else if (timer == 3100) {
+	else if (timer == 1600) {
 		if (this->GetState() == TELEPORTER_ANI_TELEPORT) {
 
 			if (this->new_x - this->old_x > 0 && this->new_y - this->old_y == 0) {
@@ -158,9 +158,9 @@ void CTeleporter::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			}
 		}
 
-		timer = 3100;
+		timer = 1600;
 	}
-	else if (timer == 3150) {
+	else if (timer == 1650) {
 
 		if (this->GetState() == TELEPORTER_ANI_TELEPORT1) {
 
@@ -182,9 +182,9 @@ void CTeleporter::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			}
 		}
 
-		timer = 3150;
+		timer = 1650;
 	}
-	else if (timer == 3200) {
+	else if (timer == 1700) {
 
 		if (this->GetState() == TELEPORTER_ANI_TELEPORT2) {
 
@@ -206,9 +206,9 @@ void CTeleporter::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			}
 		}
 
-		timer = 3200;
+		timer = 1700;
 	}
-	else if (timer == 3250) {
+	else if (timer == 1750) {
 
 		if (this->GetState() == TELEPORTER_ANI_TELEPORT3) {
 
@@ -238,7 +238,7 @@ void CTeleporter::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					this->SetState(TELEPORTER_ANI_GRAY_MODE_OFF);
 				}
 
-				timer = 3050;
+				timer = 1520;
 
 			}
 			else {
@@ -248,10 +248,8 @@ void CTeleporter::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					this->SetState(TELEPORTER_ANI_GRAY_MODE_ON);
 				}
 				else if (this->new_x - this->old_x < 0 && this->new_y - this->old_y == 0) {
-
 					this->SetPosition(old_x - 50, old_y);
 					this->SetState(TELEPORTER_ANI_GRAY_MODE_ON);
-
 				}
 				else if (this->new_x - this->old_x == 0 && this->new_y - this->old_y > 0) {
 
@@ -266,6 +264,7 @@ void CTeleporter::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				}
 
 				jumpStep = 0;
+				timer = 0;
 			}
 			
 			/*if (teleporter_bullet == NULL)
@@ -276,9 +275,7 @@ void CTeleporter::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				teleporter_bullet->Set_IsMove(true);
 			}*/
 		}
-		timer = 0;
 	}
-
 }
 
 bool CTeleporter::CheckCollisionWithRock(vector<LPGAMEOBJECT>* coObjects) {
