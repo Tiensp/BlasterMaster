@@ -9,15 +9,31 @@
 #include "Goomba.h"
 #include "Portal.h"
 #include "Brick.h"
+#include "BossArm.h"
+#define BIT					16
 CBoss::CBoss(float x, float y, LPGAMEOBJECT player)
 {
 	SetState(BOSS_ANI_WALKING_RIGHT_DOWN);
-	
+
 
 	this->x = x;
 	this->y = y;
 	this->target = player;
-
+	CBossHand* hand1 = new CBossHand(this->x - 20, this->y + 10, 1, this->x, this->x);
+	listBossHand.push_back(hand1);
+	//DebugOut(L"succesful2");
+	CBossHand* hand2 = new CBossHand(this->x + 62, this->y + 10, 2, this->x, this->x);
+	listBossHand.push_back(hand2);
+	for (int i = 0; i < 4; i++)
+	{
+		CBossArm* arm = new CBossArm(this->x - 20, this->y + 10, 1, 0.027 + 0.0035 * (i + 1), 0.027 + 0.0035 * (i + 1));
+		listBossArm.push_back(arm);
+	}
+	for (int i = 0; i < 4; i++)
+	{
+		CBossArm* arm = new CBossArm(this->x - 20, this->y + 10, 2, 0.027 + 0.0035 * (i + 1), 0.027 + 0.0035 * (i + 1));
+		listBossArm.push_back(arm);
+	}
 	objType = BOSS;
 
 }
@@ -63,12 +79,52 @@ void CBoss::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			this->nx = 1;
 		}
 
-		boss_bullet = new BossBullet(this->x, this->y,this->nx);
+		boss_bullet = new BossBullet(this->x, this->y, this->nx);
 		boss_bullet->Set_IsMove(true);
 
 
 		timeToAttack = 0;
 	}
+	/*listBossHand[0]->SetSpeed(BOSS_HAND_WALKING_SPEED_X, BOSS_HAND_WALKING_SPEED_Y);
+	listBossHand[1]->SetSpeed(-BOSS_HAND_WALKING_SPEED_X, -BOSS_HAND_WALKING_SPEED_Y);*/
+	for (int i = 0; i < listBossHand.size(); i++) {
+		listBossHand[i]->SetBossPos(this->x, this->y);
+		listBossHand[i]->Update(dt, coObjects);
+	}
+
+	float x_hand_left, y_hand_left, x_hand_right, y_hand_right;
+	float x_diff_left, y_diff_left;
+	float x_diff_right, y_diff_right;
+
+	listBossHand[0]->GetPosition(x_hand_left, y_hand_left);
+
+
+	listBossHand[1]->GetPosition(x_hand_right, y_hand_right);
+
+	//listBossArm[0]->SetX(x + 6);
+	//listBossArm[3]->SetXYFollow(x_hand_left, y_hand_left);
+
+
+	x_diff_left = x_hand_left - x;
+	y_diff_left = y_hand_left - y;
+	listBossArm[0]->SetXYFollow(x - 6 + x_diff_left * 1 / 5, y + 6 + y_diff_left * 1 / 5);
+	listBossArm[1]->SetXYFollow(x - 6 + x_diff_left * 2 / 5, y + 6 + y_diff_left * 2 / 5);
+	listBossArm[2]->SetXYFollow(x - 6 + x_diff_left * 3 / 5, y + 6 + y_diff_left * 3 / 5);
+	listBossArm[3]->SetXYFollow(x - 6 + x_diff_left * 4 / 5, y + 6 + y_diff_left * 4 / 5);
+
+	x_diff_right = x_hand_right - (x + 50);
+	y_diff_right = y_hand_right - y;
+
+	listBossArm[4]->SetXYFollow(x + 50 + x_diff_right * 1 / 5, y + 6 + y_diff_right * 1 / 5);
+	listBossArm[5]->SetXYFollow(x + 50 + x_diff_right * 2 / 5, y + 6 + y_diff_right * 2 / 5);
+	listBossArm[6]->SetXYFollow(x + 50 + x_diff_right * 3 / 5, y + 6 + y_diff_right * 3 / 5);
+	listBossArm[7]->SetXYFollow(x + 50 + x_diff_right * 4 / 5, y + 6 + y_diff_right * 4 / 5);
+
+	for (int i = 0; i < listBossArm.size(); i++)
+	{
+		listBossArm[i]->Update(dt, coObjects);
+	}
+
 
 
 	vector<LPCOLLISIONEVENT> coEvents;
@@ -254,6 +310,15 @@ void CBoss::Render()
 	{
 		boss_bullet->Render();
 	}
+	for (int i = 0; i < listBossHand.size(); i++) {
+
+		listBossHand[i]->Render();
+	}
+	for (int i = 0; i < listBossArm.size(); i++)
+	{
+		listBossArm[i]->Render();
+	}
+
 
 	animation_set->at(ani)->Render(x, y);
 
@@ -265,11 +330,11 @@ void CBoss::SetState(int state)
 	CGameObject::SetState(state);
 	switch (state)
 	{
-	/*case FLOATER_STATE_DIE:
-		y += FLOATER_BBOX_HEIGHT - FLOATER_BBOX_HEIGHT_DIE + 1;
-		vx = 0;
-		vy = 0;
-		break;*/
+		/*case FLOATER_STATE_DIE:
+			y += FLOATER_BBOX_HEIGHT - FLOATER_BBOX_HEIGHT_DIE + 1;
+			vx = 0;
+			vy = 0;
+			break;*/
 	case BOSS_ANI_WALKING_LEFT_UP:
 		vx = -BOSS_WALKING_SPEED;
 		nx = -1;

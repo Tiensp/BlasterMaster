@@ -129,6 +129,8 @@
     <ClCompile Include="BigJason.cpp" />
     <ClCompile Include="BigJasonBullet.cpp" />
     <ClCompile Include="Boss.cpp" />
+    <ClCompile Include="BossArm.cpp" />
+    <ClCompile Include="Bosshand.cpp" />
     <ClCompile Include="Brick.cpp" />
     <ClCompile Include="BulletBoss.cpp" />
     <ClCompile Include="BulletEyeball.cpp" />
@@ -206,6 +208,8 @@
     <ClInclude Include="BigJason.h" />
     <ClInclude Include="BigJasonBullet.h" />
     <ClInclude Include="Boss.h" />
+    <ClInclude Include="BossArm.h" />
+    <ClInclude Include="BossHand.h" />
     <ClInclude Include="Brick.h" />
     <ClInclude Include="BulletBoss.h" />
     <ClInclude Include="BulletEyeball.h" />
