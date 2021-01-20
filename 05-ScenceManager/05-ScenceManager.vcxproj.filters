@@ -318,6 +318,15 @@
     <ClCompile Include="BulletBoss.cpp">
       <Filter>Framework\GameObject\BulletObject</Filter>
     </ClCompile>
+    <ClCompile Include="BulletTeleporter.cpp">
+      <Filter>Framework\GameObject\BulletObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Bomb.cpp">
+      <Filter>Framework\GameObject\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="BulletBomb.cpp">
+      <Filter>Framework\GameObject\BulletObject</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Brick.h">
@@ -540,6 +549,15 @@
       <Filter>Framework\GameObject\BulletObject</Filter>
     </ClInclude>
     <ClInclude Include="BulletBoss.h">
+      <Filter>Framework\GameObject\BulletObject</Filter>
+    </ClInclude>
+    <ClInclude Include="BulletTeleporter.h">
+      <Filter>Framework\GameObject\BulletObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Bomb.h">
+      <Filter>Framework\GameObject\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="BulletBomb.h">
       <Filter>Framework\GameObject\BulletObject</Filter>
     </ClInclude>
   </ItemGroup>

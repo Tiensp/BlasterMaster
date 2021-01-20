@@ -36,6 +36,8 @@
 #include "Grid.h"
 #include "Boss.h"
 #include "BulletBoss.h"
+#include "BulletTeleporter.h"
+#include "Bomb.h"
 
 class CPlayScene: public CScene
 {
@@ -58,6 +60,8 @@ protected:
 	vector<LPBulletObject> bulletShip;
 	vector<LPBulletObject> bulletEyeball;
 	vector<LPBulletObject> bulletBoss;
+	vector<LPBulletObject> bulletTeleporter;
+	vector<LPBulletObject> bulletMine;
 	vector<MiniScene*>	listScene;
 	vector<LPGAMEOBJECT> listPortal;
 	

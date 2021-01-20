@@ -9,6 +9,7 @@
 #include "ThunderBullet.h"
 #include "FollowBullets.h"
 #include "Item.h"
+
 #define SOPHIA_WALKING_SPEED		0.09f 
 //0.1f
 #define SOPHIA_JUMP_SPEED_Y		0.5f
@@ -75,6 +76,8 @@ protected:
 	bool isSetFollowBullet;
 	vector<BulletObject* > p_bullet_list;
 	vector<LPGAMEOBJECT> list_enemy_contain;
+
+	BulletObject* bomb_bullet;
 public: 
 	CSophia();
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT> *colliable_objects = NULL);

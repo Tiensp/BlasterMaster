@@ -54,7 +54,6 @@ void BulletObject::CheckCollisionWithEnemy(vector<LPGAMEOBJECT>* coObjects)
 		}
 		else
 		{
-
 			float min_tx, min_ty, nx = 0, ny;
 			float rdx = 0;
 			float rdy = 0;
@@ -65,7 +64,6 @@ void BulletObject::CheckCollisionWithEnemy(vector<LPGAMEOBJECT>* coObjects)
 			Enemy* enemy = dynamic_cast<Enemy*>(e->obj);
 			enemy->SetHp(bulletDame);
 			/*Item->IsDead = true;*/
-			
 		}
 	}
 

@@ -78,6 +78,7 @@ extern enum ObjectTYPE
 	EYEBALLS = 12,
 	TELEPORTERS = 13,
 	CANNONS = 14,
+	MINE = 190,
 	
 	/*BOSS*/
 	BOSS = 100,

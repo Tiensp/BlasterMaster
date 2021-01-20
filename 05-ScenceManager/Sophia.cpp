@@ -9,6 +9,7 @@
 #include "Portal.h"
 #include "Domes.h"
 #include "Camera.h"
+#include "Bomb.h"
 
 #include "StateIDLE.h"
 #include "StateTURN.h"
@@ -77,11 +78,11 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 
 
-		}
+	}
 		
-		x_render = x;
-		y_render = y;
-		currentState->Update();
+	x_render = x;
+	y_render = y;
+	currentState->Update();
 	
 }
 
@@ -128,6 +129,7 @@ void CSophia::Render()
 			}
 		}
 	}
+
 }
 #pragma region Xử lý phím
 
@@ -421,6 +423,10 @@ void CSophia::CheckCollisionWithEnemy(vector<LPGAMEOBJECT>* coObjects)
 	{
 		if (this->IsCollidingObject(ListEnemy.at(i)))
 		{
+			if (dynamic_cast<CBomb*>(ListEnemy.at(i))) {
+				CBomb* bomb = dynamic_cast<CBomb*>(ListEnemy.at(i));
+				bomb->isDeath = true;
+			}
 			isColideUsingAABB = true;
 			if (untouchable == 1 || isInjured)
 				continue;

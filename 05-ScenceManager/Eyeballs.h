@@ -24,7 +24,6 @@ class CEyeballs : public Enemy
 	int interval = 20;
 	int timer;
 
-	bool isDeath;
 	bool isDoneDeath;
 public:
 	CEyeballs(float x, float y, LPGAMEOBJECT player);
