@@ -37,6 +37,8 @@ class CDomes : public Enemy
 	int numberCollisionBrick = 1;  //số lần chạm tường trước khi tân công
 	float boundingHeigt;
 	float boundingWight;
+
+	int timeToChangeState;
 	RECT rectBrick = {0,0,5000,5000}; //cục đá va chạm sau cùng, để lấy đố dài của nó 
 	
  //phần gạch đang va chạm

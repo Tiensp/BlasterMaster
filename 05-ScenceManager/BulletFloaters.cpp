@@ -1,11 +1,13 @@
 ﻿#include "BulletFloaters.h"
+
 BulletFloaters::BulletFloaters(float _start_x, float _start_y)
 {
 	this->start_x = _start_x;
 	this->start_y = _start_y;
+	this->SetPosition(start_x, start_y);
 	isMove = true;
 	isDone = false;
-	bulletDame = 0;
+	bulletDame = 1;
 	this->SetAnimationSet(CAnimationSets::GetInstance()->Get(20));
 }
 
@@ -15,20 +17,21 @@ BulletFloaters::~BulletFloaters()
 
 void BulletFloaters::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	CGameObject::Update(dt, coObjects);
+	CEnemyBullet::Update(dt, coObjects);
+
 	if (isDone) return;
 
 	if (isMove)
 	{
 		if (bullet_dir == 1)
 		{
-			vx = 0.25f;
-			vy = 0.2f;
+			vx = 0.075f;
+			vy = 0.025f;
 		}
 		else if (bullet_dir == -1)
 		{
-			vx = -0.25f;
-			vy = 0.2f;
+			vx = -0.075f;
+			vy = 0.025f;
 		}
 	}
 	else
@@ -70,8 +73,6 @@ void BulletFloaters::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 			if (dynamic_cast<CBrick*>(e->obj)) // if e->obj is Goomba 
 			{
-				/*x += min_tx * dx + nx * 0.4f;
-				y += min_ty * dy + ny * 0.4f;*/
 
 				if (nx != 0) vx = 0;
 				if (ny != 0) vy = 0;
@@ -87,8 +88,6 @@ void BulletFloaters::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			else if (e->obj->objTag == PLAYER)
 			{
 				isColPlayer = true;
-				/*x += min_tx * dx + nx * 0.4f;
-				y += min_ty * dy + ny * 0.4f;*/
 			}
 		}
 
