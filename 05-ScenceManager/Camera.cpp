@@ -160,8 +160,32 @@ void CCamera::Update()
 		if (camPos.y > camBound.bottom - height)
 			camPos.y = camBound.bottom - height;
 	}
-	else
+	else //CODE SWITCH SCENE AREA
 	{
+		D3DXVECTOR2 playerPos;
+		if (_ACTIVE[SOPHIA] && !INSTANCE_SOPHIA->GetIsFrozen())
+			INSTANCE_SOPHIA->GetPosition(playerPos.x, playerPos.y);
+		else if (_ACTIVE[JASON])
+		{
+			INSTANCE_JASON->GetPosition(playerPos.x, playerPos.y);
+		}
+		else if (_ACTIVE[BIG_JASON])
+			INSTANCE_BIGJASON->GetPosition(playerPos.x, playerPos.y);
+
+		CPlayScene* playScene = ((CPlayScene*)CGame::GetInstance()->GetCurrentScene());
+		MiniScene* miniScene = playScene->GetlistScenes().at(playScene->currentMiniScene);
+
+		if (playerPos.y != camPos.y + height * 0.75 
+			&& camPos.y > camBound.top 
+			&& camPos.y < camBound.bottom
+			&& camPos.y > miniScene->y
+			&& camPos.y < miniScene->y + miniScene->height
+			)
+			if (playerPos.y < camPos.y + height * 0.75)
+				camPos.y -= 2.0f;
+			else
+				camPos.y += 2.0f;
+
 		if (camPos.x != SwitchScenePos.x)
 			if (camPos.x > SwitchScenePos.x)
 				camPos.x -= 2.0f;
@@ -170,8 +194,6 @@ void CCamera::Update()
 		else
 		{
 			isSwitchScene = false;
-			CPlayScene* playScene = ((CPlayScene*)CGame::GetInstance()->GetCurrentScene());
-			MiniScene* miniScene = playScene->GetlistScenes().at(playScene->currentMiniScene);
 			SetCamBound(miniScene->x, miniScene->y, miniScene->width, miniScene->height);
 		}
 	}

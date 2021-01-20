@@ -337,7 +337,6 @@ void CSophia::SetStartPos(float startx, float starty)
 /// </summary>
 void CSophia::CheckCollisionWithBrick(vector<LPGAMEOBJECT>* coObjects)
 {
-/*
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
 	bool isColideUsingAABB = false;
@@ -425,97 +424,24 @@ void CSophia::CheckCollisionWithBrick(vector<LPGAMEOBJECT>* coObjects)
 
 			FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
 
-			if (nx != 0) vx = 0;
-			if (ny != 0) vy = 0;
 			LPCOLLISIONEVENT e = coEventsResult[0];
 			x += min_tx * dx + nx * 0.4f;
 			y += min_ty * dy + ny * 0.4f;
 
-			if (e->ny < 0)
+
+			if (e->nx != 0) vx = 0;
+			if (e->ny == -1)
+			{
+				vy = 0;
 				lastColliBrick_y = e->obj->y;
-
-		}
-	}
-	*/
-vector<LPCOLLISIONEVENT> coEvents;
-vector<LPCOLLISIONEVENT> coEventsResult;
-
-coEvents.clear();
-CalcPotentialCollisions(coObjects, coEvents);
-
-if (coEvents.size() == 0)  
-{
-	x += dx;
-	y += dy;
-}
-else //có va chạm
-{
-	float min_tx, min_ty, nx = 0, ny = 0;
-	float rdx = 0;
-	float rdy = 0;
-
-	// TODO: This is a very ugly designed function!!!!
-	FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);  // sắp xếp lại các sự kiện va chạm đầu tiên theo trục x, y 
-
-	// block every object first!
-	{
-		if (nx != 0) vx = 0;
-		if (ny != 0) vy = 0;
-		for (UINT i = 0; i < coEventsResult.size(); i++)
-		{
-			LPCOLLISIONEVENT e = coEventsResult[i];
-
-			if (dynamic_cast<CBrick*>(e->obj)) // if e->obj is Goomba 
-			{
-
-				CBrick* brick = dynamic_cast<CBrick*>(e->obj);
-
-				// jump on top >> kill Goomba and deflect a bit 
-				/*if (e->nx != 0)
-				{
-					if (e->nx > 0)
-					{
-						if (this->ny > 0)
-						{
-						}
-						else if (this->ny < 0)
-						{
-						}
-					}
-					else if (e->nx < 0)
-					{
-						if (this->ny > 0)
-						{
-						}
-						else if (this->ny < 0)
-						{
-						}
-					}
-				}
-				else if (e->ny != 0)
-				{
-					if (e->ny > 0)
-					{
-
-					}
-					else if (e->ny < 0)
-					{
-
-					}
-				}*/
-
-				x += min_tx * dx + nx * 0.4f;
-				//y += min_ty * dy + ny * 0.4f;
-				if (e->ny < 0)
-					lastColliBrick_y = e->obj->y;
 			}
-			else
+			else if (e->ny == 1)
 			{
-				x += dx;
+				vy = 0;
 			}
 		}
 	}
-}
+	
 }
 
 /// <summary>

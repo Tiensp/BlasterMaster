@@ -42,7 +42,7 @@ using namespace std;
 
 /////// SOPHIA ////////
 #define SOPHIA_GRAVITY 0.001f
-#define SOPHIA_JUMP_SPEED 0.35f
+#define SOPHIA_JUMP_SPEED 0.36f
 
 /////// PORTAL ///////
 #define PORTAL_WIDTH	32

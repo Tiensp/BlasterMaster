@@ -43,7 +43,7 @@ void StateJUMP::Update()
 	CSophia* sophia = INSTANCE_SOPHIA;
 	if (sophia->vy >= 0)
 	{
-			sophia->SwitchState(new StateIDLE(), NORMAL_STATE);
+			sophia->SwitchState(new StateFALL(), NORMAL_STATE);
 	}
 	else
 		this->HandleKeyboard();
