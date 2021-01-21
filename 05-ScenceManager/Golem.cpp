@@ -31,6 +31,7 @@ CGolem::~CGolem()
 
 void CGolem::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
+	//chua lam xong
 	if (!isDeath)
 	{
 		left = x;
