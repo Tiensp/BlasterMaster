@@ -148,3 +148,4 @@ vector<LPGAMEOBJECT> CGrid::GetActiveObj()
 
 	return activeObj;
 }
+

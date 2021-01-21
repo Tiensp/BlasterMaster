@@ -24,7 +24,7 @@ void FollowBullet::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	//if (isDone) return;
 	if (isMove)
 	{
-		if (this->y - target->y > 0)
+		if (this->y - (target->y +5) > 0)
 		{
 			vy = -0.05f;
 			if (this->x - target->x > 0)

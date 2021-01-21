@@ -9,13 +9,13 @@
 #include "Goomba.h"
 #include "Portal.h"
 #include "Brick.h"
-CTeleporter::CTeleporter(float x, float y, LPGAMEOBJECT player)
+CTeleporter::CTeleporter(float x, float y, LPGAMEOBJECT player, int _typeItem)
 {
 	SetState(TELEPORTER_ANI_GRAY_MODE_ON);
 	this->x = x;
 	this->y = y;
 	this->target = player;
-
+	typeItem = _typeItem;
 	hp = 3;
 
 	objTag = ENEMY;

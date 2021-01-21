@@ -10,13 +10,14 @@
 #include "Portal.h"
 #include "Brick.h"
 #include "BulletFloaters.h"
-CDomes::CDomes(float x, float y, float boundingHeight, float boundingWight, LPGAMEOBJECT player)
+CDomes::CDomes(float x, float y, float boundingHeight, float boundingWight, LPGAMEOBJECT player,int _typeItem)
 {
 	SetState(DOMES_ANI_WALKING_LEFT_UP);
 	this->x = x;
 	this->y = y;
 	this->boundingHeigt = boundingHeight;
 	this->boundingWight = boundingWight;
+	typeItem = _typeItem;
 	this->target = player;
 
 	hp = 1;

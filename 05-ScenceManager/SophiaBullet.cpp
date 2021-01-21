@@ -21,7 +21,7 @@ void SophiaBullet::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	BulletObject::Update(dt, coObjects);
 	if (isDone) return;
 
-	HandleMove(SCREEN_WIDTH / 3, SCREEN_HEIGHT / 3);
+	HandleMove(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
 	
 	if (type == 0)
 	{
@@ -90,8 +90,9 @@ void SophiaBullet::Render()
 			ani = 2;
 		}
 	}
-
-
 	animation_set->at(ani)->Render(x, y);
-	RenderBoundingBox(x,y);
+	RenderBoundingBox(x, y);
+	
 }
+
+

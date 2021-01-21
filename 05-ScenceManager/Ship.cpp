@@ -9,13 +9,13 @@
 #include "Goomba.h"
 #include "Portal.h"
 #include "Brick.h"
-CShip::CShip(float x, float y, LPGAMEOBJECT player)
+CShip::CShip(float x, float y, LPGAMEOBJECT player, int _typeItem)
 {
 	SetState(SHIP_ANI_WALKING_LEFT);
 	this->x = x;
 	this->y = y;
 	this->target = player;
-
+	typeItem = _typeItem;
 	hp = 3;
 
 	objTag = ENEMY;

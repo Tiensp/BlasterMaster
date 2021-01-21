@@ -14,6 +14,7 @@ public:
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	void Render();
+	void RenderThree();
 	void Set_type(int _type) { type = _type; }
 
 };

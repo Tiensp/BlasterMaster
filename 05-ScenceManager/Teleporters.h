@@ -23,7 +23,7 @@ class CTeleporter : public Enemy
 	bool isDeath;
 	bool isDoneDeath;
 public:
-	CTeleporter(float x, float y, LPGAMEOBJECT player);
+	CTeleporter(float x, float y, LPGAMEOBJECT player, int _typeItem);
 	virtual void SetState(int state);
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);

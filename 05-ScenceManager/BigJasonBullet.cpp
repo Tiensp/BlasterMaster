@@ -19,7 +19,7 @@ BigJasonBullet::BigJasonBullet(float _start_x, float _start_y,  int type,int dir
 	bulletDame = 2;
 	radius_increase = 0;
 	bullet_direct_round = direct_round;
-
+	
 	this->SetAnimationSet(CAnimationSets::GetInstance()->Get(19));
 }
 

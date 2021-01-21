@@ -9,13 +9,13 @@
 #include "Goomba.h"
 #include "Portal.h"
 #include "Brick.h"
-CSkull::CSkull(float x, float y, LPGAMEOBJECT player)
+CSkull::CSkull(float x, float y, LPGAMEOBJECT player, int _typeItem)
 {
 	SetState(SKULL_ANI_WALKING_LEFT);
 	this->x = x;
 	this->y = y;
 	this->target = player;
-
+	typeItem = _typeItem;
 	hp = 1;
 
 	objTag = ENEMY;

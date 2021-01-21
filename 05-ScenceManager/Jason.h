@@ -3,7 +3,9 @@
 #include "State.h"
 #include "GameDefine.h"
 #include "JasonBullet.h"
+#include "Ladder.h"
 #define JASON_WALKING_SPEED		0.09f 
+#define JASON_CLIMB_SPEED		0.05f 
 //0.1f
 #define JASON_JUMP_SPEED_Y		0.5f
 #define JASON_JUMP_DEFLECT_SPEED 0.2f
@@ -44,6 +46,11 @@ protected:
 	int untouchable;
 	DWORD untouchable_start;
 	DWORD lifeTimeAni;
+	bool isColLadder;
+	CLadder* Ladder = NULL;
+	//CLadder* Ladder = NULL;
+
+	D3DXVECTOR2 LadderPos;
 	
 
 	float start_x;			// initial position of Jason at scene
@@ -78,14 +85,15 @@ public:
 	void SetIsTouchingPortal(bool touch) { isTouchingPortal = touch; }
 	bool GetIsTouchingPortal() { return isTouchingPortal; }
 	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount64(); }
-
+	
 	/* State */
 	void SwitchState(CState* state);
 
 
 	void Reset();
 	void ResetAtPos(float _x, float _y);
-
+	void CheckCollisionWithBrick(vector<LPGAMEOBJECT>* coObjects);
+	void CheckCollisionWithLadder(vector<LPGAMEOBJECT>* coObjects);
 	int Get_Jason_Normal_bullet();
 	void set_bullet_list();
 	vector<BulletObject*> Get_Bullet_List() { return p_bullet_list; }
