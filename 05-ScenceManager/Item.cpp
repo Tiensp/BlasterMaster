@@ -52,5 +52,5 @@ void CItem::Render()
 	}
 	
 
-	/*RenderBoundingBox();*/
+	RenderBoundingBox(x, y);
 }

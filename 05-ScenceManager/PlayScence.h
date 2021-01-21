@@ -61,7 +61,7 @@ protected:
 	vector<LPBulletObject> bulletShip;
 	vector<LPBulletObject> bulletEyeball;
 	vector<LPBulletObject> bulletBoss;
-	vector<MiniScene*>	listScene;
+	vector<MiniScene*>	listScenes;
 	vector<LPGAMEOBJECT> listPortal;
 	
 	/* Các hàm ParsSection dùng để đọc file */
@@ -83,7 +83,7 @@ public:
 	CBigJason* GetBigJason() { return this->bigJason; }
 	CCamera* GetCamera() { return this->camera; }
 	CMap* GetMap() { return this->map; }
-	vector<MiniScene*> GetlistScenes() { return listScene; }
+	vector<MiniScene*> GetlistScenes() { return listScenes; }
 	void ClassifyOBJECT(vector<LPGAMEOBJECT> obj);	//Phân loại các obj
 	
 	//////// PUBLIC VARIABLE //////////

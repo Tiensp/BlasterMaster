@@ -87,7 +87,7 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		// Túc khởi tạo thì chưa chạm gạch lần nào nên biến này sẽ == NULL
 		isColliBrick = false;
 	}
-	else if (lastColliBrick_y - rectB <= 0.5f  && rectB <= lastColliBrick_y)
+	else if (lastColliBrick_y - rectB <= 0.3f  && rectB <= lastColliBrick_y)
 	{
 		// Vì code xử lý SweptAABB đẩy nhân vật lên 0.4f nên hầu như lúc nào nhân vật cũng 
 		// trong trạng thái không va chạm => cần check tọa độ để biết có va chạm với gạch không
@@ -425,8 +425,8 @@ void CSophia::CheckCollisionWithBrick(vector<LPGAMEOBJECT>* coObjects)
 			FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
 
 			LPCOLLISIONEVENT e = coEventsResult[0];
-			x += min_tx * dx + nx * 0.4f;
-			y += min_ty * dy + ny * 0.4f;
+			x += min_tx * dx + nx * 0.2f;
+			y += min_ty * dy + ny * 0.2f;
 
 
 			if (e->nx != 0) vx = 0;
