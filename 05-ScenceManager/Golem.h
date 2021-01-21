@@ -21,11 +21,13 @@ class CGolem : public Enemy
 	bool isFolow; //theo player 
 
 	bool isDoneDeath = false;
-	bool isDeath = false;
+	
+	bool isJumping;
 
+	
 
 public:
-	CGolem(float x, float y, LPGAMEOBJECT player);
+	CGolem(float x, float y, LPGAMEOBJECT player, int _typeItem);
 	~CGolem();
 	virtual void SetState(int state);
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);

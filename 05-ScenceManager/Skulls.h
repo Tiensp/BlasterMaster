@@ -33,7 +33,7 @@ class CSkull : public Enemy
 	bool isDoneDeath = false;
 	bool isDeath = false;
 public:
-	CSkull(float x, float y, LPGAMEOBJECT player);
+	CSkull(float x, float y, LPGAMEOBJECT player, int _typeItem);
 	virtual void SetState(int state);
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);

@@ -143,6 +143,7 @@
     <ClCompile Include="Cannons.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="EnemyBullet.cpp" />
+    <ClCompile Include="Energy.cpp" />
     <ClCompile Include="Eyeballs.cpp" />
     <ClCompile Include="Floaters.cpp" />
     <ClCompile Include="FollowBullet.cpp" />
@@ -154,6 +155,7 @@
     <ClCompile Include="Grid.cpp" />
     <ClCompile Include="HP.cpp" />
     <ClCompile Include="HUD.cpp" />
+    <ClCompile Include="HUDEnergy.cpp" />
     <ClCompile Include="Insect.cpp" />
     <ClCompile Include="Intro.cpp" />
     <ClCompile Include="Item.cpp" />
@@ -171,6 +173,7 @@
     <ClCompile Include="Skulls.cpp" />
     <ClCompile Include="SophiaBullet.cpp" />
     <ClCompile Include="Sound.cpp" />
+    <ClCompile Include="StateCLIMB.cpp" />
     <ClCompile Include="StateCRAWL.cpp" />
     <ClCompile Include="StateFALL.cpp" />
     <ClCompile Include="StateFALLGunUP.cpp" />
@@ -223,6 +226,7 @@
     <ClInclude Include="Domes.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="EnemyBullet.h" />
+    <ClInclude Include="Energy.h" />
     <ClInclude Include="Eyeballs.h" />
     <ClInclude Include="Floaters.h" />
     <ClInclude Include="FollowBullet.h" />
@@ -231,6 +235,7 @@
     <ClInclude Include="GameDefine.h" />
     <ClInclude Include="Golem.h" />
     <ClInclude Include="Grid.h" />
+    <ClInclude Include="HUDEnergy.h" />
     <ClInclude Include="Insect.h" />
     <ClInclude Include="HP.h" />
     <ClInclude Include="HUD.h" />
@@ -251,6 +256,7 @@
     <ClInclude Include="resource.h" />
     <ClInclude Include="SophiaBullet.h" />
     <ClInclude Include="Sound.h" />
+    <ClInclude Include="StateCLIMB.h" />
     <ClInclude Include="StateCRAWL.h" />
     <ClInclude Include="StateFALL.h" />
     <ClInclude Include="StateFALLGunUP.h" />

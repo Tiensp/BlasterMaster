@@ -29,6 +29,8 @@ CSophia::CSophia() : CGameObject()
 {
 	level = SOPHIA_LEVEL_BIG;
 	untouchable = 0;
+	energy = 0;
+	health = 8;
 	animation_set = CAnimationSets::GetInstance()->Get(SOPHIA);
 
 	start_x = x; 
@@ -819,6 +821,8 @@ void CSophia::Reset()
 {
 	SetPosition(start_x, start_y);
 	SwitchState(new StateIDLE(), NORMAL_STATE);
+	health = 8;
+
 	SetSpeed(0, 0);
 }
 

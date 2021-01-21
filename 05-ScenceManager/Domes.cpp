@@ -10,13 +10,14 @@
 #include "Portal.h"
 #include "Brick.h"
 #include "BulletFloaters.h"
-CDomes::CDomes(float x, float y,float boundingHeight, float boundingWight, LPGAMEOBJECT player)
+CDomes::CDomes(float x, float y, float boundingHeight, float boundingWight, LPGAMEOBJECT player,int _typeItem)
 {
 	SetState(DOMES_ANI_WALKING_LEFT_UP);
 	this->x = x;
 	this->y = y;
 	this->boundingHeigt = boundingHeight;
 	this->boundingWight = boundingWight;
+	typeItem = _typeItem;
 	this->target = player;
 
 	hp = 1;
@@ -71,141 +72,26 @@ void CDomes::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		float min_tx, min_ty, nx = 0, ny = 0;
 		float rdx = 0;
 		float rdy = 0;
-		
+
 		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);  // sắp xếp lại các sự kiện va chạm đầu tiên theo trục x, y 
-	
+
 		for (UINT i = 0; i < coEventsResult.size(); i++)
 		{
 			LPCOLLISIONEVENT e = coEventsResult[i];
-		
-			if (dynamic_cast<CBrick*>(e->obj)) // if e->obj is Goomba 
+
+			if (dynamic_cast<CBrick*>(e->obj) || dynamic_cast<CPortal*>(e->obj)) // if e->obj is Goomba 
 			{
 				isAtack = false;
 				numberCollisionBrick++;
 
-			
-				x += min_tx * dx + nx * 0.4f;
-				y += min_ty * dy + ny * 0.4f;
-
-				if (nx != 0) vx = 0;
-				if (ny != 0) vy = 0;
-				
-				CBrick* brick = dynamic_cast<CBrick*>(e->obj); 
-
-				if (e->ny != 0 )
-				{			
-					if (e->ny < 0)
-					{
-						if (this->GetState() == DOMES_ANI_WALKING_DOWN_RIGHT)
-						{
-							this->SetState(DOMES_ANI_WALKING_RIGHT_UP);
-						}
-						else if (this->GetState() == DOMES_ANI_WALKING_DOWN_LEFT)
-						{
-							this->SetState(DOMES_ANI_WALKING_LEFT_UP);
-
-						}
-						else
-						{
-							if (this->nx > 0)
-							{
-								this->SetState(DOMES_ANI_WALKING_RIGHT_UP);
-							}
-							else
-							{
-								this->SetState(DOMES_ANI_WALKING_LEFT_UP);
-							}
-						}
-
-					}
-					else if (e->ny > 0)
-					{
-						if (this->GetState() == DOMES_ANI_WALKING_UP_RIGHT)
-						{
-							this->SetState(DOMES_ANI_WALKING_RIGHT_DOWN);
-						}
-						else if (this->GetState() == DOMES_ANI_WALKING_UP_LEFT)
-						{
-							this->SetState(DOMES_ANI_WALKING_LEFT_DOWN);
-
-						}
-						else
-						{
-							if (this->nx > 0)
-							{
-								this->SetState(DOMES_ANI_WALKING_RIGHT_DOWN);
-							}
-							else
-							{
-								this->SetState(DOMES_ANI_WALKING_LEFT_DOWN);
-							}
-						}
-					}
-				}
-				else if (e->nx != 0 )
-				{
-					if (e->nx > 0)
-					{
-						if (this->GetState()==DOMES_ANI_WALKING_LEFT_UP)
-						{
-							this->SetState(DOMES_ANI_WALKING_UP_RIGHT);
-						}
-						else if (this->GetState() == DOMES_ANI_WALKING_LEFT_DOWN)
-						{
-							this->SetState(DOMES_ANI_WALKING_DOWN_RIGHT);
-						}
-						else
-						{
-							if (this->ny < 0)
-							{
-								this->SetState(DOMES_ANI_WALKING_UP_RIGHT);
-							}
-							else
-							{
-								this->SetState(DOMES_ANI_WALKING_DOWN_RIGHT);
-							}
-						}
-						
-					}
-					else 
-					{
-						if (this->GetState() == DOMES_ANI_WALKING_RIGHT_UP)
-						{
-							this->SetState(DOMES_ANI_WALKING_UP_LEFT);
-						}
-						else if (this->GetState() == DOMES_ANI_WALKING_RIGHT_DOWN)
-						{
-							this->SetState(DOMES_ANI_WALKING_DOWN_LEFT);
-						}
-						else
-						{
-							if (this->ny < 0)
-							{
-								this->SetState(DOMES_ANI_WALKING_DOWN_LEFT);
-								
-							}
-							else
-							{
-								this->SetState(DOMES_ANI_WALKING_UP_LEFT);
-							}
-						}	
-					}
-				}
-
-				rectBrick.left = brick->x;
-				rectBrick.right = rectBrick.left + brick->width;
-				rectBrick.top = brick->y;
-				rectBrick.bottom = brick->y + brick->height;	
-			}
-			else if (e->obj->objTag == PORTAL)
-			{
-				isAtack = false;
 
 				x += min_tx * dx + nx * 0.4f;
 				y += min_ty * dy + ny * 0.4f;
 
 				if (nx != 0) vx = 0;
 				if (ny != 0) vy = 0;
+
+				CBrick* brick = dynamic_cast<CBrick*>(e->obj);
 
 				if (e->ny != 0)
 				{
@@ -306,7 +192,14 @@ void CDomes::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 						}
 					}
 				}
+
+				//lấy box của viên gạch hiện tại để xét di chuyển
+				rectBrick.left = e->obj->x;
+				rectBrick.right = rectBrick.left + e->obj->width;
+				rectBrick.top = e->obj->y;
+				rectBrick.bottom = e->obj->y + e->obj->height;
 			}
+
 			else
 			{
 				x += dx;
@@ -315,7 +208,7 @@ void CDomes::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		}
 
 	}
-	//for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
+	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
 }
 
 
@@ -400,8 +293,8 @@ void CDomes::Render()
 
 
 	animation_set->at(ani)->Render(x, y);
-	
-	RenderBoundingBox(x,y);
+
+	RenderBoundingBox(x, y);
 }
 
 void CDomes::Wall()
@@ -461,7 +354,7 @@ void CDomes::SetState(int state)
 	switch (state)
 	{
 	case DOMES_STATE_START:
-		vx= -DOMES_WALKING_SPEED;
+		vx = -DOMES_WALKING_SPEED;
 		vy = 0;
 		ny = -1;
 		nx = 1;
@@ -470,7 +363,7 @@ void CDomes::SetState(int state)
 		nx = 1;
 		ny = 1;
 		vx = 0;
-		vy =DOMES_WALKING_SPEED;
+		vy = DOMES_WALKING_SPEED;
 		break;
 	case DOMES_ANI_WALKING_UP_LEFT:
 		nx = 1;
@@ -518,12 +411,12 @@ void CDomes::SetState(int state)
 		vy = 0;
 		if (nx < 0)
 		{
-			vx = 0.1f;
+			vx = 0.15f;
 			nx = 1;
 		}
 		else
 		{
-			vx = -0.1f;
+			vx = -0.15f;
 			nx = -1;
 		}
 		break;
@@ -531,12 +424,12 @@ void CDomes::SetState(int state)
 		vx = 0;
 		if (ny < 0)
 		{
-			vy = 0.1f;
+			vy = 0.15f;
 			ny = 1;
 		}
 		else
 		{
-			vy = -0.1f;
+			vy = -0.15f;
 			ny = -1;
 		}
 		break;

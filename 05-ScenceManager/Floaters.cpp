@@ -9,13 +9,13 @@
 #include "Goomba.h"
 #include "Portal.h"
 #include "Brick.h"
-CFloaters::CFloaters(float x, float y, LPGAMEOBJECT player)
+CFloaters::CFloaters(float x, float y, LPGAMEOBJECT player, int _itemType)
 {
 	SetState(FLOATER_ANI_WALKING_LEFT_UP);
 	this->x = x;
 	this->y = y;
 	this->target = player;
-
+	typeItem= _itemType;
 	hp = 1;
 
 	objTag = ENEMY;

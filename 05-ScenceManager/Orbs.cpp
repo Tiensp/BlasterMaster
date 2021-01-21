@@ -9,12 +9,13 @@
 #include "Goomba.h"
 #include "Portal.h"
 #include "Brick.h"
-COrb::COrb(float x, float y, LPGAMEOBJECT player)
+COrb::COrb(float x, float y, LPGAMEOBJECT player, int _typeItem)
 {
 	SetState(ORB_ANI_WALKING_RIGHT);
 	this->x = x;
 	this->y = y;
 	this->target = player;
+	typeItem = _typeItem;
 	objTag = ENEMY;
 	objType = ORBS;
 	
@@ -43,119 +44,123 @@ void COrb::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 
 
-
-	Enemy::Update(dt, coObjects);
-
-	vector<LPCOLLISIONEVENT> coEvents;
-	vector<LPCOLLISIONEVENT> coEventsResult;
-
-	coEvents.clear();
-
-	// turn off collision when die 
-	//nếu không chết thì kiểm tra toàn bộ va chạm với các đối tượng khác
-	CalcPotentialCollisions(coObjects, coEvents);
-
-	if (coEvents.size() == 0)  //nếu không có va chạm, update bình thường
+	if (!isDeath)
 	{
-		x += dx;
-		y += dy;
+		Enemy::Update(dt, coObjects);
 
-		Attack();
+		vector<LPCOLLISIONEVENT> coEvents;
+		vector<LPCOLLISIONEVENT> coEventsResult;
 
-	}
-	else //có va chạm
-	{
-		float min_tx, min_ty, nx = 0, ny = 0;
-		float rdx = 0;
-		float rdy = 0;
+		coEvents.clear();
 
-		// TODO: This is a very ugly designed function!!!!
-		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);  // sắp xếp lại các sự kiện va chạm đầu tiên theo trục x, y 
+		// turn off collision when die 
+		//nếu không chết thì kiểm tra toàn bộ va chạm với các đối tượng khác
+		CalcPotentialCollisions(coObjects, coEvents);
 
+		if (coEvents.size() == 0)  //nếu không có va chạm, update bình thường
 		{
-			for (UINT i = 0; i < coEventsResult.size(); i++)
+			x += dx;
+			y += dy;
+
+			Attack();
+
+		}
+		else //có va chạm
+		{
+			float min_tx, min_ty, nx = 0, ny = 0;
+			float rdx = 0;
+			float rdy = 0;
+
+			// TODO: This is a very ugly designed function!!!!
+			FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);  // sắp xếp lại các sự kiện va chạm đầu tiên theo trục x, y 
+
 			{
-				LPCOLLISIONEVENT e = coEventsResult[i];
-
-				if (dynamic_cast<CBrick*>(e->obj)) // if e->obj is Goomba 
+				for (UINT i = 0; i < coEventsResult.size(); i++)
 				{
+					LPCOLLISIONEVENT e = coEventsResult[i];
 
-					x += min_tx * dx + nx * 0.4f;  //cập nhật lại vị trí x
-					vy += 0.0005f * dt;
-
-					// jump on top >> kill Goomba and deflect a bit 
-					if (e->nx != 0)
+					if (dynamic_cast<CBrick*>(e->obj)) // if e->obj is Goomba 
 					{
-						if (e->nx > 0)
-						{
-							if (nx > 0)
-							{
-								this->SetState(ORB_ANI_WALKING_RIGHT);
-							}
-							else if (nx < 0)
-							{
-								this->SetState(ORB_ANI_WALKING_LEFT);
-							}
-	
-						}
-						else if (e->nx < 0)
-						{
-							if (nx < 0)
-							{
-								this->SetState(ORB_ANI_WALKING_LEFT);
-							}
-							else if (nx > 0)
-							{
-								this->SetState(ORB_ANI_WALKING_RIGHT);
-							}
-						}
 
-					}
-					else if (e->ny != 0)
-					{
-						if (e->ny > 0)
+						x += min_tx * dx + nx * 0.4f;  //cập nhật lại vị trí x
+						vy += 0.0005f * dt;
+
+						// jump on top >> kill Goomba and deflect a bit 
+						if (e->nx != 0)
 						{
-							if (nx < 0)
+							if (e->nx > 0)
 							{
-								if (this->GetState() == ORB_ANI_WALKING_LEFT_DOWN)
+								if (nx > 0)
+								{
+									this->SetState(ORB_ANI_WALKING_RIGHT);
+								}
+								else if (nx < 0)
 								{
 									this->SetState(ORB_ANI_WALKING_LEFT);
 								}
+
 							}
-							else if (nx > 0)
+							else if (e->nx < 0)
 							{
-								if (this->GetState() == ORB_ANI_WALKING_RIGHT_DOWN)
+								if (nx < 0)
+								{
+									this->SetState(ORB_ANI_WALKING_LEFT);
+								}
+								else if (nx > 0)
+								{
+									this->SetState(ORB_ANI_WALKING_RIGHT);
+								}
+							}
+
+						}
+						else if (e->ny != 0)
+						{
+							if (e->ny > 0)
+							{
+								if (nx < 0)
+								{
+									if (this->GetState() == ORB_ANI_WALKING_LEFT_DOWN)
+									{
+										this->SetState(ORB_ANI_WALKING_LEFT);
+									}
+								}
+								else if (nx > 0)
+								{
+									if (this->GetState() == ORB_ANI_WALKING_RIGHT_DOWN)
+									{
+										this->SetState(ORB_ANI_WALKING_RIGHT);
+									}
+								}
+							}
+							else if (e->ny < 0)
+							{
+								if (nx < 0)
+								{
+									this->SetState(ORB_ANI_WALKING_LEFT);
+								}
+								else if (nx > 0)
 								{
 									this->SetState(ORB_ANI_WALKING_RIGHT);
 								}
 							}
 						}
-						else if (e->ny < 0)
-						{
-							if (nx < 0)
-							{
-								this->SetState(ORB_ANI_WALKING_LEFT);
-							}
-							else if (nx > 0)
-							{
-								this->SetState(ORB_ANI_WALKING_RIGHT);
-							}
-						}
 					}
-				}
-				else if (e->obj->objTag == PLAYER)
-				{
-					isDeath = true;
-					this->SetState(ORB_ANI_DEATH);
-				}
-				else if (e->obj->objTag == ENEMY)
-				{
-					x += dx;
-					//y += dy;
+					else if (e->obj->objTag == PLAYER)
+					{
+						isDeath = true;
+						this->SetState(ORB_ANI_DEATH);
+					}
+					else if (e->obj->objTag == ENEMY)
+					{
+						x += dx;
+						//y += dy;
+					}
 				}
 			}
 		}
+
 	}
+	
 }
 
 void COrb::Attack()

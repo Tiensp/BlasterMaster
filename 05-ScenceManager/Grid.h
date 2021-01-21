@@ -16,6 +16,7 @@ using namespace std;
 
 class CGrid
 {
+	static CGrid* __instance;
 	vector<LPGAMEOBJECT>** Cell;
 	
 	int Rows;
@@ -31,6 +32,7 @@ public:
 	vector<LPGAMEOBJECT> SortDuplicateObj(vector<LPGAMEOBJECT> obj);
 
 	vector<LPGAMEOBJECT> GetActiveObj();
+	
 
 };
 

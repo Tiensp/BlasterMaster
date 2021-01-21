@@ -12,10 +12,16 @@ FollowBullets::FollowBullets(float _start_x, float _start_y, vector<LPGAMEOBJECT
 	{
 		if (dynamic_cast<Enemy*>(target->at(i)))
 		{
-			BulletObject* p_bullet = new FollowBullet(_start_x, _start_y, target->at(i));
-			p_bullet->SetPosition(start_x, start_y);
-			p_bullet->Set_IsMove(true);
-			listFollowBullet.push_back(p_bullet);
+			Enemy* enemy = dynamic_cast<Enemy*>(target->at(i));
+			if (enemy->GetIsDeath() != true)
+			{
+				BulletObject* p_bullet = new FollowBullet(_start_x, _start_y, target->at(i));
+				p_bullet->SetPosition(start_x, start_y);
+				p_bullet->Set_IsMove(true);
+				listFollowBullet.push_back(p_bullet);
+			}
+
+			
 		}
 	}
 }
@@ -26,7 +32,7 @@ FollowBullets::~FollowBullets()
 
 void FollowBullets::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	BulletObject::Update(dt, coObjects);
+
 
 	for (int i = 0; i < listFollowBullet.size(); i++)
 	{

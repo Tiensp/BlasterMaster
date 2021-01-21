@@ -37,6 +37,7 @@
 #include "Boss.h"
 #include "BulletBoss.h"
 #include "Ladder.h"
+#include "HUDEnergy.h"
 
 class CPlayScene: public CScene
 {
@@ -48,6 +49,7 @@ protected:
 	CMap* map;			//Cần một đối tượng lưu trữ MAP
 	CCamera* camera;	//Và một đối tượng lưu trữ camera của Play Scene
 	HUD* hud;
+	HUDEnergy* hudEnergy;
 	CGrid *grid;
 
 	
@@ -63,6 +65,7 @@ protected:
 	vector<LPBulletObject> bulletBoss;
 	vector<MiniScene*>	listScenes;
 	vector<LPGAMEOBJECT> listPortal;
+	vector<CItem> listItem;
 	
 	/* Các hàm ParsSection dùng để đọc file */
 	void _ParseSection_OBJECTS(string line);
@@ -84,6 +87,7 @@ public:
 	CCamera* GetCamera() { return this->camera; }
 	CMap* GetMap() { return this->map; }
 	vector<MiniScene*> GetlistScenes() { return listScenes; }
+	CGrid* GetGrid() { return this->grid; }
 	void ClassifyOBJECT(vector<LPGAMEOBJECT> obj);	//Phân loại các obj
 	
 	//////// PUBLIC VARIABLE //////////

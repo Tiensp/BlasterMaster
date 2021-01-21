@@ -20,11 +20,11 @@ FollowBullet::~FollowBullet()
 void FollowBullet::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	BulletObject::Update(dt, coObjects);
-	HandleMove(SCREEN_WIDTH / 3, SCREEN_HEIGHT / 3);
+	//HandleMove(SCREEN_WIDTH / 3, SCREEN_HEIGHT / 3);
 	//if (isDone) return;
 	if (isMove)
 	{
-		if (this->y - target->y > 0)
+		if (this->y - (target->y +5) > 0)
 		{
 			vy = -0.05f;
 			if (this->x - target->x > 0)

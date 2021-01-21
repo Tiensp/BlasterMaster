@@ -10,6 +10,7 @@ public:
 	~CItem();
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	int GetType() { return this->ItemType; }
+	void SetItemType(int _type) { this->ItemType = _type; }
 	void SetIsVanish() { this->isVanish = true; }
 	bool GetIsVanish() { return isVanish; }
 	void Render();

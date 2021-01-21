@@ -3,9 +3,11 @@
 CItem::CItem(int type)
 {
 	//this->SetAnimationSet(CAnimationSets::GetInstance()->Get(80));
+	
 	this->ItemType = type;
 	this->isVanish = false;
 	this->isDone = false;
+	this->SetAnimationSet(CAnimationSets::GetInstance()->Get(85));
 }
 
 CItem::~CItem()
@@ -48,7 +50,9 @@ void CItem::Render()
 		{
 			ani = 4;
 		}
+		DebugOut(L"x: %f, y: %f\n", x, y);
 		animation_set->at(ani)->Render(x, y);
+		RenderBoundingBox(x,y);
 	}
 	
 

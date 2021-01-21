@@ -45,7 +45,7 @@ class CDomes : public Enemy
 
 
 public:
-	CDomes(float x, float y,float boundingHeight,float  boundingWight ,LPGAMEOBJECT player);
+	CDomes(float x, float y,float boundingHeight,float  boundingWight ,LPGAMEOBJECT player, int _typeItem);
 	virtual void SetState(int state);
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);

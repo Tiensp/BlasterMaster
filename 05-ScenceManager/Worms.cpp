@@ -9,13 +9,13 @@
 #include "Goomba.h"
 #include "Portal.h"
 #include "Brick.h"
-CWorm::CWorm(float x, float y, LPGAMEOBJECT player)
+CWorm::CWorm(float x, float y, LPGAMEOBJECT player, int _typeItem)
 {
 	SetState(WORM_STATE_WALKING);
 	this->x = x;
 	this->y = y;
 	this->target = player;
-
+	typeItem = _typeItem;
 	hp = 1;
 
 	objTag = ENEMY;

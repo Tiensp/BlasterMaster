@@ -10,6 +10,6 @@ protected:
 
 public:
 	CLadder(float X, float Y, int W, int H);
-	virtual void Render();
-	virtual void GetBoundingBox(float& l, float& t, float& r, float& b);
+	void Render();
+	void GetBoundingBox(float& l, float& t, float& r, float& b);
 };

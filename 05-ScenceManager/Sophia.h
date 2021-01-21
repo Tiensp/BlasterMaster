@@ -78,7 +78,8 @@ protected:
 	int numberThreeBullet = 5;
 	int numberThunderBullet = 5;
 	int numberFollowBullet = 5;
-	int health = 8;	// Máu nhân vật
+	int health;;	// Máu nhân vật
+	int energy;
 
 	float lastColliBrick_y = NULL;
 	bool isSetFollowBullet;
@@ -127,6 +128,7 @@ public:
 	void SetHealth(int hp) { health = hp; }
 	void SetHealthWithBullet(int dame) { health -= dame; }
 	int GetHealth() { return health; }
+	int GetEnergy() { return energy; }
 
 	void SetIsAutoGo(bool autoGo) { isAutoGo = autoGo; }
 	bool GetIsAutoGo() { return isAutoGo; }

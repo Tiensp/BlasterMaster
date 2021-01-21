@@ -161,7 +161,8 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	}
 	case OBJECT_TYPE_GOLEM:
 	{
-		obj = new CGolem(x, y, sophia);
+		int itemType = atoi(tokens[4].c_str());
+		obj = new CGolem(x, y, sophia, itemType);
 		obj->SetPosition(x, y);
 		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
 		obj->SetAnimationSet(ani_set);
@@ -172,7 +173,8 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	}
 	case OBJECT_TYPE_DOMES:
 	{
-		obj = new CDomes(x, y, 999999, 999999, sophia);
+		int itemType = atoi(tokens[4].c_str());
+		obj = new CDomes(x, y, 999999, 999999, sophia,itemType);
 		obj->SetPosition(x, y);
 		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
 		obj->SetAnimationSet(ani_set);
@@ -182,7 +184,8 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	}
 	case OBJECT_TYPE_WORMS:
 	{
-		obj = new CWorm(x, y, sophia);
+		int itemType = atoi(tokens[4].c_str());
+		obj = new CWorm(x, y, sophia,itemType);
 		obj->SetPosition(x, y);
 		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
 		obj->SetAnimationSet(ani_set);
@@ -192,7 +195,8 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	break;
 	case OBJECT_TYPE_FLOATERS:
 	{
-		obj = new CFloaters(x, y, sophia);
+		int itemType = atoi(tokens[4].c_str());
+		obj = new CFloaters(x, y, sophia, itemType);
 		obj->SetPosition(x, y);
 		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
 		obj->SetAnimationSet(ani_set);
@@ -201,7 +205,8 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	}
 	case OBJECT_TYPE_SKULLS:
 	{
-		obj = new CSkull(x, y, sophia);
+		int itemType = atoi(tokens[4].c_str());
+		obj = new CSkull(x, y, sophia, itemType);
 		obj->SetPosition(x, y);
 		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
 		obj->SetAnimationSet(ani_set);
@@ -210,6 +215,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	}
 	case OBJECT_TYPE_INSECT:
 	{
+
 		obj = new CInsect(x, y, sophia);
 		obj->SetPosition(x, y);
 		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
@@ -219,7 +225,8 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	}
 	case OBJECT_TYPE_ORB:
 	{
-		obj = new COrb(x, y, sophia);
+		int itemType = atoi(tokens[4].c_str());
+		obj = new COrb(x, y, sophia,itemType);
 		obj->SetPosition(x, y);
 		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
 		obj->SetAnimationSet(ani_set);
@@ -228,7 +235,8 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	}
 	case OBJECT_TYPE_SHIP:
 	{
-		obj = new CShip(x, y, sophia);
+		int itemType = atoi(tokens[4].c_str());
+		obj = new CShip(x, y, sophia,itemType);
 		obj->SetPosition(x, y);
 		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
 		obj->SetAnimationSet(ani_set);
@@ -238,6 +246,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 
 	case OBJECT_TYPE_EYEBALL:
 	{
+
 		obj = new CEyeballs(x, y, sophia);
 		obj->SetPosition(x, y);
 		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
@@ -248,7 +257,8 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 
 	case OBJECT_TYPE_TELEPORTER:
 	{
-		obj = new CTeleporter(x, y, sophia);
+		int itemType = atoi(tokens[4].c_str());
+		obj = new CTeleporter(x, y, sophia, itemType);
 		obj->SetPosition(x, y);
 		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
 		obj->SetAnimationSet(ani_set);
@@ -308,7 +318,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_ITEM:
 	{
 		int type = atoi(tokens[4].c_str());
-		obj = new CItem(type);
+		obj = new CItem(type);	
 		obj->SetPosition(x, y);
 		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
 		obj->SetAnimationSet(ani_set);
@@ -444,6 +454,7 @@ void CPlayScene::Load()
 	}
 	//Sau khi active và khởi tạo xong xong đối tượng player thì khởi tạo thanh HUD 
 	hud = new HUD();
+	hudEnergy = new HUDEnergy();
 
 }
 
@@ -485,6 +496,7 @@ void CPlayScene::Update(DWORD dt)
 		camera->Update();
 		//Update HUD
 		hud->Update();
+		hudEnergy->Update();
 		//Grid Update
 		grid->Update(coObjects);
 	}
@@ -528,6 +540,7 @@ void CPlayScene::Render()
 			/*for (int i = 0; i < bulletFloater.size(); i++)
 				bulletFloater[i]->Render();*/
 		hud->Render();
+		hudEnergy->Render();
 
 	}
 	else
@@ -552,6 +565,8 @@ void CPlayScene::Unload()
 
 	delete hud;
 	hud = NULL;
+	delete hudEnergy;
+	hudEnergy = NULL;
 	DebugOut(L"[INFO] Scene %s unloaded! \n", sceneFilePath);
 }
 

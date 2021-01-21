@@ -32,7 +32,7 @@ protected:
 	bool isDoneDeath;
 	bool isDeath;
 public:
-	CFloaters(float x, float y, LPGAMEOBJECT player);
+	CFloaters(float x, float y, LPGAMEOBJECT player, int _itemType);
 	virtual void SetState(int state);
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);

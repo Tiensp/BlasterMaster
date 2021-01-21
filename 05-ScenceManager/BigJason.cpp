@@ -148,38 +148,53 @@ void CBigJason::OnKeyDown(int keycode)
 	case  DIK_Z:
 	{
 		BigJasonBullet* p_bullet = new BigJasonBullet();
-		
-		if (p_bullet_list.size() == 0)
+		if (energy <= 0)
 		{
-			p_bullet = new BigJasonBullet(this->x, this->y, 0);
-
-		}
-		else if (p_bullet_list.size() == 1)
-		{
-			p_bullet = new BigJasonBullet(this->x, this->y, 1);
-		}
-		else if (p_bullet_list.size() == 2)
-		{
-			p_bullet = new BigJasonBullet(this->x, this->y, -1);
-		}
-		else if (p_bullet_list.size() == 3)
-		{
-			p_bullet = new BigJasonBullet(this->x, this->y, 1);
-
-		}
-		if (energy <= 2)
-		{
+			p_bullet = new BigJasonBullet(this->x, this->y, 0, 0);
 			p_bullet->Set_Type(0);
 		}
 		else if (2 < energy && energy <= 5)
 		{
 			p_bullet->Set_Type(1);
+			if (p_bullet_list.size() == 0)
+			{
+				p_bullet = new BigJasonBullet(this->x,  this->y, 1, 1);
+			}
+			else if (p_bullet_list.size() == 1)
+			{
+				p_bullet = new BigJasonBullet(this->x, this->y, 1, 1);
+			}
+			else if (p_bullet_list.size() == 2)
+			{
+				p_bullet = new BigJasonBullet(this->x,  this->y, 1, -1);
+			}
+			else if (p_bullet_list.size() == 3)
+			{
+				p_bullet = new BigJasonBullet(this->x,  this->y, 1, 1);
+
+			}
 		}
-		else if( energy > 5)
+		else if (energy > 5)
 		{
 			p_bullet->Set_Type(2);
-		}
+			if (p_bullet_list.size() == 0)
+			{
+				p_bullet = new BigJasonBullet(this->x,  this->y, 2, 1);
+			}
+			else if (p_bullet_list.size() == 1)
+			{
+				p_bullet = new BigJasonBullet(this->x, this->y, 2, 1);
+			}
+			else if (p_bullet_list.size() == 2)
+			{
+				p_bullet = new BigJasonBullet(this->x,  this->y, 2, -1);
+			}
+			else if (p_bullet_list.size() == 3)
+			{
+				p_bullet = new BigJasonBullet(this->x, this->y, 2, 1);
 
+			}
+		}
 		if (this->ny == 0)
 		{
 			if (this->nx == 1)
@@ -210,13 +225,84 @@ void CBigJason::OnKeyDown(int keycode)
 			}
 			p_bullet->Set_point();
 		}
-		
+
 		if (Get_BigJason_Normal_bullet() <= 3)
 		{
 
 			p_bullet->Set_IsMove(true);
 			p_bullet_list.push_back(p_bullet);
 		}
+		break;
+		/*	BigJasonBullet* p_bullet = new BigJasonBullet();
+
+			if (p_bullet_list.size() == 0)
+			{
+				p_bullet = new BigJasonBullet(this->x, this->y, 0);
+
+			}
+			else if (p_bullet_list.size() == 1)
+			{
+				p_bullet = new BigJasonBullet(this->x, this->y, 1);
+			}
+			else if (p_bullet_list.size() == 2)
+			{
+				p_bullet = new BigJasonBullet(this->x, this->y, -1);
+			}
+			else if (p_bullet_list.size() == 3)
+			{
+				p_bullet = new BigJasonBullet(this->x, this->y, 1);
+
+			}
+			if (energy <= 2)
+			{
+				p_bullet->Set_Type(0);
+			}
+			else if (2 < energy && energy <= 5)
+			{
+				p_bullet->Set_Type(1);
+			}
+			else if (energy > 5)
+			{
+				p_bullet->Set_Type(2);
+			}
+
+			if (this->ny == 0)
+			{
+				if (this->nx == 1)
+				{
+					p_bullet->SetPosition(this->x + width + 20, this->y + 14);
+
+				}
+				else
+				{
+					p_bullet->SetPosition(this->x + width - 8, this->y + 14);
+				}
+				p_bullet->Set_bullet_dir(this->nx);
+				p_bullet->Set_point();
+
+
+			}
+			else if (this->nx == 0)
+			{
+				if (this->ny == 1)
+				{
+					p_bullet->SetPosition(this->x + width + 10, this->y - 5);
+					p_bullet->Set_bullet_dir(3);
+				}
+				else
+				{
+					p_bullet->SetPosition(this->x + width + 2, this->y + 25);
+					p_bullet->Set_bullet_dir(4);
+				}
+				p_bullet->Set_point();
+			}
+
+			if (Get_BigJason_Normal_bullet() <= 3)
+			{
+
+				p_bullet->Set_IsMove(true);
+				p_bullet_list.push_back(p_bullet);
+			}*/
 		break;
 	}
 	}

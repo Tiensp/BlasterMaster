@@ -1,5 +1,7 @@
 #pragma once
 #include "GameObject.h"
+#include "Item.h"
+
 class Enemy : public CGameObject
 {
 protected:
@@ -7,6 +9,8 @@ protected:
 	bool isDeath;
 	bool isAttack;
 	int hp;
+	int typeItem;
+	CItem* Item;
 	//bool isDone;
 public:
 	Enemy();

@@ -17,7 +17,7 @@ ThreeBullet::ThreeBullet(float _start_x, float _start_y, int _nx)
 	bullet3->Set_bullet_dir(_nx);
 	bullet3->Set_type(1);
 	bullet3->SetAnimationSet(CAnimationSets::GetInstance()->Get(16));
-	
+	this->bullet_dir = _nx;
 	isMove = true;
 	isDone = false;
 }
@@ -30,10 +30,10 @@ void ThreeBullet::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	{
 		this->isDone = true;
 	}
-	if (bullet1->bullet_dir == 1)
+	if (this->bullet_dir == 1)
 	{
 		bullet1->vx = 0.125f;
-		/*	bullet1->x += bullet1->vx * dt;*/
+		bullet1->vy = 0;
 		bullet2->vx = 0.125f;
 		bullet2->vy = 0.05f;
 		bullet3->vx = 0.125f;
@@ -42,6 +42,7 @@ void ThreeBullet::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	else
 	{
 		bullet1->vx = -0.125f;
+		bullet1->vy = 0;
 		bullet2->vx = -0.125f;
 		bullet2->vy = 0.05f;
 		bullet3->vx = -0.125f;
@@ -62,11 +63,9 @@ void ThreeBullet::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 void ThreeBullet::Render()
 {
-	int ani = 0;
+	
 	bullet1->Render();
 	bullet2->Render();
 	bullet3->Render();
-	/*bullet1->Render();
-	bullet2->Render();
-	bullet3->Render();*/
+
 }
