@@ -2,16 +2,17 @@
 #include "BulletObject.h"
 #include "Brick.h"
 #include "Sophia.h"
+#include "EnemyBullet.h"
 
-class BulletEyeball : public BulletObject
+class BulletEyeball : public CEnemyBullet
 {
 
 protected:
 	CSophia* sophia;
 
 	int followPlayer = 1;
-
 	LPGAMEOBJECT target;
+
 public:
 	BulletEyeball(float _start_x, float y_start_y, LPGAMEOBJECT player);
 	~BulletEyeball();

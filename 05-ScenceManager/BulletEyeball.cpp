@@ -16,7 +16,7 @@ BulletEyeball::~BulletEyeball()
 
 void BulletEyeball::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	CGameObject::Update(dt, coObjects);
+	CEnemyBullet::Update(dt, coObjects);
 	if (isDone) return;
 
 	if (isMove)
@@ -104,7 +104,7 @@ void BulletEyeball::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		{
 			ny = 1;
 		}
-		else if (this->x - target->x > 0)
+		else if (this->y - target->y > 0)
 		{
 			ny = -1;
 		}

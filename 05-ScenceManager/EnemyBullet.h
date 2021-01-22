@@ -1,6 +1,7 @@
 #pragma once
 #include "GameObject.h"
 #include "BulletObject.h"
+
 class CEnemyBullet : public BulletObject
 {
 public:

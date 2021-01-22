@@ -16,7 +16,7 @@ BulletSkull::~BulletSkull()
 
 void BulletSkull::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	CGameObject::Update(dt, coObjects);
+	CEnemyBullet::Update(dt, coObjects);
 	if (isDone) return;
 
 	if (isMove)

@@ -245,11 +245,6 @@ void CShip::SetState(int state)
 	CGameObject::SetState(state);
 	switch (state)
 	{
-	case SHIP_STATE_DIE:
-		y += SHIP_BBOX_HEIGHT - SHIP_BBOX_HEIGHT_DIE + 1;
-		vx = 0;
-		vy = 0;
-		break;
 	case SHIP_ANI_WALKING_LEFT:
 		vx = -SHIP_WALKING_SPEED;
 		nx = -1;

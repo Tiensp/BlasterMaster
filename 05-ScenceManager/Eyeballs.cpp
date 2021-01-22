@@ -104,7 +104,7 @@ void CEyeballs::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				else if (this->GetState() == EYEBALL_ANI_IDLE)
 				{
 					this->SetState(EYEBALL_ANI_WALKING);
-					timer = 0;
+					timer = 2000;
 				}
 			}
 		}

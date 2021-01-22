@@ -20,7 +20,7 @@ class CEyeballs : public Enemy
 	BulletObject* eyeball_bullet;
 
 	int counter;
-	int timeChangeState = 1400;
+	int timeChangeState = 4000;
 	int interval = 20;
 	int timer;
 
