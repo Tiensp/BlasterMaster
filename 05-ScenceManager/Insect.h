@@ -32,7 +32,6 @@ class CInsect : public Enemy
 	int interval = 10;
 	int timer;
 
-	
 	bool isDoneDeath = false;
 public:
 	CInsect(float x, float y, LPGAMEOBJECT player, int _itemType);

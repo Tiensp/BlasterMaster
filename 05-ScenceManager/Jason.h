@@ -62,6 +62,7 @@ protected:
 	bool isCrawling;
 	bool isTouchingPortal;
 	bool jumpIntoCabin = false;
+	bool isInjured = false;
 
 		// Máu nhân vật
 	vector<BulletObject* > p_bullet_list;
@@ -98,6 +99,8 @@ public:
 	void CheckCollisionWithBrick(vector<LPGAMEOBJECT>* coObjects);
 	void CheckCollisionWithLadder(vector<LPGAMEOBJECT>* coObjects);
 	void CheckCollisionWithEnemy(vector<LPGAMEOBJECT>* coObjects);
+	void CheckCollisionWithThornOVW(vector<LPGAMEOBJECT>* coObjects);
+	void CheckCollisionWithLava(vector<LPGAMEOBJECT>* coObjects);
 	int Get_Jason_Normal_bullet();
 	void set_bullet_list();
 	vector<BulletObject*> Get_Bullet_List() { return p_bullet_list; }
