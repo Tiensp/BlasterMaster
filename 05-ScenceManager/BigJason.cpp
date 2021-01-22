@@ -445,7 +445,6 @@ void CBigJason::AutoGo(float des)
 	{
 		if (ny > 0)
 		{
-			nx = 0;
 			SwitchState(new StateWALKING());
 			if (y <= des)
 			{
@@ -455,7 +454,6 @@ void CBigJason::AutoGo(float des)
 		}
 		else
 		{
-			nx = 0;
 			SwitchState(new StateWALKING());
 			if (y >= des)
 			{
