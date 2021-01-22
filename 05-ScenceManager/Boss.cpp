@@ -71,23 +71,16 @@ void CBoss::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	CGameObject::Update(dt, coObjects);
 
-	if (boss_bullet != NULL)
-	{
-		if (!boss_bullet->isDone)
-		{
-			boss_bullet->Update(dt, coObjects);
-			/*CPlayScene* plScene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
-			plScene->GetGrid()->AddObject(boss_bullet);*/
-		}
-		else
-		{
-			boss_bullet = NULL;
-		}
-	}
+	//for (int i = 0; i < listBulletBoss.size(); i++)
+	//{
+	//	listBulletBoss[i]->Update(dt, coObjects);
+	//}
+
+
 
 	timeToAttack += 20;
 
-	if (timeToAttack == 2000) {
+	if (timeToAttack == 800) {
 
 		if (this->x - target->x > 0) {
 			this->nx = -1;
@@ -95,12 +88,13 @@ void CBoss::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		else if (this->x - target->x < 0) {
 			this->nx = 1;
 		}
-		boss_bullet = new BossBullet(this->x, this->y, this->nx);
-		boss_bullet->Set_IsMove(true);
-		/*CPlayScene* plScene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
-		plScene->GetGrid()->AddObject(boss_bullet);*/
-
+		isAttack = true;
 		timeToAttack = 0;
+	}
+	else
+	{
+		isAttack = false;
+
 	}
 	/*listBossHand[0]->SetSpeed(BOSS_HAND_WALKING_SPEED_X, BOSS_HAND_WALKING_SPEED_Y);
 	listBossHand[1]->SetSpeed(-BOSS_HAND_WALKING_SPEED_X, -BOSS_HAND_WALKING_SPEED_Y);*/
@@ -153,8 +147,8 @@ void CBoss::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	if (coEvents.size() == 0)  //nếu không có va chạm, update bình thường
 	{
-		x += dx;
-		y += dy;
+	/*	x += dx;
+		y += dy;*/
 	}
 	else //có va chạm
 	{
@@ -309,24 +303,11 @@ void CBoss::Render()
 		}
 	}
 
-	/*if (isDeath)
-	{
-		ani = FLOATER_ANI_DEATH;
-		animation_set->at(ani)->Render(x, y);
-		if (animation_set->at(ani)->GetCurrentFrame() == 3)
-		{
-			isDoneDeath = true;
-		}
-		return;
-	}
 
-	animation_set->at(ani)->Render(x, y);
-	*/
-
-	if (boss_bullet != NULL)
-	{
-		boss_bullet->Render();
-	}
+	//for (int i = 0; i < listBulletBoss.size(); i++)
+	//{
+	//	listBulletBoss[i]->Render();
+	//}
 	for (int i = 0; i < listBossHand.size(); i++) {
 
 		listBossHand[i]->Render();
@@ -340,6 +321,11 @@ void CBoss::Render()
 	animation_set->at(ani)->Render(x, y);
 
 	RenderBoundingBox(x, y);
+}
+
+int CBoss::Get_Boss_bullet()
+{
+	return 0;
 }
 
 void CBoss::SetState(int state)

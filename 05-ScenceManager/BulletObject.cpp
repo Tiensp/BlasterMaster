@@ -50,7 +50,6 @@ void BulletObject::CheckCollisionWithEnemy(vector<LPGAMEOBJECT>* coObjects)
 			this->isColEnemy = true;
 			this->isDone = true;
 		}
-
 	}
 	if (isColideUsingAABB != true)
 	{

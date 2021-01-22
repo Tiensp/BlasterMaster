@@ -7,8 +7,6 @@
 #include "Sprites.h"
 #include "Portal.h"
 
-
-
 using namespace std;
 
 CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
@@ -57,6 +55,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
 #define OBJECT_TYPE_SCENE 53
 
 #define MAX_SCENE_LINE 1024
+
 
 
 /*
@@ -142,6 +141,17 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		DebugOut(L"[INFO] BIG JASON object created!\n");
 	}
 	break;
+	case OBJECT_TYPE_BOSS:
+	{
+
+		obj = CBoss::GetInstance();
+		boss = (CBoss*)obj;
+		boss = new CBoss(x, y, sophia);		
+		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
+		boss->SetAnimationSet(ani_set);
+		AllObjs.push_back(boss);
+		break;
+	}
 	case OBJECT_TYPE_BRICK:
 	{
 		float w = atof(tokens[4].c_str());
@@ -361,15 +371,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		listScenes.push_back(miniS);
 		break;
 	}
-	case OBJECT_TYPE_BOSS:
-	{
-		obj = new CBoss(x, y, sophia);
-		obj->SetPosition(x, y);
-		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
-		obj->SetAnimationSet(ani_set);
-		AllObjs.push_back(obj);
-		break;
-	}
+
 	default:
 		DebugOut(L"[ERR] Invalid object type: %d\n", object_type);
 		return;
@@ -434,7 +436,7 @@ void CPlayScene::Load()
 	DebugOut(L"[INFO] Done loading scene objects %s\n", sceneFilePath);
 
 	// Khởi tạo camera
-	currentMiniScene = 0;
+	currentMiniScene = 11;
 	MiniScene* miniScene = listScenes.at(currentMiniScene);
 	camera = CCamera::GetInstance();
 	camera->SetCamBound(miniScene->x, miniScene->y, miniScene->width, miniScene->height);
@@ -488,8 +490,9 @@ void CPlayScene::Update(DWORD dt)
 		}
 		else if (_ACTIVE[BIG_JASON])
 		{
-			bigJason->Update(dt, &coObjects);
+			bigJason->Update(dt, &coObjects, &listEnemyBullet);
 		}
+	/*	boss->Update(dt, &coObjects);*/
 
 		for (int i = 0; i < coObjects.size(); i++)
 		{
@@ -498,6 +501,34 @@ void CPlayScene::Update(DWORD dt)
 			{
 				coObjects.at(i)->Update(dt, &coObjects);
 			}
+		}
+		if (boss->Get_IsAtack()==true)
+		{
+			for (int i = 0; i < listEnemyBullet.size(); i++)
+			{
+				CEnemyBullet* p_bullet = listEnemyBullet[i];
+				if (p_bullet != NULL)
+				{
+					if (p_bullet->isDone)
+					{
+						listEnemyBullet.erase(listEnemyBullet.begin() + i);
+						if (p_bullet != NULL)
+						{
+							delete p_bullet;
+							p_bullet = NULL;
+						}
+					}
+				}
+
+			}
+			CEnemyBullet* p_bullet = new CEnemyBullet();
+			p_bullet = new BossBullet((boss->Get_x()) + 30, (boss->Get_y()) + 66, 1);
+			p_bullet->Set_IsMove(true);
+			if (listEnemyBullet.size() <= 4)
+			{
+				listEnemyBullet.push_back(p_bullet);
+			}
+			
 		}
 		for (int i = 0; i < listEnemyBullet.size(); i++)
 		{
@@ -555,6 +586,7 @@ void CPlayScene::Render()
 		{
 			bigJason->Render();
 		}
+		/*boss->Render();*/
 
 		for (int i = 0; i < listPortal.size(); i++)
 			listPortal[i]->Render();

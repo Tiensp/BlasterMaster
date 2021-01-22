@@ -19,12 +19,11 @@ class CBoss : public Enemy
 {
 protected:
 	LPGAMEOBJECT target;
-	/*BulletObject* boss_bullet;*/
+	vector<CEnemyBullet* >	listBulletBoss;
 	vector<CBossHand*> listBossHand;
 	vector<CBossArm*> listBossArm;
-
 	bool isAttack;
-	BulletObject* boss_bullet;
+	
 	int timeToAttack = 0;
 public:
 	
@@ -35,6 +34,12 @@ public:
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	virtual void Render();
+	int Get_Boss_bullet();
+	float Get_x() { return this->x; }
+	float Get_y() { return this->y; }
+	bool Get_IsAtack() { return this->isAttack; }
+	vector<CEnemyBullet* > GetListBullet() { return listBulletBoss; }
+
 	void Attack();
 	static CBoss* GetInstance();
 	//BulletObject GetBullet() { return boss_bullet; }

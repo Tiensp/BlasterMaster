@@ -2,7 +2,9 @@
 #include "GameObject.h"
 #include "State.h"
 #include "GameDefine.h"
-#include "BulletObject.h"
+#include "BigJasonBullet.h"
+#include "EnemyBullet.h"
+
 
 #define BIG_JASON_WALKING_SPEED		0.09f 
 //0.1f
@@ -48,13 +50,13 @@ protected:
 	bool isDead;
 	float start_x;			// initial position of BigJason at scene
 	float start_y;
-	int energy=7;
+	int energy=5;
 	int health = 4;	// Máu nhân vật
 	vector<BulletObject*> p_bullet_list;
 public:
 	CBigJason();
-	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects = NULL);
-	virtual void Render();
+	void Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects, vector<CEnemyBullet*>* listBulletBoss);
+	void Render();
 
 	/* Keyboard */
 	void OnKeyDown(int keycode);
@@ -82,6 +84,7 @@ public:
 	void Clear();
 	void CheckCollisionWithBrick(vector<LPGAMEOBJECT>* coObjects);
 	void CheckCollisionWithEnemy(vector<LPGAMEOBJECT>* coObjects);
+	void SetHealthWithBullet(int bulletDame);
 	/* Variable */
 	CState* currentState;
 	CAnimation* currentAni;

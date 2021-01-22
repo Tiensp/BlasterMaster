@@ -46,6 +46,7 @@ protected:
 	CSophia *sophia;	// A play scene has to have player, right? 
 	CJason *jason;
 	CBigJason *bigJason;
+	CBoss* boss;
 
 	CMap* map;			//Cần một đối tượng lưu trữ MAP
 	CCamera* camera;	//Và một đối tượng lưu trữ camera của Play Scene
@@ -57,7 +58,7 @@ protected:
 	vector<LPGAMEOBJECT> AllObjs;
 	vector<LPGAMEOBJECT> objects;	//một list obj lưu trữ các GameObj có trong Play Scene
 	vector<LPGAMEOBJECT> listEnemies;
-	vector<LPBulletObject> listEnemyBullet;
+	vector<CEnemyBullet*> listEnemyBullet;
 	
 	vector<MiniScene*>	listScenes;
 	vector<LPGAMEOBJECT> listPortal;
