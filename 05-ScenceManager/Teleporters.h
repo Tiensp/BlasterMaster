@@ -33,7 +33,7 @@ class CTeleporter : public Enemy
 
 
 public:
-	CTeleporter(float x, float y, LPGAMEOBJECT playe);
+	CTeleporter(float x, float y, LPGAMEOBJECT playe, int _itemType);
 	virtual void SetState(int state);
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);

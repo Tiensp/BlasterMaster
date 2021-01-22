@@ -10,13 +10,13 @@
 #include "Portal.h"
 #include "Brick.h"
 #include "RockOVH.h"
-CTeleporter::CTeleporter(float x, float y, LPGAMEOBJECT player)
+CTeleporter::CTeleporter(float x, float y, LPGAMEOBJECT player, int _itemtype)
 {
 	SetState(TELEPORTER_ANI_GRAY_MODE_ON);
 	this->x = x;
 	this->y = y;
 	this->target = player;
-
+	typeItem = _itemtype;
 	hp = 2;
 
 	objTag = ENEMY;

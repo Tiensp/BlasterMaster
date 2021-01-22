@@ -162,7 +162,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	}
 	case OBJECT_TYPE_GOLEM:
 	{
-		int itemType = atoi(tokens[5].c_str());
+		int itemType = atoi(tokens[4].c_str());
 		obj = new CGolem(x, y, sophia, itemType);
 		obj->SetPosition(x, y);
 		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
@@ -174,7 +174,8 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	}
 	case OBJECT_TYPE_DOMES:
 	{
-		int itemType = atoi(tokens[5].c_str());
+
+		int itemType = atoi(tokens[4].c_str());
 		obj = new CDomes(x, y, 999999, 999999, sophia, itemType);
 		obj->SetPosition(x, y);
 		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
@@ -185,7 +186,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	}
 	case OBJECT_TYPE_WORMS:
 	{
-		int itemType = atoi(tokens[5].c_str());
+		int itemType = atoi(tokens[4].c_str());
 		obj = new CWorm(x, y, sophia, itemType);
 		obj->SetPosition(x, y);
 		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
@@ -196,7 +197,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	break;
 	case OBJECT_TYPE_FLOATERS:
 	{
-		int itemType = atoi(tokens[5].c_str());
+		int itemType = atoi(tokens[4].c_str());
 		obj = new CFloaters(x, y, sophia, itemType);
 		obj->SetPosition(x, y);
 		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
@@ -206,7 +207,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	}
 	case OBJECT_TYPE_SKULLS:
 	{
-		int itemType = atoi(tokens[5].c_str());
+		int itemType = atoi(tokens[4].c_str());
 		obj = new CSkull(x, y, sophia, itemType);
 		obj->SetPosition(x, y);
 		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
@@ -225,7 +226,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	}
 	case OBJECT_TYPE_INSECT:
 	{
-		int itemType = atoi(tokens[5].c_str());
+		int itemType = atoi(tokens[4].c_str());
 		obj = new CInsect(x, y, sophia, itemType);
 		obj->SetPosition(x, y);
 		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
@@ -235,7 +236,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	}
 	case OBJECT_TYPE_ORB:
 	{
-		int itemType = atoi(tokens[5].c_str());
+		int itemType = atoi(tokens[4].c_str());
 		obj = new COrb(x, y, sophia, itemType);
 		obj->SetPosition(x, y);
 		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
@@ -245,7 +246,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	}
 	case OBJECT_TYPE_SHIP:
 	{
-		int itemType = atoi(tokens[5].c_str());
+		int itemType = atoi(tokens[4].c_str());
 		obj = new CShip(x, y, sophia, itemType);
 		obj->SetPosition(x, y);
 		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
@@ -256,7 +257,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 
 	case OBJECT_TYPE_EYEBALL:
 	{
-		int itemType = atoi(tokens[5].c_str());
+		int itemType = atoi(tokens[4].c_str());
 		obj = new CEyeballs(x, y, sophia, itemType);
 		obj->SetPosition(x, y);
 		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
@@ -267,7 +268,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 
 	case OBJECT_TYPE_TELEPORTER:
 	{
-		int itemType = atoi(tokens[5].c_str());
+		int itemType = atoi(tokens[4].c_str());
 		obj = new CTeleporter(x, y, sophia, itemType);
 		obj->SetPosition(x, y);
 		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
@@ -278,7 +279,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 
 	case OBJECT_TYPE_CANNON:
 	{
-		int itemType = atoi(tokens[5].c_str());
+		int itemType = atoi(tokens[4].c_str());
 		obj = new CCannon(x, y, sophia, itemType);
 		obj->SetPosition(x, y);
 		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
