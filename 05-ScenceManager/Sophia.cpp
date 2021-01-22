@@ -641,10 +641,10 @@ bool CSophia::AllowFire()
 	{
 		if (dynamic_cast<ThreeBullet*>(p_bullet_list[i]) || dynamic_cast<ThunderBullet*>(p_bullet_list[i]))
 		{
-
 			return false;
 		}
 	}
+
 	return true;
 }
 
