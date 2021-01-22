@@ -162,7 +162,7 @@ void CCamera::Update()
 				+ Tọa độ Biên phải - Độ dài Camera
 				+ Tọa độ Biên dưới - Chiều cao Camera
 		*/
-		if (camPos.x < camBound.left)
+		/*if (camPos.x < camBound.left)
 			camPos.x = camBound.left;
 
 		if (camPos.y < camBound.top)
@@ -172,7 +172,7 @@ void CCamera::Update()
 			camPos.x = camBound.right - width;
 
 		if (camPos.y > camBound.bottom - height)
-			camPos.y = camBound.bottom - height;
+			camPos.y = camBound.bottom - height;*/
 	}
 	else //CODE SWITCH SCENE AREA
 	{

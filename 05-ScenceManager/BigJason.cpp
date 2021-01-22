@@ -138,7 +138,6 @@ void CBigJason::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 							camera->SwitchScenePos = D3DXVECTOR2(camPos.x - camera->GetWidth(), camPos.y);
 							((CPlayScene*)CGame::GetInstance()->GetCurrentScene())->currentMiniScene = por->GetDesScene();
 						}
-						x += dx;
 					}
 					else if (por->objType == OVHVerticle)
 					{
@@ -168,14 +167,12 @@ void CBigJason::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 							camera->SwitchScenePos = D3DXVECTOR2(camPos.x, camPos.y - camera->GetHeight());
 							((CPlayScene*)CGame::GetInstance()->GetCurrentScene())->currentMiniScene = por->GetDesScene();
 						}
-						else if (e->nx != 0)
-						{
-							vx = 0;
-						}
-						y += dy;
+						
 					}
+					x += dx;
+					y += dy;
 				}
-
+				
 			}
 
 		}
@@ -448,6 +445,7 @@ void CBigJason::AutoGo(float des)
 	{
 		if (ny > 0)
 		{
+			nx = 0;
 			SwitchState(new StateWALKING());
 			if (y <= des)
 			{
@@ -457,6 +455,7 @@ void CBigJason::AutoGo(float des)
 		}
 		else
 		{
+			nx = 0;
 			SwitchState(new StateWALKING());
 			if (y >= des)
 			{

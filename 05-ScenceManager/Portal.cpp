@@ -125,18 +125,18 @@ void CPortal::Render()
 	}
 	case OVHHorizontal:
 	{
-		if (nx < 0)
+		/*if (nx < 0)
 			animation_set->at(PORTAL_TYPE10)->RenderFrame(0, x_render, y_render);
 		else
-			animation_set->at(PORTAL_TYPE11)->RenderFrame(0, x_render, y_render);
+			animation_set->at(PORTAL_TYPE11)->RenderFrame(0, x_render, y_render);*/
 		break;
 	}
 	case OVHVerticle:
 	{
-		if (nx < 0)
+		/*if (nx < 0)
 			animation_set->at(PORTAL_TYPE12)->RenderFrame(0, x_render, y_render);
 		else
-			animation_set->at(PORTAL_TYPE13)->RenderFrame(0, x_render, y_render);
+			animation_set->at(PORTAL_TYPE13)->RenderFrame(0, x_render, y_render);*/
 		break;
 	}
 	}
