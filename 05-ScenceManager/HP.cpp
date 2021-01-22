@@ -9,12 +9,13 @@ HP::HP(int _hp)
 
 void HP::Update()
 {
-	if (_ACTIVE[SOPHIA]) {
+	if (_ACTIVE[SOPHIA] && !INSTANCE_SOPHIA->GetIsFrozen())
+	{
 		currentHP = INSTANCE_SOPHIA->GetHealth();
 	}
-	/*else if (_ACTIVE[JASON]) {
-		currentHP = playerSmall->health;
-	}*/
+	else if (_ACTIVE[JASON]) {
+		currentHP = INSTANCE_JASON->GetHealth();
+	}
 	else if (_ACTIVE[BIG_JASON]) {
 		currentHP = INSTANCE_BIGJASON->GetHealth();
 	}

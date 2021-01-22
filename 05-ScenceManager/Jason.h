@@ -4,6 +4,7 @@
 #include "GameDefine.h"
 #include "JasonBullet.h"
 #include "Ladder.h"
+#include "EnemyBullet.h"
 #define JASON_WALKING_SPEED		0.09f 
 #define JASON_CLIMB_SPEED		0.05f 
 //0.1f
@@ -44,6 +45,8 @@ protected:
 	static CJason* __instance;
 	int level;
 	int untouchable;
+	bool isDead;
+	int health;
 	DWORD untouchable_start;
 	DWORD lifeTimeAni;
 	bool isColLadder;
@@ -60,7 +63,7 @@ protected:
 	bool isTouchingPortal;
 	bool jumpIntoCabin = false;
 
-	int health = 8;	// Máu nhân vật
+		// Máu nhân vật
 	vector<BulletObject* > p_bullet_list;
 public:
 	CJason();
@@ -89,11 +92,12 @@ public:
 	/* State */
 	void SwitchState(CState* state);
 
-
+	void SetIsDead(bool _isDead) { isDead = _isDead; }
 	void Reset();
 	void ResetAtPos(float _x, float _y);
 	void CheckCollisionWithBrick(vector<LPGAMEOBJECT>* coObjects);
 	void CheckCollisionWithLadder(vector<LPGAMEOBJECT>* coObjects);
+	void CheckCollisionWithEnemy(vector<LPGAMEOBJECT>* coObjects);
 	int Get_Jason_Normal_bullet();
 	void set_bullet_list();
 	vector<BulletObject*> Get_Bullet_List() { return p_bullet_list; }

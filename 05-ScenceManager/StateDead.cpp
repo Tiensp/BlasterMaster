@@ -3,29 +3,27 @@
 StateDead::StateDead()
 {
 	CSophia* sophia = INSTANCE_SOPHIA;
-	sophia->renderFrame = false;
-	if (_ACTIVE[SOPHIA] )
+	if (_ACTIVE[SOPHIA] && !sophia->GetIsFrozen() )
 	{
-	
+		
+		sophia->renderFrame = false;
 		sophia->vx = 0;
 		sophia->vy = 0;
 		StateName = SOPHIA_DIE;
 		sophia->SetIsDead(true);
+		RECT r = sophia->animation_set->at(StateName)->GetFrameRect(0);
+		sophia->y_render = sophia->y + SOPHIA_SMALL_BBOX_HEIGHT - (r.bottom - r.top);
 	}
 	else if (_ACTIVE[JASON])
 	{
-		CJason* jason = INSTANCE_JASON;
-
+		CJason* jason = INSTANCE_JASON;	
+	
+		/*jason->renderFrame = true;*/
 		jason->vx = 0;
-		
-		if (jason->nx > 0)
-		{
-			StateName = JASON_IDLE_RIGHT;
-		}
-		else
-		{
-			StateName = JASON_IDLE_LEFT;
-		}
+		jason->vy = 0;
+		jason->SetIsDead(true);
+		StateName = JASON_DIE;		
+		jason->frameID = jason->animation_set->at(StateName)->GetLastFrame();
 	}
 	else if (_ACTIVE[BIG_JASON])
 	{
@@ -51,8 +49,7 @@ StateDead::StateDead()
 			StateName = BIG_JASON_IDLE_BOT;
 		}
 	}
-	RECT r = sophia->animation_set->at(StateName)->GetFrameRect(0);
-	sophia->y_render = sophia->y + SOPHIA_SMALL_BBOX_HEIGHT - (r.bottom - r.top);
+	
 }
 
 void StateDead::Update()
@@ -67,6 +64,17 @@ void StateDead::Update()
 			sophia->y_render = sophia->y + SOPHIA_SMALL_BBOX_HEIGHT - (r.bottom - r.top);
 		}
 	}
+	if (_ACTIVE[JASON])
+	{
+		CJason* jason = INSTANCE_JASON;
+		int frameID = jason->currentAni->GetCurrentFrame();
+		if (jason->currentAni->GetCurrentFrame() > -1)
+		{
+			RECT r = jason->currentAni->GetFrameRect(frameID);
+	/*		jason->y_render = jason->y + SOPHIA_SMALL_BBOX_HEIGHT - (r.bottom - r.top);*/
+		}
+	}
+
 	HandleKeyboard();
 	
 }

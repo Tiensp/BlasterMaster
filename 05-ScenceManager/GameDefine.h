@@ -75,7 +75,7 @@ extern enum ObjectTYPE
 {
 	/* PLAYER TYPE */
 	SOPHIA = 0,
-	JASON = 2,
+	JASON = 1,
 	BIG_JASON = 3,
 
 	/* MAP */
@@ -155,8 +155,8 @@ extern enum STATENAME
 	JASON_WALKING_LEFT = 6,
 	JASON_CRAWL_LEFT = 7,
 	JASON_SWIM_LEFT = 8,
-	JASON_DIE_RIGHT = 9,
-	JASON_DIE_LEFT = 10,
+	JASON_DIE = 9,
+	/*JASON_DIE_LEFT = 10,*/
 
 	/* BIG JASON ANI */
 	BIG_JASON_IDLE_RIGHT = 0,
