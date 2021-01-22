@@ -32,7 +32,12 @@ CCamera::CCamera(int width, int height)
 {
 	this->width = width;
 	this->height = height;
+
 	isSwitchScene = false;
+	switchSceneOVWorld = false;
+	switchSceneOVHead = false;
+	switchVerticle = false;
+	switchHorizontal = false;
 }
 
 CCamera::~CCamera()
@@ -184,28 +189,88 @@ void CCamera::Update()
 		CPlayScene* playScene = ((CPlayScene*)CGame::GetInstance()->GetCurrentScene());
 		MiniScene* miniScene = playScene->GetlistScenes().at(playScene->currentMiniScene);
 
-		if (playerPos.y != camPos.y + height * 0.75 
-			&& camPos.y > camBound.top 
-			&& camPos.y < camBound.bottom
-			&& camPos.y > miniScene->y
-			&& camPos.y < miniScene->y + miniScene->height
-			)
-			if (playerPos.y < camPos.y + height * 0.75)
-				camPos.y -= 2.0f;
-			else
-				camPos.y += 2.0f;
-
-		if (camPos.x != SwitchScenePos.x)
-			if (camPos.x > SwitchScenePos.x)
-				camPos.x -= 2.0f;
-			else
-				camPos.x += 2.0f;
-		else
+		if (switchSceneOVWorld)
 		{
-			isSwitchScene = false;
-			SetCamBound(miniScene->x, miniScene->y, miniScene->width, miniScene->height);
+			if (playerPos.y != camPos.y + height * 0.75
+				&& camPos.y > camBound.top
+				&& camPos.y < camBound.bottom
+				&& camPos.y > miniScene->y
+				&& camPos.y < miniScene->y + miniScene->height
+				)
+				if (playerPos.y < camPos.y + height * 0.75)
+					camPos.y -= 2.0f;
+				else
+					camPos.y += 2.0f;
+
+			if (camPos.x != SwitchScenePos.x)
+				if (camPos.x > SwitchScenePos.x)
+					camPos.x -= 2.0f;
+				else
+					camPos.x += 2.0f;
+			else
+			{
+				isSwitchScene = false;
+				switchSceneOVWorld = false;
+				SetCamBound(miniScene->x, miniScene->y, miniScene->width, miniScene->height);
+			}
+		}
+		else if (switchSceneOVHead)
+		{
+			if (switchHorizontal)
+			{
+				if (playerPos.y != camPos.y + height * 0.75
+					&& camPos.y > camBound.top
+					&& camPos.y < camBound.bottom
+					&& camPos.y > miniScene->y
+					&& camPos.y < miniScene->y + miniScene->height
+					)
+					if (playerPos.y < camPos.y + height * 0.75)
+						camPos.y -= 2.0f;
+					else
+						camPos.y += 2.0f;
+
+				if (camPos.x != SwitchScenePos.x)
+					if (camPos.x > SwitchScenePos.x)
+						camPos.x -= 2.0f;
+					else
+						camPos.x += 2.0f;
+				else
+				{
+					isSwitchScene = false;
+					switchSceneOVHead = false;
+					switchHorizontal = false;
+					SetCamBound(miniScene->x, miniScene->y, miniScene->width, miniScene->height);
+				}
+			}
+			else if (switchVerticle)
+			{
+				/*if (playerPos.x != camPos.x + width * 0.75
+					&& camPos.x > camBound.top
+					&& camPos.x < camBound.bottom
+					&& camPos.x > miniScene->x
+					&& camPos.x < miniScene->x + miniScene->width
+					)
+					if (playerPos.x < camPos.x + width * 0.75)
+						camPos.x -= 2.0f;
+					else
+						camPos.x += 2.0f;*/
+
+				if (camPos.y != SwitchScenePos.y)
+					if (camPos.y > SwitchScenePos.y)
+						camPos.y -= 2.0f;
+					else
+						camPos.y += 2.0f;
+				else
+				{
+					isSwitchScene = false;
+					switchSceneOVHead = false;
+					switchVerticle = false;
+					SetCamBound(miniScene->x, miniScene->y, miniScene->width, miniScene->height);
+				}
+			}
 		}
 	}
+		
 }
 
 void CCamera::SetCamBound(float x, float y, float mapWidth, float mapHeight)

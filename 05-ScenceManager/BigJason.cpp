@@ -15,6 +15,9 @@
 #include "Brick.h"
 #include "RockOVH.h"
 #include "BigJasonBullet.h"
+#include "Camera.h"
+#include "PlayScence.h"
+#include "StateWALKING.h"
 
 CBigJason* CBigJason::__instance = NULL;
 
@@ -37,8 +40,6 @@ void CBigJason::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	{
 		// Calculate dx, dy 
 		CGameObject::Update(dt);
-
-
 
 		vector<LPCOLLISIONEVENT> coEvents;
 		vector<LPCOLLISIONEVENT> coEventsResult;
@@ -82,16 +83,17 @@ void CBigJason::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			//	x += nx*abs(rdx); 
 
 			// block every object first!
-			x += min_tx * dx + nx * 0.4f;
-			/*y += min_ty*dy + ny*0.4f;*/
+			
 
-			if (nx != 0) vx = 0;
-			if (ny != 0) vy = 0;
+			
 			for (UINT i = 0; i < coEventsResult.size(); i++)
 			{
 				LPCOLLISIONEVENT e = coEventsResult[i];
 				if (dynamic_cast<CBrick*>(e->obj)) // if e->obj is Goomba 
 				{
+					if (nx != 0) vx = 0;
+					if (ny != 0) vy = 0;
+					x += min_tx * dx + nx * 0.4f;
 					y += min_ty * dy + ny * 0.4f;
 				}
 				else if (dynamic_cast<CRockOVH*>(e->obj)) // if e->obj is Goomba 
@@ -99,17 +101,88 @@ void CBigJason::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					x = x;
 					y = y;
 				}
+				else if (dynamic_cast<CPortal*>(e->obj))
+				{
+					CCamera* camera = CCamera::GetInstance();
+					CPortal* por = dynamic_cast<CPortal*>(e->obj);
+				
+					/// CHUYỂN SCENE KHI CHẠM PORTAL
+					
+					if (por->objType == OVHHorizontal)
+					{
+						camera->switchHorizontal = true;
+
+						if (e->nx == -1 && por->nx == -1)
+						{
+							camera->isSwitchScene = true;
+							camera->switchSceneOVHead = true;
+
+							isAutoGo = true;
+							autoGoX = true;
+							autoGoDes = por->x_des + 2;
+							camera->miniScene_des = por->GetDesScene();
+							D3DXVECTOR2 camPos = camera->GetCamPos();
+							camera->SwitchScenePos = D3DXVECTOR2(camPos.x + camera->GetWidth(), camPos.y);
+							((CPlayScene*)CGame::GetInstance()->GetCurrentScene())->currentMiniScene = por->GetDesScene();
+						}
+						else if (e->nx == 1 && por->nx == 1)
+						{
+							camera->isSwitchScene = true;
+							camera->switchSceneOVHead = true;
+
+							isAutoGo = true;
+							autoGoX = true;
+							autoGoDes = por->x_des - SOPHIA_BIG_BBOX_WIDTH;
+							camera->miniScene_des = por->GetDesScene();
+							D3DXVECTOR2 camPos = camera->GetCamPos();
+							camera->SwitchScenePos = D3DXVECTOR2(camPos.x - camera->GetWidth(), camPos.y);
+							((CPlayScene*)CGame::GetInstance()->GetCurrentScene())->currentMiniScene = por->GetDesScene();
+						}
+						x += dx;
+					}
+					else if (por->objType == OVHVerticle)
+					{
+						if (e->ny == -1 && por->nx == 1)
+						{
+							camera->isSwitchScene = true;
+							camera->switchSceneOVHead = true;
+							camera->switchVerticle = true;
+							isAutoGo = true;
+							autoGoY = true;
+							autoGoDes = por->y_des + 2;
+							camera->miniScene_des = por->GetDesScene();
+							D3DXVECTOR2 camPos = camera->GetCamPos();
+							camera->SwitchScenePos = D3DXVECTOR2(camPos.x, camPos.y + camera->GetHeight());
+							((CPlayScene*)CGame::GetInstance()->GetCurrentScene())->currentMiniScene = por->GetDesScene();
+						}
+						else if (e->ny == 1 && por->nx == -1)
+						{
+							camera->isSwitchScene = true;
+							camera->switchSceneOVHead = true;
+							camera->switchVerticle = true;
+							isAutoGo = true;
+							autoGoY = true;
+							autoGoDes = por->y_des - BIG_JASON_BIG_BBOX_HEIGHT;
+							camera->miniScene_des = por->GetDesScene();
+							D3DXVECTOR2 camPos = camera->GetCamPos();
+							camera->SwitchScenePos = D3DXVECTOR2(camPos.x, camPos.y - camera->GetHeight());
+							((CPlayScene*)CGame::GetInstance()->GetCurrentScene())->currentMiniScene = por->GetDesScene();
+						}
+						else if (e->nx != 0)
+						{
+							vx = 0;
+						}
+						y += dy;
+					}
+				}
 
 			}
 
-			//
-			// Collision logic with other objects
-			//
-
-
 		}
-
-		currentState->Update();
+		if (!isAutoGo)
+			currentState->Update();
+		else
+			AutoGo(autoGoDes);
 
 
 		// clean up collision events
@@ -232,77 +305,7 @@ void CBigJason::OnKeyDown(int keycode)
 			p_bullet->Set_IsMove(true);
 			p_bullet_list.push_back(p_bullet);
 		}
-		break;
-		/*	BigJasonBullet* p_bullet = new BigJasonBullet();
-
-			if (p_bullet_list.size() == 0)
-			{
-				p_bullet = new BigJasonBullet(this->x, this->y, 0);
-
-			}
-			else if (p_bullet_list.size() == 1)
-			{
-				p_bullet = new BigJasonBullet(this->x, this->y, 1);
-			}
-			else if (p_bullet_list.size() == 2)
-			{
-				p_bullet = new BigJasonBullet(this->x, this->y, -1);
-			}
-			else if (p_bullet_list.size() == 3)
-			{
-				p_bullet = new BigJasonBullet(this->x, this->y, 1);
-
-			}
-			if (energy <= 2)
-			{
-				p_bullet->Set_Type(0);
-			}
-			else if (2 < energy && energy <= 5)
-			{
-				p_bullet->Set_Type(1);
-			}
-			else if (energy > 5)
-			{
-				p_bullet->Set_Type(2);
-			}
-
-			if (this->ny == 0)
-			{
-				if (this->nx == 1)
-				{
-					p_bullet->SetPosition(this->x + width + 20, this->y + 14);
-
-				}
-				else
-				{
-					p_bullet->SetPosition(this->x + width - 8, this->y + 14);
-				}
-				p_bullet->Set_bullet_dir(this->nx);
-				p_bullet->Set_point();
-
-
-			}
-			else if (this->nx == 0)
-			{
-				if (this->ny == 1)
-				{
-					p_bullet->SetPosition(this->x + width + 10, this->y - 5);
-					p_bullet->Set_bullet_dir(3);
-				}
-				else
-				{
-					p_bullet->SetPosition(this->x + width + 2, this->y + 25);
-					p_bullet->Set_bullet_dir(4);
-				}
-				p_bullet->Set_point();
-			}
-
-			if (Get_BigJason_Normal_bullet() <= 3)
-			{
-
-				p_bullet->Set_IsMove(true);
-				p_bullet_list.push_back(p_bullet);
-			}*/
+		
 		break;
 	}
 	}
@@ -314,6 +317,38 @@ void CBigJason::OnKeyUp(int keycode)
 
 void CBigJason::KeyState()
 {
+}
+
+void CBigJason::CheckCollision(vector<LPGAMEOBJECT>* coObjects)
+{
+	vector<LPCOLLISIONEVENT> coEvents;
+	vector<LPCOLLISIONEVENT> coEventsResult;
+
+	coEvents.clear();
+
+	vector<LPGAMEOBJECT> ListPortal;
+	ListPortal.clear();
+	for (UINT i = 0; i < coObjects->size(); i++)
+		if (dynamic_cast<CPortal*>(coObjects->at(i)))
+			ListPortal.push_back(coObjects->at(i));
+
+	CalcPotentialCollisions(&ListPortal, coEvents);
+
+	if (coEvents.size() == 0)
+	{
+		return;
+	}
+	else
+	{
+		float min_tx, min_ty, nx = 0, ny;
+		float rdx = 0;
+		float rdy = 0;
+		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
+		LPCOLLISIONEVENT e = coEventsResult[0];
+		
+	}
+
+	
 }
 
 void CBigJason::SetStartPos(float startx, float starty)
@@ -386,12 +421,58 @@ int CBigJason::Get_BigJason_Normal_bullet()
 	return count;
 }
 
+void CBigJason::AutoGo(float des)
+{
+	if (autoGoX)
+	{
+		if (nx > 0)
+		{
+			SwitchState(new StateWALKING());
+			if (x >= des)
+			{
+				isAutoGo = false;
+				autoGoX = false;
+			}
+		}
+		else
+		{
+			SwitchState(new StateWALKING());
+			if (x <= des)
+			{
+				isAutoGo = false;
+				autoGoX = false;
+			}
+		}
+	}
+	else if (autoGoY)
+	{
+		if (ny > 0)
+		{
+			SwitchState(new StateWALKING());
+			if (y <= des)
+			{
+				isAutoGo = false;
+				autoGoY = false;
+			}
+		}
+		else
+		{
+			SwitchState(new StateWALKING());
+			if (y >= des)
+			{
+				isAutoGo = false;
+				autoGoY = false;
+			}
+		}
+	}
+	
+}
+
 /*
 	Reset BigJason status to the beginning state of a scene
 */
 void CBigJason::Reset()
 {
-	SetLevel(BIG_JASON_LEVEL_BIG);
 	SetPosition(start_x, start_y);
 	SwitchState(new StateIDLE());
 	SetSpeed(0, 0);

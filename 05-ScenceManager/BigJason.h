@@ -46,6 +46,8 @@ protected:
 	DWORD untouchable_start;
 	DWORD lifeTimeAni;
 
+	bool isAutoGo = false;
+	float autoGoDes;
 	float start_x;			// initial position of BigJason at scene
 	float start_y;
 	int energy=7;
@@ -61,9 +63,8 @@ public:
 	void OnKeyUp(int keycode);
 	void KeyState();
 
+	void CheckCollision(vector<LPGAMEOBJECT>* coObjects);
 	void SetStartPos(float startx, float starty);
-
-	void SetLevel(int l) { level = l; }
 
 	void SetHealth(int hp) { health = hp; }
 	int GetHealth() { return health; }
@@ -74,6 +75,7 @@ public:
 	void SwitchState(CState* state);
 	void set_bullet_list();
 	int Get_BigJason_Normal_bullet();
+	void AutoGo(float des);
 	void Reset();
 
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
@@ -82,6 +84,8 @@ public:
 	/* Variable */
 	CState* currentState;
 	CAnimation* currentAni;
-	bool renderFrame;
+	bool renderFrame = false;
 	int frameID;
+	bool autoGoX = false;
+	bool autoGoY = false;
 };

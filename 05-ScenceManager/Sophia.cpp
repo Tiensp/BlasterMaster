@@ -484,6 +484,7 @@ void CSophia::CheckCollisionWithPortal(vector<LPGAMEOBJECT>* coObjects)
 		{
 			CCamera* camera = CCamera::GetInstance();
 			camera->isSwitchScene = true;
+			camera->switchSceneOVWorld = true;
 			isAutoGo = true;
 			autoGoDes = por->x_des + 2;
 			camera->miniScene_des = por->GetDesScene();
@@ -495,6 +496,7 @@ void CSophia::CheckCollisionWithPortal(vector<LPGAMEOBJECT>* coObjects)
 		{
 			CCamera* camera = CCamera::GetInstance();
 			camera->isSwitchScene = true;
+			camera->switchSceneOVWorld = true;
 			isAutoGo = true;
 			autoGoDes = por->x_des - SOPHIA_BIG_BBOX_WIDTH;
 			camera->miniScene_des = por->GetDesScene();
