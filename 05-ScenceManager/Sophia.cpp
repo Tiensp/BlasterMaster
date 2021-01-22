@@ -62,6 +62,7 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		CheckCollisionWithItem(coObjects);
 		CheckCollisionWithEnemy(coObjects);
 		CheckCollisionWithThornOVW(coObjects);
+		CheckCollisionWithLava(coObjects);
 		if (isSetFollowBullet)
 		{
 			BulletObject* p_bullet = new BulletObject();

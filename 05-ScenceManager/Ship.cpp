@@ -31,11 +31,6 @@ void CShip::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 		top = y;
 		right = x + SHIP_BBOX_WIDTH;
 		bottom = y + SHIP_BBOX_HEIGHT;
-
-		/*if (state == SHIP_STATE_DIE)
-			bottom = y + SHIP_BBOX_HEIGHT_DIE;
-		else
-			bottom = y + SHIP_BBOX_HEIGHT;*/
 	}
 	else return;
 }
@@ -44,11 +39,8 @@ void CShip::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	if (!isDeath)
 	{
-		//DebugOut(L"golumnvX: %f, golumnvY: %f\n", vx, vy);
 		Enemy::Update(dt, coObjects);
-		//DebugOut(L"golumnvX: %f, golumnvY: %f\n", vx, vy);
 
-		//DebugOut(L"golumnvX: %f, golumnvY: %f\n", target->nx, this->nx);
 		Attack();
 
 		if (s_bullet != NULL)
@@ -87,13 +79,7 @@ void CShip::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			float rdx = 0;
 			float rdy = 0;
 
-			// TODO: This is a very ugly designed function!!!!
 			FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);  // sắp xếp lại các sự kiện va chạm đầu tiên theo trục x, y 
-
-			// how to push back Sophia if collides with a moving objects, what if Sophia is pushed this way into another object?
-			//if (rdx != 0 && rdx!=dx)
-			//	x += nx*abs(rdx); 
-
 
 			x += min_tx * dx + nx * 0.4f;  //cập nhật lại vị trí x
 			y += min_ty * dy + ny * 0.4f;	// cập nhật lại vị trí y  để tránh bị hụt xuống
@@ -104,13 +90,12 @@ void CShip::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				{
 					LPCOLLISIONEVENT e = coEventsResult[i];
 
-					if (dynamic_cast<CBrick*>(e->obj)) // if e->obj is Goomba 
+					if (dynamic_cast<CBrick*>(e->obj) || dynamic_cast<CPortal*>(e->obj))
 					{
 						isAttack = false;
 
 						CBrick* brick = dynamic_cast<CBrick*>(e->obj);
 
-						// jump on top >> kill Goomba and deflect a bit 
 						if (e->nx != 0)
 						{
 							if (e->nx > 0)
@@ -131,8 +116,7 @@ void CShip::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 						}
 					
 					}
-					if (e->obj->objTag == ENEMY)
-					{
+					else {
 						x += dx;
 						y += dy;
 					}
@@ -143,7 +127,6 @@ void CShip::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 		}
 	}
-
 }
 
 void CShip::Attack()
