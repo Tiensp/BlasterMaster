@@ -307,7 +307,6 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		AllObjs.push_back(obj);
 		break;
 	}
-
 	case OBJECT_TYPE_THORN_OVERHEAD:
 	{
 		float w = atof(tokens[4].c_str());
@@ -435,7 +434,7 @@ void CPlayScene::Load()
 	DebugOut(L"[INFO] Done loading scene objects %s\n", sceneFilePath);
 
 	// Khởi tạo camera
-	currentMiniScene = 0;
+	currentMiniScene = 11;
 	MiniScene* miniScene = listScenes.at(currentMiniScene);
 	camera = CCamera::GetInstance();
 	camera->SetCamBound(miniScene->x, miniScene->y, miniScene->width, miniScene->height);
@@ -447,8 +446,6 @@ void CPlayScene::Load()
 		if (AllObjs.at(i)->objTag != PLAYER)
 			grid->AddObject(AllObjs.at(i));
 	}
-
-
 	//Thiết lập trạng thái, vị trí khởi đầu,... cho đối tượng đang active
 	if (_ACTIVE[SOPHIA])
 	{
@@ -477,7 +474,7 @@ void CPlayScene::Update(DWORD dt)
 	// TO-DO: This is a "dirty" way, need a more organized way 
 	if (!isSelectBulletScr)
 	{
-		
+
 		vector<LPGAMEOBJECT> coObjects = grid->GetActiveObj();
 		ClassifyOBJECT(coObjects);
 
@@ -501,6 +498,10 @@ void CPlayScene::Update(DWORD dt)
 			{
 				coObjects.at(i)->Update(dt, &coObjects);
 			}
+		}
+		for (int i = 0; i < listEnemyBullet.size(); i++)
+		{
+			listEnemyBullet[i]->Update(dt, &coObjects);
 		}
 		for (int i = 0; i < listItem.size(); i++)
 		{
@@ -535,6 +536,10 @@ void CPlayScene::Render()
 			objects[i]->Render();
 		for (int i = 0; i < listEnemies.size(); i++)
 			listEnemies[i]->Render();
+		for (int i = 0; i < listEnemyBullet.size(); i++)
+		{
+			listEnemyBullet[i]->Render();
+		}
 		// Thứ tự Render của Player chỉ sau Portal và Enemy
 		if (_ACTIVE[SOPHIA])
 		{

@@ -17,7 +17,7 @@ CGolem::CGolem(float x, float y, LPGAMEOBJECT player, int _typeItem)
 	this->target = player;
 	isJumping = false;
 	this->typeItem = _typeItem;
-	hp = 2;
+	hp = 1;
 
 	objTag = ENEMY;
 	objType = GOLEM;
@@ -44,9 +44,10 @@ void CGolem::GetBoundingBox(float& left, float& top, float& right, float& bottom
 
 void CGolem::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	Enemy::Update(dt, coObjects);
+	
 	if (!isDeath)
 	{
+		Enemy::Update(dt, coObjects);
 		vy += 0.0005f * dt;
 		//DebugOut(L"golumnvX: %f, golumnvY: %f\n", vx, vy);
 
@@ -95,12 +96,7 @@ void CGolem::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			float rdy = 0;
 
 			FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);  // sắp xếp lại các sự kiện va chạm đầu tiên theo trục x, y 
-
-			//x += min_tx * dx + nx * 0.4f;  
-
-			//if (nx != 0) vx = 0;
-			//if (ny != 0) vy = 0;
-
+		
 			{
 				for (UINT i = 0; i < coEventsResult.size(); i++)
 				{
@@ -129,19 +125,7 @@ void CGolem::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					{
 						x += dx;
 						y += dy;
-					}
-
-					/*	if (e->obj->objTag == ENEMY)
-						{
-							x += dx;
-							y += dy;
-						}
-						if (e->obj->objTag == PLAYER)
-						{
-							x += dx;
-							y += dy;
-						}*/
-
+					}			
 				}
 
 			}

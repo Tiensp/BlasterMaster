@@ -3,7 +3,7 @@
 #include "Brick.h"
 #include "Sophia.h"
 
-class BulletEyeball : public BulletObject
+class BulletEyeball : public CEnemyBullet
 {
 
 protected:

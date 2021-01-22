@@ -45,7 +45,7 @@ protected:
 	int untouchable;
 	DWORD untouchable_start;
 	DWORD lifeTimeAni;
-
+	bool isDead;
 	float start_x;			// initial position of BigJason at scene
 	float start_y;
 	int energy=7;
@@ -64,7 +64,7 @@ public:
 	void SetStartPos(float startx, float starty);
 
 	void SetLevel(int l) { level = l; }
-
+	void SetIsDead(bool _isDead) { isDead = _isDead; }
 	void SetHealth(int hp) { health = hp; }
 	int GetHealth() { return health; }
 	int GetEnergy() { return energy; }
@@ -73,12 +73,15 @@ public:
 	/* State */
 	void SwitchState(CState* state);
 	void set_bullet_list();
+
 	int Get_BigJason_Normal_bullet();
 	void Reset();
 
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	static CBigJason* GetInstance();
 	void Clear();
+	void CheckCollisionWithBrick(vector<LPGAMEOBJECT>* coObjects);
+	void CheckCollisionWithEnemy(vector<LPGAMEOBJECT>* coObjects);
 	/* Variable */
 	CState* currentState;
 	CAnimation* currentAni;

@@ -10,7 +10,22 @@
 #include "Portal.h"
 #include "Brick.h"
 #include "BossArm.h"
+#include "PlayScence.h"
 #define BIT					16
+
+CBoss* CBoss::_instance = NULL;
+
+
+CBoss* CBoss::GetInstance()
+{
+	if (_instance == NULL) {
+		_instance = new CBoss();
+	}
+	return _instance;
+}
+CBoss::CBoss()
+{
+}
 CBoss::CBoss(float x, float y, LPGAMEOBJECT player)
 {
 	SetState(BOSS_ANI_WALKING_RIGHT_DOWN);
@@ -61,6 +76,8 @@ void CBoss::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		if (!boss_bullet->isDone)
 		{
 			boss_bullet->Update(dt, coObjects);
+			/*CPlayScene* plScene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
+			plScene->GetGrid()->AddObject(boss_bullet);*/
 		}
 		else
 		{
@@ -78,10 +95,10 @@ void CBoss::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		else if (this->x - target->x < 0) {
 			this->nx = 1;
 		}
-
 		boss_bullet = new BossBullet(this->x, this->y, this->nx);
 		boss_bullet->Set_IsMove(true);
-
+		/*CPlayScene* plScene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
+		plScene->GetGrid()->AddObject(boss_bullet);*/
 
 		timeToAttack = 0;
 	}

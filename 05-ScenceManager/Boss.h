@@ -11,28 +11,33 @@
 
 #define BOSS_BBOX_HEIGHT 66
 #define BOSS_BBOX_WIDTH 60
-#define BOSS_WALKING_SPEED 0.05f;
-#define	BOSS_JUMPING_SPEED 0.035f;
+#define BOSS_WALKING_SPEED 0.05f
+#define	BOSS_JUMPING_SPEED 0.035f
+
 
 class CBoss : public Enemy
 {
 protected:
 	LPGAMEOBJECT target;
-	BulletObject* boss_bullet;
+	/*BulletObject* boss_bullet;*/
 	vector<CBossHand*> listBossHand;
 	vector<CBossArm*> listBossArm;
 
 	bool isAttack;
-
+	BulletObject* boss_bullet;
 	int timeToAttack = 0;
 public:
+	
+	static CBoss* _instance;
+	CBoss();
 	CBoss(float x, float y, LPGAMEOBJECT player);
 	virtual void SetState(int state);
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	virtual void Render();
 	void Attack();
-
+	static CBoss* GetInstance();
+	//BulletObject GetBullet() { return boss_bullet; }
 	void set_bullet_list();
 
 

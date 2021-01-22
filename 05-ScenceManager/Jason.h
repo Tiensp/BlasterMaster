@@ -55,7 +55,7 @@ protected:
 
 	D3DXVECTOR2 LadderPos;
 	
-
+	bool isInjured = false;
 	float start_x;			// initial position of Jason at scene
 	float start_y;
 

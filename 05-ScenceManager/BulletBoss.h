@@ -4,7 +4,7 @@
 #include "Sophia.h"
 #include "BulletFloaters.h";
 
-class BossBullet : public BulletObject
+class BossBullet : public CEnemyBullet
 {
 protected:
 

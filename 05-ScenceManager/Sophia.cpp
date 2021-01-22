@@ -61,6 +61,7 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		CheckCollisionWithPortal(coObjects);
 		CheckCollisionWithItem(coObjects);
 		CheckCollisionWithEnemy(coObjects);
+		CheckCollisionWithThornOVW(coObjects);
 		if (isSetFollowBullet)
 		{
 			BulletObject* p_bullet = new BulletObject();
@@ -549,17 +550,14 @@ void CSophia::CheckCollisionWithEnemy(vector<LPGAMEOBJECT>* coObjects)
 	{
 		if (dynamic_cast<Enemy*>(coObjects->at(i)) || dynamic_cast<CEnemyBullet*>(coObjects->at(i)))
 			ListEnemy.push_back(coObjects->at(i));
-
 	}
-
-
 	for (int i = 0; i < ListEnemy.size(); i++)
 	{
 		if (this->IsCollidingObject(ListEnemy.at(i)))
 		{
 			if (dynamic_cast<COrb*>(ListEnemy.at(i))) {
-				COrb* orb = dynamic_cast<COrb*>(ListEnemy.at(i));
 
+				COrb* orb = dynamic_cast<COrb*>(ListEnemy.at(i));
 				orb->SetIsDeath(true);
 			}
 			if (dynamic_cast<CBomb*>(ListEnemy.at(i))) {

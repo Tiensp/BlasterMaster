@@ -31,23 +31,11 @@ StateDead::StateDead()
 
 		bigJason->vx = 0;
 		bigJason->vy = 0;
+		bigJason->SetIsDead(true);
+		StateName = BIG_JASON_DIE;
+		bigJason->frameID = bigJason->animation_set->at(StateName)->GetLastFrame();
 
-		if (bigJason->nx > 0)
-		{
-			StateName = BIG_JASON_IDLE_RIGHT;
-		}
-		else if (bigJason->nx < 0)
-		{
-			StateName = BIG_JASON_IDLE_LEFT;
-		}
-		else if (bigJason->ny > 0)
-		{
-			StateName = BIG_JASON_IDLE_TOP;
-		}
-		else if (bigJason->ny < 0)
-		{
-			StateName = BIG_JASON_IDLE_BOT;
-		}
+		
 	}
 	
 }
@@ -72,6 +60,16 @@ void StateDead::Update()
 		{
 			RECT r = jason->currentAni->GetFrameRect(frameID);
 	/*		jason->y_render = jason->y + SOPHIA_SMALL_BBOX_HEIGHT - (r.bottom - r.top);*/
+		}
+	}
+	if (_ACTIVE[BIG_JASON])
+	{
+		CBigJason* bigjason = INSTANCE_BIGJASON;
+		int frameID = bigjason->currentAni->GetCurrentFrame();
+		if (bigjason->currentAni->GetCurrentFrame() > -1)
+		{
+			RECT r = bigjason->currentAni->GetFrameRect(frameID);
+			/*		jason->y_render = jason->y + SOPHIA_SMALL_BBOX_HEIGHT - (r.bottom - r.top);*/
 		}
 	}
 

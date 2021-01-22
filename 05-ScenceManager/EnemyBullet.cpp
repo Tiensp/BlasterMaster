@@ -25,15 +25,12 @@ void CEnemyBullet::CheckCollisionWithPlayer(vector<LPGAMEOBJECT>* coObjects)
 		{
 			ListEnemy.push_back(coObjects->at(i));
 		}
-	for (UINT i = 0; i < ListEnemy.size() && isColideUsingAABB == false; i++)
+	for (UINT i = 0; i < ListEnemy.size(); i++)
 	{
 		if (this->IsCollidingObject(ListEnemy.at(i)))
 		{
 			isColideUsingAABB = true;
 			CSophia* sophia = dynamic_cast<CSophia*>(ListEnemy.at(i));
-			
-			if (sophia->GetUntouchable() == 1 || sophia->GetIsInjured())
-				continue;
 			sophia->SetHealthWithBullet(bulletDame);
 			Sound::GetInstance()->Play("PlayerInjured", 0, 1);
 			/*this->isMove = false;*/

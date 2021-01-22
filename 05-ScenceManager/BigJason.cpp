@@ -23,7 +23,7 @@ CBigJason::CBigJason() : CGameObject()
 	level = BIG_JASON_LEVEL_BIG;
 	untouchable = 0;
 	animation_set = CAnimationSets::GetInstance()->Get(BIG_JASON);
-
+	isDead = false;
 	start_x = x;
 	start_y = y;
 	this->x = x;
@@ -35,11 +35,12 @@ void CBigJason::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	if (_ACTIVE[BIG_JASON])
 	{
+		if (this->health <= 0)
+		{
+			SwitchState(new StateDead());
+		}
 		// Calculate dx, dy 
 		CGameObject::Update(dt);
-
-
-
 		vector<LPCOLLISIONEVENT> coEvents;
 		vector<LPCOLLISIONEVENT> coEventsResult;
 
@@ -108,7 +109,7 @@ void CBigJason::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 
 		}
-
+		CheckCollisionWithEnemy(coObjects);
 		currentState->Update();
 
 
@@ -124,9 +125,26 @@ void CBigJason::Render()
 		int alpha = 255;
 		if (untouchable) alpha = 128;
 
+		if (isDead)
+		{
+			/*currentAni->Render(x, y);*/
 
-		currentAni->Render(x, y);
-		RenderBoundingBox(x, y);
+			if (currentAni->GetCurrentFrame() == currentAni->GetLastFrame())
+			{
+				renderFrame = true;
+			}
+			if (renderFrame)
+				currentAni->RenderFrame(frameID, x, y + 10);
+			else
+				currentAni->Render(x, y );
+		}
+		else
+		{
+			if (renderFrame)
+				currentAni->RenderFrame(frameID, x, y);
+			else
+				currentAni->Render(x, y);
+		}
 	}
 	for (int i = 0; i < p_bullet_list.size(); i++)
 	{
@@ -233,77 +251,6 @@ void CBigJason::OnKeyDown(int keycode)
 			p_bullet_list.push_back(p_bullet);
 		}
 		break;
-		/*	BigJasonBullet* p_bullet = new BigJasonBullet();
-
-			if (p_bullet_list.size() == 0)
-			{
-				p_bullet = new BigJasonBullet(this->x, this->y, 0);
-
-			}
-			else if (p_bullet_list.size() == 1)
-			{
-				p_bullet = new BigJasonBullet(this->x, this->y, 1);
-			}
-			else if (p_bullet_list.size() == 2)
-			{
-				p_bullet = new BigJasonBullet(this->x, this->y, -1);
-			}
-			else if (p_bullet_list.size() == 3)
-			{
-				p_bullet = new BigJasonBullet(this->x, this->y, 1);
-
-			}
-			if (energy <= 2)
-			{
-				p_bullet->Set_Type(0);
-			}
-			else if (2 < energy && energy <= 5)
-			{
-				p_bullet->Set_Type(1);
-			}
-			else if (energy > 5)
-			{
-				p_bullet->Set_Type(2);
-			}
-
-			if (this->ny == 0)
-			{
-				if (this->nx == 1)
-				{
-					p_bullet->SetPosition(this->x + width + 20, this->y + 14);
-
-				}
-				else
-				{
-					p_bullet->SetPosition(this->x + width - 8, this->y + 14);
-				}
-				p_bullet->Set_bullet_dir(this->nx);
-				p_bullet->Set_point();
-
-
-			}
-			else if (this->nx == 0)
-			{
-				if (this->ny == 1)
-				{
-					p_bullet->SetPosition(this->x + width + 10, this->y - 5);
-					p_bullet->Set_bullet_dir(3);
-				}
-				else
-				{
-					p_bullet->SetPosition(this->x + width + 2, this->y + 25);
-					p_bullet->Set_bullet_dir(4);
-				}
-				p_bullet->Set_point();
-			}
-
-			if (Get_BigJason_Normal_bullet() <= 3)
-			{
-
-				p_bullet->Set_IsMove(true);
-				p_bullet_list.push_back(p_bullet);
-			}*/
-		break;
 	}
 	}
 }
@@ -339,6 +286,110 @@ void CBigJason::Clear()
 	{
 		delete __instance;
 		__instance = NULL;
+	}
+}
+
+void CBigJason::CheckCollisionWithBrick(vector<LPGAMEOBJECT>* coObjects)
+{
+	vector<LPCOLLISIONEVENT> coEvents;
+	vector<LPCOLLISIONEVENT> coEventsResult;
+	bool isColideUsingAABB = false;
+	coEvents.clear();
+
+	vector<LPGAMEOBJECT> ListBrick;
+	ListBrick.clear();
+	for (UINT i = 0; i < coObjects->size(); i++)
+		if (dynamic_cast<CBrick*>(coObjects->at(i)))
+			ListBrick.push_back(coObjects->at(i));
+
+
+
+	if (isColideUsingAABB != true)
+	{
+		CalcPotentialCollisions(&ListBrick, coEvents);
+
+		if (coEvents.size() == 0)
+		{
+			x += dx;
+			y += dy;
+		}
+		else
+		{
+			float min_tx, min_ty, nx = 0, ny;
+			float rdx = 0;
+			float rdy = 0;
+
+			FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
+			for (UINT i = 0; i < coEventsResult.size(); i++)
+			{
+				LPCOLLISIONEVENT e = coEventsResult[i];
+				x += min_tx * dx + nx * 0.2f;
+				y += min_ty * dy + ny * 0.2f;
+
+				if (e->nx != 0) vx = 0;
+				else if (e->ny != 0)
+				{
+					vy = 0;
+					
+				}
+			}
+			
+
+			
+
+		}
+	}
+}
+
+void CBigJason::CheckCollisionWithEnemy(vector<LPGAMEOBJECT>* coObjects)
+{
+	vector<LPCOLLISIONEVENT> coEvents;
+	vector<LPCOLLISIONEVENT> coEventsResult;
+	bool isColideUsingAABB = false;
+	coEvents.clear();
+	vector<LPGAMEOBJECT> ListEnemy;
+	vector<LPGAMEOBJECT> ListBullet;
+	ListEnemy.clear();
+	for (UINT i = 0; i < coObjects->size(); i++)
+	{
+		if (dynamic_cast<Enemy*>(coObjects->at(i)) || dynamic_cast<CEnemyBullet*>(coObjects->at(i)))
+			ListEnemy.push_back(coObjects->at(i));
+	}
+	for (int i = 0; i < ListEnemy.size(); i++)
+	{
+		if (this->IsCollidingObject(ListEnemy.at(i)))
+		{
+		
+			isColideUsingAABB = true;
+			/*if (untouchable == 1 || isInjured)
+				continue;*/
+			health -= 1;
+			/*Sound::GetInstance()->Play("PlayerInjured", 0, 1);*/
+			StartUntouchable();			
+			return;
+		}
+	}
+	if (!isColideUsingAABB)
+	{
+		CalcPotentialCollisions(&ListEnemy, coEvents);
+
+		if (coEvents.size() == 0)
+		{
+			return;
+		}
+		else
+		{
+			float min_tx, min_ty, nx = 0, ny;
+			float rdx = 0;
+			float rdy = 0;
+			FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
+
+			health -= 1;
+			/*isInjured = true;
+			Sound::GetInstance()->Play("PlayerInjured", 0, 1);*/
+		}
+
+
 	}
 }
 

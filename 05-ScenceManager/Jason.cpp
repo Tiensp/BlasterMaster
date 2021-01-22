@@ -39,6 +39,7 @@ void CJason::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	if (_ACTIVE[JASON])
 	{
+		DWORD now = GetTickCount64();
 		// Calculate dx, dy 
 		CGameObject::Update(dt);
 		// Simple fall down
@@ -48,6 +49,14 @@ void CJason::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			SwitchState(new StateDead());
 		}
 		set_bullet_list();
+
+		if (GetTickCount() - untouchable_start > SOPHIA_UNTOUCHABLE_TIME)
+		{
+			if (untouchable == 1)
+				isInjured = false;
+			untouchable = 0;
+			untouchable_start = 0;
+		}
 		for (int i = 0; i < p_bullet_list.size(); i++)
 		{
 			p_bullet_list[i]->Update(dt, coObjects);
@@ -105,15 +114,25 @@ void CJason::Render()
 		if (isDead)
 		{
 			/*currentAni->Render(x, y);*/
+			
 			if (currentAni->GetCurrentFrame() == currentAni->GetLastFrame())
 			{
 				renderFrame = true;
 			}
+			if (renderFrame)
+				currentAni->RenderFrame(frameID, x, y+7);
+			else
+				currentAni->Render(x, y+7);
 		}
-		if (renderFrame)
-			currentAni->RenderFrame(frameID, x, y);
 		else
-			currentAni->Render(x, y);
+		{
+			if (renderFrame)
+				currentAni->RenderFrame(frameID, x, y);
+			else
+				currentAni->Render(x, y);
+		}
+		
+
 		
 
 		for (int i = 0; i < p_bullet_list.size(); i++)
@@ -382,8 +401,8 @@ void CJason::CheckCollisionWithEnemy(vector<LPGAMEOBJECT>* coObjects)
 		if (this->IsCollidingObject(ListEnemy.at(i)))
 		{
 			isColideUsingAABB = true;
-			/*if (untouchable == 1 || isInjured)
-				continue;*/
+			if (untouchable == 1 || isInjured)
+				continue;
 			health -= 2;
 
 			Sound::GetInstance()->Play("PlayerInjured", 0, 1);
@@ -391,7 +410,6 @@ void CJason::CheckCollisionWithEnemy(vector<LPGAMEOBJECT>* coObjects)
 			/*isInjured = true;*/
 			return;
 		}
-
 	}
 	if (!isColideUsingAABB)
 	{
