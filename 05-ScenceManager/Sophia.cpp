@@ -6,6 +6,8 @@
 #include "Goomba.h"
 #include "Portal.h"
 #include "Domes.h"
+#include "Orbs.h"
+#include "Bomb.h"
 #include "Camera.h"
 #include "StateIDLE.h"
 #include "StateWALKING.h"
@@ -73,6 +75,8 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			untouchable = 0;
 			untouchable_start = 0;
 		}
+		CheckCollisionWithLava(coObjects);
+		CheckCollisionWithThornOVW(coObjects);
 		CheckCollisionWithBrick(coObjects);
 		CheckCollisionWithPortal(coObjects);
 		CheckCollisionWithItem(coObjects);
@@ -441,7 +445,6 @@ void CSophia::CheckCollisionWithBrick(vector<LPGAMEOBJECT>* coObjects)
 			}
 		}
 	}
-	
 }
 
 /// <summary>
@@ -597,6 +600,15 @@ void CSophia::CheckCollisionWithEnemy(vector<LPGAMEOBJECT>* coObjects)
 	{
 		if (this->IsCollidingObject(ListEnemy.at(i)))
 		{
+			if (dynamic_cast<COrb*>(ListEnemy.at(i))) {
+				COrb* orb = dynamic_cast<COrb*>(ListEnemy.at(i));
+
+				orb->SetIsDeath(true);
+			}
+			if (dynamic_cast<CBomb*>(ListEnemy.at(i))) {
+				CBomb* bomb = dynamic_cast<CBomb*>(ListEnemy.at(i));
+				bomb->SetIsDeath(true);
+			}
 			isColideUsingAABB = true;
 			if (untouchable == 1 || isInjured)
 				continue;
@@ -606,7 +618,6 @@ void CSophia::CheckCollisionWithEnemy(vector<LPGAMEOBJECT>* coObjects)
 			isInjured = true;
 			return;
 		}
-		
 	}
 	if (!isColideUsingAABB)
 	{
@@ -631,6 +642,120 @@ void CSophia::CheckCollisionWithEnemy(vector<LPGAMEOBJECT>* coObjects)
 
 	}
 	
+}
+
+
+void CSophia::CheckCollisionWithThornOVW(vector<LPGAMEOBJECT>* coObjects)
+{
+	vector<LPCOLLISIONEVENT> coEvents;
+	vector<LPCOLLISIONEVENT> coEventsResult;
+	bool isColideUsingAABB = false;
+	coEvents.clear();
+	vector<LPGAMEOBJECT> ListThorn;
+	ListThorn.clear();
+	for (UINT i = 0; i < coObjects->size(); i++)
+	{
+		if (dynamic_cast<CThornOVW*>(coObjects->at(i)))
+			ListThorn.push_back(coObjects->at(i));
+	}
+
+
+	for (int i = 0; i < ListThorn.size(); i++)
+	{
+		if (this->IsCollidingObject(ListThorn.at(i)))
+		{
+			isColideUsingAABB = true;
+			if (untouchable == 1 || isInjured)
+				continue;
+			health -= 1;
+			Sound::GetInstance()->Play("PlayerInjured", 0, 1);
+			StartUntouchable();
+			isInjured = true;
+			return;
+		}
+	}
+	if (!isColideUsingAABB)
+	{
+		CalcPotentialCollisions(&ListThorn, coEvents);
+
+		if (coEvents.size() == 0)
+		{
+			return;
+		}
+		else
+		{
+			float min_tx, min_ty, nx = 0, ny;
+			float rdx = 0;
+			float rdy = 0;
+			FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
+
+			health -= 1;
+			isInjured = true;
+			Sound::GetInstance()->Play("PlayerInjured", 0, 1);
+		}
+
+
+	}
+
+}
+
+void CSophia::CheckCollisionWithLava(vector<LPGAMEOBJECT>* coObjects)
+{
+	vector<LPCOLLISIONEVENT> coEvents;
+	vector<LPCOLLISIONEVENT> coEventsResult;
+	bool isColideUsingAABB = false;
+	coEvents.clear();
+	vector<LPGAMEOBJECT> ListLava;
+	ListLava.clear();
+
+
+	for (UINT i = 0; i < coObjects->size(); i++)
+	{
+		if (dynamic_cast<CLava*>(coObjects->at(i)))
+			ListLava.push_back(coObjects->at(i));
+	}
+
+
+	for (int i = 0; i < ListLava.size(); i++)
+	{
+		if (this->IsCollidingObject(ListLava.at(i)))
+		{
+			isColideUsingAABB = true;
+			if (untouchable == 1 || isInjured)
+				continue;
+			health -= 1;
+			Sound::GetInstance()->Play("PlayerInjured", 0, 1);
+			StartUntouchable();
+			isInjured = true;
+			return;
+		}
+	}
+	if (!isColideUsingAABB)
+	{
+		CalcPotentialCollisions(&ListLava, coEvents);
+
+		if (coEvents.size() == 0)
+		{
+			return;
+		}
+		else
+		{
+			float min_tx, min_ty, nx = 0, ny;
+			float rdx = 0;
+			float rdy = 0;
+			FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
+
+			this->x += min_tx * dx + nx * 0.2f;
+			this->y += min_ty * dy + ny * 0.2f;
+
+			health -= 1;
+			isInjured = true;
+			Sound::GetInstance()->Play("PlayerInjured", 0, 1);
+		}
+
+
+	}
+
 }
 
 void CSophia::GetBoundingBox(float &left, float &top, float &right, float &bottom)

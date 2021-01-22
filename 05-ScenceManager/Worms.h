@@ -19,11 +19,7 @@ class CWorm : public Enemy
 {
 	bool isFolow;  //theo player 
 
-	bool isDoneDeath = false;
-	bool isDeath = false;
-
-
-
+	bool isDoneDeath;
 public:
 	CWorm(float x, float y, LPGAMEOBJECT player);
 	virtual void SetState(int state);

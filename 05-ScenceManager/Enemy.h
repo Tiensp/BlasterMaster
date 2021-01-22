@@ -7,7 +7,6 @@ protected:
 	bool isDeath;
 	bool isAttack;
 	int hp;
-	//bool isDone;
 public:
 	Enemy();
 	~Enemy();
@@ -16,6 +15,7 @@ public:
 	virtual void Set_hp(int dameBullet) { this->hp -= dameBullet; }
 	virtual void GetBoundingBox(float& l, float& t, float& r, float& b) = 0;
 	bool GetIsDeath() { return isDeath; }
+	bool SetIsDeath(bool isDeath1) { return this->isDeath = isDeath1; }
 	
 };
 

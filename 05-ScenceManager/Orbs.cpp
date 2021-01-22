@@ -9,6 +9,7 @@
 #include "Goomba.h"
 #include "Portal.h"
 #include "Brick.h"
+
 COrb::COrb(float x, float y, LPGAMEOBJECT player)
 {
 	SetState(ORB_ANI_WALKING_RIGHT);
@@ -50,6 +51,8 @@ void COrb::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	vector<LPCOLLISIONEVENT> coEventsResult;
 
 	coEvents.clear();
+
+	if (hp <= 0) isDeath = true;
 
 	// turn off collision when die 
 	//nếu không chết thì kiểm tra toàn bộ va chạm với các đối tượng khác

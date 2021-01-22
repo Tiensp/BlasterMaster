@@ -9,8 +9,9 @@
 #define FLOATER_ANI_ATTACKING_LEFT_UP 6 
 #define FLOATER_ANI_ATTACKING_LEFT_DOWN 7 
 #define FLOATER_ANI_DEATH 8 
-#define FLOATER_WALKING_SPEED 0.05f;
-#define	FLOATER_JUMPING_SPEED 0.035f;
+
+#define FLOATER_WALKING_SPEED 0.0325f;
+#define	FLOATER_JUMPING_SPEED 0.0220f;
 
 #define FLOATER_BBOX_WIDTH 19
 #define FLOATER_BBOX_HEIGHT 16
@@ -26,11 +27,9 @@ class CFloaters : public Enemy
 {
 protected:
 	LPGAMEOBJECT target;
-	bool isAttack;
 	BulletObject* p_bullet;
 
 	bool isDoneDeath;
-	bool isDeath;
 public:
 	CFloaters(float x, float y, LPGAMEOBJECT player);
 	virtual void SetState(int state);

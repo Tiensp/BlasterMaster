@@ -153,6 +153,9 @@
     <ClCompile Include="Worms.cpp" />
     <ClCompile Include="Bosshand.cpp" />
     <ClCompile Include="BossArm.cpp" />
+    <ClCompile Include="BulletTeleporter.cpp" />
+    <ClCompile Include="Bomb.cpp" />
+    <ClCompile Include="BulletBomb.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animations.h" />
@@ -311,6 +314,9 @@
     <ClInclude Include="Worms.h" />
     <ClInclude Include="BossHand.h" />
     <ClInclude Include="BossArm.h" />
+    <ClInclude Include="BulletTeleporter.h" />
+    <ClInclude Include="Bomb.h" />
+    <ClInclude Include="BulletBomb.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="BlasterMaster.rc" />

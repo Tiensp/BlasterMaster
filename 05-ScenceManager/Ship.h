@@ -29,9 +29,7 @@ class CShip : public Enemy
 	LPGAMEOBJECT target;
 	BulletObject* s_bullet;
 
-	bool isAttack;
 	bool isDoneDeath = false;
-	bool isDeath = false;
 public:
 	CShip(float x, float y, LPGAMEOBJECT player);
 	virtual void SetState(int state);

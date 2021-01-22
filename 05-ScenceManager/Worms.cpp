@@ -94,9 +94,8 @@ void CWorm::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			{
 				LPCOLLISIONEVENT e = coEventsResult[i];
 
-				if (dynamic_cast<CBrick*>(e->obj)) // if e->obj is Goomba 
+				if (dynamic_cast<CBrick*>(e->obj))
 				{
-
 
 					x += min_tx * dx + nx * 0.4f;
 
@@ -104,7 +103,6 @@ void CWorm::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					if (ny != 0) vy = 0;
 					CBrick* brick = dynamic_cast<CBrick*>(e->obj);
 
-					// jump on top >> kill Goomba and deflect a bit 
 					if (e->nx != 0)
 					{
 						this->nx = e->nx;
@@ -113,16 +111,12 @@ void CWorm::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					}
 
 				}
-
-				if (e->obj->objTag == ENEMY)
-				{
+				if(e->obj->objTag == ENEMY) {
 					x += dx;
-					//y += dy;
+					y += dy;
 				}
-				if (e->obj->objTag == PLAYER)
-				{
+				if(e->obj->objTag == LAVA) {
 					x += dx;
-					//y += dy;
 				}
 
 			}
@@ -137,7 +131,7 @@ void CWorm::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 void CWorm::Render()
 {
 
-	int ani = WORM_ANI_WALKING_RIGHT;
+	int ani = WORM_ANI_WALKING_LEFT;
 
 	if (isDoneDeath) return;
 	if (hp <= 0) isDeath = true;
@@ -154,8 +148,8 @@ void CWorm::Render()
 	}
 
 
-	if (vx > 0) ani = WORM_ANI_WALKING_RIGHT;
-	else if (vx <= 0) ani = WORM_ANI_WALKING_LEFT;
+	if (this->nx > 0) ani = WORM_ANI_WALKING_RIGHT;
+	else if (this->nx <= 0) ani = WORM_ANI_WALKING_LEFT;
 
 	animation_set->at(ani)->Render(x, y);
 

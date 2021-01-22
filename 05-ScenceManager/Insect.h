@@ -1,14 +1,16 @@
 #pragma once
 #include "GameObject.h"
 #include "Enemy.h"
-#define INSECT_ANI_WALKING_RIGHT_UP 0
-#define INSECT_ANI_WALKING_RIGHT_DOWN 1
-#define INSECT_ANI_WALKING_LEFT_UP 2
-#define INSECT_ANI_WALKING_LEFT_DOWN 3
-#define INSECT_ANI_DEATH 4
 
-#define INSECT_WALKING_SPEED 0.0375f;
-#define	INSECT_JUMPING_SPEED 0.035f;
+#define INSECT_ANI_DROP_DOWN 0
+#define INSECT_ANI_WALKING_RIGHT_UP 1
+#define INSECT_ANI_WALKING_RIGHT_DOWN 2
+#define INSECT_ANI_WALKING_LEFT_UP 3
+#define INSECT_ANI_WALKING_LEFT_DOWN 4
+#define INSECT_ANI_DEATH 5
+
+#define INSECT_WALKING_SPEED 0.025f;
+#define	INSECT_JUMPING_SPEED 0.045f;
 
 #define INSECT_BBOX_WIDTH 19
 #define INSECT_BBOX_HEIGHT 19
@@ -23,11 +25,13 @@ class CInsect : public Enemy
 {
 	bool isFolow;  //theo player 
 	LPGAMEOBJECT target;
+
+
 	int timeChangeState = 1500;
-	int interval = 30;
+	int changeState;
+	int interval = 10;
 	int timer;
 
-	bool isDeath = false;
 	bool isDoneDeath = false;
 public:
 	CInsect(float x, float y, LPGAMEOBJECT player);

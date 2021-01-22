@@ -20,10 +20,9 @@ class CGolem : public Enemy
 {
 	bool isFolow; //theo player 
 
+	int timeToJumping;
+
 	bool isDoneDeath = false;
-	bool isDeath = false;
-
-
 public:
 	CGolem(float x, float y, LPGAMEOBJECT player);
 	~CGolem();

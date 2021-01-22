@@ -42,13 +42,11 @@ void CShip::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 
 void CShip::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-
-	//DebugOut(L"golumnvX: %f, golumnvY: %f\n", vx, vy);
 	Enemy::Update(dt, coObjects);
-	//DebugOut(L"golumnvX: %f, golumnvY: %f\n", vx, vy);
 
-	//DebugOut(L"golumnvX: %f, golumnvY: %f\n", target->nx, this->nx);
 	Attack();
+
+	if (hp <= 0) isDeath = true;
 
 	if (s_bullet != NULL)
 	{
@@ -253,24 +251,6 @@ void CShip::Render()
 
 	RenderBoundingBox(x,y);
 }
-
-//void CSkull::flowPlayer(LPGAMEOBJECT player)
-//{
-//	if (abs(this->x - player->x) <= 100)
-//	{
-//		if (this->x - player->x <= 0)
-//		{
-//			this->nx = -1;
-//		}
-//		else
-//		{
-//			this->nx = 1;
-//		}
-//	}
-//
-//}
-
-
 
 void CShip::SetState(int state)
 {

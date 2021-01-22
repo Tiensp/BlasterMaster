@@ -42,31 +42,38 @@ void CGolem::GetBoundingBox(float& left, float& top, float& right, float& bottom
 
 void CGolem::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	Enemy::Update(dt, coObjects);
+	CGameObject::Update(dt, coObjects);
 	vy += 0.0005f * dt;
-	//DebugOut(L"golumnvX: %f, golumnvY: %f\n", vx, vy);
+	
+
+	if (this->x - target->x <= 0)
+	{
+		this->nx = 1;
+	}
+	else
+	{
+		this->nx = -1;
+	}
 
 	if (abs(this->x - target->x) <= 300 && abs(this->y - target->y) <= 20)
 	{
-		if (this->x - target->x <= 0)
-		{
-			this->nx = 1;
-		}
-		else
-		{
-			this->nx = -1;
-		}
 		if (abs(this->x - target->x) <= 70)
 		{
-			this->SetState(GOLEM_STATE_JUMPING);
+			timeToJumping++;			
 		}
 		else
 		{
-			this->SetState(GOLEM_STATE_WALKING);
+			timeToJumping = 0;
 		}
-
-
 	}
+
+	if (timeToJumping == 5) {
+		this->SetState(GOLEM_STATE_JUMPING);
+	}
+	else this->SetState(GOLEM_STATE_WALKING);
+
+
+	if (hp <= 0) isDeath = true;
 
 
 	vector<LPCOLLISIONEVENT> coEvents;
@@ -85,7 +92,7 @@ void CGolem::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	}
 	else //có va chạm
 	{
-		float min_tx, min_ty, nx = 0, ny=0;
+		float min_tx, min_ty, nx = 0, ny = 0;
 		float rdx = 0;
 		float rdy = 0;
 
@@ -101,14 +108,15 @@ void CGolem::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			{
 				LPCOLLISIONEVENT e = coEventsResult[i];
 
-				if (dynamic_cast<CBrick*>(e->obj)) // if e->obj is Goomba 
+				if (dynamic_cast<CBrick*>(e->obj) || dynamic_cast<CPortal*>(e->obj)) // if e->obj is Goomba 
 				{
-					
-				
+
+
 					x += min_tx * dx + nx * 0.4f;
 
 					if (nx != 0) vx = 0;
 					if (ny != 0) vy = 0;
+
 					CBrick* brick = dynamic_cast<CBrick*>(e->obj);
 
 					// jump on top >> kill Goomba and deflect a bit 
@@ -123,15 +131,19 @@ void CGolem::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 				if (e->obj->objTag == ENEMY)
 				{
-					x += dx;
-					y += dy;
+					x += min_tx * dx + nx * 0.4f;
+
+					if (nx != 0) vx = 0;
+					if (ny != 0) vy = 0;
 				}
 				if (e->obj->objTag == PLAYER)
 				{
-					x += dx;
-					y += dy;
+					x += min_tx * dx + nx * 0.4f;
+
+					if (nx != 0) vx = 0;
+					if (ny != 0) vy = 0;
 				}
-			
+
 			}
 
 		}
@@ -164,7 +176,7 @@ void CGolem::Render()
 
 	animation_set->at(ani)->Render(x, y);
 
-	RenderBoundingBox(x,y);
+	RenderBoundingBox(x, y);
 }
 
 void CGolem::flowPlayer(LPGAMEOBJECT player)
@@ -180,7 +192,7 @@ void CGolem::flowPlayer(LPGAMEOBJECT player)
 			this->nx = 1;
 		}
 	}
-	
+
 }
 
 
@@ -208,7 +220,7 @@ void CGolem::SetState(int state)
 	case GOLEM_STATE_JUMPING:
 		if (nx > 0)
 		{
-			vx = GOLEM_WALKING_SPEED+0.09f;
+			vx = GOLEM_WALKING_SPEED + 0.09f;
 		}
 		else
 		{
@@ -218,6 +230,6 @@ void CGolem::SetState(int state)
 		break;
 
 
-		
+
 	}
 }

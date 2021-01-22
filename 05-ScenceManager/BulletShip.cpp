@@ -90,8 +90,6 @@ void BulletShip::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				y += min_ty * dy + ny * 0.4f;*/
 			}
 		}
-
-
 	}
 	//for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
 

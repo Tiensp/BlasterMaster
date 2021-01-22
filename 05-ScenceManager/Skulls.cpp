@@ -67,19 +67,12 @@ void CSkull::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	coEvents.clear();
 
-	// turn off collision when die 
-	//nếu không chết thì kiểm tra toàn bộ va chạm với các đối tượng khác
 	CalcPotentialCollisions(coObjects, coEvents);
 
-	// reset untouchable timer if untouchable time has passed
-
-	// No collision occured, proceed normally
-
-	if (coEvents.size() == 0)  //nếu không có va chạm, update bình thường
+	if (coEvents.size() == 0)
 	{
 		x += dx;
 		y += dy;
-
 	}
 	else //có va chạm
 	{
@@ -90,23 +83,17 @@ void CSkull::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		// TODO: This is a very ugly designed function!!!!
 		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);  // sắp xếp lại các sự kiện va chạm đầu tiên theo trục x, y 
 
-		// how to push back Sophia if collides with a moving objects, what if Sophia is pushed this way into another object?
-		//if (rdx != 0 && rdx!=dx)
-		//	x += nx*abs(rdx); 
-
-		// block every object first!
 		{
 			for (UINT i = 0; i < coEventsResult.size(); i++)
 			{
 				LPCOLLISIONEVENT e = coEventsResult[i];
 
-				if (dynamic_cast<CBrick*>(e->obj)) // if e->obj is Goomba 
+				if (dynamic_cast<CBrick*>(e->obj))
 				{
 					isAttack = false;
 
 					CBrick* brick = dynamic_cast<CBrick*>(e->obj);
 
-					// jump on top >> kill Goomba and deflect a bit 
 					if (e->nx != 0)
 					{
 						if (e->nx > 0)
@@ -146,6 +133,32 @@ void CSkull::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				{
 					x += dx;  
 					y += dy;
+				}
+				if (e->obj->objTag == PORTAL) {
+					if (e->nx != 0)
+					{
+						if (e->nx > 0)
+						{
+							if (this->nx < 0)
+							{
+								if (this->GetState() == SKULL_ANI_WALKING_LEFT)
+								{
+									this->SetState(SKULL_ANI_WALKING_RIGHT);
+								}
+							}
+						}
+						else if (e->nx < 0)
+						{
+							if (this->nx > 0)
+							{
+								if (this->GetState() == SKULL_ANI_WALKING_RIGHT)
+								{
+									this->SetState(SKULL_ANI_WALKING_LEFT);
+								}
+							}
+						}
+
+					}
 				}
 			}
 		}

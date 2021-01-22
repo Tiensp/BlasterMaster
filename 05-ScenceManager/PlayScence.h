@@ -37,6 +37,7 @@
 #include "Boss.h"
 #include "BulletBoss.h"
 #include "Ladder.h"
+#include "Bomb.h";
 
 class CPlayScene: public CScene
 {
