@@ -32,10 +32,6 @@ void CFloaters::GetBoundingBox(float& left, float& top, float& right, float& bot
 		right = x + FLOATER_BBOX_WIDTH;
 		bottom = y + FLOATER_BBOX_HEIGHT;
 
-		/*if (state == FLOATER_STATE_DIE)
-			bottom = y + FLOATER_BBOX_HEIGHT_DIE;
-		else
-			bottom = y + FLOATER_BBOX_HEIGHT;*/
 	}
 	else return;
 }
@@ -159,13 +155,12 @@ void CFloaters::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 void CFloaters::Attack()
 {
-	if (abs(this->x - target->x) <= 100)
+	if (abs(this->x - target->x) <= 50)
 	{
 		isAttack = true;
-
-		if (this->nx == target->nx && target->nx > 0 && this->nx > 0)
+		if (target->nx > 0 && this->nx > 0)
 		{
-			if (this->GetState() == FLOATER_ANI_WALKING_RIGHT_UP)
+			if (this->GetState() == FLOATER_ANI_WALKING_RIGHT_UP && target->x > this->x)
 			{
 				if (p_bullet == NULL)
 				{
@@ -178,7 +173,7 @@ void CFloaters::Attack()
 				this->SetState(FLOATER_ANI_ATTACKING_RIGHT_UP);
 
 			}
-			else if (this->GetState() == FLOATER_ANI_WALKING_RIGHT_DOWN)
+			else if (this->GetState() == FLOATER_ANI_WALKING_RIGHT_DOWN && target->x > this->x)
 			{
 				if (p_bullet == NULL)
 				{
@@ -205,7 +200,7 @@ void CFloaters::Attack()
 
 				this->SetState(FLOATER_ANI_ATTACKING_LEFT_UP);
 			}
-			else if (this->GetState() == FLOATER_ANI_WALKING_LEFT_DOWN)
+			else if (this->GetState() == FLOATER_ANI_WALKING_LEFT_DOWN && target->x < this->x)
 			{
 				if (p_bullet == NULL)
 				{
@@ -234,9 +229,9 @@ void CFloaters::Render()
 	if (isDoneDeath) return;
 	if (hp <= 0) isDeath = true;
 
-	if (isAttack)
+	if (isAttack && p_bullet != NULL)
 	{
-		if (this->nx - target->nx == 0 && this->x - target->x < 0 && this->nx > 0)
+		if (this->nx > 0)
 		{
 			if (this->ny > 0)
 			{
@@ -247,7 +242,7 @@ void CFloaters::Render()
 				ani = FLOATER_ANI_ATTACKING_RIGHT_UP;
 			}
 		}
-		else if (this->nx - target->nx == 0 && this->nx < 0 && this->x - target->x > 0)
+		if (this->nx < 0)
 		{
 			if (this->ny > 0)
 			{
@@ -272,7 +267,7 @@ void CFloaters::Render()
 				ani = FLOATER_ANI_WALKING_RIGHT_UP;
 			}
 		}
-		else if (this->nx < 0)
+		if (this->nx < 0)
 		{
 			if (this->ny > 0)
 			{

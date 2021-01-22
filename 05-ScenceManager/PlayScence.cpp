@@ -42,6 +42,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
 #define OBJECT_TYPE_TELEPORTER 13
 #define OBJECT_TYPE_CANNON 14
 #define OBJECT_TYPE_ITEM 85
+#define OBJECT_TYPE_BOMB 190
 #define OBJECT_TYPE_LADDER 49
 
 #define OBJECT_TYPE_LAVA 90
@@ -213,6 +214,15 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		AllObjs.push_back(obj);
 		break;
 	}
+	case OBJECT_TYPE_BOMB:
+	{
+		obj = new CBomb(x, y);
+		obj->SetPosition(x, y);
+		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
+		obj->SetAnimationSet(ani_set);
+		AllObjs.push_back(obj);
+		break;
+	}
 	case OBJECT_TYPE_INSECT:
 	{
 		int itemType = atoi(tokens[5].c_str());
@@ -240,7 +250,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj->SetPosition(x, y);
 		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
 		obj->SetAnimationSet(ani_set);
-		listEnemies.push_back(obj);
+		AllObjs.push_back(obj);
 		break;
 	}
 
@@ -251,7 +261,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj->SetPosition(x, y);
 		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
 		obj->SetAnimationSet(ani_set);
-		listEnemies.push_back(obj);
+		AllObjs.push_back(obj);
 		break;
 	}
 
@@ -283,7 +293,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		float h = atof(tokens[5].c_str());
 		obj = new CLava(x, y, w, h);
 		obj->SetPosition(x, y);
-		objects.push_back(obj);
+		AllObjs.push_back(obj);
 		break;
 	}
 
@@ -293,7 +303,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		float h = atof(tokens[5].c_str());
 		obj = new CThornOVW(x, y, w, h);
 		obj->SetPosition(x, y);
-		objects.push_back(obj);
+		AllObjs.push_back(obj);
 		break;
 	}
 

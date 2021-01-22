@@ -141,7 +141,7 @@ void CWorm::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 void CWorm::Render()
 {
 
-	int ani = WORM_ANI_WALKING_RIGHT;
+	int ani = WORM_ANI_WALKING_LEFT;
 
 	if (isDoneDeath) return;
 	if (hp <= 0) isDeath = true;
@@ -158,8 +158,8 @@ void CWorm::Render()
 	}
 
 
-	if (vx > 0) ani = WORM_ANI_WALKING_RIGHT;
-	else if (vx <= 0) ani = WORM_ANI_WALKING_LEFT;
+	if (this->nx > 0) ani = WORM_ANI_WALKING_RIGHT;
+	else if (this->nx <= 0) ani = WORM_ANI_WALKING_LEFT;
 
 	animation_set->at(ani)->Render(x, y);
 

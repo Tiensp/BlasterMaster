@@ -197,7 +197,7 @@ void CGolem::flowPlayer(LPGAMEOBJECT player)
 			this->nx = 1;
 		}
 	}
-	
+
 }
 
 
@@ -235,6 +235,6 @@ void CGolem::SetState(int state)
 		break;
 
 
-		
+
 	}
 }

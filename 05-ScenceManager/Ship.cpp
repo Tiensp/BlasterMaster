@@ -257,24 +257,6 @@ void CShip::Render()
 	RenderBoundingBox(x, y);
 }
 
-//void CSkull::flowPlayer(LPGAMEOBJECT player)
-//{
-//	if (abs(this->x - player->x) <= 100)
-//	{
-//		if (this->x - player->x <= 0)
-//		{
-//			this->nx = -1;
-//		}
-//		else
-//		{
-//			this->nx = 1;
-//		}
-//	}
-//
-//}
-
-
-
 void CShip::SetState(int state)
 {
 	CGameObject::SetState(state);

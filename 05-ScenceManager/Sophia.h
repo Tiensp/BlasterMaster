@@ -165,6 +165,8 @@ public:
 	void CheckCollisionWithPortal(vector<LPGAMEOBJECT>* coObjects);
 	void CheckCollisionWithItem(vector<LPGAMEOBJECT>* coObjects);
 	void CheckCollisionWithEnemy(vector<LPGAMEOBJECT>* coObjects);
+	void CheckCollisionWithThornOVW(vector<LPGAMEOBJECT>* coObjects);
+	void CheckCollisionWithLava(vector<LPGAMEOBJECT>* coObjects);
 
 	virtual void GetBoundingBox(float &left, float &top, float &right, float &bottom);
 	static CSophia* GetInstance();

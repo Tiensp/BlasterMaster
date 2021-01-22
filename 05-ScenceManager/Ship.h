@@ -29,7 +29,6 @@ class CShip : public Enemy
 	LPGAMEOBJECT target;
 	BulletObject* s_bullet;
 
-	bool isAttack;
 	bool isDoneDeath = false;
 	
 public:
