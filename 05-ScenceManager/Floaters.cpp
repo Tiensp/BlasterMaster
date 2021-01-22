@@ -15,7 +15,7 @@ CFloaters::CFloaters(float x, float y, LPGAMEOBJECT player, int _itemType)
 	this->x = x;
 	this->y = y;
 	this->target = player;
-	typeItem= _itemType;
+	typeItem = _itemType;
 	hp = 1;
 
 	objTag = ENEMY;
@@ -32,135 +32,135 @@ void CFloaters::GetBoundingBox(float& left, float& top, float& right, float& bot
 		right = x + FLOATER_BBOX_WIDTH;
 		bottom = y + FLOATER_BBOX_HEIGHT;
 
-		/*if (state == FLOATER_STATE_DIE)
-			bottom = y + FLOATER_BBOX_HEIGHT_DIE;
-		else
-			bottom = y + FLOATER_BBOX_HEIGHT;*/
 	}
 	else return;
 }
 
 void CFloaters::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	Enemy::Update(dt, coObjects);
-	Attack();
-
-	if(p_bullet != NULL)
+	if (!isDeath)
 	{
-		if (!p_bullet->isDone)
+		Enemy::Update(dt, coObjects);
+		Attack();
+
+		if (p_bullet != NULL)
 		{
-			p_bullet->Update(dt, coObjects);
-		}
-		else
-		{
-			p_bullet = NULL;
-		}
-	}
-
-	vector<LPCOLLISIONEVENT> coEvents;
-	vector<LPCOLLISIONEVENT> coEventsResult;
-
-	coEvents.clear();
-
-	CalcPotentialCollisions(coObjects, coEvents);
-
-	if (coEvents.size() == 0)  //nếu không có va chạm, update bình thường
-	{
-		x += dx;
-		y += dy;
-	}
-	else //có va chạm
-	{
-		float min_tx, min_ty, nx = 0, ny = 0;
-		float rdx = 0;
-		float rdy = 0;
-		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);  // sắp xếp lại các sự kiện va chạm đầu tiên theo trục x, y 
-
-		for (UINT i = 0; i < coEventsResult.size(); i++)
-		{
-			LPCOLLISIONEVENT e = coEventsResult[i];
-
-			if (dynamic_cast<CBrick*>(e->obj))
+			if (!p_bullet->isDone)
 			{
-				x += min_tx * dx + nx * 0.4f;
-				y += min_ty * dy + ny * 0.4f;
-				if (nx != 0) vx = 0;
-				if (ny != 0) vy = 0;
-
-				isAttack = false;
-
-				CBrick* brick = dynamic_cast<CBrick*>(e->obj);
-
-				if (e->nx != 0)
-				{
-					if (e->nx > 0)
-					{
-						if (this->ny > 0)
-						{
-							this->SetState(FLOATER_ANI_WALKING_RIGHT_DOWN);
-						}
-						else if(this->ny < 0)
-						{
-							this->SetState(FLOATER_ANI_WALKING_RIGHT_UP);
-						}
-					}
-					else if(e->nx < 0)
-					{
-						if(this->ny > 0)
-						{
-							this->SetState(FLOATER_ANI_WALKING_LEFT_DOWN);
-						}
-						else  if (this->ny < 0)
-						{
-							this->SetState(FLOATER_ANI_WALKING_LEFT_UP);
-						}
-					}
-
-				}
-				else if (e->ny != 0)
-				{
-					if (e->ny > 0)
-					{
-						if (this->nx > 0)
-						{
-							this->SetState(FLOATER_ANI_WALKING_RIGHT_DOWN);
-						}
-						else if (this->nx < 0)
-						{
-							this->SetState(FLOATER_ANI_WALKING_LEFT_DOWN);
-						}
-					}
-					else if(e->ny < 0)
-					{
-						if (this->nx > 0)
-						{
-							this->SetState(FLOATER_ANI_WALKING_RIGHT_UP);
-						}
-						else if (this->nx < 0)
-						{
-							this->SetState(FLOATER_ANI_WALKING_LEFT_UP);
-						}
-					}
-				}
+				p_bullet->Update(dt, coObjects);
 			}
-			else {
-				x += dx;
-				y += dy;
+			else
+			{
+				p_bullet = NULL;
 			}
 		}
+
+		vector<LPCOLLISIONEVENT> coEvents;
+		vector<LPCOLLISIONEVENT> coEventsResult;
+
+		coEvents.clear();
+
+		CalcPotentialCollisions(coObjects, coEvents);
+
+		if (coEvents.size() == 0)  //nếu không có va chạm, update bình thường
+		{
+			x += dx;
+			y += dy;
+		}
+		else //có va chạm
+		{
+			float min_tx, min_ty, nx = 0, ny = 0;
+			float rdx = 0;
+			float rdy = 0;
+			FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);  // sắp xếp lại các sự kiện va chạm đầu tiên theo trục x, y 
+
+			for (UINT i = 0; i < coEventsResult.size(); i++)
+			{
+				LPCOLLISIONEVENT e = coEventsResult[i];
+
+				if (dynamic_cast<CBrick*>(e->obj))
+				{
+					x += min_tx * dx + nx * 0.4f;
+					y += min_ty * dy + ny * 0.4f;
+					if (nx != 0) vx = 0;
+					if (ny != 0) vy = 0;
+
+					isAttack = false;
+
+					CBrick* brick = dynamic_cast<CBrick*>(e->obj);
+
+					if (e->nx != 0)
+					{
+						if (e->nx > 0)
+						{
+							if (this->ny > 0)
+							{
+								this->SetState(FLOATER_ANI_WALKING_RIGHT_DOWN);
+							}
+							else if (this->ny < 0)
+							{
+								this->SetState(FLOATER_ANI_WALKING_RIGHT_UP);
+							}
+						}
+						else if (e->nx < 0)
+						{
+							if (this->ny > 0)
+							{
+								this->SetState(FLOATER_ANI_WALKING_LEFT_DOWN);
+							}
+							else  if (this->ny < 0)
+							{
+								this->SetState(FLOATER_ANI_WALKING_LEFT_UP);
+							}
+						}
+
+					}
+					else if (e->ny != 0)
+					{
+						if (e->ny > 0)
+						{
+							if (this->nx > 0)
+							{
+								this->SetState(FLOATER_ANI_WALKING_RIGHT_DOWN);
+							}
+							else if (this->nx < 0)
+							{
+								this->SetState(FLOATER_ANI_WALKING_LEFT_DOWN);
+							}
+						}
+						else if (e->ny < 0)
+						{
+							if (this->nx > 0)
+							{
+								this->SetState(FLOATER_ANI_WALKING_RIGHT_UP);
+							}
+							else if (this->nx < 0)
+							{
+								this->SetState(FLOATER_ANI_WALKING_LEFT_UP);
+							}
+						}
+					}
+				}
+				else {
+					x += dx;
+					y += dy;
+				}
+			}
+		}
+
 	}
+
 }
 
 
 void CFloaters::Attack()
 {
-	if (abs(this->x - target->x) <= 100)
+	if (abs(this->x - target->x) <= 50)
 	{
 		isAttack = true;
-
-		if (this->nx == target->nx && target->nx > 0 && this->nx > 0)
+		if (target->nx > 0 && this->nx > 0)
 		{
-			if (this->GetState() == FLOATER_ANI_WALKING_RIGHT_UP)
+			if (this->GetState() == FLOATER_ANI_WALKING_RIGHT_UP && target->x > this->x)
 			{
 				if (p_bullet == NULL)
 				{
@@ -171,9 +171,9 @@ void CFloaters::Attack()
 				}
 
 				this->SetState(FLOATER_ANI_ATTACKING_RIGHT_UP);
-				
+
 			}
-			else if (this->GetState() == FLOATER_ANI_WALKING_RIGHT_DOWN)
+			else if (this->GetState() == FLOATER_ANI_WALKING_RIGHT_DOWN && target->x > this->x)
 			{
 				if (p_bullet == NULL)
 				{
@@ -186,8 +186,8 @@ void CFloaters::Attack()
 				this->SetState(FLOATER_ANI_ATTACKING_RIGHT_DOWN);
 			}
 		}
-		else if(this->nx == target->nx && target->nx < 0 && this->nx < 0)
-		{	
+		else if (this->nx == target->nx && target->nx < 0 && this->nx < 0)
+		{
 			if (this->GetState() == FLOATER_ANI_WALKING_LEFT_UP)
 			{
 				if (p_bullet == NULL)
@@ -200,7 +200,7 @@ void CFloaters::Attack()
 
 				this->SetState(FLOATER_ANI_ATTACKING_LEFT_UP);
 			}
-			else if (this->GetState() == FLOATER_ANI_WALKING_LEFT_DOWN)
+			else if (this->GetState() == FLOATER_ANI_WALKING_LEFT_DOWN && target->x < this->x)
 			{
 				if (p_bullet == NULL)
 				{
@@ -214,7 +214,7 @@ void CFloaters::Attack()
 			}
 		}
 	}
-	else 
+	else
 	{
 		isAttack = false;
 	}
@@ -228,10 +228,10 @@ void CFloaters::Render()
 
 	if (isDoneDeath) return;
 	if (hp <= 0) isDeath = true;
-	
-	if (isAttack)
+
+	if (isAttack && p_bullet != NULL)
 	{
-		if (this->nx - target->nx == 0 && this->x - target->x < 0 && this->nx > 0)
+		if (this->nx > 0)
 		{
 			if (this->ny > 0)
 			{
@@ -242,7 +242,7 @@ void CFloaters::Render()
 				ani = FLOATER_ANI_ATTACKING_RIGHT_UP;
 			}
 		}
-		else if (this->nx - target->nx == 0 && this->nx < 0 && this->x - target->x > 0)
+		if (this->nx < 0)
 		{
 			if (this->ny > 0)
 			{
@@ -267,7 +267,7 @@ void CFloaters::Render()
 				ani = FLOATER_ANI_WALKING_RIGHT_UP;
 			}
 		}
-		else if (this->nx < 0)
+		if (this->nx < 0)
 		{
 			if (this->ny > 0)
 			{
@@ -290,15 +290,15 @@ void CFloaters::Render()
 		}
 		return;
 	}
-	
+
 	animation_set->at(ani)->Render(x, y);
 
 	if (p_bullet != NULL)
 	{
-		if(!p_bullet->isDone) p_bullet->Render();
+		if (!p_bullet->isDone) p_bullet->Render();
 	}
 
-	RenderBoundingBox(x,y);
+	RenderBoundingBox(x, y);
 }
 
 void CFloaters::SetState(int state)

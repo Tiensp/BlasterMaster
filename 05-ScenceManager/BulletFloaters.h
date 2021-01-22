@@ -11,8 +11,6 @@
 #define BULLET_FLOATER_ANI_COLLISON 2
 class BulletFloaters : public CEnemyBullet
 {
-
-
 public:
 	BulletFloaters(float _start_x, float _start_y);
 	~BulletFloaters();

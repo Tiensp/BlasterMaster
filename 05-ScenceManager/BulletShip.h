@@ -2,12 +2,12 @@
 #include "BulletObject.h"
 #include "Brick.h"
 #include "Sophia.h"
+#include "EnemyBullet.h"
 
-class BulletShip : public BulletObject
+class BulletShip : public CEnemyBullet
 {
 
 protected:
-	CSophia* sophia;
 public:
 	BulletShip(float _start_x, float y_start_y);
 	~BulletShip();

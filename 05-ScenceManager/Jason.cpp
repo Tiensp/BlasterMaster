@@ -8,6 +8,9 @@
 #include "Goomba.h"
 #include "Portal.h"
 
+#include "Orbs.h"
+#include "Bomb.h"
+
 #include "StateIDLE.h"
 #include "StateTURN.h"
 #include "StateFALL.h"
@@ -17,15 +20,18 @@
 #include "StateOPENCabin.h"
 #include "Brick.h"
 #include "Ladder.h"
+#include "Sound.h"
+#include "ThornOVERWORLD.h";
 
 CJason* CJason::__instance = NULL;
 
 CJason::CJason() : CGameObject()
 {
+	isDead = false;
 	level = JASON_LEVEL_BIG;
 	untouchable = 0;
 	animation_set = CAnimationSets::GetInstance()->Get(JASON);
-
+	health = 8;
 	start_x = x;
 	start_y = y;
 	this->x = x;
@@ -41,31 +47,29 @@ void CJason::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		CGameObject::Update(dt);
 		// Simple fall down
 		vy += SOPHIA_GRAVITY * dt;
-
+		if (this->health <= 0)
+		{
+			SwitchState(new StateDead());
+		}
 		set_bullet_list();
 		for (int i = 0; i < p_bullet_list.size(); i++)
 		{
 			p_bullet_list[i]->Update(dt, coObjects);
 
 		}
-
-
-		if (state != JASON_STATE_DIE)
+		if (currentState->StateName == JASON_CLIMB)
 		{
-			if (currentState->StateName == JASON_CLIMB)
+			if ((this->y <= Ladder->y && this->ny == -1) || (((this->y) >= (Ladder->y + Ladder->height - JASON_BIG_BBOX_HEIGHT - 5)) && this->ny == 1))
 			{
-				if ((this->y <= Ladder->y && this->ny == -1) || (((this->y) >= (Ladder->y + Ladder->height -JASON_BIG_BBOX_HEIGHT-5)) && this->ny == 1))
-				{
-					SwitchState(new StateIDLE());
-				}
-
-
+				SwitchState(new StateIDLE());
 			}
-			CheckCollisionWithLadder(coObjects);
-			CheckCollisionWithBrick(coObjects);
-
 		}
-
+	
+		CheckCollisionWithLava(coObjects);
+		CheckCollisionWithThornOVW(coObjects);
+		CheckCollisionWithLadder(coObjects);
+		CheckCollisionWithBrick(coObjects);
+		CheckCollisionWithEnemy(coObjects);
 		// reset untouchable timer if untouchable time has passed
 		if (GetTickCount64() - untouchable_start > JASON_UNTOUCHABLE_TIME)
 		{
@@ -102,11 +106,19 @@ void CJason::Render()
 	{
 		int alpha = 255;
 		if (untouchable) alpha = 128;
-
+		if (isDead)
+		{
+			/*currentAni->Render(x, y);*/
+			if (currentAni->GetCurrentFrame() == currentAni->GetLastFrame())
+			{
+				renderFrame = true;
+			}
+		}
 		if (renderFrame)
 			currentAni->RenderFrame(frameID, x, y);
 		else
 			currentAni->Render(x, y);
+		
 
 		for (int i = 0; i < p_bullet_list.size(); i++)
 		{
@@ -242,7 +254,6 @@ void CJason::SwitchState(CState* state)
 */
 void CJason::Reset()
 {
-	SetLevel(JASON_LEVEL_BIG);
 	SetPosition(start_x, start_y);
 	SwitchState(new StateIDLE());
 	SetSpeed(0, 0);
@@ -308,14 +319,116 @@ void CJason::CheckCollisionWithBrick(vector<LPGAMEOBJECT>* coObjects)
 				vy = 0;
 			}
 		}
+	}
+}
 
 
+void CJason::CheckCollisionWithThornOVW(vector<LPGAMEOBJECT>* coObjects)
+{
+	vector<LPCOLLISIONEVENT> coEvents;
+	vector<LPCOLLISIONEVENT> coEventsResult;
+	bool isColideUsingAABB = false;
+	coEvents.clear();
+	vector<LPGAMEOBJECT> ListThorn;
+	ListThorn.clear();
+	for (UINT i = 0; i < coObjects->size(); i++)
+	{
+		if (dynamic_cast<CThornOVW*>(coObjects->at(i)))
+			ListThorn.push_back(coObjects->at(i));
+	}
 
 
+	for (int i = 0; i < ListThorn.size(); i++)
+	{
+		if (this->IsCollidingObject(ListThorn.at(i)))
+		{
+			isColideUsingAABB = true;
+			if (untouchable == 1 || isInjured)
+				continue;
+			health -= 1;
+			Sound::GetInstance()->Play("PlayerInjured", 0, 1);
+			StartUntouchable();
+			isInjured = true;
+			return;
+		}
+	}
+	if (!isColideUsingAABB)
+	{
+		CalcPotentialCollisions(&ListThorn, coEvents);
+
+		if (coEvents.size() == 0)
+		{
+			return;
+		}
+		else
+		{
+			float min_tx, min_ty, nx = 0, ny;
+			float rdx = 0;
+			float rdy = 0;
+			FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
+
+			health -= 1;
+			isInjured = true;
+			Sound::GetInstance()->Play("PlayerInjured", 0, 1);
+		}
 
 
 	}
+}
 
+void CJason::CheckCollisionWithLava(vector<LPGAMEOBJECT>* coObjects)
+{
+	vector<LPCOLLISIONEVENT> coEvents;
+	vector<LPCOLLISIONEVENT> coEventsResult;
+	bool isColideUsingAABB = false;
+	coEvents.clear();
+	vector<LPGAMEOBJECT> ListLava;
+	ListLava.clear();
+
+
+	for (UINT i = 0; i < coObjects->size(); i++)
+	{
+		if (dynamic_cast<CLava*>(coObjects->at(i)))
+			ListLava.push_back(coObjects->at(i));
+	}
+
+
+	for (int i = 0; i < ListLava.size(); i++)
+	{
+		if (this->IsCollidingObject(ListLava.at(i)))
+		{
+			isColideUsingAABB = true;
+			if (untouchable == 1 || isInjured)
+				continue;
+			health -= 1;
+			Sound::GetInstance()->Play("PlayerInjured", 0, 1);
+			StartUntouchable();
+			isInjured = true;
+			return;
+		}
+	}
+	if (!isColideUsingAABB)
+	{
+		CalcPotentialCollisions(&ListLava, coEvents);
+
+		if (coEvents.size() == 0)
+		{
+			return;
+		}
+		else
+		{
+			float min_tx, min_ty, nx = 0, ny;
+			float rdx = 0;
+			float rdy = 0;
+			FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
+
+			health -= 1;
+			isInjured = true;
+			Sound::GetInstance()->Play("PlayerInjured", 0, 1);
+		}
+
+
+	}
 
 }
 
@@ -352,6 +465,72 @@ void CJason::CheckCollisionWithLadder(vector<LPGAMEOBJECT>* coObjects)
 
 	}
 
+}
+
+void CJason::CheckCollisionWithEnemy(vector<LPGAMEOBJECT>* coObjects)
+{
+	vector<LPCOLLISIONEVENT> coEvents;
+	vector<LPCOLLISIONEVENT> coEventsResult;
+	bool isColideUsingAABB = false;
+	coEvents.clear();
+	vector<LPGAMEOBJECT> ListEnemy;
+	vector<LPGAMEOBJECT> ListBullet;
+	ListEnemy.clear();
+	for (UINT i = 0; i < coObjects->size(); i++)
+	{
+		if (dynamic_cast<Enemy*>(coObjects->at(i)) || dynamic_cast<CEnemyBullet*>(coObjects->at(i)))
+			ListEnemy.push_back(coObjects->at(i));
+
+	}
+
+	for (int i = 0; i < ListEnemy.size(); i++)
+	{
+		if (this->IsCollidingObject(ListEnemy.at(i)))
+		{
+
+			if (dynamic_cast<COrb*>(ListEnemy.at(i))) {
+				COrb* orb = dynamic_cast<COrb*>(ListEnemy.at(i));
+				orb->SetIsDeath(true);
+			}
+			if (dynamic_cast<CBomb*>(ListEnemy.at(i))) {
+				CBomb* bomb = dynamic_cast<CBomb*>(ListEnemy.at(i));
+				bomb->SetIsDeath(true);
+			}
+			isColideUsingAABB = true;
+			/*if (untouchable == 1 || isInjured)
+				continue;*/
+
+			health -= 1;
+
+			Sound::GetInstance()->Play("PlayerInjured", 0, 1);
+			StartUntouchable();
+			/*isInjured = true;*/
+			return;
+		}
+
+	}
+	if (!isColideUsingAABB)
+	{
+		CalcPotentialCollisions(&ListEnemy, coEvents);
+
+		if (coEvents.size() == 0)
+		{
+			return;
+		}
+		else
+		{
+			float min_tx, min_ty, nx = 0, ny;
+			float rdx = 0;
+			float rdy = 0;
+			FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
+
+			health -= 2;
+			/*isInjured = true;*/
+			Sound::GetInstance()->Play("PlayerInjured", 0, 1);
+		}
+
+
+	}
 }
 
 int CJason::Get_Jason_Normal_bullet()

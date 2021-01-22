@@ -42,114 +42,117 @@ void CSkull::GetBoundingBox(float& left, float& top, float& right, float& bottom
 
 void CSkull::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-
-	//DebugOut(L"golumnvX: %f, golumnvY: %f\n", vx, vy);
-	Enemy::Update(dt, coObjects);
-	//DebugOut(L"golumnvX: %f, golumnvY: %f\n", vx, vy);
-
-	//DebugOut(L"golumnvX: %f, golumnvY: %f\n", target->nx, this->nx);
-	Attack();
-
-	if (sk_bullet != NULL)
+	if (!isDeath)
 	{
-		if (!sk_bullet->isDone)
+		//DebugOut(L"golumnvX: %f, golumnvY: %f\n", vx, vy);
+		Enemy::Update(dt, coObjects);
+		//DebugOut(L"golumnvX: %f, golumnvY: %f\n", vx, vy);
+
+		//DebugOut(L"golumnvX: %f, golumnvY: %f\n", target->nx, this->nx);
+		Attack();
+
+		if (sk_bullet != NULL)
 		{
-			sk_bullet->Update(dt, coObjects);
-		}
-		else
-		{
-			sk_bullet = NULL;
-		}
-	}
-
-	vector<LPCOLLISIONEVENT> coEvents;
-	vector<LPCOLLISIONEVENT> coEventsResult;
-
-	coEvents.clear();
-
-	// turn off collision when die 
-	//nếu không chết thì kiểm tra toàn bộ va chạm với các đối tượng khác
-	CalcPotentialCollisions(coObjects, coEvents);
-
-	// reset untouchable timer if untouchable time has passed
-
-	// No collision occured, proceed normally
-
-	if (coEvents.size() == 0)  //nếu không có va chạm, update bình thường
-	{
-		x += dx;
-		y += dy;
-
-	}
-	else //có va chạm
-	{
-		float min_tx, min_ty, nx = 0, ny = 0;
-		float rdx = 0;
-		float rdy = 0;
-
-		// TODO: This is a very ugly designed function!!!!
-		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);  // sắp xếp lại các sự kiện va chạm đầu tiên theo trục x, y 
-
-		// how to push back Sophia if collides with a moving objects, what if Sophia is pushed this way into another object?
-		//if (rdx != 0 && rdx!=dx)
-		//	x += nx*abs(rdx); 
-
-		// block every object first!
-		{
-			for (UINT i = 0; i < coEventsResult.size(); i++)
+			if (!sk_bullet->isDone)
 			{
-				LPCOLLISIONEVENT e = coEventsResult[i];
+				sk_bullet->Update(dt, coObjects);
+			}
+			else
+			{
+				sk_bullet = NULL;
+			}
+		}
 
-				if (dynamic_cast<CBrick*>(e->obj)) // if e->obj is Goomba 
+		vector<LPCOLLISIONEVENT> coEvents;
+		vector<LPCOLLISIONEVENT> coEventsResult;
+
+		coEvents.clear();
+
+		// turn off collision when die 
+		//nếu không chết thì kiểm tra toàn bộ va chạm với các đối tượng khác
+		CalcPotentialCollisions(coObjects, coEvents);
+
+		// reset untouchable timer if untouchable time has passed
+
+		// No collision occured, proceed normally
+
+		if (coEvents.size() == 0)  //nếu không có va chạm, update bình thường
+		{
+			x += dx;
+			y += dy;
+
+		}
+		else //có va chạm
+		{
+			float min_tx, min_ty, nx = 0, ny = 0;
+			float rdx = 0;
+			float rdy = 0;
+
+			// TODO: This is a very ugly designed function!!!!
+			FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);  // sắp xếp lại các sự kiện va chạm đầu tiên theo trục x, y 
+
+			// how to push back Sophia if collides with a moving objects, what if Sophia is pushed this way into another object?
+			//if (rdx != 0 && rdx!=dx)
+			//	x += nx*abs(rdx); 
+
+			// block every object first!
+			{
+				for (UINT i = 0; i < coEventsResult.size(); i++)
 				{
-					isAttack = false;
+					LPCOLLISIONEVENT e = coEventsResult[i];
 
-					CBrick* brick = dynamic_cast<CBrick*>(e->obj);
-
-					// jump on top >> kill Goomba and deflect a bit 
-					if (e->nx != 0)
+					if (dynamic_cast<CBrick*>(e->obj)) // if e->obj is Goomba 
 					{
-						if (e->nx > 0)
-						{
-							if (this->nx < 0)
-							{
-								if (this->GetState() == SKULL_ANI_WALKING_LEFT)
-								{
-									this->SetState(SKULL_ANI_WALKING_RIGHT);
-								}
-							}
-						}
-						else if(e->nx < 0)
-						{
-							if (this->nx > 0)
-							{
-								if (this->GetState() == SKULL_ANI_WALKING_RIGHT)
-								{
-									this->SetState(SKULL_ANI_WALKING_LEFT);
-								}
-							}
-						}
+						isAttack = false;
 
+						CBrick* brick = dynamic_cast<CBrick*>(e->obj);
+
+						// jump on top >> kill Goomba and deflect a bit 
+						if (e->nx != 0)
+						{
+							if (e->nx > 0)
+							{
+								if (this->nx < 0)
+								{
+									if (this->GetState() == SKULL_ANI_WALKING_LEFT)
+									{
+										this->SetState(SKULL_ANI_WALKING_RIGHT);
+									}
+								}
+							}
+							else if (e->nx < 0)
+							{
+								if (this->nx > 0)
+								{
+									if (this->GetState() == SKULL_ANI_WALKING_RIGHT)
+									{
+										this->SetState(SKULL_ANI_WALKING_LEFT);
+									}
+								}
+							}
+
+						}
+						/*else if (e->ny != 0)
+						{
+							if (e->ny > 0)
+							{
+								if (this->GetState() == SKULL_ANI_COLLISION_LEFT)
+								{
+									this->SetState(SKULL_ANI_COLLISION_LEFT);
+								}
+							}
+						}*/
 					}
-					/*else if (e->ny != 0)
+					if (e->obj->objTag == ENEMY)
 					{
-						if (e->ny > 0)
-						{
-							if (this->GetState() == SKULL_ANI_COLLISION_LEFT)
-							{
-								this->SetState(SKULL_ANI_COLLISION_LEFT);
-							}
-						}
-					}*/
-				}
-				if (e->obj->objTag == ENEMY)
-				{
-					x += dx;  
-					y += dy;
+						x += dx;
+						y += dy;
+					}
 				}
 			}
 		}
 	}
+
 }
 
 void CSkull::Attack()
@@ -215,7 +218,7 @@ void CSkull::Render()
 		}
 		return;
 	}
-	
+
 	if (isAttack)
 	{
 		if (nx > 0)
@@ -254,7 +257,7 @@ void CSkull::Render()
 
 	animation_set->at(ani)->Render(x, y);
 
-	RenderBoundingBox(x,y);
+	RenderBoundingBox(x, y);
 }
 
 //void CSkull::flowPlayer(LPGAMEOBJECT player)

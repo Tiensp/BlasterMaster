@@ -11,7 +11,7 @@ CThornOVW::CThornOVW(float X, float Y, int W, int H)
 void CThornOVW::Render()
 {
 	//animation_set->at(0)->Render(x, y);
-	//RenderBoundingBox();
+	RenderBoundingBox(x,y);
 }
 
 void CThornOVW::GetBoundingBox(float& l, float& t, float& r, float& b)

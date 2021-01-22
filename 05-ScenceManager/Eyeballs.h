@@ -20,14 +20,14 @@ class CEyeballs : public Enemy
 	BulletObject* eyeball_bullet;
 
 	int counter;
-	int timeChangeState = 1400;
+	int timeChangeState = 4000;
 	int interval = 20;
 	int timer;
 
-	bool isDeath;
+	
 	bool isDoneDeath;
 public:
-	CEyeballs(float x, float y, LPGAMEOBJECT player);
+	CEyeballs(float x, float y, LPGAMEOBJECT player, int _itemType);
 	virtual void SetState(int state);
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);

@@ -11,17 +11,12 @@
 #define SHIP_ANI_COLLISION_RIGHT 5
 #define SHIP_ANI_DEATH 6
 
-#define SHIP_WALKING_SPEED 0.09f;
+#define SHIP_WALKING_SPEED 0.045f;
 #define	SHIP_JUMPING_SPEED 0.05f;
 
 #define SHIP_BBOX_WIDTH 25
 #define SHIP_BBOX_HEIGHT 19
 #define SHIP_BBOX_HEIGHT_DIE 16
-
-#define SHIP_STATE_DIE 100
-#define SHIP_STATE_WALKING 200
-#define SHIP_STATE_ATTACKING 300
-#define SHIP_STATE_COLLISION 400
 
 class CShip : public Enemy
 {
@@ -29,9 +24,7 @@ class CShip : public Enemy
 	LPGAMEOBJECT target;
 	BulletObject* s_bullet;
 
-	bool isAttack;
 	bool isDoneDeath = false;
-	bool isDeath = false;
 public:
 	CShip(float x, float y, LPGAMEOBJECT player, int _typeItem);
 	virtual void SetState(int state);

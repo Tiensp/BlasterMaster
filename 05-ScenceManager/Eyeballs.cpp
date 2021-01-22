@@ -9,14 +9,14 @@
 #include "Goomba.h"
 #include "Portal.h"
 #include "Brick.h"
-CEyeballs::CEyeballs(float x, float y, LPGAMEOBJECT player)
+CEyeballs::CEyeballs(float x, float y, LPGAMEOBJECT player, int _itemType)
 {
 	SetState(EYEBALL_ANI_WALKING);
 	this->x = x;
 	this->y = y;
 	this->target = player;
 	hp = 1;
-
+	typeItem = _itemType;
 	objTag = ENEMY;
 	objType = EYEBALLS;
 
@@ -48,108 +48,111 @@ void CEyeballs::GetBoundingBox(float& left, float& top, float& right, float& bot
 
 void CEyeballs::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-
-	//DebugOut(L"golumnvX: %f, golumnvY: %f\n", vx, vy);
-	Enemy::Update(dt, coObjects);
-	//DebugOut(L"golumnvX: %f, golumnvY: %f\n", vx, vy);
-
-	//DebugOut(L"golumnvX: %f, golumnvY: %f\n", target->nx, this->nx);
-	if (eyeball_bullet != NULL)
+	if (!isDeath)
 	{
-		if (!eyeball_bullet->isDone)
+		//DebugOut(L"golumnvX: %f, golumnvY: %f\n", vx, vy);
+		Enemy::Update(dt, coObjects);
+		//DebugOut(L"golumnvX: %f, golumnvY: %f\n", vx, vy);
+
+		//DebugOut(L"golumnvX: %f, golumnvY: %f\n", target->nx, this->nx);
+		if (eyeball_bullet != NULL)
 		{
-			eyeball_bullet->Update(dt, coObjects);
-		}
-		else
-		{
-			eyeball_bullet = NULL;
-		}
-	}
-
-	vector<LPCOLLISIONEVENT> coEvents;
-	vector<LPCOLLISIONEVENT> coEventsResult;
-
-	coEvents.clear();
-
-	// turn off collision when die 
-	//nếu không chết thì kiểm tra toàn bộ va chạm với các đối tượng khác
-	CalcPotentialCollisions(coObjects, coEvents);
-
-	// reset untouchable timer if untouchable time has passed
-
-	// No collision occured, proceed normally
-
-	if (coEvents.size() == 0)  //nếu không có va chạm, update bình thường
-	{
-		x += dx;
-		y += dy;
-
-		timer += interval;
-
-		if (timer == timeChangeState)
-		{
-			if (this->GetState() == EYEBALL_ANI_WALKING)
+			if (!eyeball_bullet->isDone)
 			{
-				if (eyeball_bullet == NULL)
-				{
-					eyeball_bullet = new BulletEyeball(this->x, this->y, this->target);
-					eyeball_bullet->SetPosition(this->x + width + 10, this->y + height + 15);
-					eyeball_bullet->Set_bullet_dir(this->nx, this->ny);
-					eyeball_bullet->Set_IsMove(true);
-				}
-				this->SetState(EYEBALL_ANI_IDLE);
-				timer = 0;
+				eyeball_bullet->Update(dt, coObjects);
 			}
-			else if (this->GetState() == EYEBALL_ANI_IDLE)
+			else
 			{
-				this->SetState(EYEBALL_ANI_WALKING);	
-				timer = 0;
+				eyeball_bullet = NULL;
 			}
 		}
-	}
-	else //có va chạm
-	{
-		float min_tx, min_ty, nx = 0, ny = 0;
-		float rdx = 0;
-		float rdy = 0;
 
-		// TODO: This is a very ugly designed function!!!!
-		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);  // sắp xếp lại các sự kiện va chạm đầu tiên theo trục x, y 
+		vector<LPCOLLISIONEVENT> coEvents;
+		vector<LPCOLLISIONEVENT> coEventsResult;
 
-		// how to push back Sophia if collides with a moving objects, what if Sophia is pushed this way into another object?
-		//if (rdx != 0 && rdx!=dx)
-		//	x += nx*abs(rdx); 
+		coEvents.clear();
 
+		// turn off collision when die 
+		//nếu không chết thì kiểm tra toàn bộ va chạm với các đối tượng khác
+		CalcPotentialCollisions(coObjects, coEvents);
 
-		//x += min_tx * dx + nx * 0.4f;  //cập nhật lại vị trí x
-		//y += min_ty * dy + ny * 0.4f;	// cập nhật lại vị trí y  để tránh bị hụt xuống
+		// reset untouchable timer if untouchable time has passed
 
-		// block every object first!
+		// No collision occured, proceed normally
+
+		if (coEvents.size() == 0)  //nếu không có va chạm, update bình thường
 		{
-			for (UINT i = 0; i < coEventsResult.size(); i++)
+			x += dx;
+			y += dy;
+
+			timer += interval;
+
+			if (timer == timeChangeState)
 			{
-				LPCOLLISIONEVENT e = coEventsResult[i];
-
-				if (dynamic_cast<CBrick*>(e->obj)) // if e->obj is Goomba 
+				if (this->GetState() == EYEBALL_ANI_WALKING)
 				{
-
-					CBrick* brick = dynamic_cast<CBrick*>(e->obj);
-
-					// jump on top >> kill Goomba and deflect a bit 
+					if (eyeball_bullet == NULL)
+					{
+						eyeball_bullet = new BulletEyeball(this->x, this->y, this->target);
+						eyeball_bullet->SetPosition(this->x + width + 10, this->y + height + 15);
+						eyeball_bullet->Set_bullet_dir(this->nx, this->ny);
+						eyeball_bullet->Set_IsMove(true);
+					}
+					this->SetState(EYEBALL_ANI_IDLE);
+					timer = 0;
 				}
-				if (e->obj->objTag == PLAYER)
+				else if (this->GetState() == EYEBALL_ANI_IDLE)
 				{
-					x += dx;
-					y += dy;
-				}
-				if (e->obj->objTag == ENEMY)
-				{
-					x += dx;
-					y += dy;
+					this->SetState(EYEBALL_ANI_WALKING);
+					timer = 2000;
 				}
 			}
 		}
+		else //có va chạm
+		{
+			float min_tx, min_ty, nx = 0, ny = 0;
+			float rdx = 0;
+			float rdy = 0;
+
+			// TODO: This is a very ugly designed function!!!!
+			FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);  // sắp xếp lại các sự kiện va chạm đầu tiên theo trục x, y 
+
+			// how to push back Sophia if collides with a moving objects, what if Sophia is pushed this way into another object?
+			//if (rdx != 0 && rdx!=dx)
+			//	x += nx*abs(rdx); 
+
+
+			//x += min_tx * dx + nx * 0.4f;  //cập nhật lại vị trí x
+			//y += min_ty * dy + ny * 0.4f;	// cập nhật lại vị trí y  để tránh bị hụt xuống
+
+			// block every object first!
+			{
+				for (UINT i = 0; i < coEventsResult.size(); i++)
+				{
+					LPCOLLISIONEVENT e = coEventsResult[i];
+
+					if (dynamic_cast<CBrick*>(e->obj)) // if e->obj is Goomba 
+					{
+
+						CBrick* brick = dynamic_cast<CBrick*>(e->obj);
+
+						// jump on top >> kill Goomba and deflect a bit 
+					}
+					if (e->obj->objTag == PLAYER)
+					{
+						x += dx;
+						y += dy;
+					}
+					if (e->obj->objTag == ENEMY)
+					{
+						x += dx;
+						y += dy;
+					}
+				}
+			}
+		}
 	}
+
 }
 
 
@@ -200,7 +203,7 @@ void CEyeballs::Render()
 	}
 
 	animation_set->at(ani)->Render(x, y);
-	
+
 	//RenderBoundingBox();
 }
 

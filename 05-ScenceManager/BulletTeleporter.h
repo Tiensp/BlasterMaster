@@ -4,18 +4,18 @@
 #include "Sophia.h"
 #include "EnemyBullet.h"
 
-class BulletEyeball : public CEnemyBullet
+class BulletTeleporter : public CEnemyBullet
 {
 
 protected:
 	CSophia* sophia;
 
 	int followPlayer = 1;
-	LPGAMEOBJECT target;
 
+	LPGAMEOBJECT target;
 public:
-	BulletEyeball(float _start_x, float y_start_y, LPGAMEOBJECT player);
-	~BulletEyeball();
+	BulletTeleporter(float _start_x, float y_start_y, LPGAMEOBJECT player);
+	~BulletTeleporter();
 
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	virtual void Render();
@@ -23,5 +23,4 @@ public:
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	virtual void SetState(int state);
 };
-
 

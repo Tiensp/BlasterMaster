@@ -1,5 +1,5 @@
-﻿#include "BulletSkull.h"
-BulletSkull::BulletSkull(float _start_x, float _start_y, LPGAMEOBJECT player)
+﻿#include "BulletTeleporter.h"
+BulletTeleporter::BulletTeleporter(float _start_x, float _start_y, LPGAMEOBJECT player)
 {
 	this->start_x = _start_x;
 	this->start_y = _start_y;
@@ -7,44 +7,39 @@ BulletSkull::BulletSkull(float _start_x, float _start_y, LPGAMEOBJECT player)
 	isMove = true;
 	isDone = false;
 	bulletDame = 1;
-	this->SetAnimationSet(CAnimationSets::GetInstance()->Get(21));
+	this->SetAnimationSet(CAnimationSets::GetInstance()->Get(24));
 }
 
-BulletSkull::~BulletSkull()
+BulletTeleporter::~BulletTeleporter()
 {
 }
 
-void BulletSkull::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
+void BulletTeleporter::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	CEnemyBullet::Update(dt, coObjects);
 	if (isDone) return;
 
 	if (isMove)
 	{
-		if (bullet_dir == 1 && ny != 0)
+		if (bullet_dir_x == 1 && bullet_dir_y == 1)
 		{
-			vx = 0.505f;
-			vy = -0.505f;
+			vx = 0.155f;
+			vy = 0.130f;
 		}
-		else if (bullet_dir == -1 && ny != 0)
+		else if (bullet_dir == -1 && bullet_dir_y == 1)
 		{
-			vx = -0.505f;
-			vy = -0.505f;
+			vx = -0.155f;
+			vy = 0.130f;
 		}
-		else if(bullet_dir == 1)
+		else if (bullet_dir_x == 1 && bullet_dir_y == -1)
 		{
-			vx = 0.205f;
-			vy = 0;
+			vx = 0.155f;
+			vy = -0.130f;
 		}
-		else if (bullet_dir == -1)
+		else if (bullet_dir_x == -1 && bullet_dir_y == -1)
 		{
-			vx = -0.205f;
-			vy = 0;
-		}
-		else
-		{
-			vx = 0;
-			vy = 0.075f;
+			vx = -0.155f;
+			vy = -0.130f;
 		}
 	}
 	else
@@ -53,14 +48,31 @@ void BulletSkull::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	}
 
 
-	if (this->x - target->x <= 0)
+	if (followPlayer == 1)
 	{
-		nx = 1;
+		if (nx > 0 && ny > 0)
+		{
+			this->SetState(1);
+			followPlayer++;
+		}
+		else if (nx > 0 && ny < 0)
+		{
+			this->SetState(0);
+			followPlayer++;
+		}
+		else if (nx < 0 && ny > 0)
+		{
+			this->SetState(2);
+			followPlayer++;
+		}
+		else if (nx < 0 && ny < 0)
+		{
+			this->SetState(3);
+			followPlayer++;
+		}
 	}
-	else if (this->x - target->x > 0)
-	{
-		nx = -1;
-	}
+
+
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
 
@@ -79,21 +91,23 @@ void BulletSkull::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		x += dx;
 		y += dy;
 
-		timer += interval;
-
-		if (timer == timeToExplosive)
+		if (this->x - target->x <= 0)
 		{
-			if (this->GetState() == 1 || this->GetState() == 3)
-			{
-				this->SetState(5);
-			}
-			else if (this->GetState() == 2 || this->GetState() == 4)
-			{
-				this->SetState(5);
-			}
-			timer = 0;
+			nx = 1;
+		}
+		else if (this->x - target->x > 0)
+		{
+			nx = -1;
 		}
 
+		if (this->y - target->y <= 0)
+		{
+			ny = 1;
+		}
+		else if (this->x - target->x > 0)
+		{
+			ny = -1;
+		}
 	}
 	else //có va chạm
 	{
@@ -119,25 +133,7 @@ void BulletSkull::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				if (ny != 0) vy = 0;*/
 
 				//isDone = true; 
-				if (e->ny < 0)
-				{
-					if (this->nx > 0)
-					{
-						if (this->GetState() == 0)
-						{
-							this->SetState(1);
-						}	
-						else this->SetState(3);
-					}
-					else if (this->nx < 0)
-					{
-						if (this->GetState() == 0)
-						{
-							this->SetState(2);
-						}
-						else this->SetState(4);
-					}
-				}
+				isColBrick = true;
 			}
 			else if (e->obj->objTag == ENEMY)
 			{
@@ -158,23 +154,17 @@ void BulletSkull::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 }
 
-void BulletSkull::Render()
+void BulletTeleporter::Render()
 {
 	int ani = 0;
 	if (isDone) return;
 	if (isColBrick)
 	{
-		ani = 5;
-		animation_set->at(ani)->Render(x, y);
-		if (animation_set->at(ani)->GetCurrentFrame() == 0)
-		{
-			isDone = true;
-		}
-		return;
+		isDone = true;
 	}
 	else if (isColPlayer)
 	{
-		ani = 5;
+		ani = 4;
 		animation_set->at(ani)->Render(x, y);
 		if (animation_set->at(ani)->GetCurrentFrame() == 0)
 		{
@@ -184,46 +174,35 @@ void BulletSkull::Render()
 	}
 	else if (isMove)
 	{
-		if (bullet_dir == 1 && ny != 0)
-		{
-			ani = 1;
-		}
-		else if (bullet_dir == -1 && ny != 0)
-		{
-			ani = 2;
-		}
-		else if(bullet_dir == 1)
-		{
-			ani = 3;
-		}
-		else if (bullet_dir == -1)
-		{
-			ani = 4;
-		}
-		else 
+		if (bullet_dir_x == 1 && bullet_dir_y == -1)
 		{
 			ani = 0;
 		}
-	}
-
-	if (this->GetState() == 5)
-	{
-		ani = 5;
-		animation_set->at(ani)->Render(x, y);
-		if (animation_set->at(ani)->GetCurrentFrame() == 0)
+		else if (bullet_dir == 1 && bullet_dir_y == 1)
 		{
-			isDone = true;
+			ani = 1;
 		}
-		return;
+		else if (bullet_dir_x == -1 && bullet_dir_y == 1)
+		{
+			ani = 2;
+		}
+		else if (bullet_dir_x == -1 && bullet_dir_y == -1)
+		{
+			ani = 3;
+		}
 	}
 
-
+	if (!isDone)
+	{
+		nx = nx;
+		ny = ny;
+	}
 	animation_set->at(ani)->Render(x, y);
 
 	//RenderBoundingBox();
 }
 
-void BulletSkull::GetBoundingBox(float& left, float& top, float& right, float& bottom)
+void BulletTeleporter::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
 	if (!isDone)
 	{
@@ -234,42 +213,36 @@ void BulletSkull::GetBoundingBox(float& left, float& top, float& right, float& b
 	}
 }
 
-void BulletSkull::SetState(int state)
+void BulletTeleporter::SetState(int state)
 {
 	CGameObject::SetState(state);
 	switch (state)
 	{
 	case 0:
-		vx = 0;
-		vy = 0.075f;
-		nx = 0;
-		ny = 1;
+		vx = 0.155f;
+		vy = -0.105f;
+		nx = 1;
+		ny = -1;
 		break;
 	case 1:
-		vx = 0.505f;
-		vy = -0.505f;
+		vx = 0.155f;
+		vy = 0.130f;
 		nx = 1;
-		ny = -1;
+		ny = 1;
 		break;
 	case 2:
-		vx = -0.505f;
-		vy = -0.505f;
+		vx = -0.155f;
+		vy = 0.130f;
+		nx = -1;
+		ny = 1;
+		break;
+	case 3:
+		vx = -0.155f;
+		vy = -0.130f;
 		nx = -1;
 		ny = -1;
 		break;
-	case 3:
-		vx = 0.205f;
-		vy = 0;
-		nx = 1;
-		ny = 0;
-		break;
 	case 4:
-		vx = -0.205f;
-		vy = 0;
-		nx = -1;
-		ny = 0;
-		break;
-	case 5:
 		vx = vy = nx = ny = 0;
 		break;
 	}

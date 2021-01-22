@@ -20,6 +20,8 @@ class CGolem : public Enemy
 {
 	bool isFolow; //theo player 
 
+	int timeToJumping;
+
 	bool isDoneDeath = false;
 	
 	bool isJumping;

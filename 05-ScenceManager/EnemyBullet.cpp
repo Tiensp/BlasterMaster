@@ -39,7 +39,6 @@ void CEnemyBullet::CheckCollisionWithPlayer(vector<LPGAMEOBJECT>* coObjects)
 			/*this->isMove = false;*/
 			this->isDone = true;
 		}
-
 	}
 	if (isColideUsingAABB != true)
 	{

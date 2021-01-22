@@ -15,20 +15,22 @@ BulletShip::~BulletShip()
 
 void BulletShip::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	CGameObject::Update(dt, coObjects);
+	CEnemyBullet::Update(dt, coObjects);
 	if (isDone) return;
+
+	HandleMove(SCREEN_HEIGHT / 3, SCREEN_HEIGHT / 3);
 
 	if (isMove)
 	{
 		if (bullet_dir == 1)
 		{
-			vx = 0.25f;
-			vy = 0.175f;
+			vx = 0.125f;
+			vy = 0.105f;
 		}
 		else if (bullet_dir == -1)
 		{
-			vx = -0.25f;
-			vy = 0.175f;
+			vx = -0.125f;
+			vy = 0.105f;
 		}
 	}
 	else
@@ -90,8 +92,6 @@ void BulletShip::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				y += min_ty * dy + ny * 0.4f;*/
 			}
 		}
-
-
 	}
 	//for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
 

@@ -153,9 +153,13 @@
     <ClCompile Include="Worms.cpp" />
     <ClCompile Include="Bosshand.cpp" />
     <ClCompile Include="BossArm.cpp" />
+    <ClCompile Include="BulletTeleporter.cpp" />
+    <ClCompile Include="Bomb.cpp" />
+    <ClCompile Include="BulletBomb.cpp" />
     <ClCompile Include="HUDEnergy.cpp" />
     <ClCompile Include="Energy.cpp" />
     <ClCompile Include="StateCLIMB.cpp" />
+    <ClCompile Include="StateDead.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animations.h" />
@@ -314,9 +318,13 @@
     <ClInclude Include="Worms.h" />
     <ClInclude Include="BossHand.h" />
     <ClInclude Include="BossArm.h" />
+    <ClInclude Include="BulletTeleporter.h" />
+    <ClInclude Include="Bomb.h" />
+    <ClInclude Include="BulletBomb.h" />
     <ClInclude Include="HUDEnergy.h" />
     <ClInclude Include="Energy.h" />
     <ClInclude Include="StateCLIMB.h" />
+    <ClInclude Include="StateDead.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="BlasterMaster.rc" />

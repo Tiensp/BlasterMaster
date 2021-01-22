@@ -27,11 +27,10 @@
 
 class COrb : public Enemy
 {
-	bool isFolow;  //theo player 
+	bool isFolow;
+
 	LPGAMEOBJECT target;
-	bool isAttack = false;
 	bool isDoneDeath = false;
-	//bool isDeath = false;
 public:
 	COrb(float x, float y, LPGAMEOBJECT player, int _typeItem);
 	virtual void SetState(int state);
@@ -39,7 +38,6 @@ public:
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	virtual void Render();
 	void Attack();
-	void flowPlayer(LPGAMEOBJECT player);
 };
 
 

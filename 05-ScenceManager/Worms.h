@@ -20,7 +20,7 @@ class CWorm : public Enemy
 	bool isFolow;  //theo player 
 
 	bool isDoneDeath = false;
-	bool isDeath = false;
+	
 
 
 

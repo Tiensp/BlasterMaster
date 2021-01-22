@@ -21,17 +21,18 @@ void BulletFloaters::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	if (isDone) return;
 
+	HandleMove(SCREEN_HEIGHT / 3, SCREEN_HEIGHT / 3);
 	if (isMove)
 	{
 		if (bullet_dir == 1)
 		{
-			vx = 0.075f;
-			vy = 0.025f;
+			vx = 0.045f;
+			vy = 0.0275f;
 		}
 		else if (bullet_dir == -1)
 		{
-			vx = -0.075f;
-			vy = 0.025f;
+			vx = -0.045f;
+			vy = 0.0275f;
 		}
 	}
 	else
@@ -65,7 +66,7 @@ void BulletFloaters::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		// TODO: This is a very ugly designed function!!!!
 		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);  // sắp xếp lại các sự kiện va chạm đầu tiên theo trục x, y 
 
-		
+
 
 		for (UINT i = 0; i < coEventsResult.size(); i++)
 		{

@@ -31,7 +31,7 @@ class CSkull : public Enemy
 
 	bool isAttack;
 	bool isDoneDeath = false;
-	bool isDeath = false;
+	
 public:
 	CSkull(float x, float y, LPGAMEOBJECT player, int _typeItem);
 	virtual void SetState(int state);
