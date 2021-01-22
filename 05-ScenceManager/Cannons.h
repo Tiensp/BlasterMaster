@@ -22,7 +22,7 @@ class CCannon : public Enemy
 
 	bool isDoneDeath;
 public:
-	CCannon(float x, float y, LPGAMEOBJECT player);
+	CCannon(float x, float y, LPGAMEOBJECT player, int _typeItem);
 	void SetState(int state);
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);

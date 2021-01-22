@@ -43,93 +43,97 @@ void CWorm::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 
 void CWorm::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	Enemy::Update(dt, coObjects);
-	vy += 0.0005f * dt;
-	//DebugOut(L"golumnvX: %f, golumnvY: %f\n", vx, vy);
-
-	if (abs(this->x - target->x) <= 300 && abs(this->y - target->y) <= 20)
+	if (!isDeath)
 	{
-		if (this->x - target->x <= 0)
+		Enemy::Update(dt, coObjects);
+		vy += 0.0005f * dt;
+		//DebugOut(L"golumnvX: %f, golumnvY: %f\n", vx, vy);
+
+		if (abs(this->x - target->x) <= 300 && abs(this->y - target->y) <= 20)
 		{
-			this->nx = 1;
-		}
-		else
-		{
-			this->nx = -1;
-		}
-		
-		this->SetState(WORM_STATE_WALKING);
-	}
-
-
-	vector<LPCOLLISIONEVENT> coEvents;
-	vector<LPCOLLISIONEVENT> coEventsResult;
-
-	coEvents.clear();
-
-	CalcPotentialCollisions(coObjects, coEvents);
-
-
-
-	if (coEvents.size() == 0)  //nếu không có va chạm, update bình thường
-	{
-		x += dx;
-		y += dy;
-	}
-	else //có va chạm
-	{
-		float min_tx, min_ty, nx = 0, ny = 0;
-		float rdx = 0;
-		float rdy = 0;
-
-		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);  // sắp xếp lại các sự kiện va chạm đầu tiên theo trục x, y 
-
-		//x += min_tx * dx + nx * 0.4f;  
-
-		//if (nx != 0) vx = 0;
-		//if (ny != 0) vy = 0;
-
-		{
-			for (UINT i = 0; i < coEventsResult.size(); i++)
+			if (this->x - target->x <= 0)
 			{
-				LPCOLLISIONEVENT e = coEventsResult[i];
+				this->nx = 1;
+			}
+			else
+			{
+				this->nx = -1;
+			}
 
-				if (dynamic_cast<CBrick*>(e->obj)) // if e->obj is Goomba 
+			this->SetState(WORM_STATE_WALKING);
+		}
+
+
+		vector<LPCOLLISIONEVENT> coEvents;
+		vector<LPCOLLISIONEVENT> coEventsResult;
+
+		coEvents.clear();
+
+		CalcPotentialCollisions(coObjects, coEvents);
+
+
+
+		if (coEvents.size() == 0)  //nếu không có va chạm, update bình thường
+		{
+			x += dx;
+			y += dy;
+		}
+		else //có va chạm
+		{
+			float min_tx, min_ty, nx = 0, ny = 0;
+			float rdx = 0;
+			float rdy = 0;
+
+			FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);  // sắp xếp lại các sự kiện va chạm đầu tiên theo trục x, y 
+
+			//x += min_tx * dx + nx * 0.4f;  
+
+			//if (nx != 0) vx = 0;
+			//if (ny != 0) vy = 0;
+
+			{
+				for (UINT i = 0; i < coEventsResult.size(); i++)
 				{
+					LPCOLLISIONEVENT e = coEventsResult[i];
 
-
-					x += min_tx * dx + nx * 0.4f;
-
-					if (nx != 0) vx = 0;
-					if (ny != 0) vy = 0;
-					CBrick* brick = dynamic_cast<CBrick*>(e->obj);
-
-					// jump on top >> kill Goomba and deflect a bit 
-					if (e->nx != 0)
+					if (dynamic_cast<CBrick*>(e->obj)) // if e->obj is Goomba 
 					{
-						this->nx = e->nx;
 
-						this->SetState(WORM_STATE_WALKING);
+
+						x += min_tx * dx + nx * 0.4f;
+
+						if (nx != 0) vx = 0;
+						if (ny != 0) vy = 0;
+						CBrick* brick = dynamic_cast<CBrick*>(e->obj);
+
+						// jump on top >> kill Goomba and deflect a bit 
+						if (e->nx != 0)
+						{
+							this->nx = e->nx;
+
+							this->SetState(WORM_STATE_WALKING);
+						}
+
+					}
+
+					if (e->obj->objTag == ENEMY)
+					{
+						x += dx;
+						//y += dy;
+					}
+					if (e->obj->objTag == PLAYER)
+					{
+						x += dx;
+						//y += dy;
 					}
 
 				}
 
-				if (e->obj->objTag == ENEMY)
-				{
-					x += dx;
-					//y += dy;
-				}
-				if (e->obj->objTag == PLAYER)
-				{
-					x += dx;
-					//y += dy;
-				}
-
 			}
-
+			//for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
 		}
-		//for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
 	}
+
 }
 
 
@@ -159,7 +163,7 @@ void CWorm::Render()
 
 	animation_set->at(ani)->Render(x, y);
 
-	RenderBoundingBox(x,y);
+	RenderBoundingBox(x, y);
 }
 
 void CWorm::flowPlayer(LPGAMEOBJECT player)

@@ -9,7 +9,7 @@
 #include "Goomba.h"
 #include "Portal.h"
 #include "Brick.h"
-CCannon::CCannon(float x, float y, LPGAMEOBJECT player)
+CCannon::CCannon(float x, float y, LPGAMEOBJECT player, int _itemType)
 {
 	SetState(CANNON_ANI_SHOOT_TOP_BOTTOM);
 	this->x = x;
@@ -17,6 +17,7 @@ CCannon::CCannon(float x, float y, LPGAMEOBJECT player)
 	this->target = player;
 	this->isDeath = false;
 	hp = 3;
+	typeItem = _itemType;
 	objTag = ENEMY;
 	objType = CANNONS;
 
@@ -41,90 +42,93 @@ void CCannon::GetBoundingBox(float& left, float& top, float& right, float& botto
 void CCannon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 
-	
-	Enemy::Update(dt, coObjects);
-	if (isDone) return;
-	Attack();
-	if (bullet1 != NULL)
+	if (!isDeath)
 	{
-		if (!bullet1->isDone)
-			bullet1->Update(dt, coObjects);
-		else bullet1 = NULL;
-	}
-	if (bullet2 != NULL)
-	{
-		if (!bullet2->isDone)
-			bullet2->Update(dt, coObjects);
-		else bullet2 = NULL;
-	}
-
-
-	vector<LPCOLLISIONEVENT> coEvents;
-	vector<LPCOLLISIONEVENT> coEventsResult;
-
-	coEvents.clear();
-
-	CalcPotentialCollisions(coObjects, coEvents);
-
-	if (coEvents.size() == 0)  //nếu không có va chạm, update bình thường
-	{
-
-		timer += interval;
-
-		if (timer == timeChangeState)
+		Enemy::Update(dt, coObjects);
+		if (isDone) return;
+		Attack();
+		if (bullet1 != NULL)
 		{
-			if (this->GetState() == CANNON_ANI_SHOOT_TOP_BOTTOM)
-			{
-
-				this->SetState(CANNON_ANI_SHOOT_RIGHT_LEFT);
-
-			}
-			else if (this->GetState() == CANNON_ANI_SHOOT_RIGHT_LEFT)
-			{
-
-				this->SetState(CANNON_ANI_SHOOT_TOP_BOTTOM);
-
-			}
-
-			timer = 0;
+			if (!bullet1->isDone)
+				bullet1->Update(dt, coObjects);
+			else bullet1 = NULL;
 		}
-	}
-	else //có va chạm
-	{
-		float min_tx, min_ty, nx = 0, ny = 0;
-		float rdx = 0;
-		float rdy = 0;
-
-		// TODO: This is a very ugly designed function!!!!
-		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);  // sắp xếp lại các sự kiện va chạm đầu tiên theo trục x, y 
-
-
-		//x += min_tx * dx + nx * 0.4f;  //cập nhật lại vị trí x
-		//y += min_ty * dy + ny * 0.4f;	// cập nhật lại vị trí y  để tránh bị hụt xuống
-
-		// block every object first!
+		if (bullet2 != NULL)
 		{
-			for (UINT i = 0; i < coEventsResult.size(); i++)
+			if (!bullet2->isDone)
+				bullet2->Update(dt, coObjects);
+			else bullet2 = NULL;
+		}
+
+
+		vector<LPCOLLISIONEVENT> coEvents;
+		vector<LPCOLLISIONEVENT> coEventsResult;
+
+		coEvents.clear();
+
+		CalcPotentialCollisions(coObjects, coEvents);
+
+		if (coEvents.size() == 0)  //nếu không có va chạm, update bình thường
+		{
+
+			timer += interval;
+
+			if (timer == timeChangeState)
 			{
-				LPCOLLISIONEVENT e = coEventsResult[i];
-
-				if (e->obj->objTag == PLAYER)
+				if (this->GetState() == CANNON_ANI_SHOOT_TOP_BOTTOM)
 				{
-					x += min_tx * dx + nx * 0.4f;  //cập nhật lại vị trí x
-					y += min_ty * dy + ny * 0.4f;	// cập nhật lại vị trí y  để tránh bị hụt xuống
 
-					vx = vy = 0;
+					this->SetState(CANNON_ANI_SHOOT_RIGHT_LEFT);
+
 				}
-				if (e->obj->objTag == ENEMY)
+				else if (this->GetState() == CANNON_ANI_SHOOT_RIGHT_LEFT)
 				{
-					/*x += dx;
-					y += dy;*/
 
-					vx = vy = 0;
+					this->SetState(CANNON_ANI_SHOOT_TOP_BOTTOM);
+
 				}
+
+				timer = 0;
 			}
 		}
+		else //có va chạm
+		{
+			float min_tx, min_ty, nx = 0, ny = 0;
+			float rdx = 0;
+			float rdy = 0;
+
+			// TODO: This is a very ugly designed function!!!!
+			FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);  // sắp xếp lại các sự kiện va chạm đầu tiên theo trục x, y 
+
+
+			//x += min_tx * dx + nx * 0.4f;  //cập nhật lại vị trí x
+			//y += min_ty * dy + ny * 0.4f;	// cập nhật lại vị trí y  để tránh bị hụt xuống
+
+			// block every object first!
+			{
+				for (UINT i = 0; i < coEventsResult.size(); i++)
+				{
+					LPCOLLISIONEVENT e = coEventsResult[i];
+
+					if (e->obj->objTag == PLAYER)
+					{
+						x += min_tx * dx + nx * 0.4f;  //cập nhật lại vị trí x
+						y += min_ty * dy + ny * 0.4f;	// cập nhật lại vị trí y  để tránh bị hụt xuống
+
+						vx = vy = 0;
+					}
+					if (e->obj->objTag == ENEMY)
+					{
+						/*x += dx;
+						y += dy;*/
+
+						vx = vy = 0;
+					}
+				}
+			}
+		}
 	}
+
 }
 
 

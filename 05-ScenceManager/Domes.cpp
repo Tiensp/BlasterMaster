@@ -46,169 +46,174 @@ void CDomes::GetBoundingBox(float& left, float& top, float& right, float& bottom
 
 void CDomes::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	Enemy::Update(dt, coObjects);
-	Atack();
-	if (!isAtack)
+	if (!isDeath)
 	{
-		Wall();
-	}
-	vector<LPCOLLISIONEVENT> coEvents;
-	vector<LPCOLLISIONEVENT> coEventsResult;
-
-	coEvents.clear();
-
-	if (hp <= 0) isDeath = true;
-
-	CalcPotentialCollisions(coObjects, coEvents);
-
-
-	if (coEvents.size() == 0)  //nếu không có va chạm, update bình thường	
-	{
-		x += dx;
-		y += dy;
-	}
-	else //có va chạm
-	{
-		float min_tx, min_ty, nx = 0, ny = 0;
-		float rdx = 0;
-		float rdy = 0;
-
-		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);  // sắp xếp lại các sự kiện va chạm đầu tiên theo trục x, y 
-
-		for (UINT i = 0; i < coEventsResult.size(); i++)
+		Enemy::Update(dt, coObjects);
+		Atack();
+		if (!isAtack)
 		{
-			LPCOLLISIONEVENT e = coEventsResult[i];
+			Wall();
+		}
+		vector<LPCOLLISIONEVENT> coEvents;
+		vector<LPCOLLISIONEVENT> coEventsResult;
 
-			if (dynamic_cast<CBrick*>(e->obj) || dynamic_cast<CPortal*>(e->obj)) // if e->obj is Goomba 
+		coEvents.clear();
+
+		if (hp <= 0) isDeath = true;
+
+		CalcPotentialCollisions(coObjects, coEvents);
+
+
+		if (coEvents.size() == 0)  //nếu không có va chạm, update bình thường	
+		{
+			x += dx;
+			y += dy;
+		}
+		else //có va chạm
+		{
+			float min_tx, min_ty, nx = 0, ny = 0;
+			float rdx = 0;
+			float rdy = 0;
+
+			FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);  // sắp xếp lại các sự kiện va chạm đầu tiên theo trục x, y 
+
+			for (UINT i = 0; i < coEventsResult.size(); i++)
 			{
-				isAtack = false;
-				numberCollisionBrick++;
+				LPCOLLISIONEVENT e = coEventsResult[i];
 
-
-				x += min_tx * dx + nx * 0.4f;
-				y += min_ty * dy + ny * 0.4f;
-
-				if (nx != 0) vx = 0;
-				if (ny != 0) vy = 0;
-
-				CBrick* brick = dynamic_cast<CBrick*>(e->obj);
-
-				if (e->ny != 0)
+				if (dynamic_cast<CBrick*>(e->obj) || dynamic_cast<CPortal*>(e->obj)) // if e->obj is Goomba 
 				{
-					if (e->ny < 0)
-					{
-						if (this->GetState() == DOMES_ANI_WALKING_DOWN_RIGHT)
-						{
-							this->SetState(DOMES_ANI_WALKING_RIGHT_UP);
-						}
-						else if (this->GetState() == DOMES_ANI_WALKING_DOWN_LEFT)
-						{
-							this->SetState(DOMES_ANI_WALKING_LEFT_UP);
+					isAtack = false;
+					numberCollisionBrick++;
 
-						}
-						else
+
+					x += min_tx * dx + nx * 0.4f;
+					y += min_ty * dy + ny * 0.4f;
+
+					if (nx != 0) vx = 0;
+					if (ny != 0) vy = 0;
+
+					CBrick* brick = dynamic_cast<CBrick*>(e->obj);
+
+					if (e->ny != 0)
+					{
+						if (e->ny < 0)
 						{
-							if (this->nx > 0)
+							if (this->GetState() == DOMES_ANI_WALKING_DOWN_RIGHT)
 							{
 								this->SetState(DOMES_ANI_WALKING_RIGHT_UP);
 							}
-							else
+							else if (this->GetState() == DOMES_ANI_WALKING_DOWN_LEFT)
 							{
 								this->SetState(DOMES_ANI_WALKING_LEFT_UP);
+
 							}
-						}
+							else
+							{
+								if (this->nx > 0)
+								{
+									this->SetState(DOMES_ANI_WALKING_RIGHT_UP);
+								}
+								else
+								{
+									this->SetState(DOMES_ANI_WALKING_LEFT_UP);
+								}
+							}
 
-					}
-					else if (e->ny > 0)
-					{
-						if (this->GetState() == DOMES_ANI_WALKING_UP_RIGHT)
-						{
-							this->SetState(DOMES_ANI_WALKING_RIGHT_DOWN);
 						}
-						else if (this->GetState() == DOMES_ANI_WALKING_UP_LEFT)
+						else if (e->ny > 0)
 						{
-							this->SetState(DOMES_ANI_WALKING_LEFT_DOWN);
-
-						}
-						else
-						{
-							if (this->nx > 0)
+							if (this->GetState() == DOMES_ANI_WALKING_UP_RIGHT)
 							{
 								this->SetState(DOMES_ANI_WALKING_RIGHT_DOWN);
 							}
-							else
+							else if (this->GetState() == DOMES_ANI_WALKING_UP_LEFT)
 							{
 								this->SetState(DOMES_ANI_WALKING_LEFT_DOWN);
+
+							}
+							else
+							{
+								if (this->nx > 0)
+								{
+									this->SetState(DOMES_ANI_WALKING_RIGHT_DOWN);
+								}
+								else
+								{
+									this->SetState(DOMES_ANI_WALKING_LEFT_DOWN);
+								}
 							}
 						}
 					}
-				}
-				else if (e->nx != 0)
-				{
-					if (e->nx > 0)
+					else if (e->nx != 0)
 					{
-						if (this->GetState() == DOMES_ANI_WALKING_LEFT_UP)
+						if (e->nx > 0)
 						{
-							this->SetState(DOMES_ANI_WALKING_UP_RIGHT);
-						}
-						else if (this->GetState() == DOMES_ANI_WALKING_LEFT_DOWN)
-						{
-							this->SetState(DOMES_ANI_WALKING_DOWN_RIGHT);
-						}
-						else
-						{
-							if (this->ny < 0)
+							if (this->GetState() == DOMES_ANI_WALKING_LEFT_UP)
 							{
 								this->SetState(DOMES_ANI_WALKING_UP_RIGHT);
 							}
-							else
+							else if (this->GetState() == DOMES_ANI_WALKING_LEFT_DOWN)
 							{
 								this->SetState(DOMES_ANI_WALKING_DOWN_RIGHT);
 							}
-						}
+							else
+							{
+								if (this->ny < 0)
+								{
+									this->SetState(DOMES_ANI_WALKING_UP_RIGHT);
+								}
+								else
+								{
+									this->SetState(DOMES_ANI_WALKING_DOWN_RIGHT);
+								}
+							}
 
-					}
-					else
-					{
-						if (this->GetState() == DOMES_ANI_WALKING_RIGHT_UP)
-						{
-							this->SetState(DOMES_ANI_WALKING_UP_LEFT);
-						}
-						else if (this->GetState() == DOMES_ANI_WALKING_RIGHT_DOWN)
-						{
-							this->SetState(DOMES_ANI_WALKING_DOWN_LEFT);
 						}
 						else
 						{
-							if (this->ny < 0)
-							{
-								this->SetState(DOMES_ANI_WALKING_DOWN_LEFT);
-
-							}
-							else
+							if (this->GetState() == DOMES_ANI_WALKING_RIGHT_UP)
 							{
 								this->SetState(DOMES_ANI_WALKING_UP_LEFT);
 							}
+							else if (this->GetState() == DOMES_ANI_WALKING_RIGHT_DOWN)
+							{
+								this->SetState(DOMES_ANI_WALKING_DOWN_LEFT);
+							}
+							else
+							{
+								if (this->ny < 0)
+								{
+									this->SetState(DOMES_ANI_WALKING_DOWN_LEFT);
+
+								}
+								else
+								{
+									this->SetState(DOMES_ANI_WALKING_UP_LEFT);
+								}
+							}
 						}
 					}
+
+					//lấy box của viên gạch hiện tại để xét di chuyển
+					rectBrick.left = e->obj->x;
+					rectBrick.right = rectBrick.left + e->obj->width;
+					rectBrick.top = e->obj->y;
+					rectBrick.bottom = e->obj->y + e->obj->height;
 				}
 
-				//lấy box của viên gạch hiện tại để xét di chuyển
-				rectBrick.left = e->obj->x;
-				rectBrick.right = rectBrick.left + e->obj->width;
-				rectBrick.top = e->obj->y;
-				rectBrick.bottom = e->obj->y + e->obj->height;
+				else
+				{
+					x += dx;
+					y += dy;
+				}
 			}
 
-			else
-			{
-				x += dx;
-				y += dy;
-			}
 		}
-
+		for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
 	}
-	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
+	
+	
 }
 
 

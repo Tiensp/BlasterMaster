@@ -8,6 +8,7 @@
 #include "ThreeBullet.h"
 #include "ThunderBullet.h"
 #include "FollowBullets.h"
+#include "StateDead.h"
 #include "Item.h"
 #define SOPHIA_WALKING_SPEED		0.09f 
 //0.1f
@@ -38,19 +39,21 @@
 
 #define SOPHIA_SMALL_BBOX_WIDTH  26
 #define SOPHIA_SMALL_BBOX_HEIGHT 18
+#define SOPHIA_BBOX_DIE_HEIGHT 40
 
 #define SOPHIA_OPEN_CABIN_BBOX_HEIGHT 26
 
 #define SOPHIA_BIG_BBOX_WIDTH  26
 #define SOPHIA_BIG_BBOX_HEIGHT 34
 
-#define SOPHIA_UNTOUCHABLE_TIME 3000
+#define SOPHIA_UNTOUCHABLE_TIME 1000
 
 
 class CSophia : public CGameObject
 {
 protected:
 	static CSophia* __instance;
+	bool isDead;
 	int level;
 	int untouchable;
 	DWORD untouchable_start;
@@ -121,7 +124,7 @@ public:
 	void SetIsFalling(bool fall) { isFalling = fall; }
 	bool GetIsFalling() { return isFalling; }
 	int GetUntouchable() { return untouchable; }
-
+	void SetIsDead(bool isDead) { isDead = isDead; }
 	void SetIsInjured(bool _injured) { isInjured = _injured; }
 	bool GetIsInjured() { return isInjured; }
 
@@ -147,6 +150,7 @@ public:
 
 
 	void Reset();
+	void Revival();
 	void ResetAtPos(float _x, float _y);
 
 	void AutoGo(float x_des);

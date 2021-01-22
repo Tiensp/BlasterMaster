@@ -20,7 +20,7 @@ class CTeleporter : public Enemy
 	int jumpStep = 4;
 	int new_x, new_y;
 
-	bool isDeath;
+	
 	bool isDoneDeath;
 public:
 	CTeleporter(float x, float y, LPGAMEOBJECT player, int _typeItem);

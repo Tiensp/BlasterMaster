@@ -31,7 +31,7 @@ class CDomes : public Enemy
 {
 	bool isFolow;//theo player
 	bool isAtack;
-	bool isDeath = false;
+
 	bool isDoneDeath = false;
 	LPGAMEOBJECT target;
 	int numberCollisionBrick = 1;  //số lần chạm tường trước khi tân công

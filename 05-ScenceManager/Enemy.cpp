@@ -23,15 +23,16 @@ void Enemy::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	CGameObject::Update(dt, coObjects);
 	if (this->hp <= 0)
 	{
-		/*Item->SetPosition(this->x, this->y);
-		Item->Render();
-		isDeath = true;*/
-
-		CItem* item = new CItem(typeItem);
-		item->SetPosition(this->x, this->y);
-		CPlayScene* plScene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
-		plScene->GetGrid()->AddObject(item);
 		isDeath = true;
+		if (this->typeItem >= 0 && this->typeItem <= 4)
+		{
+			Item = new CItem(typeItem);
+			Item->SetPosition(this->x, this->y);
+			CPlayScene* plScene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
+			/*plScene->GetListItem().push_back(Item);*/
+			plScene->GetGrid()->AddObject(Item);
+		}
+	
 
 
 

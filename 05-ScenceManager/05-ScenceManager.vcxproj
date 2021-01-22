@@ -175,6 +175,7 @@
     <ClCompile Include="Sound.cpp" />
     <ClCompile Include="StateCLIMB.cpp" />
     <ClCompile Include="StateCRAWL.cpp" />
+    <ClCompile Include="StateDead.cpp" />
     <ClCompile Include="StateFALL.cpp" />
     <ClCompile Include="StateFALLGunUP.cpp" />
     <ClCompile Include="StateFALLTurn.cpp" />
@@ -258,6 +259,7 @@
     <ClInclude Include="Sound.h" />
     <ClInclude Include="StateCLIMB.h" />
     <ClInclude Include="StateCRAWL.h" />
+    <ClInclude Include="StateDead.h" />
     <ClInclude Include="StateFALL.h" />
     <ClInclude Include="StateFALLGunUP.h" />
     <ClInclude Include="StateFALLTurn.h" />

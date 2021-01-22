@@ -11,7 +11,7 @@
 
 using namespace std;
 
-CPlayScene::CPlayScene(int id, LPCWSTR filePath):
+CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
 	CScene(id, filePath)
 {
 	key_handler = new CPlayScenceKeyHandler(this);
@@ -59,7 +59,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):
 
 
 /*
-	Parse a line in section [OBJECTS] 
+	Parse a line in section [OBJECTS]
 */
 void CPlayScene::_ParseSection_OBJECTS(string line)
 {
@@ -75,7 +75,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 
 	int ani_set_id = atoi(tokens[3].c_str());
 
-	CAnimationSets * animation_sets = CAnimationSets::GetInstance();
+	CAnimationSets* animation_sets = CAnimationSets::GetInstance();
 
 	CGameObject* obj = NULL;
 
@@ -161,7 +161,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	}
 	case OBJECT_TYPE_GOLEM:
 	{
-		int itemType = atoi(tokens[4].c_str());
+		int itemType = atoi(tokens[5].c_str());
 		obj = new CGolem(x, y, sophia, itemType);
 		obj->SetPosition(x, y);
 		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
@@ -173,8 +173,8 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	}
 	case OBJECT_TYPE_DOMES:
 	{
-		int itemType = atoi(tokens[4].c_str());
-		obj = new CDomes(x, y, 999999, 999999, sophia,itemType);
+		int itemType = atoi(tokens[5].c_str());
+		obj = new CDomes(x, y, 999999, 999999, sophia, itemType);
 		obj->SetPosition(x, y);
 		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
 		obj->SetAnimationSet(ani_set);
@@ -184,8 +184,8 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	}
 	case OBJECT_TYPE_WORMS:
 	{
-		int itemType = atoi(tokens[4].c_str());
-		obj = new CWorm(x, y, sophia,itemType);
+		int itemType = atoi(tokens[5].c_str());
+		obj = new CWorm(x, y, sophia, itemType);
 		obj->SetPosition(x, y);
 		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
 		obj->SetAnimationSet(ani_set);
@@ -195,7 +195,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	break;
 	case OBJECT_TYPE_FLOATERS:
 	{
-		int itemType = atoi(tokens[4].c_str());
+		int itemType = atoi(tokens[5].c_str());
 		obj = new CFloaters(x, y, sophia, itemType);
 		obj->SetPosition(x, y);
 		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
@@ -205,7 +205,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	}
 	case OBJECT_TYPE_SKULLS:
 	{
-		int itemType = atoi(tokens[4].c_str());
+		int itemType = atoi(tokens[5].c_str());
 		obj = new CSkull(x, y, sophia, itemType);
 		obj->SetPosition(x, y);
 		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
@@ -215,8 +215,8 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	}
 	case OBJECT_TYPE_INSECT:
 	{
-
-		obj = new CInsect(x, y, sophia);
+		int itemType = atoi(tokens[5].c_str());
+		obj = new CInsect(x, y, sophia, itemType);
 		obj->SetPosition(x, y);
 		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
 		obj->SetAnimationSet(ani_set);
@@ -225,8 +225,8 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	}
 	case OBJECT_TYPE_ORB:
 	{
-		int itemType = atoi(tokens[4].c_str());
-		obj = new COrb(x, y, sophia,itemType);
+		int itemType = atoi(tokens[5].c_str());
+		obj = new COrb(x, y, sophia, itemType);
 		obj->SetPosition(x, y);
 		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
 		obj->SetAnimationSet(ani_set);
@@ -235,8 +235,8 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	}
 	case OBJECT_TYPE_SHIP:
 	{
-		int itemType = atoi(tokens[4].c_str());
-		obj = new CShip(x, y, sophia,itemType);
+		int itemType = atoi(tokens[5].c_str());
+		obj = new CShip(x, y, sophia, itemType);
 		obj->SetPosition(x, y);
 		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
 		obj->SetAnimationSet(ani_set);
@@ -246,8 +246,8 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 
 	case OBJECT_TYPE_EYEBALL:
 	{
-
-		obj = new CEyeballs(x, y, sophia);
+		int itemType = atoi(tokens[5].c_str());
+		obj = new CEyeballs(x, y, sophia, itemType);
 		obj->SetPosition(x, y);
 		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
 		obj->SetAnimationSet(ani_set);
@@ -257,18 +257,19 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 
 	case OBJECT_TYPE_TELEPORTER:
 	{
-		int itemType = atoi(tokens[4].c_str());
+		int itemType = atoi(tokens[5].c_str());
 		obj = new CTeleporter(x, y, sophia, itemType);
 		obj->SetPosition(x, y);
 		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
 		obj->SetAnimationSet(ani_set);
-	/*	AllObjs.push_back(obj);*/
+		/*	AllObjs.push_back(obj);*/
 		break;
 	}
 
 	case OBJECT_TYPE_CANNON:
 	{
-		obj = new CCannon(x, y, sophia);
+		int itemType = atoi(tokens[5].c_str());
+		obj = new CCannon(x, y, sophia, itemType);
 		obj->SetPosition(x, y);
 		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
 		obj->SetAnimationSet(ani_set);
@@ -308,7 +309,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 
 	case OBJECT_TYPE_ROCK_OVERHEAD:
 	{
-		obj = new CRockOVH(x, y,16,16);
+		obj = new CRockOVH(x, y, 16, 16);
 		obj->SetPosition(x, y);
 		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
 		obj->SetAnimationSet(ani_set);
@@ -318,7 +319,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_ITEM:
 	{
 		int type = atoi(tokens[4].c_str());
-		obj = new CItem(type);	
+		obj = new CItem(type);
 		obj->SetPosition(x, y);
 		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
 		obj->SetAnimationSet(ani_set);
@@ -421,7 +422,7 @@ void CPlayScene::Load()
 	f.close();
 
 	DebugOut(L"[INFO] Done loading scene objects %s\n", sceneFilePath);
-	
+
 	// Khởi tạo camera
 	currentMiniScene = 0;
 	MiniScene* miniScene = listScenes.at(currentMiniScene);
@@ -436,12 +437,13 @@ void CPlayScene::Load()
 			grid->AddObject(AllObjs.at(i));
 	}
 
+
 	//Thiết lập trạng thái, vị trí khởi đầu,... cho đối tượng đang active
 	if (_ACTIVE[SOPHIA])
 	{
 		sophia->Reset();
 		grid->AddObject(sophia);
-	}	
+	}
 	else if (_ACTIVE[JASON])
 	{
 		jason->Reset();
@@ -464,6 +466,7 @@ void CPlayScene::Update(DWORD dt)
 	// TO-DO: This is a "dirty" way, need a more organized way 
 	if (!isSelectBulletScr)
 	{
+		
 		vector<LPGAMEOBJECT> coObjects = grid->GetActiveObj();
 		ClassifyOBJECT(coObjects);
 
@@ -482,17 +485,21 @@ void CPlayScene::Update(DWORD dt)
 
 		for (int i = 0; i < coObjects.size(); i++)
 		{
-			if (!dynamic_cast<CBrick*>(coObjects.at(i)) && !dynamic_cast<CPortal*>(coObjects.at(i)) && 
+			if (!dynamic_cast<CBrick*>(coObjects.at(i)) && !dynamic_cast<CPortal*>(coObjects.at(i)) &&
 				!dynamic_cast<CLadder*>(coObjects.at(i)) && coObjects.at(i)->objTag != PLAYER)
 			{
 				coObjects.at(i)->Update(dt, &coObjects);
 			}
 		}
+		for (int i = 0; i < listItem.size(); i++)
+		{
+			grid->AddObject(listItem.at(i));
+		}
 
-	// skip the rest if scene was already unloaded (Sophia::Update might trigger PlayScene::Unload)
-	//if (sophia == NULL && jason == NULL && bigJason == NULL) return;
+		// skip the rest if scene was already unloaded (Sophia::Update might trigger PlayScene::Unload)
+		//if (sophia == NULL && jason == NULL && bigJason == NULL) return;
 
-		// Update camera to follow player
+			// Update camera to follow player
 		camera->Update();
 		//Update HUD
 		hud->Update();
@@ -503,7 +510,7 @@ void CPlayScene::Update(DWORD dt)
 	else
 	{
 		/// Update màn hình chọn đạn
-		
+
 	}
 
 }
@@ -550,7 +557,7 @@ void CPlayScene::Render()
 		LPANIMATION_SET aniSet = CAnimationSets::GetInstance()->Get(SELECT_BULLET);
 		aniSet->at(currentSELECT)->Render(camPos.x, camPos.y);
 	}
-	
+
 }
 
 /*
@@ -668,7 +675,7 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 			MiniScene* miniScene = plScene->GetlistScenes().at(plScene->currentMiniScene);
 			CCamera::GetInstance()->SetCamBound(miniScene->x, miniScene->y, miniScene->width, miniScene->height);
 			CCamera::GetInstance()->SetPosition(D3DXVECTOR2(miniScene->x, miniScene->y));
-			
+
 			break;
 		}
 		case DIK_NUMPAD1:
@@ -832,13 +839,13 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 		}
 		}
 	}
-	
+
 }
 
 void CPlayScenceKeyHandler::OnKeyUp(int KeyCode)
 {
 	DebugOut(L"[INFO] KeyUp: %d\n", KeyCode);
-	
+
 	if (_ACTIVE[SOPHIA])
 	{
 		CSophia* sophia = ((CPlayScene*)scence)->GetSophia();
@@ -859,9 +866,9 @@ void CPlayScenceKeyHandler::OnKeyUp(int KeyCode)
 	}
 }
 
-void CPlayScenceKeyHandler::KeyState(BYTE *states)
+void CPlayScenceKeyHandler::KeyState(BYTE* states)
 {
-	
+
 
 	// disable control key when Sophia die 
 	/*if (sophia->GetState() == SOPHIA_STATE_DIE) return;*/

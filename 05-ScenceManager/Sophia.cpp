@@ -13,6 +13,7 @@
 #include "StateFALL.h"
 #include "StateJUMP.h"
 #include "StateOPENCabin.h"
+
 #include "Brick.h"
 #include "Lava.h"
 #include "ThornOVERHEAD.h"
@@ -31,12 +32,14 @@ CSophia::CSophia() : CGameObject()
 	untouchable = 0;
 	energy = 0;
 	health = 8;
+	isDead = false;
+
 	animation_set = CAnimationSets::GetInstance()->Get(SOPHIA);
 
-	start_x = x; 
-	start_y = y; 
-	this->x = x; 
-	this->y = y; 
+	start_x = x;
+	start_y = y;
+	this->x = x;
+	this->y = y;
 	y_render = y;
 
 	objTag = PLAYER;
@@ -44,15 +47,18 @@ CSophia::CSophia() : CGameObject()
 
 }
 
-void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
+void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	if (_ACTIVE[SOPHIA] && !isFrozen)
+	if (_ACTIVE[SOPHIA] && !isFrozen && !isDead)
 	{
 		DWORD now = GetTickCount64();
 		CGameObject::Update(dt);
-
+		
 		vy += SOPHIA_GRAVITY * dt;
-	
+		CheckCollisionWithBrick(coObjects);
+		CheckCollisionWithPortal(coObjects);
+		CheckCollisionWithItem(coObjects);
+		CheckCollisionWithEnemy(coObjects);
 		if (isSetFollowBullet)
 		{
 			BulletObject* p_bullet = new BulletObject();
@@ -60,14 +66,14 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			p_bullet->SetPosition(this->x, this->y);
 			p_bullet->Set_IsMove(true);
 			p_bullet_list.push_back(p_bullet);
-			isSetFollowBullet = false;    
+			isSetFollowBullet = false;
 		}
 		set_bullet_list();
 		for (int i = 0; i < p_bullet_list.size(); i++)
 		{
 			p_bullet_list[i]->Update(dt, coObjects);
 		}
-		
+
 		if (GetTickCount() - untouchable_start > SOPHIA_UNTOUCHABLE_TIME)
 		{
 			if (untouchable == 1)
@@ -75,10 +81,12 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			untouchable = 0;
 			untouchable_start = 0;
 		}
-		CheckCollisionWithBrick(coObjects);
-		CheckCollisionWithPortal(coObjects);
-		CheckCollisionWithItem(coObjects);
-		CheckCollisionWithEnemy(coObjects);
+
+	}
+	if (this->health <= 0)
+	{
+
+		SwitchState(new StateDead(), 1);
 	}
 	/// <summary>
 	/// Check Nhân vật có đang chạm gạch hay không
@@ -89,7 +97,7 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		// Túc khởi tạo thì chưa chạm gạch lần nào nên biến này sẽ == NULL
 		isColliBrick = false;
 	}
-	else if (lastColliBrick_y - rectB <= 0.3f  && rectB <= lastColliBrick_y)
+	else if (lastColliBrick_y - rectB <= 0.3f && rectB <= lastColliBrick_y)
 	{
 		// Vì code xử lý SweptAABB đẩy nhân vật lên 0.4f nên hầu như lúc nào nhân vật cũng 
 		// trong trạng thái không va chạm => cần check tọa độ để biết có va chạm với gạch không
@@ -204,7 +212,7 @@ void CSophia::OnKeyDown(int keycode)
 	{
 	case DIK_S:
 		break;
-			
+
 	case DIK_SPACE:
 		if (isColliBrick)
 		{
@@ -260,11 +268,11 @@ void CSophia::OnKeyDown(int keycode)
 				Sound::GetInstance()->Play("PlayerFireUnderWorld", 0, 1);
 			}
 		}
-		break;	
+		break;
 	}
 	case DIK_X:
 	{
-		if (AllowFire() && numberThreeBullet > 0 )
+		if (AllowFire() && numberThreeBullet > 0)
 		{
 			p_bullet = new ThreeBullet(this->x, this->y, this->nx);
 			p_bullet->SetPosition(this->x, this->y);
@@ -292,13 +300,13 @@ void CSophia::OnKeyDown(int keycode)
 	}
 	case DIK_V:
 	{
-	
+
 		if (numberFollowBullet > 0)
 		{
 			isSetFollowBullet = true;
 			numberFollowBullet--;
 		}
-	
+
 		break;
 	}
 	/// Nhấn Q: Mở nắp xe cho Jason nhảy ra
@@ -309,13 +317,13 @@ void CSophia::OnKeyDown(int keycode)
 		CJason* jason = INSTANCE_JASON;
 		_ACTIVE[JASON] = true;
 		jason->nx = nx;
-		jason->ResetAtPos(x + SOPHIA_BIG_BBOX_WIDTH / 2 - JASON_BIG_BBOX_WIDTH / 2, 
-						  y - (SOPHIA_OPEN_CABIN_BBOX_HEIGHT - SOPHIA_SMALL_BBOX_HEIGHT));
+		jason->ResetAtPos(x + SOPHIA_BIG_BBOX_WIDTH / 2 - JASON_BIG_BBOX_WIDTH / 2,
+			y - (SOPHIA_OPEN_CABIN_BBOX_HEIGHT - SOPHIA_SMALL_BBOX_HEIGHT));
 		break;
 	}
 
 	}
-	
+
 }
 
 void CSophia::OnKeyUp(int keycode)
@@ -350,65 +358,8 @@ void CSophia::CheckCollisionWithBrick(vector<LPGAMEOBJECT>* coObjects)
 		if (dynamic_cast<CBrick*>(coObjects->at(i)))
 			ListBrick.push_back(coObjects->at(i));
 
-	//for (int i = 0; i < ListBrick.size(); i++)
-	//{
-	//	float brL, brT, brR, brB, plL, plT, plR, plB;
-	//	ListBrick.at(i)->GetBoundingBox(brL, brT, brR, brB);
-	//	GetBoundingBox(plL, plT, plR, plB);
-	//	isColideUsingAABB =
-	//		CGame::GetInstance()->IsCollidingAABB(plL, plT, plR, plB, brL, brT, brR, brB);
-	//	
-	//	if (isColideUsingAABB == true) 
-	//	{
-	//		if (plT < brT)	//TOP
-	//		{
-	//			if (plL < brL) //TOP LEFT
-	//			{
-	//				x = brL - SOPHIA_SMALL_BBOX_WIDTH - 0.4f;
-	//			}
-	//			else if (plR < brR) //TOP MID
-	//			{
-	//				y = brT - SOPHIA_SMALL_BBOX_HEIGHT - 0.4f;
-	//			}
-	//			else  //TOP RIGHT
-	//			{
-	//				x = brR + 0.4f;
-	//			}
-
-	//		}
-	//		else if (brT < plT && plB > brB)  //BOT
-	//		{
-	//			if (plL < brL) //BOT LEFT
-	//			{
-	//				x = brL - SOPHIA_SMALL_BBOX_WIDTH - 0.4f;
-	//			}
-	//			else if (plR < brR) //BOT MID
-	//			{
-	//				y = brB + 0.4f;
-	//			}
-	//			else  //BOT RIGHT
-	//			{
-	//				x = brR + 0.4f;
-	//			}
-	//		}
-	//		else if (plL < brL)  //LEFT
-	//		{
-	//			x = brL - SOPHIA_SMALL_BBOX_WIDTH - 0.4f;
-	//		}
-	//		else if (plR < brR) //MID
-	//		{
-	//			//do nothing
-	//		}
-	//		else  //RIGHR
-	//		{
-	//			x = brR + 0.4f;
-	//		}
 
 
-	//	}
-	//
-	//}
-		
 	if (isColideUsingAABB != true)
 	{
 		CalcPotentialCollisions(&ListBrick, coEvents);
@@ -425,25 +376,30 @@ void CSophia::CheckCollisionWithBrick(vector<LPGAMEOBJECT>* coObjects)
 			float rdy = 0;
 
 			FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
-
-			LPCOLLISIONEVENT e = coEventsResult[0];
-			x += min_tx * dx + nx * 0.2f;
-			y += min_ty * dy + ny * 0.2f;
-
-
-			if (e->nx != 0) vx = 0;
-			if (e->ny == -1)
+			for (UINT i = 0; i < coEventsResult.size(); i++)
 			{
-				vy = 0;
-				lastColliBrick_y = e->obj->y;
+				LPCOLLISIONEVENT e = coEventsResult[i];
+				x += min_tx * dx + nx * 0.2f;
+				y += min_ty * dy + ny * 0.2f;
+
+				if (e->nx != 0) vx = 0;
+				else if (e->ny != 0)
+				{
+					vy = 0;
+					if (e->ny == -1)
+					{
+						lastColliBrick_y = e->obj->y;
+					}
+
+				}
 			}
-			else if (e->ny == 1)
-			{
-				vy = 0;
-			}
+			
+
+			
+
 		}
 	}
-	
+
 }
 
 /// <summary>
@@ -476,7 +432,7 @@ void CSophia::CheckCollisionWithPortal(vector<LPGAMEOBJECT>* coObjects)
 		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
 		LPCOLLISIONEVENT e = coEventsResult[0];
 		CPortal* por = dynamic_cast<CPortal*>(e->obj);
-		
+
 		/// <summary>
 		/// CHUYỂN SCENE KHI CHẠM PORTAL
 		/// </summary>
@@ -501,7 +457,7 @@ void CSophia::CheckCollisionWithPortal(vector<LPGAMEOBJECT>* coObjects)
 			D3DXVECTOR2 camPos = camera->GetCamPos();
 			camera->SwitchScenePos = D3DXVECTOR2(camPos.x - camera->GetWidth(), camPos.y);
 			((CPlayScene*)CGame::GetInstance()->GetCurrentScene())->currentMiniScene = por->GetDesScene();
-		}	
+		}
 	}
 
 }
@@ -526,7 +482,7 @@ void CSophia::CheckCollisionWithItem(vector<LPGAMEOBJECT>* coObjects)
 		}
 
 	}
-		
+
 
 	for (int i = 0; i < ListItem.size(); i++)
 	{
@@ -538,7 +494,7 @@ void CSophia::CheckCollisionWithItem(vector<LPGAMEOBJECT>* coObjects)
 			Item->SetIsVanish();
 		}
 	}
-	if (isColideUsingAABB !=true)
+	if (isColideUsingAABB != true)
 	{
 		CalcPotentialCollisions(&ListItem, coEvents);
 		if (coEvents.size() == 0)
@@ -591,9 +547,9 @@ void CSophia::CheckCollisionWithEnemy(vector<LPGAMEOBJECT>* coObjects)
 	{
 		if (dynamic_cast<Enemy*>(coObjects->at(i)) || dynamic_cast<CEnemyBullet*>(coObjects->at(i)))
 			ListEnemy.push_back(coObjects->at(i));
-		
+
 	}
-		
+
 
 	for (int i = 0; i < ListEnemy.size(); i++)
 	{
@@ -608,7 +564,7 @@ void CSophia::CheckCollisionWithEnemy(vector<LPGAMEOBJECT>* coObjects)
 			isInjured = true;
 			return;
 		}
-		
+
 	}
 	if (!isColideUsingAABB)
 	{
@@ -624,18 +580,18 @@ void CSophia::CheckCollisionWithEnemy(vector<LPGAMEOBJECT>* coObjects)
 			float rdx = 0;
 			float rdy = 0;
 			FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
-			
+
 			health -= 1;
 			isInjured = true;
 			Sound::GetInstance()->Play("PlayerInjured", 0, 1);
 		}
-		
+
 
 	}
-	
+
 }
 
-void CSophia::GetBoundingBox(float &left, float &top, float &right, float &bottom)
+void CSophia::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
 	/*if (currentAni->GetCurrentFrame() > -1)
 	{
@@ -683,9 +639,9 @@ bool CSophia::AllowFire()
 {
 	for (int i = 0; i < p_bullet_list.size(); i++)
 	{
-		if (dynamic_cast<ThreeBullet*>(p_bullet_list[i])|| dynamic_cast<ThunderBullet*>(p_bullet_list[i]))
+		if (dynamic_cast<ThreeBullet*>(p_bullet_list[i]) || dynamic_cast<ThunderBullet*>(p_bullet_list[i]))
 		{
-			
+
 			return false;
 		}
 	}
@@ -803,7 +759,7 @@ void CSophia::SwitchState(CState* state, int changeType)
 	*/
 	delete currentState;
 	changeStateType = changeType;
-	
+
 	/* NẾU STATE CHUYỂN TỪ WALK -> IDLE: Set lại frameID để render đúng bánh xe */
 	if (changeStateType == WALK2IDLE)
 	{
@@ -822,7 +778,17 @@ void CSophia::Reset()
 	SetPosition(start_x, start_y);
 	SwitchState(new StateIDLE(), NORMAL_STATE);
 	health = 8;
+	this->isDead = false;
+	SetSpeed(0, 0);
+}
 
+void CSophia::Revival()
+{
+	this->isDead = false;
+	SetPosition(this->x, this->y);
+	SwitchState(new StateIDLE(), NORMAL_STATE);
+	health = 8;
+	
 	SetSpeed(0, 0);
 }
 
@@ -866,10 +832,10 @@ void CSophia::set_bullet_list()
 				{
 					delete p_bullet;
 					p_bullet = NULL;
-				}				
+				}
 			}
 		}
-		
+
 	}
 }
 

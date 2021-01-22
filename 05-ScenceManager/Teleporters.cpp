@@ -42,76 +42,79 @@ void CTeleporter::GetBoundingBox(float& left, float& top, float& right, float& b
 
 void CTeleporter::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-
-	Enemy::Update(dt, coObjects);
-
-
-
-	vector<LPCOLLISIONEVENT> coEvents;
-	vector<LPCOLLISIONEVENT> coEventsResult;
-
-	coEvents.clear();
-
-	CalcPotentialCollisions(coObjects, coEvents);
-
-	if (coEvents.size() == 0)  //nếu không có va chạm, update bình thường
+	if (!isDeath)
 	{
-		timer += interval;
+		Enemy::Update(dt, coObjects);
 
-		if (timer == 200)
+
+
+		vector<LPCOLLISIONEVENT> coEvents;
+		vector<LPCOLLISIONEVENT> coEventsResult;
+
+		coEvents.clear();
+
+		CalcPotentialCollisions(coObjects, coEvents);
+
+		if (coEvents.size() == 0)  //nếu không có va chạm, update bình thường
 		{
-			if (this->GetState() == TELEPORTER_ANI_GRAY_MODE_ON)
+			timer += interval;
+
+			if (timer == 200)
 			{
-				this->SetState(TELEPORTER_ANI_GRAY_MODE_OFF);
+				if (this->GetState() == TELEPORTER_ANI_GRAY_MODE_ON)
+				{
+					this->SetState(TELEPORTER_ANI_GRAY_MODE_OFF);
+				}
+				else if (this->GetState() == TELEPORTER_ANI_TELEPORT)
+				{
+					this->SetState(TELEPORTER_ANI_GRAY_MODE_ON);
+				}
+				timer = 200;
 			}
-			else if (this->GetState() == TELEPORTER_ANI_TELEPORT)
+
+			else if (timer == 800)
 			{
-				this->SetState(TELEPORTER_ANI_GRAY_MODE_ON);
+
 			}
-			timer = 200;
 		}
-
-		else if (timer == 800)
+		else //có va chạm
 		{
-			
+			float min_tx, min_ty, nx = 0, ny = 0;
+			float rdx = 0;
+			float rdy = 0;
+
+			// TODO: This is a very ugly designed function!!!!
+			FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);  // sắp xếp lại các sự kiện va chạm đầu tiên theo trục x, y 
+
+
+			//x += min_tx * dx + nx * 0.4f;  //cập nhật lại vị trí x
+			//y += min_ty * dy + ny * 0.4f;	// cập nhật lại vị trí y  để tránh bị hụt xuống
+
+			// block every object first!
+			{
+				for (UINT i = 0; i < coEventsResult.size(); i++)
+				{
+					LPCOLLISIONEVENT e = coEventsResult[i];
+
+					if (e->obj->objTag == PLAYER)
+					{
+						x += min_tx * dx + nx * 0.4f;  //cập nhật lại vị trí x
+						y += min_ty * dy + ny * 0.4f;	// cập nhật lại vị trí y  để tránh bị hụt xuống
+
+						vx = vy = 0;
+					}
+					if (e->obj->objTag == ENEMY)
+					{
+						/*x += dx;
+						y += dy;*/
+
+						vx = vy = 0;
+					}
+				}
+			}
 		}
 	}
-	else //có va chạm
-	{
-		float min_tx, min_ty, nx = 0, ny = 0;
-		float rdx = 0;
-		float rdy = 0;
-
-		// TODO: This is a very ugly designed function!!!!
-		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);  // sắp xếp lại các sự kiện va chạm đầu tiên theo trục x, y 
-
-
-		//x += min_tx * dx + nx * 0.4f;  //cập nhật lại vị trí x
-		//y += min_ty * dy + ny * 0.4f;	// cập nhật lại vị trí y  để tránh bị hụt xuống
-
-		// block every object first!
-		{
-			for (UINT i = 0; i < coEventsResult.size(); i++)
-			{
-				LPCOLLISIONEVENT e = coEventsResult[i];
-
-				if (e->obj->objTag == PLAYER)
-				{
-					x += min_tx * dx + nx * 0.4f;  //cập nhật lại vị trí x
-					y += min_ty * dy + ny * 0.4f;	// cập nhật lại vị trí y  để tránh bị hụt xuống
-
-					vx = vy = 0;
-				}
-				if (e->obj->objTag == ENEMY)
-				{
-					/*x += dx;
-					y += dy;*/
-
-					vx = vy = 0;
-				}
-			}
-		}
-	}
+	
 }
 
 int CTeleporter::RandomPosition(int a, int b)

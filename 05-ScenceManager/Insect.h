@@ -27,10 +27,10 @@ class CInsect : public Enemy
 	int interval = 30;
 	int timer;
 
-	bool isDeath = false;
+	
 	bool isDoneDeath = false;
 public:
-	CInsect(float x, float y, LPGAMEOBJECT player);
+	CInsect(float x, float y, LPGAMEOBJECT player, int _itemType);
 	virtual void SetState(int state);
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
