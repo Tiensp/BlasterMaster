@@ -74,6 +74,29 @@ void CAnimation::Render(float x, float y, D3DCOLOR color)
 	frames->at(currentFrame)->GetSprite()->Draw(x, y, color);
 }
 
+void CAnimation::RenderWithoutTrans(float x, float y, D3DCOLOR color)
+{
+	DWORD now = GetTickCount64();
+	if (currentFrame == -1)
+	{
+		currentFrame = 0;
+		lastFrameTime = now;
+	}
+	else
+	{
+		DWORD t = frames->at(currentFrame)->GetTime();
+		if (now - lastFrameTime > t)
+		{
+			currentFrame++;
+			lastFrameTime = now;
+			isComplete = (currentFrame == frames->size() - 1);		/* Da render den frame cuoi cua ani */
+			if (currentFrame == frames->size()) currentFrame = 0;
+		}
+	}
+
+	frames->at(currentFrame)->GetSprite()->DrawWithoutTrans(x, y, color);
+}
+
 void CAnimation::RenderFrame(int frameID, float x, float y, int alpha) /* Render mot ani_frame theo id */
 {
 	if (frameID <= -1 || frameID >= frames->size())
@@ -86,6 +109,13 @@ void CAnimation::RenderFrame(int frameID, float x, float y, D3DCOLOR color)
 	if (frameID == -1 || frameID >= frames->size())
 		frameID = 0;
 	frames->at(frameID)->GetSprite()->Draw(x, y, color);
+}
+
+void CAnimation::RenderFrameWithoutTrans(int frameID, float x, float y, D3DCOLOR color)
+{
+	if (frameID == -1 || frameID >= frames->size())
+		frameID = 0;
+	frames->at(frameID)->GetSprite()->DrawWithoutTrans(x, y, color);
 }
 
 void CAnimation::RenderThreeBullet(float x, float y, int alpha)

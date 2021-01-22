@@ -21,11 +21,8 @@ void HUDEnergy::Update()
 
 void HUDEnergy::Render()
 {
-	D3DXVECTOR2 hudPos = CCamera::GetInstance()->GetCamPos();
-	float xHUD = hudPos.x + 16;
-	float yHUD = hudPos.y + 100;
-	HUD_ani->Render(xHUD, yHUD);
-	playerEnergy->Render(xHUD, yHUD);
+	HUD_ani->RenderWithoutTrans(16, 80);
+	playerEnergy->Render(16, 80);
 }
 
 HUDEnergy::~HUDEnergy()

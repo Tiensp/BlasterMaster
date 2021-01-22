@@ -58,6 +58,7 @@ public:
 	void Draw(D3DXVECTOR2 pos, D3DXVECTOR2 pointCenter, LPDIRECT3DTEXTURE9 texture, RECT rect, D3DXCOLOR transcolor = D3DCOLOR_XRGB(255, 0, 255));
 	void Draw(D3DXVECTOR2 pos, LPDIRECT3DTEXTURE9 texture, RECT rect, int alpha = 255);
 	void Draw(D3DXVECTOR2 pos, LPDIRECT3DTEXTURE9 texture, RECT rect, D3DCOLOR color);
+	void DrawWithoutTrans(D3DXVECTOR2 pos, LPDIRECT3DTEXTURE9 texture, RECT rect, D3DCOLOR color = D3DCOLOR_XRGB(255, 255, 255));
 	int IsKeyDown(int KeyCode);
 	void ProcessKeyboard();
 	HWND GetHWND() { return hWnd; };

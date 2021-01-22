@@ -97,6 +97,12 @@ void CGame::Draw(D3DXVECTOR2 pos, LPDIRECT3DTEXTURE9 texture, RECT rect, D3DCOLO
 	spriteHandler->Draw(texture, &rect, NULL, &pInt, color);
 }
 
+void CGame::DrawWithoutTrans(D3DXVECTOR2 pos, LPDIRECT3DTEXTURE9 texture, RECT rect, D3DCOLOR color)
+{
+	D3DXVECTOR3 pInt((int)(pos.x), (int)(pos.y), 0); // Giúp không bị viền
+	spriteHandler->Draw(texture, &rect, NULL, &pInt, color);
+}
+
 int CGame::IsKeyDown(int KeyCode)
 {
 	return (keyStates[KeyCode] & 0x80) > 0;

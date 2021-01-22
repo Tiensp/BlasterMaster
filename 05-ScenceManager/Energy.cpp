@@ -35,7 +35,7 @@ void Energy::Render(float xHUD, float yHUD)
 		*/
 		for (int i = 0; i < currentEnergy; i++)
 		{
-			Energy_ani->Render(xHUD + 1, yHUD + 36 - i * 5);
+			Energy_ani->RenderWithoutTrans(xHUD + 1, yHUD + 36 - i * 5);
 		}
 	}
 }

@@ -21,11 +21,10 @@ void HUD::Update()
 
 void HUD::Render()
 {
-	D3DXVECTOR2 hudPos = CCamera::GetInstance()->GetCamPos();
-	float xHUD = hudPos.x + 16;
-	float yHUD = hudPos.y + 160;
-	HUD_ani->Render(xHUD, yHUD);
-	playerHP->Render(xHUD, yHUD);
+	
+	D3DCOLOR color = D3DCOLOR_ARGB(255, 255, 255, 255);
+	HUD_ani->RenderWithoutTrans(16, 160, color);
+	playerHP->Render(16, 160);
 }
 
 HUD::~HUD()

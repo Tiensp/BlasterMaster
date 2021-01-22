@@ -36,7 +36,7 @@ void HP::Render(float xHUD, float yHUD)
 		*/
 		for (int i = 0; i < currentHP; i++)
 		{
-			HP_ani->Render(xHUD + 1, yHUD + 36 - i * 5);
+			HP_ani->RenderWithoutTrans(xHUD + 1, yHUD + 36 - i * 5);
 		} 
 	}
 }

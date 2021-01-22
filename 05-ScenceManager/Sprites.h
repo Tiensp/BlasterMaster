@@ -20,6 +20,7 @@ public:
 
 	void Draw(float x, float y, int alpha = 255, int R = 255, int G = 255, int B = 255);
 	void Draw(float x, float y, D3DCOLOR color);
+	void DrawWithoutTrans(float x, float y, D3DCOLOR color = D3DCOLOR_XRGB(255, 255, 255));
 	RECT GetRECT();
 };
 
