@@ -258,7 +258,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_EYEBALL:
 	{
 		int itemType = atoi(tokens[4].c_str());
-		obj = new CEyeballs(x, y, sophia, itemType);
+		obj = new CEyeballs(x, y, bigJason, itemType);
 		obj->SetPosition(x, y);
 		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
 		obj->SetAnimationSet(ani_set);
@@ -269,18 +269,18 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_TELEPORTER:
 	{
 		int itemType = atoi(tokens[4].c_str());
-		obj = new CTeleporter(x, y, sophia, itemType);
+		obj = new CTeleporter(x, y, bigJason, itemType);
 		obj->SetPosition(x, y);
 		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
 		obj->SetAnimationSet(ani_set);
-		/*	AllObjs.push_back(obj);*/
+		AllObjs.push_back(obj);
 		break;
 	}
 
 	case OBJECT_TYPE_CANNON:
 	{
 		int itemType = atoi(tokens[4].c_str());
-		obj = new CCannon(x, y, sophia, itemType);
+		obj = new CCannon(x, y, bigJason, itemType);
 		obj->SetPosition(x, y);
 		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
 		obj->SetAnimationSet(ani_set);
@@ -314,7 +314,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		float h = atof(tokens[5].c_str());
 		obj = new CThornOVH(x, y, w, h);
 		obj->SetPosition(x, y);
-		objects.push_back(obj);
+		AllObjs.push_back(obj);
 		break;
 	}
 

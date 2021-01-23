@@ -14,6 +14,7 @@
 #include "StateJUMP.h"
 #include "Brick.h"
 #include "RockOVH.h"
+#include "ThornOVERHEAD.h"
 #include "BigJasonBullet.h"
 #include "Camera.h"
 #include "PlayScence.h"
@@ -98,8 +99,12 @@ void CBigJason::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				}
 				else if (dynamic_cast<CRockOVH*>(e->obj)) // if e->obj is Goomba 
 				{
-					x = x;
-					y = y;
+					
+				}
+				else if (dynamic_cast<CThornOVH*>(e->obj)) // if e->obj is Goomba 
+				{
+					x += dx;
+					y += dy;
 				}
 				else if (dynamic_cast<CPortal*>(e->obj))
 				{

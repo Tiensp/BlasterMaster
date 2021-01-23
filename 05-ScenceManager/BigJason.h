@@ -47,6 +47,7 @@ protected:
 	DWORD lifeTimeAni;
 
 	bool isAutoGo = false;
+	bool isInjured = false;
 	float autoGoDes;
 	float start_x;			// initial position of BigJason at scene
 	float start_y;

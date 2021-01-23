@@ -14,11 +14,15 @@ void CRockOVH::Render()
 {
 	if (hp <= 0)
 	{
+		
 		return;
 	}
+	else
+	{
+		animation_set->at(0)->Render(x, y);
+	}
 
-	animation_set->at(0)->Render(x, y);
-	//RenderBoundingBox();
+	RenderBoundingBox(x,y);
 }
 
 void CRockOVH::GetBoundingBox(float& l, float& t, float& r, float& b)
