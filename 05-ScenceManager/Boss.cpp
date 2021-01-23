@@ -28,6 +28,7 @@ CBoss::CBoss()
 }
 CBoss::CBoss(float x, float y, LPGAMEOBJECT player)
 {
+	hp = 5;
 	SetState(BOSS_ANI_WALKING_RIGHT_DOWN);
 
 
@@ -55,10 +56,14 @@ CBoss::CBoss(float x, float y, LPGAMEOBJECT player)
 
 void CBoss::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
-	left = x;
-	top = y;
-	right = x + BOSS_BBOX_WIDTH;
-	bottom = y + BOSS_BBOX_HEIGHT;
+	if (!isDeath)
+	{
+		left = x;
+		top = y;
+		right = x + BOSS_BBOX_WIDTH;
+		bottom = y + BOSS_BBOX_HEIGHT;
+	}
+
 
 	/*if (state == FLOATER_STATE_DIE)
 		bottom = y + FLOATER_BBOX_HEIGHT_DIE;
@@ -68,173 +73,176 @@ void CBoss::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 
 void CBoss::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
+	if (!isDeath)
+	{
+		Enemy::Update(dt, coObjects);
 
-	CGameObject::Update(dt, coObjects);
-
-	//for (int i = 0; i < listBulletBoss.size(); i++)
-	//{
-	//	listBulletBoss[i]->Update(dt, coObjects);
-	//}
+		//for (int i = 0; i < listBulletBoss.size(); i++)
+		//{
+		//	listBulletBoss[i]->Update(dt, coObjects);
+		//}
 
 
 
-	timeToAttack += 20;
+		timeToAttack += 20;
 
-	if (timeToAttack == 800) {
+		if (timeToAttack == 800) {
 
-		if (this->x - target->x > 0) {
-			this->nx = -1;
+			if (this->x - target->x > 0) {
+				this->nx = -1;
+			}
+			else if (this->x - target->x < 0) {
+				this->nx = 1;
+			}
+			isAttack = true;
+			timeToAttack = 0;
 		}
-		else if (this->x - target->x < 0) {
-			this->nx = 1;
-		}
-		isAttack = true;
-		timeToAttack = 0;
-	}
-	else
-	{
-		isAttack = false;
-
-	}
-	/*listBossHand[0]->SetSpeed(BOSS_HAND_WALKING_SPEED_X, BOSS_HAND_WALKING_SPEED_Y);
-	listBossHand[1]->SetSpeed(-BOSS_HAND_WALKING_SPEED_X, -BOSS_HAND_WALKING_SPEED_Y);*/
-	for (int i = 0; i < listBossHand.size(); i++) {
-		listBossHand[i]->SetBossPos(this->x, this->y);
-		listBossHand[i]->Update(dt, coObjects);
-	}
-
-	float x_hand_left, y_hand_left, x_hand_right, y_hand_right;
-	float x_diff_left, y_diff_left;
-	float x_diff_right, y_diff_right;
-
-	listBossHand[0]->GetPosition(x_hand_left, y_hand_left);
-
-
-	listBossHand[1]->GetPosition(x_hand_right, y_hand_right);
-
-	//listBossArm[0]->SetX(x + 6);
-	//listBossArm[3]->SetXYFollow(x_hand_left, y_hand_left);
-
-
-	x_diff_left = x_hand_left - x;
-	y_diff_left = y_hand_left - y;
-	listBossArm[0]->SetXYFollow(x - 6 + x_diff_left * 1 / 5, y + 6 + y_diff_left * 1 / 5);
-	listBossArm[1]->SetXYFollow(x - 6 + x_diff_left * 2 / 5, y + 6 + y_diff_left * 2 / 5);
-	listBossArm[2]->SetXYFollow(x - 6 + x_diff_left * 3 / 5, y + 6 + y_diff_left * 3 / 5);
-	listBossArm[3]->SetXYFollow(x - 6 + x_diff_left * 4 / 5, y + 6 + y_diff_left * 4 / 5);
-
-	x_diff_right = x_hand_right - (x + 50);
-	y_diff_right = y_hand_right - y;
-
-	listBossArm[4]->SetXYFollow(x + 50 + x_diff_right * 1 / 5, y + 6 + y_diff_right * 1 / 5);
-	listBossArm[5]->SetXYFollow(x + 50 + x_diff_right * 2 / 5, y + 6 + y_diff_right * 2 / 5);
-	listBossArm[6]->SetXYFollow(x + 50 + x_diff_right * 3 / 5, y + 6 + y_diff_right * 3 / 5);
-	listBossArm[7]->SetXYFollow(x + 50 + x_diff_right * 4 / 5, y + 6 + y_diff_right * 4 / 5);
-
-	for (int i = 0; i < listBossArm.size(); i++)
-	{
-		listBossArm[i]->Update(dt, coObjects);
-	}
-
-
-
-	vector<LPCOLLISIONEVENT> coEvents;
-	vector<LPCOLLISIONEVENT> coEventsResult;
-
-	coEvents.clear();
-
-	CalcPotentialCollisions(coObjects, coEvents);
-
-	if (coEvents.size() == 0)  //nếu không có va chạm, update bình thường
-	{
-	/*	x += dx;
-		y += dy;*/
-	}
-	else //có va chạm
-	{
-		float min_tx, min_ty, nx = 0, ny = 0;
-		float rdx = 0;
-		float rdy = 0;
-		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);  // sắp xếp lại các sự kiện va chạm đầu tiên theo trục x, y 
-
-		for (UINT i = 0; i < coEventsResult.size(); i++)
+		else
 		{
-			LPCOLLISIONEVENT e = coEventsResult[i];
+			isAttack = false;
 
-			if (dynamic_cast<CBrick*>(e->obj)) // if e->obj is Goomba 
+		}
+		/*listBossHand[0]->SetSpeed(BOSS_HAND_WALKING_SPEED_X, BOSS_HAND_WALKING_SPEED_Y);
+		listBossHand[1]->SetSpeed(-BOSS_HAND_WALKING_SPEED_X, -BOSS_HAND_WALKING_SPEED_Y);*/
+		for (int i = 0; i < listBossHand.size(); i++) {
+			listBossHand[i]->SetBossPos(this->x, this->y);
+			listBossHand[i]->Update(dt, coObjects);
+		}
+
+		float x_hand_left, y_hand_left, x_hand_right, y_hand_right;
+		float x_diff_left, y_diff_left;
+		float x_diff_right, y_diff_right;
+
+		listBossHand[0]->GetPosition(x_hand_left, y_hand_left);
+
+
+		listBossHand[1]->GetPosition(x_hand_right, y_hand_right);
+
+		//listBossArm[0]->SetX(x + 6);
+		//listBossArm[3]->SetXYFollow(x_hand_left, y_hand_left);
+
+
+		x_diff_left = x_hand_left - x;
+		y_diff_left = y_hand_left - y;
+		listBossArm[0]->SetXYFollow(x - 10 + x_diff_left * 1 / 5, y + 6 + y_diff_left * 1 / 5);
+		listBossArm[1]->SetXYFollow(x - 10 + x_diff_left * 2 / 5, y + 6 + y_diff_left * 2 / 5);
+		listBossArm[2]->SetXYFollow(x - 10 + x_diff_left * 3 / 5, y + 6 + y_diff_left * 3 / 5);
+		listBossArm[3]->SetXYFollow(x - 10 + x_diff_left * 4 / 5, y + 6 + y_diff_left * 4 / 5);
+
+		x_diff_right = x_hand_right - (x + 50);
+		y_diff_right = y_hand_right - y;
+
+		listBossArm[4]->SetXYFollow(x + 55 + x_diff_right * 1 / 5, y + 6 + y_diff_right * 1 / 5);
+		listBossArm[5]->SetXYFollow(x + 55 + x_diff_right * 2 / 5, y + 6 + y_diff_right * 2 / 5);
+		listBossArm[6]->SetXYFollow(x + 55	+ x_diff_right * 3 / 5, y + 6 + y_diff_right * 3 / 5);
+		listBossArm[7]->SetXYFollow(x + 55 + x_diff_right * 4 / 5, y + 6 + y_diff_right * 4 / 5);
+
+		for (int i = 0; i < listBossArm.size(); i++)
+		{
+			listBossArm[i]->Update(dt, coObjects);
+		}
+
+
+
+		vector<LPCOLLISIONEVENT> coEvents;
+		vector<LPCOLLISIONEVENT> coEventsResult;
+
+		coEvents.clear();
+
+		CalcPotentialCollisions(coObjects, coEvents);
+
+		if (coEvents.size() == 0)  //nếu không có va chạm, update bình thường
+		{
+			/*	x += dx;
+				y += dy;*/
+		}
+		else //có va chạm
+		{
+			float min_tx, min_ty, nx = 0, ny = 0;
+			float rdx = 0;
+			float rdy = 0;
+			FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);  // sắp xếp lại các sự kiện va chạm đầu tiên theo trục x, y 
+
+			for (UINT i = 0; i < coEventsResult.size(); i++)
 			{
-				x += min_tx * dx + nx * 0.4f;  //cập nhật lại vị trí x
-				y += min_ty * dy + ny * 0.4f;
-				if (nx != 0) vx = 0;
-				if (ny != 0) vy = 0;// cập nhật lại vị trí y  để tránh bị hụt xuống
+				LPCOLLISIONEVENT e = coEventsResult[i];
 
-				CBrick* brick = dynamic_cast<CBrick*>(e->obj);
-
-				// jump on top >> kill Goomba and deflect a bit 
-				if (e->nx != 0)
+				if (dynamic_cast<CBrick*>(e->obj)) // if e->obj is Goomba 
 				{
-					if (e->nx > 0)
-					{
-						if (this->ny > 0)
-						{
-							this->SetState(BOSS_ANI_WALKING_RIGHT_DOWN);
-						}
-						else if (this->ny < 0)
-						{
-							this->SetState(BOSS_ANI_WALKING_RIGHT_UP);
-						}
-					}
-					else
-					{
-						if (this->ny > 0)
-						{
-							this->SetState(BOSS_ANI_WALKING_LEFT_DOWN);
-						}
-						else  if (this->ny < 0)
-						{
-							this->SetState(BOSS_ANI_WALKING_LEFT_UP);
-						}
-					}
+					x += min_tx * dx + nx * 0.4f;  //cập nhật lại vị trí x
+					y += min_ty * dy + ny * 0.4f;
+					if (nx != 0) vx = 0;
+					if (ny != 0) vy = 0;// cập nhật lại vị trí y  để tránh bị hụt xuống
 
+					CBrick* brick = dynamic_cast<CBrick*>(e->obj);
+
+					// jump on top >> kill Goomba and deflect a bit 
+					if (e->nx != 0)
+					{
+						if (e->nx > 0)
+						{
+							if (this->ny > 0)
+							{
+								this->SetState(BOSS_ANI_WALKING_RIGHT_DOWN);
+							}
+							else if (this->ny < 0)
+							{
+								this->SetState(BOSS_ANI_WALKING_RIGHT_UP);
+							}
+						}
+						else
+						{
+							if (this->ny > 0)
+							{
+								this->SetState(BOSS_ANI_WALKING_LEFT_DOWN);
+							}
+							else  if (this->ny < 0)
+							{
+								this->SetState(BOSS_ANI_WALKING_LEFT_UP);
+							}
+						}
+
+					}
+					else if (e->ny != 0)
+					{
+						if (e->ny > 0)
+						{
+							if (this->nx > 0)
+							{
+								this->SetState(BOSS_ANI_WALKING_RIGHT_DOWN);
+							}
+							else if (this->nx < 0)
+							{
+								this->SetState(BOSS_ANI_WALKING_LEFT_DOWN);
+							}
+						}
+						else if (e->ny < 0)
+						{
+							if (this->nx > 0)
+							{
+								this->SetState(BOSS_ANI_WALKING_RIGHT_UP);
+							}
+							else if (this->nx < 0)
+							{
+								this->SetState(BOSS_ANI_WALKING_LEFT_UP);
+							}
+						}
+					}
 				}
-				else if (e->ny != 0)
+				/*if (e->obj->objTag == PLAYER)
 				{
-					if (e->ny > 0)
-					{
-						if (this->nx > 0)
-						{
-							this->SetState(BOSS_ANI_WALKING_RIGHT_DOWN);
-						}
-						else if (this->nx < 0)
-						{
-							this->SetState(BOSS_ANI_WALKING_LEFT_DOWN);
-						}
-					}
-					else if (e->ny < 0)
-					{
-						if (this->nx > 0)
-						{
-							this->SetState(BOSS_ANI_WALKING_RIGHT_UP);
-						}
-						else if (this->nx < 0)
-						{
-							this->SetState(BOSS_ANI_WALKING_LEFT_UP);
-						}
-					}
+					x += dx;
+					y += dy;
 				}
+				if (e->obj->objTag == ENEMY)
+				{
+					x += dx;
+					y += dy;
+				}*/
 			}
-			/*if (e->obj->objTag == PLAYER)
-			{
-				x += dx;
-				y += dy;
-			}
-			if (e->obj->objTag == ENEMY)
-			{
-				x += dx;
-				y += dy;
-			}*/
 		}
 	}
+
 }
 
 
@@ -274,10 +282,11 @@ void CBoss::Attack()
 void CBoss::Render()
 {
 	int ani = BOSS_ANI_WALKING_RIGHT_DOWN;
-
-	/*if (isDoneDeath) return;
-	if (hp == 0) isDeath = true;*/
-
+	if (isDeath)
+	{
+		return;
+	}
+	else
 	{
 		if (nx > 0)
 		{
@@ -302,12 +311,6 @@ void CBoss::Render()
 			}
 		}
 	}
-
-
-	//for (int i = 0; i < listBulletBoss.size(); i++)
-	//{
-	//	listBulletBoss[i]->Render();
-	//}
 	for (int i = 0; i < listBossHand.size(); i++) {
 
 		listBossHand[i]->Render();

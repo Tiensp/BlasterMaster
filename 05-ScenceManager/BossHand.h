@@ -16,6 +16,7 @@ public:
 		right = x + 18;
 		bottom = y + 32;
 	}
+	void CheckCollisionWithBigJson(vector<LPGAMEOBJECT>* coObjects);
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	void Render();
 	void Move();

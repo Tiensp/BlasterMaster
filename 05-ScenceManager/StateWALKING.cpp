@@ -41,6 +41,7 @@ StateWALKING::StateWALKING()
 	else if (_ACTIVE[BIG_JASON])
 	{
 		CBigJason* bigJason = INSTANCE_BIGJASON;
+		bigJason->renderFrame = false;
 		if (bigJason->nx > 0)
 		{
 			bigJason->vx = BIG_JASON_WALKING_SPEED;

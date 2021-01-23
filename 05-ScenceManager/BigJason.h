@@ -36,7 +36,7 @@
 #define BIG_JASON_BIG_BBOX_WIDTH  24
 #define BIG_JASON_BIG_BBOX_HEIGHT 32
 
-#define BIG_JASON_UNTOUCHABLE_TIME 5000
+#define BIG_JASON_UNTOUCHABLE_TIME 800
 
 
 class CBigJason : public CGameObject
@@ -53,6 +53,7 @@ protected:
 	int energy=5;
 	int health = 4;	// Máu nhân vật
 	vector<BulletObject*> p_bullet_list;
+	bool isInjured;
 public:
 	CBigJason();
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects, vector<CEnemyBullet*>* listBulletBoss);
@@ -71,7 +72,9 @@ public:
 	int GetHealth() { return health; }
 	int GetEnergy() { return energy; }
 	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount64(); }
-
+	void SetIsInjured(bool _injured) { isInjured = _injured; }
+	int GetUntouchable() { return untouchable; }
+	bool GetIsInjured() { return isInjured; }
 	/* State */
 	void SwitchState(CState* state);
 	void set_bullet_list();
@@ -84,6 +87,8 @@ public:
 	void Clear();
 	void CheckCollisionWithBrick(vector<LPGAMEOBJECT>* coObjects);
 	void CheckCollisionWithEnemy(vector<LPGAMEOBJECT>* coObjects);
+	void CheckCollisionWithItem(vector<LPGAMEOBJECT>* coObjects);
+	void Revival();
 	void SetHealthWithBullet(int bulletDame);
 	/* Variable */
 	CState* currentState;

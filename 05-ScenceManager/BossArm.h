@@ -3,6 +3,7 @@
 class CBossArm : public Enemy
 {
 	int typeArm; 
+
 	float new_vx, new_vy;
 	float x_follow, y_follow;
 public:

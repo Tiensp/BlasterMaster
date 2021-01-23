@@ -41,78 +41,61 @@ void CBigJason::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, vector<CEnemyB
 		}
 		// Calculate dx, dy 
 		CGameObject::Update(dt);
+		CheckCollisionWithBrick(coObjects);
+		CheckCollisionWithEnemy(coObjects);
+		CheckCollisionWithItem(coObjects);
 		vector<LPCOLLISIONEVENT> coEvents;
 		vector<LPCOLLISIONEVENT> coEventsResult;
 
 		coEvents.clear();
-
-		// turn off collision when die 
-		if (state != BIG_JASON_STATE_DIE)
-			CalcPotentialCollisions(coObjects, coEvents);
-
+		CalcPotentialCollisions(coObjects, coEvents);
 		// reset untouchable timer if untouchable time has passed
-		if (GetTickCount64() - untouchable_start > BIG_JASON_UNTOUCHABLE_TIME)
+	
+		if (GetTickCount() - untouchable_start > BIG_JASON_UNTOUCHABLE_TIME)
 		{
-			untouchable_start = 0;
+			if (untouchable == 1)
+				isInjured = false;
 			untouchable = 0;
+			untouchable_start = 0;
 		}
 		set_bullet_list();
 		for (int i = 0; i < p_bullet_list.size(); i++)
 		{
-			
+
 			dynamic_cast<BigJasonBullet*>(p_bullet_list.at(i))->Update(dt, coObjects, listBulletBoss);
 		}
-
 		// No collision occured, proceed normally
-		if (coEvents.size() == 0)
-		{
-			x += dx;
-			y += dy;
-		}
-		else
-		{
-			float min_tx, min_ty, nx = 0, ny;
-			float rdx = 0;
-			float rdy = 0;
+		//if (coEvents.size() == 0)
+		//{
+		//	x += dx;
+		//	y += dy;
+		//}
+		//else
+		//{
+		//	float min_tx, min_ty, nx = 0, ny;
+		//	float rdx = 0;
+		//	float rdy = 0;
 
-			// TODO: This is a very ugly designed function!!!!
-			FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
+		//	// TODO: This is a very ugly designed function!!!!
+		//	FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
+		//	x += min_tx * dx + nx * 0.4f;
+		//	y += min_ty * dy + ny * 0.4f;
 
-			// how to push back BigJason if collides with a moving objects, what if BigJason is pushed this way into another object?
-			//if (rdx != 0 && rdx!=dx)
-			//	x += nx*abs(rdx); 
+		//	if (nx != 0) vx = 0;
+		//	if (ny != 0) vy = 0;
+		//	for (UINT i = 0; i < coEventsResult.size(); i++)
+		//	{
+		//		LPCOLLISIONEVENT e = coEventsResult[i];
 
-			// block every object first!
-			x += min_tx * dx + nx * 0.4f;
-			/*y += min_ty*dy + ny*0.4f;*/
+		//		if (dynamic_cast<CRockOVH*>(e->obj)) // if e->obj is Goomba 
+		//		{
+		//			x = x;
+		//			y = y;
+		//		}
 
-			if (nx != 0) vx = 0;
-			if (ny != 0) vy = 0;
-			for (UINT i = 0; i < coEventsResult.size(); i++)
-			{
-				LPCOLLISIONEVENT e = coEventsResult[i];
-				if (dynamic_cast<CBrick*>(e->obj)) // if e->obj is Goomba 
-				{
-					y += min_ty * dy + ny * 0.4f;
-				}
-				else if (dynamic_cast<CRockOVH*>(e->obj)) // if e->obj is Goomba 
-				{
-					x = x;
-					y = y;
-				}
-
-			}
-
-			//
-			// Collision logic with other objects
-			//
-
-
-		}
-		CheckCollisionWithEnemy(coObjects);
+		//	}
+		//}
 		currentState->Update();
-
-
 		// clean up collision events
 		for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
 	}
@@ -252,214 +235,273 @@ void CBigJason::OnKeyDown(int keycode)
 		}
 		break;
 	}
-	
+
 
 	}
 }
 
-	void CBigJason::OnKeyUp(int keycode)
-	{
-	}
+void CBigJason::OnKeyUp(int keycode)
+{
+}
 
-	void CBigJason::KeyState()
-	{
-	}
+void CBigJason::KeyState()
+{
+}
 
-	void CBigJason::SetStartPos(float startx, float starty)
-	{
-		start_x = startx;
-		start_y = starty;
-	}
+void CBigJason::SetStartPos(float startx, float starty)
+{
+	start_x = startx;
+	start_y = starty;
+}
 
 #pragma endregion
 
 
-	void CBigJason::GetBoundingBox(float& left, float& top, float& right, float& bottom)
-	{
-		left = x;
-		top = y;
-		right = x + BIG_JASON_BIG_BBOX_WIDTH;
-		bottom = y + BIG_JASON_BIG_BBOX_HEIGHT;
-	}
+void CBigJason::GetBoundingBox(float& left, float& top, float& right, float& bottom)
+{
+	left = x;
+	top = y;
+	right = x + BIG_JASON_BIG_BBOX_WIDTH;
+	bottom = y + BIG_JASON_BIG_BBOX_HEIGHT;
+}
 
-	void CBigJason::Clear()
+void CBigJason::Clear()
+{
+	if (__instance != NULL)
 	{
-		if (__instance != NULL)
+		delete __instance;
+		__instance = NULL;
+	}
+}
+
+void CBigJason::CheckCollisionWithBrick(vector<LPGAMEOBJECT>* coObjects)
+{
+	vector<LPCOLLISIONEVENT> coEvents;
+	vector<LPCOLLISIONEVENT> coEventsResult;
+	bool isColideUsingAABB = false;
+	coEvents.clear();
+
+	vector<LPGAMEOBJECT> ListBrick;
+	ListBrick.clear();
+	for (UINT i = 0; i < coObjects->size(); i++)
+		if (dynamic_cast<CBrick*>(coObjects->at(i)))
+			ListBrick.push_back(coObjects->at(i));
+
+
+
+	if (isColideUsingAABB != true)
+	{
+		CalcPotentialCollisions(&ListBrick, coEvents);
+
+		if (coEvents.size() == 0)
 		{
-			delete __instance;
-			__instance = NULL;
+			x += dx;
+			y += dy;
 		}
-	}
-
-	void CBigJason::CheckCollisionWithBrick(vector<LPGAMEOBJECT> * coObjects)
-	{
-		vector<LPCOLLISIONEVENT> coEvents;
-		vector<LPCOLLISIONEVENT> coEventsResult;
-		bool isColideUsingAABB = false;
-		coEvents.clear();
-
-		vector<LPGAMEOBJECT> ListBrick;
-		ListBrick.clear();
-		for (UINT i = 0; i < coObjects->size(); i++)
-			if (dynamic_cast<CBrick*>(coObjects->at(i)))
-				ListBrick.push_back(coObjects->at(i));
-
-
-
-		if (isColideUsingAABB != true)
+		else
 		{
-			CalcPotentialCollisions(&ListBrick, coEvents);
+			float min_tx, min_ty, nx = 0, ny;
+			float rdx = 0;
+			float rdy = 0;
 
-			if (coEvents.size() == 0)
+			FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
+			for (UINT i = 0; i < coEventsResult.size(); i++)
 			{
-				x += dx;
-				y += dy;
-			}
-			else
-			{
-				float min_tx, min_ty, nx = 0, ny;
-				float rdx = 0;
-				float rdy = 0;
+				LPCOLLISIONEVENT e = coEventsResult[i];
+				x += min_tx * dx + nx * 0.2f;
+				y += min_ty * dy + ny * 0.2f;
 
-				FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
-				for (UINT i = 0; i < coEventsResult.size(); i++)
+				if (e->nx != 0) vx = 0;
+				else if (e->ny != 0)
 				{
-					LPCOLLISIONEVENT e = coEventsResult[i];
-					x += min_tx * dx + nx * 0.2f;
-					y += min_ty * dy + ny * 0.2f;
+					vy = 0;
 
-					if (e->nx != 0) vx = 0;
-					else if (e->ny != 0)
-					{
-						vy = 0;
-
-					}
-				}
-
-
-
-
-			}
-		}
-	}
-
-	void CBigJason::CheckCollisionWithEnemy(vector<LPGAMEOBJECT> * coObjects)
-	{
-		vector<LPCOLLISIONEVENT> coEvents;
-		vector<LPCOLLISIONEVENT> coEventsResult;
-		bool isColideUsingAABB = false;
-		coEvents.clear();
-		vector<LPGAMEOBJECT> ListEnemy;
-		vector<LPGAMEOBJECT> ListBullet;
-		ListEnemy.clear();
-		for (UINT i = 0; i < coObjects->size(); i++)
-		{
-			if (dynamic_cast<Enemy*>(coObjects->at(i)) || dynamic_cast<CEnemyBullet*>(coObjects->at(i)))
-				ListEnemy.push_back(coObjects->at(i));
-		}
-		for (int i = 0; i < ListEnemy.size(); i++)
-		{
-			if (this->IsCollidingObject(ListEnemy.at(i)))
-			{
-
-				isColideUsingAABB = true;
-				/*if (untouchable == 1 || isInjured)
-					continue;*/
-				health -= 1;
-				/*Sound::GetInstance()->Play("PlayerInjured", 0, 1);*/
-				StartUntouchable();
-				return;
-			}
-		}
-		if (!isColideUsingAABB)
-		{
-			CalcPotentialCollisions(&ListEnemy, coEvents);
-
-			if (coEvents.size() == 0)
-			{
-				return;
-			}
-			else
-			{
-				float min_tx, min_ty, nx = 0, ny;
-				float rdx = 0;
-				float rdy = 0;
-				FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
-
-				health -= 1;
-				/*isInjured = true;
-				Sound::GetInstance()->Play("PlayerInjured", 0, 1);*/
-			}
-
-
-		}
-	}
-
-	void CBigJason::SetHealthWithBullet(int bulletDame)
-	{
-		this->health -= bulletDame;
-	}
-
-
-
-	void CBigJason::SwitchState(CState * state)
-	{
-		/*
-			Tại hàm này, ta sẽ thay đổi state và animation hiện tại của player sang state, ani mới
-		*/
-		delete currentState;
-		currentState = state;
-		currentAni = animation_set->at(state->StateName);
-	}
-
-	void CBigJason::set_bullet_list()
-	{
-		for (int i = 0; i < p_bullet_list.size(); i++)
-		{
-			BulletObject* p_bullet = p_bullet_list[i];
-			if (p_bullet->isDone)
-			{
-				p_bullet_list.erase(p_bullet_list.begin() + i);
-				if (p_bullet != NULL)
-				{
-					delete p_bullet;
-					p_bullet = NULL;
 				}
 			}
 		}
-
 	}
+}
 
-
-	int CBigJason::Get_BigJason_Normal_bullet()
+void CBigJason::CheckCollisionWithEnemy(vector<LPGAMEOBJECT>* coObjects)
+{
+	vector<LPCOLLISIONEVENT> coEvents;
+	vector<LPCOLLISIONEVENT> coEventsResult;
+	bool isColideUsingAABB = false;
+	coEvents.clear();
+	vector<LPGAMEOBJECT> ListEnemy;
+	vector<LPGAMEOBJECT> ListBullet;
+	ListEnemy.clear();
+	for (UINT i = 0; i < coObjects->size(); i++)
 	{
-		int count = 0;
-		for (int i = 0; i < p_bullet_list.size(); i++)
-		{
-			if (dynamic_cast<BigJasonBullet*>(p_bullet_list[i]))
-			{
-				count += 1;
-			}
-		}
-		return count;
+		if (dynamic_cast<Enemy*>(coObjects->at(i)) || dynamic_cast<CEnemyBullet*>(coObjects->at(i)))
+			ListEnemy.push_back(coObjects->at(i));
 	}
+	for (int i = 0; i < ListEnemy.size(); i++)
+	{
+		if (this->IsCollidingObject(ListEnemy.at(i)))
+		{
 
+			isColideUsingAABB = true;
+			if (untouchable == 1 || isInjured)
+				continue;
+			health -= 1;
+			/*Sound::GetInstance()->Play("PlayerInjured", 0, 1);*/
+			StartUntouchable();
+			return;
+		}
+	}
+	if (!isColideUsingAABB)
+	{
+		CalcPotentialCollisions(&ListEnemy, coEvents);
+
+		if (coEvents.size() == 0)
+		{
+			return;
+		}
+		else
+		{
+			float min_tx, min_ty, nx = 0, ny;
+			float rdx = 0;
+			float rdy = 0;
+			FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
+
+			health -= 1;
+			/*isInjured = true;
+			Sound::GetInstance()->Play("PlayerInjured", 0, 1);*/
+		}
+
+
+	}
+}
+
+void CBigJason::CheckCollisionWithItem(vector<LPGAMEOBJECT>* coObjects)
+{
+	vector<LPCOLLISIONEVENT> coEvents;
+	vector<LPCOLLISIONEVENT> coEventsResult;
+	bool isColideUsingAABB = false;
+	int type;
+	coEvents.clear();
+	vector<LPGAMEOBJECT> ListItem;
+	ListItem.clear();
+	for (UINT i = 0; i < coObjects->size(); i++)
+	{
+		if (dynamic_cast<CItem*>(coObjects->at(i)))
+		{
+			ListItem.push_back(coObjects->at(i));
+		}
+
+	}
+	for (int i = 0; i < ListItem.size(); i++)
+	{
+		if (this->IsCollidingObject(ListItem.at(i)))
+		{
+			isColideUsingAABB = true;
+			CItem* Item = dynamic_cast<CItem*>(ListItem.at(i));
+			type = Item->GetType();
+			Item->SetIsVanish();
+		}
+	}
+	if (isColideUsingAABB != true)
+	{
+		CalcPotentialCollisions(&ListItem, coEvents);
+		if (coEvents.size() == 0)
+		{
+			return;
+		}
+		else
+		{
+			float min_tx, min_ty, nx = 0, ny;
+			float rdx = 0;
+			float rdy = 0;
+
+			FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
+			LPCOLLISIONEVENT e = coEventsResult[0];
+			CItem* Item = dynamic_cast<CItem*>(e->obj);
+			type = Item->GetType();
+		}
+	}
+	if (type == 0)
+	{
+		this->health += 1;
+	}
+	else if(type==4)
+	{
+		this->energy += 1;
+	}
+}
+
+void CBigJason::Revival()
+{
+	this->isDead = false;
+	SetPosition(this->x, this->y);
+	SwitchState(new StateIDLE());
+	health = 8;
+	/*SetSpeed(0, 0);*/
+}
+
+void CBigJason::SetHealthWithBullet(int bulletDame)
+{
+	this->health -= bulletDame;
+}
+
+void CBigJason::SwitchState(CState* state)
+{
 	/*
-		Reset BigJason status to the beginning state of a scene
+		Tại hàm này, ta sẽ thay đổi state và animation hiện tại của player sang state, ani mới
 	*/
-	void CBigJason::Reset()
+	delete currentState;
+	currentState = state;
+	currentAni = animation_set->at(state->StateName);
+}
+
+void CBigJason::set_bullet_list()
+{
+	for (int i = 0; i < p_bullet_list.size(); i++)
 	{
-		SetLevel(BIG_JASON_LEVEL_BIG);
-		SetPosition(start_x, start_y);
-		SwitchState(new StateIDLE());
-		SetSpeed(0, 0);
+		BulletObject* p_bullet = p_bullet_list[i];
+		if (p_bullet->isDone)
+		{
+			p_bullet_list.erase(p_bullet_list.begin() + i);
+			if (p_bullet != NULL)
+			{
+				delete p_bullet;
+				p_bullet = NULL;
+			}
+		}
 	}
 
-	CBigJason* CBigJason::GetInstance()
+}
+
+
+int CBigJason::Get_BigJason_Normal_bullet()
+{
+	int count = 0;
+	for (int i = 0; i < p_bullet_list.size(); i++)
 	{
-		if (__instance == NULL) {
-			__instance = new CBigJason();
+		if (dynamic_cast<BigJasonBullet*>(p_bullet_list[i]))
+		{
+			count += 1;
 		}
-		return __instance;
 	}
+	return count;
+}
+
+/*
+	Reset BigJason status to the beginning state of a scene
+*/
+void CBigJason::Reset()
+{
+	SetLevel(BIG_JASON_LEVEL_BIG);
+	SetPosition(start_x, start_y);
+	SwitchState(new StateIDLE());
+	SetSpeed(0, 0);
+}
+
+CBigJason* CBigJason::GetInstance()
+{
+	if (__instance == NULL) {
+		__instance = new CBigJason();
+	}
+	return __instance;
+}
 

@@ -448,9 +448,10 @@ void BigJasonBullet::CheckCollisionWithBullet(vector<CEnemyBullet*>* listBulletB
 		if (this->IsCollidingObject(ListBullet.at(i)))
 		{
 			isColideUsingAABB = true;
-			CEnemyBullet* bullet = dynamic_cast<CEnemyBullet*>(ListBullet.at(i));
-			bullet->isDone;
-		
+			ListBullet.at(i)->isDone = true;
+			this->isDone = true;
+			/*BigJasonBullet* bullet = dynamic_cast<BigJasonBullet*>(ListBullet.at(i));
+			bullet->isDone;*/
 		}
 	}
 	if (isColideUsingAABB != true)
@@ -458,6 +459,7 @@ void BigJasonBullet::CheckCollisionWithBullet(vector<CEnemyBullet*>* listBulletB
 		CalcPotentialCollisions(&ListBullet, coEvents);
 		if (coEvents.size() == 0)
 		{
+			
 
 		}
 		else
@@ -470,8 +472,9 @@ void BigJasonBullet::CheckCollisionWithBullet(vector<CEnemyBullet*>* listBulletB
 			// TODO: This is a very ugly designed function!!!!
 			FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
 			LPCOLLISIONEVENT e = coEventsResult[0];
-			CEnemyBullet* bullet = dynamic_cast<CEnemyBullet*>(e->obj);
+			BigJasonBullet* bullet = dynamic_cast<BigJasonBullet*>(e->obj);
 			bullet->isDone = true;
+			this->isDone = true;
 			
 
 			/*Item->IsDead = true;*/

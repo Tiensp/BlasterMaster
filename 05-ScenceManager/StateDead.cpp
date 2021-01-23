@@ -80,12 +80,23 @@ void StateDead::Update()
 void StateDead::HandleKeyboard()
 {
 
-	CSophia* sophia = INSTANCE_SOPHIA;
-
-	if (_KEYCODE[DIK_R])
+	if (_ACTIVE[SOPHIA])
 	{
-		sophia->Revival();
-	
+		CSophia* sophia = INSTANCE_SOPHIA;
+		if (_KEYCODE[DIK_R])
+		{
+			sophia->Revival();
+
+		}
+	}
+	else if (_ACTIVE[BIG_JASON])
+	{
+		CBigJason* bigjason = INSTANCE_BIGJASON;
+		if (_KEYCODE[DIK_R])
+		{
+			bigjason->Revival();
+
+		}
 	}
 }
 

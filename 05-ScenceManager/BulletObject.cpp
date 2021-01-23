@@ -47,7 +47,7 @@ void BulletObject::CheckCollisionWithEnemy(vector<LPGAMEOBJECT>* coObjects)
 			Enemy* enemy = dynamic_cast<Enemy*>(ListEnemy.at(i));
 			enemy->Set_hp(bulletDame);
 			/*this->isMove = false;*/
-			this->isColEnemy = true;
+				this->isColEnemy = true;
 			this->isDone = true;
 		}
 	}

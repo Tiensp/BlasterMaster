@@ -19,9 +19,10 @@ BossBullet::~BossBullet()
 
 void BossBullet::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
+	
 	CEnemyBullet::Update(dt, coObjects);
 
-	if (isDone) return;
+	
 	HandleMove(SCREEN_HEIGHT / 3, SCREEN_HEIGHT / 3);
 	if (isMove)
 	{
@@ -100,7 +101,8 @@ void BossBullet::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 void BossBullet::Render()
 {
 	int ani = 0;
-	if (isDone) return;
+	if (isDone) 
+		return;
 	if (isColBrick)
 	{
 		ani = 2;

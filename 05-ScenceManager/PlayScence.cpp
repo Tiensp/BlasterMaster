@@ -98,6 +98,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
 		obj->SetAnimationSet(ani_set);
 		AllObjs.push_back(obj);
+		/*grid->AddObject(sophia);*/
 		DebugOut(L"[INFO] SOPHIA object created!\n");
 	}
 	break;
@@ -519,7 +520,6 @@ void CPlayScene::Update(DWORD dt)
 						}
 					}
 				}
-
 			}
 			CEnemyBullet* p_bullet = new CEnemyBullet();
 			p_bullet = new BossBullet((boss->Get_x()) + 30, (boss->Get_y()) + 66, 1);

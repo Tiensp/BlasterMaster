@@ -29,7 +29,6 @@ StateIDLE::StateIDLE()
 	else if (_ACTIVE[JASON])
 	{
 		CJason* jason = INSTANCE_JASON;
-
 		jason->vx = 0;
 
 		if (jason->nx > 0)
