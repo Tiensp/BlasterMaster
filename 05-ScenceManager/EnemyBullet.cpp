@@ -1,6 +1,7 @@
 #include "EnemyBullet.h"
 #include "Sophia.h"
 #include "Sound.h"
+#include "BigJason.h"
 
 CEnemyBullet::~CEnemyBullet()
 {
@@ -25,20 +26,30 @@ void CEnemyBullet::CheckCollisionWithPlayer(vector<LPGAMEOBJECT>* coObjects)
 		{
 			ListEnemy.push_back(coObjects->at(i));
 		}
-	for (UINT i = 0; i < ListEnemy.size() && isColideUsingAABB == false; i++)
+	for (UINT i = 0; i < ListEnemy.size(); i++)
 	{
 		if (this->IsCollidingObject(dynamic_cast<CSophia*>(ListEnemy.at(i))))
 		{
-			isColideUsingAABB = true;
-			CSophia* sophia = dynamic_cast<CSophia*>(ListEnemy.at(i));
 			
-			if (sophia->GetUntouchable() == 1 || sophia->GetIsInjured())
-				continue;
-			sophia->SetHealthWithBullet(bulletDame);
-			Sound::GetInstance()->Play("PlayerInjured", 0, 1);
-			/*this->isMove = false;*/
-			this->isDone = true;
-		}
+			if (dynamic_cast<CSophia*>(coObjects->at(i)))
+			{
+				CSophia* sophia = dynamic_cast<CSophia*>(ListEnemy.at(i));
+				sophia->SetHealthWithBullet(bulletDame);
+				Sound::GetInstance()->Play("PlayerInjured", 0, 1);
+				/*this->isMove = false;*/
+				this->isDone = true;
+			}
+			else if (dynamic_cast<CBigJason*>(coObjects->at(i)))
+			{
+				CBigJason* bigJason = dynamic_cast<CBigJason*>(ListEnemy.at(i));
+				bigJason->SetHealthWithBullet(bulletDame);
+				Sound::GetInstance()->Play("PlayerInjured", 0, 1);
+				/*this->isMove = false;*/
+				this->isDone = true;
+			}
+			isColideUsingAABB = true;
+
+		}	
 	}
 	if (isColideUsingAABB != true)
 	{
@@ -59,13 +70,23 @@ void CEnemyBullet::CheckCollisionWithPlayer(vector<LPGAMEOBJECT>* coObjects)
 			FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
 
 			LPCOLLISIONEVENT e = coEventsResult[0];
+			if (dynamic_cast<CBigJason*>(e->obj))
+			{
+				CBigJason* bigJason = dynamic_cast<CBigJason*>(e->obj);
+				bigJason->SetHealthWithBullet(bulletDame);
+				Sound::GetInstance()->Play("PlayerInjured", 0, 1);
+			}
+			else if (dynamic_cast<CSophia*>(e->obj))
+			{
+				CSophia* sophia = dynamic_cast<CSophia*>(e->obj);
+				sophia->SetHealthWithBullet(bulletDame);
+				this->isDone = true;
+				/*Item->IsDead = true;*/
+			}
 
-			CSophia* sophia = dynamic_cast<CSophia*>(e->obj);
-			sophia->SetHealthWithBullet(bulletDame);
-			this->isDone = true;
-			/*Item->IsDead = true;*/
 
 		}
 	}
+
 }
 

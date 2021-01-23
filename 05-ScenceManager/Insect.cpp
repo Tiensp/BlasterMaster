@@ -37,74 +37,75 @@ void CInsect::GetBoundingBox(float& left, float& top, float& right, float& botto
 
 void CInsect::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-
-	Enemy::Update(dt, coObjects);
-
-	vector<LPCOLLISIONEVENT> coEvents;
-	vector<LPCOLLISIONEVENT> coEventsResult;
-
-	coEvents.clear();
-
-	CalcPotentialCollisions(coObjects, coEvents);
-
-	timer += 10;
-
-	if (timer == 0) {
-		this->SetState(INSECT_ANI_DROP_DOWN);
-	}
-	else if (timer == 300)
+	if (!isDeath)
 	{
-		if (this->nx == 1) {
-			if (this->GetState() == INSECT_ANI_DROP_DOWN) {
-				this->SetState(INSECT_ANI_WALKING_RIGHT_UP);
-			}
+		Enemy::Update(dt, coObjects);
+
+		vector<LPCOLLISIONEVENT> coEvents;
+		vector<LPCOLLISIONEVENT> coEventsResult;
+
+		coEvents.clear();
+
+		CalcPotentialCollisions(coObjects, coEvents);
+
+		timer += 10;
+
+		if (timer == 0) {
+			this->SetState(INSECT_ANI_DROP_DOWN);
 		}
-		else if (this->nx == -1) {
-			if (this->GetState() == INSECT_ANI_DROP_DOWN) {
+		else if (timer == 300)
+		{
+			if (this->nx == 1) {
+				if (this->GetState() == INSECT_ANI_DROP_DOWN) {
+					this->SetState(INSECT_ANI_WALKING_RIGHT_UP);
+				}
+			}
+			else if (this->nx == -1) {
+				if (this->GetState() == INSECT_ANI_DROP_DOWN) {
+					this->SetState(INSECT_ANI_WALKING_LEFT_UP);
+				}
+			}
+
+			timer = 300;
+		}
+		else if (timer == 650)
+		{
+			if (this->GetState() == INSECT_ANI_WALKING_LEFT_UP)
+			{
+				this->SetState(INSECT_ANI_WALKING_LEFT_DOWN);
+			}
+			else if (this->GetState() == INSECT_ANI_WALKING_RIGHT_UP)
+			{
+				this->SetState(INSECT_ANI_WALKING_RIGHT_DOWN);
+			}
+
+			timer = 650;
+		}
+		else if (timer == 950) {
+			if (this->GetState() == INSECT_ANI_WALKING_LEFT_DOWN) {
 				this->SetState(INSECT_ANI_WALKING_LEFT_UP);
 			}
+			else if (this->GetState() == INSECT_ANI_WALKING_RIGHT_DOWN) {
+				this->SetState(INSECT_ANI_WALKING_RIGHT_UP);
+			}
+
+			timer = 100;
 		}
 
-		timer = 300;
-	}
-	else if (timer == 650)
-	{
-		if (this->GetState() == INSECT_ANI_WALKING_LEFT_UP)
+
+		if (coEvents.size() == 0)
 		{
-			this->SetState(INSECT_ANI_WALKING_LEFT_DOWN);
+			x += dx;
+			y += dy;
 		}
-		else if (this->GetState() == INSECT_ANI_WALKING_RIGHT_UP)
+		else //có va chạm
 		{
-			this->SetState(INSECT_ANI_WALKING_RIGHT_DOWN);
-		}
+			float min_tx, min_ty, nx = 0, ny = 0;
+			float rdx = 0;
+			float rdy = 0;
 
-		timer = 650;
-	}
-	else if (timer == 950) {
-		if (this->GetState() == INSECT_ANI_WALKING_LEFT_DOWN) {
-			this->SetState(INSECT_ANI_WALKING_LEFT_UP);
-		}
-		else if (this->GetState() == INSECT_ANI_WALKING_RIGHT_DOWN) {
-			this->SetState(INSECT_ANI_WALKING_RIGHT_UP);
-		}
-
-		timer = 100;
-	}
-
-
-	if (coEvents.size() == 0)
-	{
-		x += dx;
-		y += dy;
-	}
-	else //có va chạm
-	{
-		float min_tx, min_ty, nx = 0, ny = 0;
-		float rdx = 0;
-		float rdy = 0;
-
-		// TODO: This is a very ugly designed function!!!!
-		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
+			// TODO: This is a very ugly designed function!!!!
+			FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
 
 
 			x += min_tx * dx + nx * 0.4f;  //cập nhật lại vị trí x
@@ -116,70 +117,72 @@ void CInsect::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				{
 					LPCOLLISIONEVENT e = coEventsResult[i];
 
-				if (dynamic_cast<CBrick*>(e->obj))
-				{
+					if (dynamic_cast<CBrick*>(e->obj))
+					{
 
 						CBrick* brick = dynamic_cast<CBrick*>(e->obj);
 
-					if (e->nx != 0)
-					{
-						if (e->nx > 0)
+						if (e->nx != 0)
 						{
-							if (this->ny > 0)
+							if (e->nx > 0)
 							{
-								this->SetState(INSECT_ANI_WALKING_RIGHT_DOWN);
+								if (this->ny > 0)
+								{
+									this->SetState(INSECT_ANI_WALKING_RIGHT_DOWN);
+								}
+								else if (this->ny < 0)
+								{
+									this->SetState(INSECT_ANI_WALKING_RIGHT_UP);
+								}
 							}
-							else if (this->ny < 0)
+							else if (e->nx < 0)
 							{
-								this->SetState(INSECT_ANI_WALKING_RIGHT_UP);
+								if (this->ny > 0)
+								{
+									this->SetState(INSECT_ANI_WALKING_LEFT_DOWN);
+								}
+								else if (this->ny < 0)
+								{
+									this->SetState(INSECT_ANI_WALKING_LEFT_UP);
+								}
 							}
-						}
-						else if (e->nx < 0)
-						{
-							if (this->ny > 0)
-							{
-								this->SetState(INSECT_ANI_WALKING_LEFT_DOWN);
-							}
-							else if (this->ny < 0)
-							{
-								this->SetState(INSECT_ANI_WALKING_LEFT_UP);
-							}
-						}
 
-					}
-					else if (e->ny != 0)
-					{
-						if (e->ny > 0)
+						}
+						else if (e->ny != 0)
 						{
-							if (this->nx > 0)
+							if (e->ny > 0)
 							{
-								this->SetState(INSECT_ANI_WALKING_RIGHT_DOWN);
+								if (this->nx > 0)
+								{
+									this->SetState(INSECT_ANI_WALKING_RIGHT_DOWN);
+								}
+								else if (this->nx < 0)
+								{
+									this->SetState(INSECT_ANI_WALKING_LEFT_DOWN);
+								}
 							}
-							else if (this->nx < 0)
+							else if (e->ny < 0)
 							{
-								this->SetState(INSECT_ANI_WALKING_LEFT_DOWN);
+								if (this->nx > 0)
+								{
+									this->SetState(INSECT_ANI_WALKING_RIGHT_UP);
+								}
+								else if (this->nx < 0)
+								{
+									this->SetState(INSECT_ANI_WALKING_LEFT_UP);
+								}
 							}
 						}
-						else if (e->ny < 0)
-						{
-							if (this->nx > 0)
-							{
-								this->SetState(INSECT_ANI_WALKING_RIGHT_UP);
-							}
-							else if (this->nx < 0)
-							{
-								this->SetState(INSECT_ANI_WALKING_LEFT_UP);
-							}
-						}
 					}
-				}
-				else {
-					x += dx;
-					y += dy;
+					else {
+						x += dx;
+						y += dy;
+					}
 				}
 			}
 		}
 	}
+
 
 }
 

@@ -1,10 +1,13 @@
 #include "BossHand.h"
+#include "BigJason.h"
+#include "Sound.h"
 
 CBossHand::CBossHand(float x, float y, int type, float _vx, float _vy)
 {
 	this->x = x;
 	this->y = y;
 	this->typeHand = type;
+	hp = 999;
 	this->SetAnimationSet(CAnimationSets::GetInstance()->Get(120));
 	if (typeHand == 1) {
 
@@ -27,12 +30,81 @@ CBossHand::~CBossHand()
 {
 }
 
+void CBossHand::CheckCollisionWithBigJson(vector<LPGAMEOBJECT>* coObjects)
+{
+	vector<LPCOLLISIONEVENT> coEvents;
+	vector<LPCOLLISIONEVENT> coEventsResult;
+	bool isColideUsingAABB = false;
+	coEvents.clear();
+	vector<LPGAMEOBJECT> ListEnemy;
+	ListEnemy.clear();
+	for (UINT i = 0; i < coObjects->size(); i++)
+		if (dynamic_cast<CBigJason*>(coObjects->at(i)))
+		{
+			ListEnemy.push_back(coObjects->at(i));
+		}
+	for (UINT i = 0; i < ListEnemy.size(); i++)
+	{
+		if (this->IsCollidingObject(ListEnemy.at(i)))
+		{
+			isColideUsingAABB = true;
+		
+			if (dynamic_cast<CBigJason*>(coObjects->at(i)))
+			{
+				CBigJason* bigJason = dynamic_cast<CBigJason*>(ListEnemy.at(i));
+				isColideUsingAABB = true;
+				if (bigJason->GetUntouchable() == 1 || bigJason->GetIsInjured()==true)
+					continue;
+				bigJason->SetHealthWithBullet(1);
+				Sound::GetInstance()->Play("PlayerInjured", 0, 1);
+				
+				bigJason->StartUntouchable();
+			}
+
+		}
+
+	}
+	if (isColideUsingAABB != true)
+	{
+		CalcPotentialCollisions(&ListEnemy, coEvents);
+		if (coEvents.size() == 0)
+		{
+			/*x += dx;
+			y += dy;*/
+		}
+		else
+		{
+
+			float min_tx, min_ty, nx = 0, ny;
+			float rdx = 0;
+			float rdy = 0;
+
+			// TODO: This is a very ugly designed function!!!!
+			FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
+			LPCOLLISIONEVENT e = coEventsResult[0];
+			if (dynamic_cast<CBigJason*>(e->obj))
+			{
+				CBigJason* bigJason = dynamic_cast<CBigJason*>(e->obj);
+				
+
+				bigJason->SetHealthWithBullet(1);
+				Sound::GetInstance()->Play("PlayerInjured", 0, 1);
+			}
+			
+
+
+		}
+	}
+
+}
+
 void CBossHand::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	CGameObject::Update(dt, coObjects);
+	Enemy::Update(dt, coObjects);
 	Move();
 	this->x += dx;
 	this->y += dy;
+	CheckCollisionWithBigJson(coObjects);
 
 
 }

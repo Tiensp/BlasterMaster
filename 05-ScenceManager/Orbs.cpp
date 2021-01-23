@@ -11,50 +11,44 @@
 #include "Brick.h"
 COrb::COrb(float x, float y, LPGAMEOBJECT player, int _typeItem)
 {
-	SetState(ORB_ANI_WALKING_RIGHT);
+	this->isDeath = false;
+	
 	this->x = x;
 	this->y = y;
 	this->target = player;
 	typeItem = _typeItem;
+	
 	objTag = ENEMY;
 	objType = ORBS;
-	
 	hp = 1;
+	SetState(ORB_ANI_WALKING_RIGHT);
 
 }
 
 void COrb::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
-	if (!isDoneDeath)
+	if (!isDeath)
 	{
 		left = x;
 		top = y;
 		right = x + ORB_BBOX_WIDTH;
 		bottom = y + ORB_BBOX_HEIGHT;
 
-		/*if (state == ORB_STATE_DIE)
-			bottom = y + ORB_BBOX_HEIGHT_DIE;
-		else
-			bottom = y + ORB_BBOX_HEIGHT;*/
+		
 	}
-	else return;
+
 }
 
 void COrb::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-
-
 	if (!isDeath)
 	{
 		Enemy::Update(dt, coObjects);
 
 		vector<LPCOLLISIONEVENT> coEvents;
 		vector<LPCOLLISIONEVENT> coEventsResult;
-
 		coEvents.clear();
 
-		// turn off collision when die 
-		//nếu không chết thì kiểm tra toàn bộ va chạm với các đối tượng khác
 		CalcPotentialCollisions(coObjects, coEvents);
 
 		if (coEvents.size() == 0)  //nếu không có va chạm, update bình thường
@@ -145,7 +139,7 @@ void COrb::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 							}
 						}
 					}
-					else if (e->obj->objTag == PLAYER)
+					else if (dynamic_cast<CSophia*>(e->obj))
 					{
 						isDeath = true;
 						this->SetState(ORB_ANI_DEATH);
@@ -204,7 +198,7 @@ void COrb::Render()
 	int ani = ORB_ANI_WALKING_RIGHT;
 
 	if (isDoneDeath) return;
-	if (hp <= 0) isDeath = true;
+
 	
 	if (isAttack || hp <= 0)
 	{
