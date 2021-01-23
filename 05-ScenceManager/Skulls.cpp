@@ -91,11 +91,7 @@ void CSkull::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			// TODO: This is a very ugly designed function!!!!
 			FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);  // sắp xếp lại các sự kiện va chạm đầu tiên theo trục x, y 
 
-			// how to push back Sophia if collides with a moving objects, what if Sophia is pushed this way into another object?
-			//if (rdx != 0 && rdx!=dx)
-			//	x += nx*abs(rdx); 
 
-			// block every object first!
 			{
 				for (UINT i = 0; i < coEventsResult.size(); i++)
 				{
@@ -132,27 +128,14 @@ void CSkull::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 							}
 
 						}
-						/*else if (e->ny != 0)
-						{
-							if (e->ny > 0)
-							{
-								if (this->GetState() == SKULL_ANI_COLLISION_LEFT)
-								{
-									this->SetState(SKULL_ANI_COLLISION_LEFT);
-								}
-							}
-						}*/
-					}
-					if (e->obj->objTag == ENEMY)
-					{
-						x += dx;
-						y += dy;
+
+
 					}
 				}
 			}
 		}
-	}
 
+	}
 }
 
 void CSkull::Attack()

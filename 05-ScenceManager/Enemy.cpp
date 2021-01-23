@@ -32,16 +32,7 @@ void Enemy::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			/*plScene->GetListItem().push_back(Item);*/
 			plScene->GetGrid()->AddObject(Item);
 		}
-	
-
-
-
 	}
-
-
-
-
-
 }
 
 

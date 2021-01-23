@@ -7,8 +7,6 @@
 #include "Sprites.h"
 #include "Portal.h"
 
-
-
 using namespace std;
 
 CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
@@ -59,6 +57,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
 #define MAX_SCENE_LINE 1024
 
 
+
 /*
 	Parse a line in section [OBJECTS]
 */
@@ -99,6 +98,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
 		obj->SetAnimationSet(ani_set);
 		AllObjs.push_back(obj);
+		/*grid->AddObject(sophia);*/
 		DebugOut(L"[INFO] SOPHIA object created!\n");
 	}
 	break;
@@ -142,6 +142,17 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		DebugOut(L"[INFO] BIG JASON object created!\n");
 	}
 	break;
+	case OBJECT_TYPE_BOSS:
+	{
+
+		obj = CBoss::GetInstance();
+		boss = (CBoss*)obj;
+		boss = new CBoss(x, y, sophia);		
+		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
+		boss->SetAnimationSet(ani_set);
+		AllObjs.push_back(boss);
+		break;
+	}
 	case OBJECT_TYPE_BRICK:
 	{
 		float w = atof(tokens[4].c_str());
@@ -307,7 +318,6 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		AllObjs.push_back(obj);
 		break;
 	}
-
 	case OBJECT_TYPE_THORN_OVERHEAD:
 	{
 		float w = atof(tokens[4].c_str());
@@ -362,15 +372,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		listScenes.push_back(miniS);
 		break;
 	}
-	case OBJECT_TYPE_BOSS:
-	{
-		obj = new CBoss(x, y, sophia);
-		obj->SetPosition(x, y);
-		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
-		obj->SetAnimationSet(ani_set);
-		AllObjs.push_back(obj);
-		break;
-	}
+
 	default:
 		DebugOut(L"[ERR] Invalid object type: %d\n", object_type);
 		return;
@@ -435,7 +437,7 @@ void CPlayScene::Load()
 	DebugOut(L"[INFO] Done loading scene objects %s\n", sceneFilePath);
 
 	// Khởi tạo camera
-	currentMiniScene = 0;
+	currentMiniScene = 11;
 	MiniScene* miniScene = listScenes.at(currentMiniScene);
 	camera = CCamera::GetInstance();
 	camera->SetCamBound(miniScene->x, miniScene->y, miniScene->width, miniScene->height);
@@ -447,8 +449,6 @@ void CPlayScene::Load()
 		if (AllObjs.at(i)->objTag != PLAYER)
 			grid->AddObject(AllObjs.at(i));
 	}
-
-
 	//Thiết lập trạng thái, vị trí khởi đầu,... cho đối tượng đang active
 	if (_ACTIVE[SOPHIA])
 	{
@@ -477,7 +477,7 @@ void CPlayScene::Update(DWORD dt)
 	// TO-DO: This is a "dirty" way, need a more organized way 
 	if (!isSelectBulletScr)
 	{
-		
+
 		vector<LPGAMEOBJECT> coObjects = grid->GetActiveObj();
 		ClassifyOBJECT(coObjects);
 
@@ -491,8 +491,9 @@ void CPlayScene::Update(DWORD dt)
 		}
 		else if (_ACTIVE[BIG_JASON])
 		{
-			bigJason->Update(dt, &coObjects);
+			bigJason->Update(dt, &coObjects, &listEnemyBullet);
 		}
+	/*	boss->Update(dt, &coObjects);*/
 
 		for (int i = 0; i < coObjects.size(); i++)
 		{
@@ -501,6 +502,37 @@ void CPlayScene::Update(DWORD dt)
 			{
 				coObjects.at(i)->Update(dt, &coObjects);
 			}
+		}
+		if (boss->Get_IsAtack()==true)
+		{
+			for (int i = 0; i < listEnemyBullet.size(); i++)
+			{
+				CEnemyBullet* p_bullet = listEnemyBullet[i];
+				if (p_bullet != NULL)
+				{
+					if (p_bullet->isDone)
+					{
+						listEnemyBullet.erase(listEnemyBullet.begin() + i);
+						if (p_bullet != NULL)
+						{
+							delete p_bullet;
+							p_bullet = NULL;
+						}
+					}
+				}
+			}
+			CEnemyBullet* p_bullet = new CEnemyBullet();
+			p_bullet = new BossBullet((boss->Get_x()) + 30, (boss->Get_y()) + 66, 1);
+			p_bullet->Set_IsMove(true);
+			if (listEnemyBullet.size() <= 4)
+			{
+				listEnemyBullet.push_back(p_bullet);
+			}
+			
+		}
+		for (int i = 0; i < listEnemyBullet.size(); i++)
+		{
+			listEnemyBullet[i]->Update(dt, &coObjects);
 		}
 		for (int i = 0; i < listItem.size(); i++)
 		{
@@ -535,6 +567,10 @@ void CPlayScene::Render()
 			objects[i]->Render();
 		for (int i = 0; i < listEnemies.size(); i++)
 			listEnemies[i]->Render();
+		for (int i = 0; i < listEnemyBullet.size(); i++)
+		{
+			listEnemyBullet[i]->Render();
+		}
 		// Thứ tự Render của Player chỉ sau Portal và Enemy
 		if (_ACTIVE[SOPHIA])
 		{
@@ -550,6 +586,7 @@ void CPlayScene::Render()
 		{
 			bigJason->Render();
 		}
+		/*boss->Render();*/
 
 		for (int i = 0; i < listPortal.size(); i++)
 			listPortal[i]->Render();

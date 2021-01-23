@@ -21,23 +21,32 @@ void CEnemyBullet::CheckCollisionWithPlayer(vector<LPGAMEOBJECT>* coObjects)
 	vector<LPGAMEOBJECT> ListEnemy;
 	ListEnemy.clear();
 	for (UINT i = 0; i < coObjects->size(); i++)
-		if (dynamic_cast<CSophia*>(coObjects->at(i)))
+		if (dynamic_cast<CSophia*>(coObjects->at(i))||dynamic_cast<CBigJason*>(coObjects->at(i)))
 		{
 			ListEnemy.push_back(coObjects->at(i));
 		}
-	for (UINT i = 0; i < ListEnemy.size() && isColideUsingAABB == false; i++)
+	for (UINT i = 0; i < ListEnemy.size(); i++)
 	{
 		if (this->IsCollidingObject(ListEnemy.at(i)))
 		{
 			isColideUsingAABB = true;
-			CSophia* sophia = dynamic_cast<CSophia*>(ListEnemy.at(i));
+			if (dynamic_cast<CSophia*>(coObjects->at(i)))
+			{
+				CSophia* sophia = dynamic_cast<CSophia*>(ListEnemy.at(i));
+				sophia->SetHealthWithBullet(bulletDame);
+				Sound::GetInstance()->Play("PlayerInjured", 0, 1);
+				/*this->isMove = false;*/
+				this->isDone = true;
+			}
+			else if (dynamic_cast<CBigJason*>(coObjects->at(i)))
+			{
+				CBigJason* bigJason = dynamic_cast<CBigJason*>(ListEnemy.at(i));
+				bigJason->SetHealthWithBullet(bulletDame);
+				Sound::GetInstance()->Play("PlayerInjured", 0, 1);
+				/*this->isMove = false;*/
+				this->isDone = true;
+			}
 			
-			if (sophia->GetUntouchable() == 1 || sophia->GetIsInjured())
-				continue;
-			sophia->SetHealthWithBullet(bulletDame);
-			Sound::GetInstance()->Play("PlayerInjured", 0, 1);
-			/*this->isMove = false;*/
-			this->isDone = true;
 		}
 	}
 	if (isColideUsingAABB != true)
@@ -57,11 +66,21 @@ void CEnemyBullet::CheckCollisionWithPlayer(vector<LPGAMEOBJECT>* coObjects)
 
 			// TODO: This is a very ugly designed function!!!!
 			FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
-			LPCOLLISIONEVENT e = coEventsResult[0];
-			CSophia* sophia = dynamic_cast<CSophia*>(e->obj);
-			sophia->SetHealthWithBullet(bulletDame);
-			this->isDone = true;
-			/*Item->IsDead = true;*/
+			LPCOLLISIONEVENT e = coEventsResult[0];	
+			if (dynamic_cast<CBigJason*>(e->obj))
+			{
+				CBigJason* bigJason = dynamic_cast<CBigJason*>(e->obj);
+				bigJason->SetHealthWithBullet(bulletDame);
+				Sound::GetInstance()->Play("PlayerInjured", 0, 1);
+			}
+			else if (dynamic_cast<CBigJason*>(e->obj))
+			{
+				CSophia* sophia = dynamic_cast<CSophia*>(e->obj);
+				sophia->SetHealthWithBullet(bulletDame);
+				this->isDone = true;
+				/*Item->IsDead = true;*/
+			}
+			
 
 		}
 	}

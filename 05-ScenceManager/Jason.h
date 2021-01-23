@@ -55,14 +55,13 @@ protected:
 
 	D3DXVECTOR2 LadderPos;
 	
-
+	bool isInjured = false;
 	float start_x;			// initial position of Jason at scene
 	float start_y;
 
 	bool isCrawling;
 	bool isTouchingPortal;
 	bool jumpIntoCabin = false;
-	bool isInjured = false;
 
 		// Máu nhân vật
 	vector<BulletObject* > p_bullet_list;

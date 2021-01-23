@@ -63,13 +63,17 @@ void CWorm::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			this->SetState(WORM_STATE_WALKING);
 		}
 
-
+		vector<LPGAMEOBJECT> ListBrick;
+		ListBrick.clear();
+		for (UINT i = 0; i < coObjects->size(); i++)
+			if (dynamic_cast<CBrick*>(coObjects->at(i)))
+				ListBrick.push_back(coObjects->at(i));
 		vector<LPCOLLISIONEVENT> coEvents;
 		vector<LPCOLLISIONEVENT> coEventsResult;
 
 		coEvents.clear();
 
-		CalcPotentialCollisions(coObjects, coEvents);
+		CalcPotentialCollisions(&ListBrick, coEvents);
 
 
 
@@ -85,11 +89,6 @@ void CWorm::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			float rdy = 0;
 
 			FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);  // sắp xếp lại các sự kiện va chạm đầu tiên theo trục x, y 
-
-			//x += min_tx * dx + nx * 0.4f;  
-
-			//if (nx != 0) vx = 0;
-			//if (ny != 0) vy = 0;
 
 			{
 				for (UINT i = 0; i < coEventsResult.size(); i++)
@@ -115,17 +114,9 @@ void CWorm::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 						}
 
 					}
+				
 
-					if (e->obj->objTag == ENEMY)
-					{
-						x += dx;
-						//y += dy;
-					}
-					if (e->obj->objTag == PLAYER)
-					{
-						x += dx;
-						//y += dy;
-					}
+
 
 				}
 

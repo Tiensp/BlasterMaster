@@ -114,16 +114,7 @@ void CShip::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 							}
 
 						}
-						/*else if (e->ny != 0)
-						{
-							if (e->ny > 0)
-							{
-								if (this->GetState() == SKULL_ANI_COLLISION_LEFT)
-								{
-									this->SetState(SKULL_ANI_COLLISION_LEFT);
-								}
-							}
-						}*/
+					
 					}
 					else {
 						x += dx;
