@@ -2,8 +2,9 @@
 #include "BulletObject.h"
 #include "Brick.h"
 #include "Sophia.h"
+#include "EnemyBullet.h"
 
-class BulletTeleporter : public BulletObject
+class BulletTeleporter : public CEnemyBullet
 {
 
 protected:

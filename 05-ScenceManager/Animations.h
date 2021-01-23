@@ -34,8 +34,10 @@ public:
 	void Add(int spriteId, DWORD time = 0);
 	void Render(float x, float y, int alpha = 255);
 	void Render(float x, float y, D3DCOLOR color);
+	void RenderWithoutTrans(float x, float y, D3DCOLOR color = D3DCOLOR_XRGB(255, 255, 255));
 	void RenderFrame(int frameID, float x, float y, int alpha = 255);
 	void RenderFrame(int frameID, float x, float y, D3DCOLOR color);
+	void RenderFrameWithoutTrans(int frameID, float x, float y, D3DCOLOR color = D3DCOLOR_XRGB(255, 255, 255));
 	void RenderThreeBullet(float x, float y, int alpha = 255);
 	void ResetCurrentFrame() { currentFrame = -1; isComplete = false; }
 	void SetCurrentFrame(int curr) { currentFrame = curr; }

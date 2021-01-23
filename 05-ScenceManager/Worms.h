@@ -22,6 +22,8 @@ class CWorm : public Enemy
 	bool isDoneDeath = false;
 	
 
+
+
 public:
 	CWorm(float x, float y, LPGAMEOBJECT player, int _typeItem);
 	virtual void SetState(int state);

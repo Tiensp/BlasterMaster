@@ -7,8 +7,6 @@
 #include "Sprites.h"
 #include "Portal.h"
 
-
-
 using namespace std;
 
 CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
@@ -59,6 +57,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
 #define MAX_SCENE_LINE 1024
 
 
+
 /*
 	Parse a line in section [OBJECTS]
 */
@@ -99,6 +98,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
 		obj->SetAnimationSet(ani_set);
 		AllObjs.push_back(obj);
+		/*grid->AddObject(sophia);*/
 		DebugOut(L"[INFO] SOPHIA object created!\n");
 	}
 	break;
@@ -142,6 +142,18 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		DebugOut(L"[INFO] BIG JASON object created!\n");
 	}
 	break;
+	case OBJECT_TYPE_BOSS:
+	{
+		obj = CBoss::GetInstance();
+		boss = (CBoss*)obj;
+		boss = new CBoss(x, y, bigJason);		
+		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
+		boss->SetAnimationSet(ani_set);
+		bool active = atoi(tokens[4].c_str());
+		_ACTIVE[BOSS] = active;
+		AllObjs.push_back(boss);
+		break;
+	}
 	case OBJECT_TYPE_BRICK:
 	{
 		float w = atof(tokens[4].c_str());
@@ -258,7 +270,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_EYEBALL:
 	{
 		int itemType = atoi(tokens[4].c_str());
-		obj = new CEyeballs(x, y, sophia, itemType);
+		obj = new CEyeballs(x, y, bigJason, itemType);
 		obj->SetPosition(x, y);
 		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
 		obj->SetAnimationSet(ani_set);
@@ -269,18 +281,18 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_TELEPORTER:
 	{
 		int itemType = atoi(tokens[4].c_str());
-		obj = new CTeleporter(x, y, sophia, itemType);
+		obj = new CTeleporter(x, y, bigJason, itemType);
 		obj->SetPosition(x, y);
 		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
 		obj->SetAnimationSet(ani_set);
-		/*	AllObjs.push_back(obj);*/
+		AllObjs.push_back(obj);
 		break;
 	}
 
 	case OBJECT_TYPE_CANNON:
 	{
 		int itemType = atoi(tokens[4].c_str());
-		obj = new CCannon(x, y, sophia, itemType);
+		obj = new CCannon(x, y, bigJason, itemType);
 		obj->SetPosition(x, y);
 		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
 		obj->SetAnimationSet(ani_set);
@@ -307,14 +319,13 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		AllObjs.push_back(obj);
 		break;
 	}
-
 	case OBJECT_TYPE_THORN_OVERHEAD:
 	{
 		float w = atof(tokens[4].c_str());
 		float h = atof(tokens[5].c_str());
 		obj = new CThornOVH(x, y, w, h);
 		obj->SetPosition(x, y);
-		objects.push_back(obj);
+		AllObjs.push_back(obj);
 		break;
 	}
 
@@ -362,15 +373,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		listScenes.push_back(miniS);
 		break;
 	}
-	case OBJECT_TYPE_BOSS:
-	{
-		obj = new CBoss(x, y, sophia);
-		obj->SetPosition(x, y);
-		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
-		obj->SetAnimationSet(ani_set);
-		AllObjs.push_back(obj);
-		break;
-	}
+
 	default:
 		DebugOut(L"[ERR] Invalid object type: %d\n", object_type);
 		return;
@@ -444,11 +447,9 @@ void CPlayScene::Load()
 	grid = new CGrid(map->GetMapWidth(), map->GetMapHeight());
 	for (int i = 0; i < AllObjs.size(); i++)
 	{
-		if (AllObjs.at(i)->objTag != PLAYER)
+		if (AllObjs.at(i)->objTag != PLAYER && AllObjs.at(i)->objTag != BOSS_TAG)
 			grid->AddObject(AllObjs.at(i));
 	}
-
-
 	//Thiết lập trạng thái, vị trí khởi đầu,... cho đối tượng đang active
 	if (_ACTIVE[SOPHIA])
 	{
@@ -465,6 +466,10 @@ void CPlayScene::Load()
 		bigJason->Reset();
 		grid->AddObject(bigJason);
 	}
+	if (_ACTIVE[BOSS])
+	{
+		grid->AddObject(boss);
+	}
 	//Sau khi active và khởi tạo xong xong đối tượng player thì khởi tạo thanh HUD 
 	hud = new HUD();
 	hudEnergy = new HUDEnergy();
@@ -477,7 +482,7 @@ void CPlayScene::Update(DWORD dt)
 	// TO-DO: This is a "dirty" way, need a more organized way 
 	if (!isSelectBulletScr)
 	{
-		
+
 		vector<LPGAMEOBJECT> coObjects = grid->GetActiveObj();
 		ClassifyOBJECT(coObjects);
 
@@ -491,7 +496,38 @@ void CPlayScene::Update(DWORD dt)
 		}
 		else if (_ACTIVE[BIG_JASON])
 		{
-			bigJason->Update(dt, &coObjects);
+			bigJason->Update(dt, &coObjects, &listEnemyBullet);
+		}
+		if (_ACTIVE[BOSS])
+		{
+			boss->Update(dt, &coObjects);
+			if (boss->Get_IsAtack() == true)
+			{
+				for (int i = 0; i < listEnemyBullet.size(); i++)
+				{
+					CEnemyBullet* p_bullet = listEnemyBullet[i];
+					if (p_bullet != NULL)
+					{
+						if (p_bullet->isDone)
+						{
+							listEnemyBullet.erase(listEnemyBullet.begin() + i);
+							if (p_bullet != NULL)
+							{
+								delete p_bullet;
+								p_bullet = NULL;
+							}
+						}
+					}
+				}
+				CEnemyBullet* p_bullet = new CEnemyBullet();
+				p_bullet = new BossBullet((boss->Get_x()) + 30, (boss->Get_y()) + 66, boss->Get_nx());
+				p_bullet->Set_IsMove(true);
+				if (listEnemyBullet.size() <= 8)
+				{
+					listEnemyBullet.push_back(p_bullet);
+				}
+
+			}
 		}
 
 		for (int i = 0; i < coObjects.size(); i++)
@@ -501,6 +537,11 @@ void CPlayScene::Update(DWORD dt)
 			{
 				coObjects.at(i)->Update(dt, &coObjects);
 			}
+		}
+		
+		for (int i = 0; i < listEnemyBullet.size(); i++)
+		{
+			listEnemyBullet[i]->Update(dt, &coObjects);
 		}
 		for (int i = 0; i < listItem.size(); i++)
 		{
@@ -535,6 +576,10 @@ void CPlayScene::Render()
 			objects[i]->Render();
 		for (int i = 0; i < listEnemies.size(); i++)
 			listEnemies[i]->Render();
+		for (int i = 0; i < listEnemyBullet.size(); i++)
+		{
+			listEnemyBullet[i]->Render();
+		}
 		// Thứ tự Render của Player chỉ sau Portal và Enemy
 		if (_ACTIVE[SOPHIA])
 		{
@@ -550,6 +595,11 @@ void CPlayScene::Render()
 		{
 			bigJason->Render();
 		}
+		if (_ACTIVE[BOSS])
+		{
+			boss->Render();
+		}
+		
 
 		for (int i = 0; i < listPortal.size(); i++)
 			listPortal[i]->Render();
@@ -608,6 +658,8 @@ void CPlayScene::ClassifyOBJECT(vector<LPGAMEOBJECT> obj)
 			break;
 		}
 		case PLAYER:
+			break;
+		case BOSS_TAG:
 			break;
 		default:
 		{

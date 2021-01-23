@@ -2,7 +2,6 @@
 #include "GameObject.h"
 #include "Enemy.h"
 #include "BulletBomb.h"
-#include "BulletShip.h"
 
 #define BOMB_ANI_IDLE	0
 #define BOMB_ANI_DEAD	1
@@ -14,6 +13,7 @@
 class CBomb : public Enemy
 {
 	BulletObject* bomb_bullet;
+
 
 	int changeState;
 	bool isDoneDeath = false;

@@ -51,6 +51,10 @@ public:
 
 	////////// PUBLIC VARIABLE //////////
 	bool isSwitchScene;
+	bool switchSceneOVWorld;
+	bool switchSceneOVHead;
+	bool switchVerticle;
+	bool switchHorizontal;
 	int miniScene_des;
 	D3DXVECTOR2 SwitchScenePos;
 };

@@ -104,7 +104,7 @@ void CEyeballs::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				else if (this->GetState() == EYEBALL_ANI_IDLE)
 				{
 					this->SetState(EYEBALL_ANI_WALKING);
-					timer = 0;
+					timer = 2000;
 				}
 			}
 		}
@@ -136,7 +136,12 @@ void CEyeballs::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 						CBrick* brick = dynamic_cast<CBrick*>(e->obj);
 
-						// jump on top >> kill Goomba and deflect a bit 
+						if (this->GetState() == EYEBALL_ANI_WALKING) {
+							this->SetState(EYEBALL_ANI_WALKING);
+						}
+						else if (this->GetState() == EYEBALL_ANI_IDLE) {
+							this->SetState(EYEBALL_ANI_WALKING);
+						}
 					}
 					if (e->obj->objTag == PLAYER)
 					{

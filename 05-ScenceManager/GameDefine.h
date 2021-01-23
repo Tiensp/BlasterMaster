@@ -46,7 +46,10 @@ using namespace std;
 
 /////// PORTAL ///////
 #define PORTAL_WIDTH	32
-#define PORTAL_HEIGHT	32
+#define PORTAL_OVW_HEIGHT	32
+#define PORTAL_OVH_HOR_HEIGHT	48
+#define PORTAL_OVH_VER_HEIGHT	16
+#define PORTAL_ToOVW_SIZE	16
 
 /////// SYNTAX ///////
 #define INSTANCE_SOPHIA CSophia::GetInstance()
@@ -70,6 +73,7 @@ extern enum ObjectTAG
 	PORTAL,
 	BULLET_ENEMIES,
 	LAVA,
+	BOSS_TAG
 };
 
 extern enum ObjectTYPE
@@ -107,8 +111,14 @@ extern enum ObjectTYPE
 
 	/* Portal */
 	SpecialPortal = 400,
-	OverWorld = 500,
-	OverHead = 600
+	OverWorld1 = 500,
+	OverWorld2 = 501,
+	OverWorld3 = 502,
+	OverWorld4 = 503,
+	ToOverHead = 600,
+	OVHHorizontal = 700,
+	OVHVerticle = 800,
+	ToOverWorld = 900
 };
 
 extern enum STATENAME
@@ -187,6 +197,24 @@ extern enum ITEM_OBJ
 	THREEBULLET = 3,
 	POWER = 4
 
+};
+
+extern enum ANISET_PORTAL
+{
+	PORTAL_TYPE0 = 0,
+	PORTAL_TYPE1 = 1,
+	PORTAL_TYPE2 = 2,
+	PORTAL_TYPE3 = 3,
+	PORTAL_TYPE4 = 4,
+	PORTAL_TYPE5 = 5,
+	PORTAL_TYPE6 = 6,
+	PORTAL_TYPE7 = 7,
+	PORTAL_TYPE8 = 8,
+	PORTAL_TYPE9 = 9,
+	PORTAL_TYPE10 = 10,
+	PORTAL_TYPE11 = 11,
+	PORTAL_TYPE12 = 12,
+	PORTAL_TYPE13 = 13
 };
 
 extern enum SCENE_TYPE

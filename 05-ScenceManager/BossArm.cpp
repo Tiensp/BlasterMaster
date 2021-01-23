@@ -2,6 +2,7 @@
 
 CBossArm::CBossArm(float x, float y, int type,float _vx, float _vy)
 {
+	hp = 999;
 	this->x = x;
 	this->y = y;
 	this->typeArm = type;
@@ -17,7 +18,7 @@ CBossArm::~CBossArm()
 
 void CBossArm::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	CGameObject::Update(dt, coObjects);
+	Enemy::Update(dt, coObjects);
 	MoveFollow(x_follow, y_follow);
 	x += dx;
 	y += dy;

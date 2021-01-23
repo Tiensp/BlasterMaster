@@ -1,35 +1,16 @@
 ﻿#include "BulletBoss.h"
 BossBullet::BossBullet(float _start_x, float _start_y, int _nx)
 {
-	/*this->start_x = _start_x;
+	this->start_x = _start_x;
 	this->start_y = _start_y;
+	this->x = _start_x;
+
+	bullet_dir = _nx;
+	this->y = _start_y;
 	isMove = true;
 	isDone = false;
 	bulletDame = 1;
-	this->SetAnimationSet(CAnimationSets::GetInstance()->Get(110));*/
-
-	bullet1 = new BulletFloaters(_start_x, _start_y);
-	bullet1->SetPosition(_start_x + 20, _start_y + 20);
-	bullet1->Set_bullet_dir(_nx);
-	bullet1->SetAnimationSet(CAnimationSets::GetInstance()->Get(110));
-
-	bullet2 = new BulletFloaters(_start_x, _start_y);
-	bullet2->SetPosition(_start_x + 20, _start_y + 20);
-	bullet2->Set_bullet_dir(_nx);
-	bullet2->SetAnimationSet(CAnimationSets::GetInstance()->Get(110));
-
-	bullet3 = new BulletFloaters(_start_x, _start_y);
-	bullet3->SetPosition(_start_x + 20, _start_y + 20);
-	bullet3->Set_bullet_dir(_nx);
-	bullet3->SetAnimationSet(CAnimationSets::GetInstance()->Get(110));
-
-	bullet4 = new BulletFloaters(_start_x, _start_y);
-	bullet4->SetPosition(_start_x + 20, _start_y + 20);
-	bullet4->Set_bullet_dir(_nx);
-	bullet4->SetAnimationSet(CAnimationSets::GetInstance()->Get(110));
-
-	isMove = true;
-	isDone = false;
+	this->SetAnimationSet(CAnimationSets::GetInstance()->Get(110));
 }
 
 BossBullet::~BossBullet()
@@ -38,92 +19,136 @@ BossBullet::~BossBullet()
 
 void BossBullet::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	CGameObject::Update(dt, coObjects);
-
-	/*if (isDone) return;
+	
+	CEnemyBullet::Update(dt, coObjects);
+	HandleMove(SCREEN_HEIGHT / 3, SCREEN_HEIGHT / 3);
 	if (isMove)
 	{
 		if (bullet_dir == 1)
 		{
-			vx = 0.05f;
-			vy = 0.15f;
+			vx = 0.045f;
+			vy = 0.0275f;
 		}
 		else if (bullet_dir == -1)
 		{
-			vx = -0.05f;
-			vy = 0.15f;
+			vx = -0.045f;
+			vy = 0.0275f;
 		}
 	}
 	else
 	{
 		return;
-	}*/
-
-	if (bullet1->isDone && bullet2->isDone && bullet3->isDone && bullet4->isDone) this->isDone = true;
-
-	if (bullet1->bullet_dir == 1) {
-		bullet1->vx = 0.07f;
-		bullet1->vy = 0.15f;
-		bullet2->vx = 0.07f;
-		bullet2->vy = 0.1f;
-		bullet3->vx = 0.07f;
-		bullet3->vy = 0.075f;
-		bullet4->vx = 0.07f;
-		bullet4->vy = 0.05f;
-	}
-	else if (bullet1->bullet_dir == -1) {
-		bullet1->vx = -0.07f;
-		bullet1->vy = 0.15f;
-		bullet2->vx = -0.07f;
-		bullet2->vy = 0.1f;
-		bullet3->vx = -0.07f;
-		bullet3->vy = 0.075f;
-		bullet4->vx = -0.07f;
-		bullet4->vy = 0.05f;
 	}
 
-	bullet1->Update(dt, coObjects);
-	bullet2->Update(dt, coObjects);
-	bullet3->Update(dt, coObjects);
-	bullet4->Update(dt, coObjects);
+	/*vector<LPCOLLISIONEVENT> coEvents;
+	vector<LPCOLLISIONEVENT> coEventsResult;
+
+	coEvents.clear();*/
+	/*CheckCollisionWithPlayer(coObjects);*/
+
+
 
 }
 
 void BossBullet::Render()
 {
 	int ani = 0;
-	//if (isDone) return;
-	//if (isColPlayer)
-	//{
-	//	/*ani = 2;
-	//	animation_set->at(ani)->Render(x, y);
-	//	if (animation_set->at(ani)->GetCurrentFrame() == 0)
-	//	{
-	//		isDone = true;
-	//	}*/
-	//	isDone = true;
-	//	return;
-	//}
-	
-	/*if (isMove)
+	if (isDone)
+		return;
+	if (isColBrick)
 	{
-	if (bullet_dir == 1)
+		ani = 2;
+		animation_set->at(ani)->Render(x, y);
+		if (animation_set->at(ani)->GetCurrentFrame() == 0)
+		{
+			isDone = true;
+		}
+		return;
+	}
+	else if (isColPlayer)
 	{
-		ani = 0;
+		ani = 2;
+		animation_set->at(ani)->Render(x, y);
+		if (animation_set->at(ani)->GetCurrentFrame() == 0)
+		{
+			isDone = true;
+		}
+		return;
 	}
-	else if (bullet_dir == -1)
+	else if (isMove)
 	{
-		ani = 0;
+		if (bullet_dir == 1)
+		{
+			ani = 0;
+		}
+		else if (bullet_dir == -1)
+		{
+			ani = 1;
+		}
 	}
-	}
-	animation_set->at(ani)->Render(x, y);*/
+	animation_set->at(ani)->Render(x, y);
 
-	bullet1->Render();
-	bullet2->Render();
-	bullet3->Render();
-	bullet4->Render();
+	RenderBoundingBox(x, y);
+}
 
-	//RenderBoundingBox();
+void BossBullet::CheckCollisionWithPlayer(vector<LPGAMEOBJECT>* coObjects)
+{
+	vector<LPCOLLISIONEVENT> coEvents;
+	vector<LPCOLLISIONEVENT> coEventsResult;
+	bool isColideUsingAABB = false;
+	coEvents.clear();
+	vector<LPGAMEOBJECT> ListEnemy;
+	ListEnemy.clear();
+	for (UINT i = 0; i < coObjects->size(); i++)
+	{
+		if (dynamic_cast<CBigJason*>(coObjects->at(i)))
+		{
+			ListEnemy.push_back(coObjects->at(i));
+		}
+	}
+
+	for (UINT i = 0; i < ListEnemy.size(); i++)
+	{
+		if (this->IsCollidingObject(ListEnemy.at(i)))
+		{
+
+			if (dynamic_cast<CBigJason*>(coObjects->at(i)))
+			{
+				CBigJason* bigJason = dynamic_cast<CBigJason*>(ListEnemy.at(i));
+				bigJason->SetHealthWithBullet(bulletDame);
+
+				/*this->isMove = false;*/
+				this->isDone = true;
+			}
+			isColideUsingAABB = true;
+
+		}
+	}
+	if (isColideUsingAABB != true)
+	{
+		CalcPotentialCollisions(&ListEnemy, coEvents);
+		if (coEvents.size() == 0)
+		{
+			x += dx;
+			y += dy;
+		}
+		else
+		{
+
+			float min_tx, min_ty, nx = 0, ny;
+			float rdx = 0;
+			float rdy = 0;
+
+			// TODO: This is a very ugly designed function!!!!
+			FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
+			LPCOLLISIONEVENT e = coEventsResult[0];
+			if (dynamic_cast<CBigJason*>(e->obj))
+			{
+				CBigJason* bigJason = dynamic_cast<CBigJason*>(e->obj);
+				bigJason->SetHealthWithBullet(bulletDame);
+			}
+		}
+	}
 }
 
 void BossBullet::GetBoundingBox(float& left, float& top, float& right, float& bottom)

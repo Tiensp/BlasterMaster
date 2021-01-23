@@ -5,7 +5,7 @@ BulletShip::BulletShip(float _start_x, float _start_y)
 	this->start_y = _start_y;
 	isMove = true;
 	isDone = false;
-	bulletDame = 1;
+	bulletDame = 2;
 	this->SetAnimationSet(CAnimationSets::GetInstance()->Get(22));
 }
 
@@ -18,17 +18,19 @@ void BulletShip::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	CEnemyBullet::Update(dt, coObjects);
 	if (isDone) return;
 
+	HandleMove(SCREEN_HEIGHT / 3, SCREEN_HEIGHT / 3);
+
 	if (isMove)
 	{
 		if (bullet_dir == 1)
 		{
-			vx = -0.175f;
-			vy = 0.175f;
+			vx = 0.125f;
+			vy = 0.105f;
 		}
 		else if (bullet_dir == -1)
 		{
-			vx = 0.175f;
-			vy = 0.175f;
+			vx = -0.125f;
+			vy = 0.105f;
 		}
 	}
 	else
@@ -78,11 +80,11 @@ void BulletShip::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 				//isDone = true; 
 			}
-			else if (e->obj->objTag == ENEMY)
+		/*	else if (e->obj->objTag == ENEMY)
 			{
 				x += min_tx * dx + nx * 0.4f;
 				y += min_ty * dy + ny * 0.4f;
-			}
+			}*/
 			else if (e->obj->objTag == PLAYER)
 			{
 				isColPlayer = true;

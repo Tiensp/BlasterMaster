@@ -51,7 +51,7 @@ void CTeleporter::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	timer += 5;
 
-	CheckCollisionWithRock(coObjects);
+	//CheckCollisionWithRock(coObjects);
 
 	if (teleporter_bullet != NULL)
 	{
@@ -93,7 +93,7 @@ void CTeleporter::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		if (this->GetState() == TELEPORTER_ANI_GRAY_MODE_OFF) {
 
 			if (r == 0) {
-				this->new_x = this->x + 50;
+				this->new_x = this->x + 35;
 				this->new_y = this->y;
 				this->old_x = this->x;
 				this->old_y = this->y;
@@ -101,7 +101,7 @@ void CTeleporter::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				this->SetState(TELEPORTER_ANI_TELEPORT);
 			}
 			else if (r == 1) {
-				this->new_x = this->x - 50;
+				this->new_x = this->x - 35;
 				this->new_y = this->y;
 				this->old_x = this->x;
 				this->old_y = this->y;
@@ -110,7 +110,7 @@ void CTeleporter::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			}
 			else if (r == 2) {
 				this->new_x = this->x;
-				this->new_y = this->y + 50;
+				this->new_y = this->y + 35;
 				this->old_x = this->x;
 				this->old_y = this->y;
 				this->SetPosition(new_x, new_y);
@@ -118,7 +118,7 @@ void CTeleporter::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			}
 			else if (r == 3) {
 				this->new_x = this->x;
-				this->new_y = this->y - 50;
+				this->new_y = this->y - 35;
 				this->old_x = this->x;
 				this->old_y = this->y;
 				this->SetPosition(new_x, new_y);
@@ -133,26 +133,26 @@ void CTeleporter::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		if (this->GetState() == TELEPORTER_ANI_TELEPORT) {
 
 			if (this->new_x - this->old_x > 0 && this->new_y - this->old_y == 0) {
-				this->new_x = this->old_x + 50;
+				this->new_x = this->old_x + 35;
 				this->new_y = this->old_y;
 				this->SetPosition(old_x, old_y);
 				this->SetState(TELEPORTER_ANI_TELEPORT1);
 			}
 			else if (this->new_x - this->old_x < 0 && this->new_y - this->old_y == 0) {
-				this->new_x = this->old_x - 50;
+				this->new_x = this->old_x - 35;
 				this->new_y = this->old_y;
 				this->SetPosition(old_x, old_y);
 				this->SetState(TELEPORTER_ANI_TELEPORT1);
 			}
 			else if (this->new_x - this->old_x == 0 && this->new_y - this->old_y > 0) {
 				this->new_x = this->old_x;
-				this->new_y = this->old_y - 50;
+				this->new_y = this->old_y - 35;
 				this->SetPosition(old_x, old_y);
 				this->SetState(TELEPORTER_ANI_TELEPORT1);
 			}
 			else if (this->new_x - this->old_x == 0 && this->new_y - this->old_y < 0) {
 				this->new_x = this->old_x;
-				this->new_y = this->old_y + 50;
+				this->new_y = this->old_y + 35;
 				this->SetPosition(old_x, old_y);
 				this->SetState(TELEPORTER_ANI_TELEPORT1);
 			}
@@ -165,19 +165,19 @@ void CTeleporter::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		if (this->GetState() == TELEPORTER_ANI_TELEPORT1) {
 
 			if (this->new_x - this->old_x > 0 && this->new_y - this->old_y == 0) {
-				this->SetPosition(old_x + 50, old_y);
+				this->SetPosition(old_x + 35, old_y);
 				this->SetState(TELEPORTER_ANI_TELEPORT2);
 			}
 			else if (this->new_x - this->old_x < 0 && this->new_y - this->old_y == 0) {
-				this->SetPosition(old_x - 50, old_y);
+				this->SetPosition(old_x - 35, old_y);
 				this->SetState(TELEPORTER_ANI_TELEPORT2);
 			}
 			else if (this->new_x - this->old_x == 0 && this->new_y - this->old_y > 0) {
-				this->SetPosition(old_x, old_y - 50);
+				this->SetPosition(old_x, old_y - 35);
 				this->SetState(TELEPORTER_ANI_TELEPORT2);
 			}
 			else if (this->new_x - this->old_x == 0 && this->new_y - this->old_y < 0) {
-				this->SetPosition(old_x, old_y + 50);
+				this->SetPosition(old_x, old_y + 35);
 				this->SetState(TELEPORTER_ANI_TELEPORT2);
 			}
 		}
@@ -217,24 +217,24 @@ void CTeleporter::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			if (jumpStep == 1) {
 
 				if (this->new_x - this->old_x > 0 && this->new_y - this->old_y == 0) {
-					this->SetPosition(old_x + 50, old_y);
+					this->SetPosition(old_x + 35, old_y);
 					this->SetState(TELEPORTER_ANI_GRAY_MODE_OFF);
 				}
 				else if (this->new_x - this->old_x < 0 && this->new_y - this->old_y == 0) {
 
-					this->SetPosition(old_x - 50, old_y);
+					this->SetPosition(old_x - 35, old_y);
 					this->SetState(TELEPORTER_ANI_GRAY_MODE_OFF);
 
 				}
 				else if (this->new_x - this->old_x == 0 && this->new_y - this->old_y > 0) {
 
-					this->SetPosition(old_x, old_y - 50);
+					this->SetPosition(old_x, old_y - 35);
 					this->SetState(TELEPORTER_ANI_GRAY_MODE_OFF);
 
 				}
 				else if (this->new_x - this->old_x == 0 && this->new_y - this->old_y < 0) {
 
-					this->SetPosition(old_x, old_y + 50);
+					this->SetPosition(old_x, old_y + 35);
 					this->SetState(TELEPORTER_ANI_GRAY_MODE_OFF);
 				}
 
@@ -244,22 +244,22 @@ void CTeleporter::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			else {
 
 				if (this->new_x - this->old_x > 0 && this->new_y - this->old_y == 0) {
-					this->SetPosition(old_x + 50, old_y);
+					this->SetPosition(old_x + 35, old_y);
 					this->SetState(TELEPORTER_ANI_GRAY_MODE_ON);
 				}
 				else if (this->new_x - this->old_x < 0 && this->new_y - this->old_y == 0) {
-					this->SetPosition(old_x - 50, old_y);
+					this->SetPosition(old_x - 35, old_y);
 					this->SetState(TELEPORTER_ANI_GRAY_MODE_ON);
 				}
 				else if (this->new_x - this->old_x == 0 && this->new_y - this->old_y > 0) {
 
-					this->SetPosition(old_x, old_y - 50);
+					this->SetPosition(old_x, old_y - 35);
 					this->SetState(TELEPORTER_ANI_GRAY_MODE_ON);
 
 				}
 				else if (this->new_x - this->old_x == 0 && this->new_y - this->old_y < 0) {
 
-					this->SetPosition(old_x, old_y + 50);
+					this->SetPosition(old_x, old_y + 35);
 					this->SetState(TELEPORTER_ANI_GRAY_MODE_ON);
 				}
 

@@ -14,7 +14,7 @@
 #define SCENE_SECTION_ANIMATIONS 3
 #define SCENE_SECTION_ANIMATION_SETS 4
 
-#define MAX_RESOURCES_LINE 1024
+#define MAX_RESOURCES_LINE 1500
 
 CGame * CGame::__instance = NULL;
 
@@ -94,6 +94,12 @@ void CGame::Draw(D3DXVECTOR2 pos, LPDIRECT3DTEXTURE9 texture, RECT rect, D3DCOLO
 	//Transform tọa độ World về tọa độ Camera trước khi vẽ
 	D3DXVECTOR2 posTrans = CCamera::GetInstance()->World2Cam(pos);
 	D3DXVECTOR3 pInt((int)(posTrans.x), (int)(posTrans.y), 0); // Giúp không bị viền
+	spriteHandler->Draw(texture, &rect, NULL, &pInt, color);
+}
+
+void CGame::DrawWithoutTrans(D3DXVECTOR2 pos, LPDIRECT3DTEXTURE9 texture, RECT rect, D3DCOLOR color)
+{
+	D3DXVECTOR3 pInt((int)(pos.x), (int)(pos.y), 0); // Giúp không bị viền
 	spriteHandler->Draw(texture, &rect, NULL, &pInt, color);
 }
 

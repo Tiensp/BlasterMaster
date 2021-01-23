@@ -1,5 +1,6 @@
 ﻿#include "BigJasonBullet.h"
 #include <math.h>
+#include "BulletFloaters.h"
 # define M_PI           3.14159265358979323846
 #define OHSOPHIABULLET_SPEED 0.25f
 #define	OHSOPHIA_RADIUS_SPACE	40.0f
@@ -27,7 +28,7 @@ BigJasonBullet::~BigJasonBullet()
 {
 }
 
-void BigJasonBullet::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
+void BigJasonBullet::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, vector<CEnemyBullet*>* listBulletBoss)
 {
 	CGameObject::Update(dt, coObjects);
 	HandleMove(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
@@ -39,21 +40,21 @@ void BigJasonBullet::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		case 0:
 			if (bullet_dir == 1)
 			{
-				x += 0.125f * dt;
+				x += 0.25f * dt;
 				y = start_y + 10;
 			}
 			else if (bullet_dir == -1)
 			{
-				x -= 0.125f * dt;
+				x -= 0.25f * dt;
 				y = start_y + 10;
 			}
 			else if (bullet_dir == 3)
 			{
-				y -= 0.125f * dt;
+				y -= 0.25f * dt;
 			}
 			else if (bullet_dir == 4)
 			{
-				y += 0.125f * dt;
+				y += 0.25f * dt;
 			}
 			break;
 		case 1:
@@ -173,9 +174,14 @@ void BigJasonBullet::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		}
 
 		}
+
+		CheckCollisionWithCBrick(coObjects);
+		CheckCollisionWithEnemy(coObjects);
+		CheckCollisionWithBullet(listBulletBoss);
 	}
-	CheckCollisionWithCBrick(coObjects);
-	CheckCollisionWithEnemy(coObjects);
+
+
+	
 
 
 }
@@ -406,7 +412,8 @@ void BigJasonBullet::CheckCollisionWithCBrick(vector<LPGAMEOBJECT>* coObjects)
 		CalcPotentialCollisions(&ListBrick, coEvents);
 		if (coEvents.size() == 0)
 		{
-
+			/*x += dx;
+			y += dy;*/
 		}
 		else
 		{
@@ -422,3 +429,64 @@ void BigJasonBullet::CheckCollisionWithCBrick(vector<LPGAMEOBJECT>* coObjects)
 		}
 	}
 }
+
+void BigJasonBullet::CheckCollisionWithBullet(vector<CEnemyBullet*>* listBulletBoss)
+{
+	vector<LPCOLLISIONEVENT> coEvents;
+	vector<LPCOLLISIONEVENT> coEventsResult;
+	bool isColideUsingAABB = false;
+	coEvents.clear();
+	vector<LPGAMEOBJECT> ListBullet;
+	ListBullet.clear();
+	for (UINT i = 0; i < listBulletBoss->size(); i++)
+		if (dynamic_cast<CEnemyBullet*>(listBulletBoss->at(i)))
+		{
+			ListBullet.push_back(listBulletBoss->at(i));
+		}
+	for (UINT i = 0; i < ListBullet.size() && isColideUsingAABB == false; i++)
+	{
+		if (this->IsCollidingObject(ListBullet.at(i)))
+		{
+			isColideUsingAABB = true;
+			ListBullet.at(i)->isDone = true;
+			this->isDone = true;
+			/*BigJasonBullet* bullet = dynamic_cast<BigJasonBullet*>(ListBullet.at(i));
+			bullet->isDone;*/
+		}
+	}
+	if (isColideUsingAABB != true)
+	{
+		CalcPotentialCollisions(&ListBullet, coEvents);
+		if (coEvents.size() == 0)
+		{
+			
+
+		}
+		else
+		{
+
+			float min_tx, min_ty, nx = 0, ny;
+			float rdx = 0;
+			float rdy = 0;
+
+			// TODO: This is a very ugly designed function!!!!
+			FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
+			LPCOLLISIONEVENT e = coEventsResult[0];
+			BigJasonBullet* bullet = dynamic_cast<BigJasonBullet*>(e->obj);
+			bullet->isDone = true;
+			this->isDone = true;
+			
+
+			/*Item->IsDead = true;*/
+
+		}
+	}
+
+}
+
+
+
+
+
+
+
