@@ -144,10 +144,9 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	break;
 	case OBJECT_TYPE_BOSS:
 	{
-
 		obj = CBoss::GetInstance();
 		boss = (CBoss*)obj;
-		boss = new CBoss(x, y, sophia);		
+		boss = new CBoss(x, y, bigJason);		
 		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
 		boss->SetAnimationSet(ani_set);
 		bool active = atoi(tokens[4].c_str());
@@ -521,9 +520,9 @@ void CPlayScene::Update(DWORD dt)
 					}
 				}
 				CEnemyBullet* p_bullet = new CEnemyBullet();
-				p_bullet = new BossBullet((boss->Get_x()) + 30, (boss->Get_y()) + 66, 1);
+				p_bullet = new BossBullet((boss->Get_x()) + 30, (boss->Get_y()) + 66, boss->Get_nx());
 				p_bullet->Set_IsMove(true);
-				if (listEnemyBullet.size() <= 4)
+				if (listEnemyBullet.size() <= 8)
 				{
 					listEnemyBullet.push_back(p_bullet);
 				}

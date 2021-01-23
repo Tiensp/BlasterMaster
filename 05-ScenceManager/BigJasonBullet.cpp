@@ -40,21 +40,21 @@ void BigJasonBullet::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, vector<CE
 		case 0:
 			if (bullet_dir == 1)
 			{
-				x += 0.125f * dt;
+				x += 0.25f * dt;
 				y = start_y + 10;
 			}
 			else if (bullet_dir == -1)
 			{
-				x -= 0.125f * dt;
+				x -= 0.25f * dt;
 				y = start_y + 10;
 			}
 			else if (bullet_dir == 3)
 			{
-				y -= 0.125f * dt;
+				y -= 0.25f * dt;
 			}
 			else if (bullet_dir == 4)
 			{
-				y += 0.125f * dt;
+				y += 0.25f * dt;
 			}
 			break;
 		case 1:

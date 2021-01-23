@@ -230,6 +230,7 @@ void CBigJason::Render()
 		p_bullet_list[i]->Render();
 
 	}
+	RenderBoundingBox(x, y);
 }
 #pragma region Xử lý phím
 

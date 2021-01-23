@@ -21,19 +21,17 @@ void BossBullet::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	
 	CEnemyBullet::Update(dt, coObjects);
-
-	
 	HandleMove(SCREEN_HEIGHT / 3, SCREEN_HEIGHT / 3);
 	if (isMove)
 	{
 		if (bullet_dir == 1)
 		{
-		/*	vx = 0.045f;*/
+			vx = 0.045f;
 			vy = 0.0275f;
 		}
 		else if (bullet_dir == -1)
 		{
-			/*vx = -0.045f;*/
+			vx = -0.045f;
 			vy = 0.0275f;
 		}
 	}
@@ -42,58 +40,12 @@ void BossBullet::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		return;
 	}
 
-	vector<LPCOLLISIONEVENT> coEvents;
+	/*vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
 
-	coEvents.clear();
+	coEvents.clear();*/
+	/*CheckCollisionWithPlayer(coObjects);*/
 
-	// turn off collision when die 
-	//nếu không chết thì kiểm tra toàn bộ va chạm với các đối tượng khác
-	CalcPotentialCollisions(coObjects, coEvents);
-
-	// reset untouchable timer if untouchable time has passed
-
-	// No collision occured, proceed normally
-
-	if (coEvents.size() == 0)  //nếu không có va chạm, update bình thường
-	{
-		x += dx;
-		y += dy;
-	}
-	else //có va chạm
-	{
-		float min_tx, min_ty, nx = 0, ny = 0;
-		float rdx = 0;
-		float rdy = 0;
-
-		// TODO: This is a very ugly designed function!!!!
-		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);  // sắp xếp lại các sự kiện va chạm đầu tiên theo trục x, y 
-
-
-
-		for (UINT i = 0; i < coEventsResult.size(); i++)
-		{
-			LPCOLLISIONEVENT e = coEventsResult[i];
-
-			if (dynamic_cast<CBrick*>(e->obj)) // if e->obj is Goomba 
-			{
-
-				if (nx != 0) vx = 0;
-				if (ny != 0) vy = 0;
-
-				isColBrick = true;
-				//isDone = true; 
-			}
-			else if (dynamic_cast<CBigJason*>(e->obj))
-			{
-				CBigJason::GetInstance()->SetHealthWithBullet(bulletDame);
-				isColPlayer = true;
-			}
-		}
-
-
-	}
-	//for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
 
 
 }
@@ -101,7 +53,7 @@ void BossBullet::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 void BossBullet::Render()
 {
 	int ani = 0;
-	if (isDone) 
+	if (isDone)
 		return;
 	if (isColBrick)
 	{
@@ -136,7 +88,67 @@ void BossBullet::Render()
 	}
 	animation_set->at(ani)->Render(x, y);
 
-	RenderBoundingBox(x,y);
+	RenderBoundingBox(x, y);
+}
+
+void BossBullet::CheckCollisionWithPlayer(vector<LPGAMEOBJECT>* coObjects)
+{
+	vector<LPCOLLISIONEVENT> coEvents;
+	vector<LPCOLLISIONEVENT> coEventsResult;
+	bool isColideUsingAABB = false;
+	coEvents.clear();
+	vector<LPGAMEOBJECT> ListEnemy;
+	ListEnemy.clear();
+	for (UINT i = 0; i < coObjects->size(); i++)
+	{
+		if (dynamic_cast<CBigJason*>(coObjects->at(i)))
+		{
+			ListEnemy.push_back(coObjects->at(i));
+		}
+	}
+
+	for (UINT i = 0; i < ListEnemy.size(); i++)
+	{
+		if (this->IsCollidingObject(ListEnemy.at(i)))
+		{
+
+			if (dynamic_cast<CBigJason*>(coObjects->at(i)))
+			{
+				CBigJason* bigJason = dynamic_cast<CBigJason*>(ListEnemy.at(i));
+				bigJason->SetHealthWithBullet(bulletDame);
+
+				/*this->isMove = false;*/
+				this->isDone = true;
+			}
+			isColideUsingAABB = true;
+
+		}
+	}
+	if (isColideUsingAABB != true)
+	{
+		CalcPotentialCollisions(&ListEnemy, coEvents);
+		if (coEvents.size() == 0)
+		{
+			x += dx;
+			y += dy;
+		}
+		else
+		{
+
+			float min_tx, min_ty, nx = 0, ny;
+			float rdx = 0;
+			float rdy = 0;
+
+			// TODO: This is a very ugly designed function!!!!
+			FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
+			LPCOLLISIONEVENT e = coEventsResult[0];
+			if (dynamic_cast<CBigJason*>(e->obj))
+			{
+				CBigJason* bigJason = dynamic_cast<CBigJason*>(e->obj);
+				bigJason->SetHealthWithBullet(bulletDame);
+			}
+		}
+	}
 }
 
 void BossBullet::GetBoundingBox(float& left, float& top, float& right, float& bottom)

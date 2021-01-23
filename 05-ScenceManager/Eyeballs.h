@@ -6,8 +6,8 @@
 #define EYEBALL_ANI_IDLE 1
 #define EYEBALL_ANI_DEATH 2
 
-#define EYEBALL_WALKING_SPEED_X 0.015f;
-#define	EYEBALL_WALKING_SPEED_Y 0.0095f;
+#define EYEBALL_WALKING_SPEED_X 0.035f;
+#define	EYEBALL_WALKING_SPEED_Y 0.0175f;
 
 #define EYEBALL_BBOX_WIDTH 17
 #define EYEBALL_BBOX_HEIGHT 17
@@ -17,7 +17,7 @@ class CEyeballs : public Enemy
 {
 	LPGAMEOBJECT target;
 
-	BulletObject* eyeball_bullet;
+	CEnemyBullet* eyeball_bullet;
 
 	int counter;
 	int timeChangeState = 4000;

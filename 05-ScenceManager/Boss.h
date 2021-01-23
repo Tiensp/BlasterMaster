@@ -37,6 +37,7 @@ public:
 	int Get_Boss_bullet();
 	float Get_x() { return this->x; }
 	float Get_y() { return this->y; }
+	int Get_nx() { return nx; }
 	bool Get_IsAtack() { return this->isAttack; }
 	vector<CEnemyBullet* > GetListBullet() { return listBulletBoss; }
 

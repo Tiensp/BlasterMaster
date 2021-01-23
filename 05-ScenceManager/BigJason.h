@@ -57,7 +57,7 @@ protected:
 	int energy=5;
 	int health = 4;	// Máu nhân vật
 	vector<BulletObject*> p_bullet_list;
-	bool isInjured;
+
 public:
 	CBigJason();
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects, vector<CEnemyBullet*>* listBulletBoss);

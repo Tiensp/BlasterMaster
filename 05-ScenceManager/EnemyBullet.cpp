@@ -1,6 +1,7 @@
 #include "EnemyBullet.h"
 #include "Sophia.h"
 #include "Sound.h"
+#include "BigJason.h"
 
 CEnemyBullet::~CEnemyBullet()
 {
@@ -21,7 +22,7 @@ void CEnemyBullet::CheckCollisionWithPlayer(vector<LPGAMEOBJECT>* coObjects)
 	vector<LPGAMEOBJECT> ListEnemy;
 	ListEnemy.clear();
 	for (UINT i = 0; i < coObjects->size(); i++)
-		if (dynamic_cast<CSophia*>(coObjects->at(i))||dynamic_cast<CBigJason*>(coObjects->at(i)))
+		if (dynamic_cast<CSophia*>(coObjects->at(i)) || dynamic_cast<CBigJason*>(coObjects->at(i)))
 		{
 			ListEnemy.push_back(coObjects->at(i));
 		}
@@ -29,7 +30,7 @@ void CEnemyBullet::CheckCollisionWithPlayer(vector<LPGAMEOBJECT>* coObjects)
 	{
 		if (this->IsCollidingObject(ListEnemy.at(i)))
 		{
-			isColideUsingAABB = true;
+			
 			if (dynamic_cast<CSophia*>(coObjects->at(i)))
 			{
 				CSophia* sophia = dynamic_cast<CSophia*>(ListEnemy.at(i));
@@ -46,8 +47,9 @@ void CEnemyBullet::CheckCollisionWithPlayer(vector<LPGAMEOBJECT>* coObjects)
 				/*this->isMove = false;*/
 				this->isDone = true;
 			}
-			
-		}
+			isColideUsingAABB = true;
+
+		}	
 	}
 	if (isColideUsingAABB != true)
 	{
@@ -66,23 +68,24 @@ void CEnemyBullet::CheckCollisionWithPlayer(vector<LPGAMEOBJECT>* coObjects)
 
 			// TODO: This is a very ugly designed function!!!!
 			FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
-			LPCOLLISIONEVENT e = coEventsResult[0];	
+			LPCOLLISIONEVENT e = coEventsResult[0];
 			if (dynamic_cast<CBigJason*>(e->obj))
 			{
 				CBigJason* bigJason = dynamic_cast<CBigJason*>(e->obj);
 				bigJason->SetHealthWithBullet(bulletDame);
 				Sound::GetInstance()->Play("PlayerInjured", 0, 1);
 			}
-			else if (dynamic_cast<CBigJason*>(e->obj))
+			else if (dynamic_cast<CSophia*>(e->obj))
 			{
 				CSophia* sophia = dynamic_cast<CSophia*>(e->obj);
 				sophia->SetHealthWithBullet(bulletDame);
 				this->isDone = true;
 				/*Item->IsDead = true;*/
 			}
-			
+
 
 		}
 	}
+
 }
 

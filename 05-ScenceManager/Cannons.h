@@ -14,8 +14,8 @@
 class CCannon : public Enemy
 {
 	LPGAMEOBJECT target;
-	BulletObject* bullet1;
-	BulletObject* bullet2;
+	CEnemyBullet* bullet1;
+	CEnemyBullet* bullet2;
 	int timeChangeState = 400;
 	int interval = 10;
 	int timer;

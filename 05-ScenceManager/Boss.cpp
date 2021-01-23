@@ -47,12 +47,11 @@ CBoss::CBoss(float x, float y, LPGAMEOBJECT player)
 	}
 	for (int i = 0; i < 4; i++)
 	{
-		CBossArm* arm = new CBossArm(this->x - 20, this->y + 10, 2, 0.027 + 0.0035 * (i + 1), 0.027 + 0.0035 * (i + 1));
+		CBossArm* arm = new CBossArm(this->x +62 , this->y + 10, 2, 0.027 + 0.0035 * (i + 1), 0.027 + 0.0035 * (i + 1));
 		listBossArm.push_back(arm);
 	}
 	objTag = BOSS_TAG;
 	objType = BOSS;
-
 }
 
 void CBoss::GetBoundingBox(float& left, float& top, float& right, float& bottom)
@@ -82,12 +81,9 @@ void CBoss::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		//{
 		//	listBulletBoss[i]->Update(dt, coObjects);
 		//}
-
-
-
 		timeToAttack += 20;
 
-		if (timeToAttack == 800) {
+		if (timeToAttack == 1300) {
 
 			if (this->x - target->x > 0) {
 				this->nx = -1;
@@ -125,18 +121,18 @@ void CBoss::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 		x_diff_left = x_hand_left - x;
 		y_diff_left = y_hand_left - y;
-		listBossArm[0]->SetXYFollow(x - 10 + x_diff_left * 1 / 5, y + 6 + y_diff_left * 1 / 5);
-		listBossArm[1]->SetXYFollow(x - 10 + x_diff_left * 2 / 5, y + 6 + y_diff_left * 2 / 5);
-		listBossArm[2]->SetXYFollow(x - 10 + x_diff_left * 3 / 5, y + 6 + y_diff_left * 3 / 5);
-		listBossArm[3]->SetXYFollow(x - 10 + x_diff_left * 4 / 5, y + 6 + y_diff_left * 4 / 5);
+		listBossArm[0]->SetXYFollow(x - 5 + x_diff_left * 1 / 5, y + 6 + y_diff_left * 1 / 5);
+		listBossArm[1]->SetXYFollow(x - 5 + x_diff_left * 2 / 5, y + 6 + y_diff_left * 2 / 5);
+		listBossArm[2]->SetXYFollow(x - 5 + x_diff_left * 3 / 5, y + 6 + y_diff_left * 3 / 5);
+		listBossArm[3]->SetXYFollow(x - 5 + x_diff_left * 4 / 5, y + 6 + y_diff_left * 4 / 5);
 
 		x_diff_right = x_hand_right - (x + 50);
 		y_diff_right = y_hand_right - y;
 
-		listBossArm[4]->SetXYFollow(x + 55 + x_diff_right * 1 / 5, y + 6 + y_diff_right * 1 / 5);
-		listBossArm[5]->SetXYFollow(x + 55 + x_diff_right * 2 / 5, y + 6 + y_diff_right * 2 / 5);
-		listBossArm[6]->SetXYFollow(x + 55	+ x_diff_right * 3 / 5, y + 6 + y_diff_right * 3 / 5);
-		listBossArm[7]->SetXYFollow(x + 55 + x_diff_right * 4 / 5, y + 6 + y_diff_right * 4 / 5);
+		listBossArm[4]->SetXYFollow(x + 50 + x_diff_right * 1 / 5, y + 6 + y_diff_right * 1 / 5);
+		listBossArm[5]->SetXYFollow(x + 50 + x_diff_right * 2 / 5, y + 6 + y_diff_right * 2 / 5);
+		listBossArm[6]->SetXYFollow(x + 50	+ x_diff_right * 3 / 5, y + 6 + y_diff_right * 3 / 5);
+		listBossArm[7]->SetXYFollow(x + 50 + x_diff_right * 4 / 5, y + 6 + y_diff_right * 4 / 5);
 
 		for (int i = 0; i < listBossArm.size(); i++)
 		{
@@ -154,7 +150,7 @@ void CBoss::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 		if (coEvents.size() == 0)  //nếu không có va chạm, update bình thường
 		{
-			/*	x += dx;
+		/*		x += dx;
 				y += dy;*/
 		}
 		else //có va chạm
