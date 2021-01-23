@@ -68,7 +68,6 @@ public:
 	void OnKeyUp(int keycode);
 	void KeyState();
 
-	void CheckCollision(vector<LPGAMEOBJECT>* coObjects);
 	void SetStartPos(float startx, float starty);
 
 	void SetLevel(int l) { level = l; }
@@ -89,6 +88,7 @@ public:
 	int Get_BigJason_Normal_bullet();
 	void AutoGo(float des);
 	void Reset();
+	void ResetAtPos(float _x, float _y);
 
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	static CBigJason* GetInstance();

@@ -587,7 +587,11 @@ void CGame::LoadSound()
 void CGame::SwitchScene(int scene_id)
 {
 	DebugOut(L"[INFO] Switching to scene %d\n", scene_id);
-
+	if (current_scene == 0)
+	{
+		CTextures::GetInstance()->Clear();
+		CSprites::GetInstance()->Clear();
+	}
 	scenes[current_scene]->Unload();
 	current_scene = scene_id;
 	LPSCENE s = scenes[scene_id];

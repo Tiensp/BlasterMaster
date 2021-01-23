@@ -98,7 +98,6 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
 		obj->SetAnimationSet(ani_set);
 		AllObjs.push_back(obj);
-		/*grid->AddObject(sophia);*/
 		DebugOut(L"[INFO] SOPHIA object created!\n");
 	}
 	break;
@@ -600,13 +599,9 @@ void CPlayScene::Render()
 			boss->Render();
 		}
 		
-
 		for (int i = 0; i < listPortal.size(); i++)
 			listPortal[i]->Render();
-		/*for (int i = 0; i < listBullet.size(); i++)
-			listBullet[i]->Render();*/
-			/*for (int i = 0; i < bulletFloater.size(); i++)
-				bulletFloater[i]->Render();*/
+
 		hud->Render();
 		hudEnergy->Render();
 
@@ -626,15 +621,8 @@ void CPlayScene::Render()
 */
 void CPlayScene::Unload()
 {
-	delete map;
-	map = NULL;
-
+	
 	camera->Clear();
-
-	delete hud;
-	hud = NULL;
-	delete hudEnergy;
-	hudEnergy = NULL;
 	DebugOut(L"[INFO] Scene %s unloaded! \n", sceneFilePath);
 }
 
@@ -848,6 +836,76 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 			CGame::GetInstance()->SwitchScene(2);
 			((CPlayScene*)scence)->currentMiniScene = 0;
 
+			break;
+		}
+		case DIK_0:
+		{
+			_ACTIVE[SOPHIA] = true;
+			_ACTIVE[JASON] = false;
+			_ACTIVE[BIG_JASON] = false;
+			CGame::GetInstance()->SwitchScene(1);
+			CPlayScene* plScene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
+			plScene->currentMiniScene = 0;
+			MiniScene* miniScene = plScene->GetlistScenes().at(plScene->currentMiniScene);
+			CCamera::GetInstance()->SetCamBound(miniScene->x, miniScene->y, miniScene->width, miniScene->height);
+			CCamera::GetInstance()->SetPosition(D3DXVECTOR2(miniScene->x, miniScene->y));
+			sophia->ResetAtPos(100, 2917);
+			break;
+		}
+		case DIK_3:
+		{
+			_ACTIVE[SOPHIA] = true;
+			_ACTIVE[JASON] = false;
+			_ACTIVE[BIG_JASON] = false;
+			CGame::GetInstance()->SwitchScene(1);
+			CPlayScene* plScene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
+			plScene->currentMiniScene = 3;
+			MiniScene* miniScene = plScene->GetlistScenes().at(plScene->currentMiniScene);
+			CCamera::GetInstance()->SetCamBound(miniScene->x, miniScene->y, miniScene->width, miniScene->height);
+			CCamera::GetInstance()->SetPosition(D3DXVECTOR2(miniScene->x, miniScene->y));
+			sophia->ResetAtPos(2164, 1900);
+			break;
+		}
+		case DIK_4:
+		{
+			_ACTIVE[SOPHIA] = true;
+			_ACTIVE[JASON] = false;
+			_ACTIVE[BIG_JASON] = false;
+			CGame::GetInstance()->SwitchScene(1);
+			CPlayScene* plScene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
+			plScene->currentMiniScene = 4;
+			MiniScene* miniScene = plScene->GetlistScenes().at(plScene->currentMiniScene);
+			CCamera::GetInstance()->SetCamBound(miniScene->x, miniScene->y, miniScene->width, miniScene->height);
+			CCamera::GetInstance()->SetPosition(D3DXVECTOR2(miniScene->x, miniScene->y));
+			sophia->ResetAtPos(2680, 1908);
+			break;
+		}
+		case DIK_5:
+		{
+			_ACTIVE[SOPHIA] = true;
+			_ACTIVE[JASON] = false;
+			_ACTIVE[BIG_JASON] = false;
+			CGame::GetInstance()->SwitchScene(1);
+			CPlayScene* plScene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
+			plScene->currentMiniScene = 5;
+			MiniScene* miniScene = plScene->GetlistScenes().at(plScene->currentMiniScene);
+			CCamera::GetInstance()->SetCamBound(miniScene->x, miniScene->y, miniScene->width, miniScene->height);
+			CCamera::GetInstance()->SetPosition(D3DXVECTOR2(miniScene->x, miniScene->y));
+			sophia->ResetAtPos(1880, 184);
+			break;
+		}
+		case DIK_8:
+		{
+			_ACTIVE[SOPHIA] = true;
+			_ACTIVE[JASON] = false;
+			_ACTIVE[BIG_JASON] = false;
+			CGame::GetInstance()->SwitchScene(1);
+			CPlayScene* plScene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
+			plScene->currentMiniScene = 8;
+			MiniScene* miniScene = plScene->GetlistScenes().at(plScene->currentMiniScene);
+			CCamera::GetInstance()->SetCamBound(miniScene->x, miniScene->y, miniScene->width, miniScene->height);
+			CCamera::GetInstance()->SetPosition(D3DXVECTOR2(miniScene->x, miniScene->y));
+			sophia->ResetAtPos(2411, 381);
 			break;
 		}
 		}

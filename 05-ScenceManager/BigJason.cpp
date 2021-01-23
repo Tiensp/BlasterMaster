@@ -641,6 +641,13 @@ void CBigJason::Reset()
 	SetSpeed(0, 0);
 }
 
+void CBigJason::ResetAtPos(float _x, float _y)
+{
+	SetPosition(_x, _y);
+	SwitchState(new StateIDLE());
+	SetSpeed(0, 0);
+}
+
 CBigJason* CBigJason::GetInstance()
 {
 	if (__instance == NULL) {

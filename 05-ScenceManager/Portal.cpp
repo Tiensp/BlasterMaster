@@ -78,6 +78,14 @@ CPortal::CPortal(float _x, float _y, int sceneID, int portalID, int desScene, in
 			y_render = y;
 			break;
 		}
+		case ToOverHead:
+		{
+			width = 32;
+			height = 32;
+			x_render = x;
+			y_render = y;
+			break;
+		}
 		}
 	}
 }
@@ -125,18 +133,18 @@ void CPortal::Render()
 	}
 	case OVHHorizontal:
 	{
-		/*if (nx < 0)
+		if (nx < 0)
 			animation_set->at(PORTAL_TYPE10)->RenderFrame(0, x_render, y_render);
 		else
-			animation_set->at(PORTAL_TYPE11)->RenderFrame(0, x_render, y_render);*/
+			animation_set->at(PORTAL_TYPE11)->RenderFrame(0, x_render, y_render);
 		break;
 	}
 	case OVHVerticle:
 	{
-		/*if (nx < 0)
+		if (nx < 0)
 			animation_set->at(PORTAL_TYPE12)->RenderFrame(0, x_render, y_render);
 		else
-			animation_set->at(PORTAL_TYPE13)->RenderFrame(0, x_render, y_render);*/
+			animation_set->at(PORTAL_TYPE13)->RenderFrame(0, x_render, y_render);
 		break;
 	}
 	}

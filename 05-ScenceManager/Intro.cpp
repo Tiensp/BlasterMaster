@@ -370,9 +370,9 @@ void CIntro::AutoSwitchScene()
 	}
 	else
 	{
-		// Chạy xong RollOut Scene thì chuyển scene sang OverWorld
-		Unload();
-		CGame::GetInstance()->SwitchScene(SCENE_TYPE_OVERWORLD);
+		//// Chạy xong RollOut Scene thì chuyển scene sang OverWorld
+		//Unload();
+		//CGame::GetInstance()->SwitchScene(SCENE_TYPE_OVERWORLD);
 	}
 }
 

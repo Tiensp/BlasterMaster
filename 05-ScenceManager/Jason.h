@@ -5,6 +5,7 @@
 #include "JasonBullet.h"
 #include "Ladder.h"
 #include "EnemyBullet.h"
+#include "Portal.h"
 #define JASON_WALKING_SPEED		0.09f 
 #define JASON_CLIMB_SPEED		0.05f 
 //0.1f
@@ -100,6 +101,7 @@ public:
 	void CheckCollisionWithEnemy(vector<LPGAMEOBJECT>* coObjects);
 	void CheckCollisionWithThornOVW(vector<LPGAMEOBJECT>* coObjects);
 	void CheckCollisionWithLava(vector<LPGAMEOBJECT>* coObjects);
+	void CheckCollisionWithPortal(vector<LPGAMEOBJECT>* coObjects);
 	int Get_Jason_Normal_bullet();
 	void set_bullet_list();
 	vector<BulletObject*> Get_Bullet_List() { return p_bullet_list; }
@@ -111,4 +113,8 @@ public:
 	CAnimation* currentAni;
 	bool renderFrame;
 	int frameID;
+	bool isAutoGo = false;
+	float autoGoDes;
+	bool switchOVH = false;
+	CPortal* porOVH;
 };
