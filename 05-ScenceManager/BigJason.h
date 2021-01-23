@@ -87,7 +87,7 @@ public:
 	void AutoGo(float des);
 	void Reset();
 
-	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
+	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	static CBigJason* GetInstance();
 	void Clear();
 	void CheckCollisionWithBrick(vector<LPGAMEOBJECT>* coObjects);
