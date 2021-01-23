@@ -86,6 +86,7 @@ public:
 	int Get_BigJason_Normal_bullet();
 	void AutoGo(float des);
 	void Reset();
+	void ResetAtPos(float _x, float _y);
 
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	static CBigJason* GetInstance();

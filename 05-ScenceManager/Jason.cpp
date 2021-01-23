@@ -22,6 +22,9 @@
 #include "Ladder.h"
 #include "Sound.h"
 #include "ThornOVERWORLD.h";
+#include "Camera.h"
+#include "Game.h"
+#include "PlayScence.h"
 
 CJason* CJason::__instance = NULL;
 
@@ -73,12 +76,14 @@ void CJason::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				SwitchState(new StateIDLE());
 			}
 		}
-	
+		
+		CheckCollisionWithPortal(coObjects);
 		CheckCollisionWithLava(coObjects);
 		CheckCollisionWithThornOVW(coObjects);
 		CheckCollisionWithLadder(coObjects);
 		CheckCollisionWithBrick(coObjects);
 		CheckCollisionWithEnemy(coObjects);
+
 		// reset untouchable timer if untouchable time has passed
 		if (GetTickCount64() - untouchable_start > JASON_UNTOUCHABLE_TIME)
 		{
@@ -162,6 +167,18 @@ void CJason::OnKeyDown(int keycode)
 			renderFrame = false;
 			isCrawling = false;
 		}
+		else if (switchOVH)
+		{
+			CPlayScene* curplScene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
+				curplScene->GetGrid()->UnloadGrid();
+			CGame::GetInstance()->SwitchScene(2);
+			CPlayScene* plScene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
+			plScene->currentMiniScene = porOVH->GetDesScene();
+			MiniScene* miniScene = plScene->GetlistScenes().at(plScene->currentMiniScene);
+			CCamera::GetInstance()->SetCamBound(miniScene->x, miniScene->y, miniScene->width, miniScene->height);
+			CCamera::GetInstance()->SetPosition(D3DXVECTOR2(miniScene->x, miniScene->y));
+			CBigJason::GetInstance()->ResetAtPos(porOVH->x_des, porOVH->y_des);
+		}
 		else if (!isCrawling && !isColLadder)
 		{
 			SwitchState(new StateCRAWL());
@@ -182,16 +199,18 @@ void CJason::OnKeyDown(int keycode)
 			renderFrame = false;
 			isCrawling = false;
 		}
-		/*	if (isCrawling)
-			{
-				SwitchState(new StateIDLE());
-				renderFrame = false;
-				isCrawling = false;
-			}*/
+		if (isCrawling)
+		{
+			SwitchState(new StateIDLE());
+			renderFrame = false;
+			isCrawling = false;
+		}
 
 		break;
 	case DIK_SPACE:
+	{
 
+	}
 		break;
 	case DIK_Z:
 	{
@@ -250,10 +269,20 @@ void CJason::SetStartPos(float startx, float starty)
 
 void CJason::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
-	left = x;
-	top = y;
-	right = x + JASON_BIG_BBOX_WIDTH;
-	bottom = y + JASON_BIG_BBOX_HEIGHT;
+	if (!isCrawling)
+	{
+		left = x;
+		top = y;
+		right = x + JASON_BIG_BBOX_WIDTH;
+		bottom = y + JASON_BIG_BBOX_HEIGHT;
+	}
+	else
+	{
+		left = x;
+		top = y;
+		right = left + JASON_BIG_BBOX_HEIGHT;
+		bottom = top + JASON_BIG_BBOX_WIDTH;
+	}
 }
 
 
@@ -449,6 +478,85 @@ void CJason::CheckCollisionWithLava(vector<LPGAMEOBJECT>* coObjects)
 
 	}
 
+}
+
+void CJason::CheckCollisionWithPortal(vector<LPGAMEOBJECT>* coObjects)
+{
+	vector<LPCOLLISIONEVENT> coEvents;
+	vector<LPCOLLISIONEVENT> coEventsResult;
+	bool isColliAABB = false;
+	coEvents.clear();
+
+	vector<LPGAMEOBJECT> ListPortal;
+	ListPortal.clear();
+	for (UINT i = 0; i < coObjects->size(); i++)
+		if (dynamic_cast<CPortal*>(coObjects->at(i)))
+			ListPortal.push_back(coObjects->at(i));
+
+	for (int i = 0; i < ListPortal.size(); i++)
+	{
+		if (this->IsCollidingObject(ListPortal.at(i)))
+		{
+			CPortal* por = dynamic_cast<CPortal*>(ListPortal.at(i));
+			isColliAABB = true;
+			if (por->objType == ToOverHead)
+			{
+				this->switchOVH = true;
+				porOVH = por;
+			}
+			else
+				switchOVH = false;
+		}
+	}
+	if (!isColliAABB)
+	{
+		CalcPotentialCollisions(&ListPortal, coEvents);
+
+		if (coEvents.size() == 0)
+		{
+			return;
+		}
+		else
+		{
+			float min_tx, min_ty, nx = 0, ny;
+			float rdx = 0;
+			float rdy = 0;
+			FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
+			LPCOLLISIONEVENT e = coEventsResult[0];
+			CPortal* por = dynamic_cast<CPortal*>(e->obj);
+
+			/// <summary>
+			/// CHUYỂN SCENE KHI CHẠM PORTAL
+			/// </summary>
+
+			if (e->nx == -1 && por->nx == -1)
+			{
+				CCamera* camera = CCamera::GetInstance();
+				camera->isSwitchScene = true;
+				camera->switchSceneOVWorld = true;
+				isAutoGo = true;
+				autoGoDes = por->x_des + 2;
+				camera->miniScene_des = por->GetDesScene();
+				D3DXVECTOR2 camPos = camera->GetCamPos();
+				camera->SwitchScenePos = D3DXVECTOR2(camPos.x + camera->GetWidth(), camPos.y);
+				((CPlayScene*)CGame::GetInstance()->GetCurrentScene())->currentMiniScene = por->GetDesScene();
+			}
+			else if (e->nx == 1 && por->nx == 1)
+			{
+				CCamera* camera = CCamera::GetInstance();
+				camera->isSwitchScene = true;
+				camera->switchSceneOVWorld = true;
+				isAutoGo = true;
+				autoGoDes = por->x_des - SOPHIA_BIG_BBOX_WIDTH;
+				camera->miniScene_des = por->GetDesScene();
+				D3DXVECTOR2 camPos = camera->GetCamPos();
+				camera->SwitchScenePos = D3DXVECTOR2(camPos.x - camera->GetWidth(), camPos.y);
+				((CPlayScene*)CGame::GetInstance()->GetCurrentScene())->currentMiniScene = por->GetDesScene();
+			}
+		}
+
+	}
+	
 }
 
 void CJason::CheckCollisionWithLadder(vector<LPGAMEOBJECT>* coObjects)

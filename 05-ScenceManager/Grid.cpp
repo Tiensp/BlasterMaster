@@ -33,7 +33,6 @@ void CGrid::AddObject(LPGAMEOBJECT obj)
 	{
 		for (int j = start_col; j <= end_col; j++)
 		{
-			DebugOut(L"Cell[%d][%d]", i, j);
 			Cell[i][j].push_back(obj);
 		}
 	}

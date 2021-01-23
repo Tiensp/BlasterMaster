@@ -588,10 +588,14 @@ void CGame::SwitchScene(int scene_id)
 {
 	DebugOut(L"[INFO] Switching to scene %d\n", scene_id);
 
-	scenes[current_scene]->Unload();
+	//scenes[current_scene]->Unload();
 	current_scene = scene_id;
 	LPSCENE s = scenes[scene_id];
 	Sound::GetInstance()->Play("Area2", 1, 100000);
 	CGame::GetInstance()->SetKeyHandler(s->GetKeyEventHandler());
-	s->Load();	
+	if (s->isLoaded == false)
+	{
+		s->Load();
+		s->isLoaded = true;
+	}
 }

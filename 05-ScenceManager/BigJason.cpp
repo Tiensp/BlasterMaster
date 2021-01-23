@@ -223,7 +223,6 @@ void CBigJason::Render()
 	for (int i = 0; i < p_bullet_list.size(); i++)
 	{
 		p_bullet_list[i]->Render();
-
 	}
 }
 #pragma region Xử lý phím
@@ -630,6 +629,13 @@ void CBigJason::AutoGo(float des)
 void CBigJason::Reset()
 {
 	SetPosition(start_x, start_y);
+	SwitchState(new StateIDLE());
+	SetSpeed(0, 0);
+}
+
+void CBigJason::ResetAtPos(float _x, float _y)
+{
+	SetPosition(_x, _y);
 	SwitchState(new StateIDLE());
 	SetSpeed(0, 0);
 }
