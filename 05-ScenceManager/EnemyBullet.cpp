@@ -28,9 +28,10 @@ void CEnemyBullet::CheckCollisionWithPlayer(vector<LPGAMEOBJECT>* coObjects)
 		}
 	for (UINT i = 0; i < ListEnemy.size(); i++)
 	{
-		if (this->IsCollidingObject(dynamic_cast<CSophia*>(ListEnemy.at(i))))
+		if (this->IsCollidingObject((ListEnemy.at(i))))
 		{
 			
+			isColideUsingAABB = true;
 			if (dynamic_cast<CSophia*>(coObjects->at(i)))
 			{
 				CSophia* sophia = dynamic_cast<CSophia*>(ListEnemy.at(i));
@@ -47,8 +48,6 @@ void CEnemyBullet::CheckCollisionWithPlayer(vector<LPGAMEOBJECT>* coObjects)
 				/*this->isMove = false;*/
 				this->isDone = true;
 			}
-			isColideUsingAABB = true;
-
 		}	
 	}
 	if (isColideUsingAABB != true)
@@ -75,6 +74,7 @@ void CEnemyBullet::CheckCollisionWithPlayer(vector<LPGAMEOBJECT>* coObjects)
 				CBigJason* bigJason = dynamic_cast<CBigJason*>(e->obj);
 				bigJason->SetHealthWithBullet(bulletDame);
 				Sound::GetInstance()->Play("PlayerInjured", 0, 1);
+				this->isDone = true;
 			}
 			else if (dynamic_cast<CSophia*>(e->obj))
 			{
@@ -83,10 +83,7 @@ void CEnemyBullet::CheckCollisionWithPlayer(vector<LPGAMEOBJECT>* coObjects)
 				this->isDone = true;
 				/*Item->IsDead = true;*/
 			}
-
-
 		}
 	}
-
 }
 

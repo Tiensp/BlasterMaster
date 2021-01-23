@@ -442,7 +442,6 @@ void CBigJason::CheckCollisionWithEnemy(vector<LPGAMEOBJECT>* coObjects)
 	{
 		if (this->IsCollidingObject(ListEnemy.at(i)))
 		{
-
 			isColideUsingAABB = true;
 			if (untouchable == 1 || isInjured)
 				continue;
@@ -541,10 +540,7 @@ void CBigJason::Revival()
 	/*SetSpeed(0, 0);*/
 }
 
-void CBigJason::SetHealthWithBullet(int bulletDame)
-{
-	this->health -= bulletDame;
-}
+
 
 void CBigJason::SwitchState(CState* state)
 {

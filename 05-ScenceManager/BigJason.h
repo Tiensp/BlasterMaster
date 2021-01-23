@@ -98,7 +98,6 @@ public:
 	void CheckCollisionWithEnemy(vector<LPGAMEOBJECT>* coObjects);
 	void CheckCollisionWithItem(vector<LPGAMEOBJECT>* coObjects);
 	void Revival();
-	void SetHealthWithBullet(int bulletDame);
 	/* Variable */
 	CState* currentState;
 	CAnimation* currentAni;

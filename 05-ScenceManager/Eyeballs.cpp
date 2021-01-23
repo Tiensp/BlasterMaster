@@ -91,13 +91,13 @@ void CEyeballs::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			{
 				if (this->GetState() == EYEBALL_ANI_WALKING)
 				{
-					if (eyeball_bullet == NULL)
+					/*if (eyeball_bullet == NULL)
 					{
 						eyeball_bullet = new BulletEyeball(this->x, this->y, this->target);
 						eyeball_bullet->SetPosition(this->x + width + 10, this->y + height + 15);
 						eyeball_bullet->Set_bullet_dir(this->nx, this->ny);
 						eyeball_bullet->Set_IsMove(true);
-					}
+					}*/
 					this->SetState(EYEBALL_ANI_IDLE);
 					timer = 0;
 				}

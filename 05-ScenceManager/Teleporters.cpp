@@ -272,67 +272,6 @@ void CTeleporter::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			}*/
 		}
 	}
-
-	vector<LPCOLLISIONEVENT> coEvents;
-	vector<LPCOLLISIONEVENT> coEventsResult;
-
-	coEvents.clear();
-
-
-
-	// turn off collision when die 
-	//nếu không chết thì kiểm tra toàn bộ va chạm với các đối tượng khác
-	CalcPotentialCollisions(coObjects, coEvents);
-
-	// reset untouchable timer if untouchable time has passed
-
-	// No collision occured, proceed normally
-
-	if (coEvents.size() == 0)  //nếu không có va chạm, update bình thường
-	{
-		x += dx;
-		y += dy;
-		
-	}
-	else //có va chạm
-	{
-		float min_tx, min_ty, nx = 0, ny = 0;
-		float rdx = 0;
-		float rdy = 0;
-
-		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);  // sắp xếp lại các sự kiện va chạm đầu tiên theo trục x, y 
-
-		{
-			for (UINT i = 0; i < coEventsResult.size(); i++)
-			{
-				LPCOLLISIONEVENT e = coEventsResult[i];
-
-				if (dynamic_cast<CBrick*>(e->obj)) // if e->obj is Goomba 
-				{
-					if (e->nx != 0) {
-						if (e->nx > 0) {
-							this->SetPosition(this->x - 50, this->y);
-						}
-						else if (e->nx <= 0) {
-							this->SetPosition(this->x + 50, this->y);
-						}
-					}
-					else if (e->ny != 0) {
-						if (e->ny > 0) {
-							this->SetPosition(this->x, this->y - 50);
-						}
-						else if (e->ny <= 0) {
-							this->SetPosition(this->x, this->y + 50);
-						}
-					}
-				}
-				else {
-					x += dx;
-					y += dy;
-				}
-			}
-		}
-	}
 }
 
 int CTeleporter::RandomPosition()

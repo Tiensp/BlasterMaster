@@ -3,9 +3,9 @@
 # type: 0 = Sophia, 1 = Jason, 2 = BigJason , 3 = Brick, 4 = Golem, 5 = Domes, 52 = portal, 53 = sceneInf, 54 = SelectBulletScr
 # Player extra_settings	isActive
 # Sophia
-#0	0	0	0	1
+0	0	0	0	0
 # Jason
-#1	0	0	1	0
+1	0	0	1	0
 # BigJason
 2	118	1875	2	1
 # Golem
