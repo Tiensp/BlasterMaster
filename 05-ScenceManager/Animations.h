@@ -33,14 +33,20 @@ public:
 	CAnimation(int defaultTime = 100);
 	void Add(int spriteId, DWORD time = 0);
 	void Render(float x, float y, int alpha = 255);
+	void Render(float x, float y, D3DCOLOR color);
 	void RenderFrame(int frameID, float x, float y, int alpha = 255);
+	void RenderFrame(int frameID, float x, float y, D3DCOLOR color);
+	void RenderThreeBullet(float x, float y, int alpha = 255);
 	void ResetCurrentFrame() { currentFrame = -1; isComplete = false; }
 	void SetCurrentFrame(int curr) { currentFrame = curr; }
 	int GetCurrentFrame();
 	int GetAniSize() { return frames->size(); }
 	int GetLastFrame();
+	int GetFrameTime(int frameID);
 	int GetAniTime();
 	bool IsFinalFrame();
+	bool GetIsComplete() { return isComplete; }
+	RECT GetFrameRect(int id);
 
 };
 

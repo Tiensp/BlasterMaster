@@ -6,11 +6,11 @@ HUD::HUD()
 	HUD_ani = HUD_aniSet->at(ANISET_HP_BAR);
 	if (_ACTIVE[SOPHIA])
 	{
-		playerHP = new HP(CSophia::GetInstance()->GetHealth());
+		playerHP = new HP(INSTANCE_SOPHIA->GetHealth());
 	}
 	else if (_ACTIVE[BIG_JASON])
 	{
-		playerHP = new HP(CBigJason::GetInstance()->GetHealth());
+		playerHP = new HP(INSTANCE_BIGJASON->GetHealth());
 	}
 }
 
@@ -23,7 +23,7 @@ void HUD::Render()
 {
 	D3DXVECTOR2 hudPos = CCamera::GetInstance()->GetCamPos();
 	float xHUD = hudPos.x + 16;
-	float yHUD = hudPos.y + 182;
+	float yHUD = hudPos.y + 160;
 	HUD_ani->Render(xHUD, yHUD);
 	playerHP->Render(xHUD, yHUD);
 }

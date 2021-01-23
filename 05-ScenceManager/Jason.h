@@ -2,7 +2,7 @@
 #include "GameObject.h"
 #include "State.h"
 #include "GameDefine.h"
-
+#include "JasonBullet.h"
 #define JASON_WALKING_SPEED		0.09f 
 //0.1f
 #define JASON_JUMP_SPEED_Y		0.5f
@@ -27,11 +27,11 @@
 #define	JASON_LEVEL_SMALL	1
 #define	JASON_LEVEL_BIG		2
 
-#define JASON_SMALL_BBOX_WIDTH  20
-#define JASON_SMALL_BBOX_HEIGHT 31
+#define JASON_SMALL_BBOX_WIDTH  10
+#define JASON_SMALL_BBOX_HEIGHT 17
 
-#define JASON_BIG_BBOX_WIDTH  24
-#define JASON_BIG_BBOX_HEIGHT 32
+#define JASON_BIG_BBOX_WIDTH  10
+#define JASON_BIG_BBOX_HEIGHT 17
 
 #define JASON_UNTOUCHABLE_TIME 5000
 
@@ -44,14 +44,17 @@ protected:
 	int untouchable;
 	DWORD untouchable_start;
 	DWORD lifeTimeAni;
+	
 
 	float start_x;			// initial position of Jason at scene
 	float start_y;
 
 	bool isCrawling;
 	bool isTouchingPortal;
+	bool jumpIntoCabin = false;
 
 	int health = 8;	// Máu nhân vật
+	vector<BulletObject* > p_bullet_list;
 public:
 	CJason();
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects = NULL);
@@ -81,9 +84,14 @@ public:
 
 
 	void Reset();
+	void ResetAtPos(float _x, float _y);
 
+	int Get_Jason_Normal_bullet();
+	void set_bullet_list();
+	vector<BulletObject*> Get_Bullet_List() { return p_bullet_list; }
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	static CJason* GetInstance();
+	void Clear();
 	/* Variable */
 	CState* currentState;
 	CAnimation* currentAni;

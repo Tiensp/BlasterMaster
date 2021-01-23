@@ -6,12 +6,14 @@
 
 class CCamera
 {
-	static CCamera* __intance;
+	static CCamera* __instance;
 
 	D3DXVECTOR2 camPos;
 
 	int width;		
 	int height;
+
+	
 
 	RECT camBound;		  //Set biên giới hạn camera dựa vào kích thước map
 	
@@ -19,6 +21,7 @@ class CCamera
 
 public:
 	static CCamera* GetInstance();
+	void Clear();
 	CCamera(int w, int h);
 	~CCamera();
 	D3DXVECTOR2 World2Cam(const D3DXVECTOR2& pos);
@@ -29,6 +32,7 @@ public:
 	D3DXVECTOR2 GetCamPos() { return camPos; }
 
 	bool isContain(RECT rect);
+	bool isContain(D3DXVECTOR2 pos);
 
 	int GetWidth() { return this->width; }
 	int GetHeight() { return this->height; }
@@ -42,8 +46,13 @@ public:
 	void UpdateAutoCam(DWORD dt);
 	void LockCam();
 	void UnlockCam();
-	void SetCamBound(float mapWidth, float mapHeight);
+	void SetCamBound(float x, float y, float mapWidth, float mapHeight);
 	void Update();
+
+	////////// PUBLIC VARIABLE //////////
+	bool isSwitchScene;
+	int miniScene_des;
+	D3DXVECTOR2 SwitchScenePos;
 };
 
 

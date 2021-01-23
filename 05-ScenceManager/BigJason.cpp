@@ -13,6 +13,8 @@
 #include "StateFALL.h"
 #include "StateJUMP.h"
 #include "Brick.h"
+#include "RockOVH.h"
+#include "BigJasonBullet.h"
 
 CBigJason* CBigJason::__instance = NULL;
 
@@ -37,6 +39,7 @@ void CBigJason::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		CGameObject::Update(dt);
 
 
+
 		vector<LPCOLLISIONEVENT> coEvents;
 		vector<LPCOLLISIONEVENT> coEventsResult;
 
@@ -51,6 +54,12 @@ void CBigJason::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		{
 			untouchable_start = 0;
 			untouchable = 0;
+		}
+		set_bullet_list();
+		for (int i = 0; i < p_bullet_list.size(); i++)
+		{
+			p_bullet_list[i]->Update(dt, coObjects);
+
 		}
 
 		// No collision occured, proceed normally
@@ -85,6 +94,12 @@ void CBigJason::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				{
 					y += min_ty * dy + ny * 0.4f;
 				}
+				else if (dynamic_cast<CRockOVH*>(e->obj)) // if e->obj is Goomba 
+				{
+					x = x;
+					y = y;
+				}
+
 			}
 
 			//
@@ -111,21 +126,99 @@ void CBigJason::Render()
 
 
 		currentAni->Render(x, y);
-		RenderBoundingBox();
+		RenderBoundingBox(x, y);
+	}
+	for (int i = 0; i < p_bullet_list.size(); i++)
+	{
+		p_bullet_list[i]->Render();
+
 	}
 }
 #pragma region Xử lý phím
 
 void CBigJason::OnKeyDown(int keycode)
 {
+
 	switch (keycode)
 	{
 	case DIK_S:
 		break;
-
 	case DIK_SPACE:
-
 		break;
+	case  DIK_Z:
+	{
+		BigJasonBullet* p_bullet = new BigJasonBullet();
+		
+		if (p_bullet_list.size() == 0)
+		{
+			p_bullet = new BigJasonBullet(this->x, this->y, 0);
+
+		}
+		else if (p_bullet_list.size() == 1)
+		{
+			p_bullet = new BigJasonBullet(this->x, this->y, 1);
+		}
+		else if (p_bullet_list.size() == 2)
+		{
+			p_bullet = new BigJasonBullet(this->x, this->y, -1);
+		}
+		else if (p_bullet_list.size() == 3)
+		{
+			p_bullet = new BigJasonBullet(this->x, this->y, 1);
+
+		}
+		if (energy <= 2)
+		{
+			p_bullet->Set_Type(0);
+		}
+		else if (2 < energy && energy <= 5)
+		{
+			p_bullet->Set_Type(1);
+		}
+		else if( energy > 5)
+		{
+			p_bullet->Set_Type(2);
+		}
+
+		if (this->ny == 0)
+		{
+			if (this->nx == 1)
+			{
+				p_bullet->SetPosition(this->x + width + 20, this->y + 14);
+
+			}
+			else
+			{
+				p_bullet->SetPosition(this->x + width - 8, this->y + 14);
+			}
+			p_bullet->Set_bullet_dir(this->nx);
+			p_bullet->Set_point();
+
+
+		}
+		else if (this->nx == 0)
+		{
+			if (this->ny == 1)
+			{
+				p_bullet->SetPosition(this->x + width + 10, this->y - 5);
+				p_bullet->Set_bullet_dir(3);
+			}
+			else
+			{
+				p_bullet->SetPosition(this->x + width + 2, this->y + 25);
+				p_bullet->Set_bullet_dir(4);
+			}
+			p_bullet->Set_point();
+		}
+		
+		if (Get_BigJason_Normal_bullet() <= 3)
+		{
+
+			p_bullet->Set_IsMove(true);
+			p_bullet_list.push_back(p_bullet);
+		}
+		break;
+	}
 	}
 }
 
@@ -148,10 +241,19 @@ void CBigJason::SetStartPos(float startx, float starty)
 
 void CBigJason::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
-		left = x;
-		top = y;
-		right = x + BIG_JASON_BIG_BBOX_WIDTH;
-		bottom = y + BIG_JASON_BIG_BBOX_HEIGHT;
+	left = x;
+	top = y;
+	right = x + BIG_JASON_BIG_BBOX_WIDTH;
+	bottom = y + BIG_JASON_BIG_BBOX_HEIGHT;
+}
+
+void CBigJason::Clear()
+{
+	if (__instance != NULL)
+	{
+		delete __instance;
+		__instance = NULL;
+	}
 }
 
 
@@ -164,6 +266,38 @@ void CBigJason::SwitchState(CState* state)
 	delete currentState;
 	currentState = state;
 	currentAni = animation_set->at(state->StateName);
+}
+
+void CBigJason::set_bullet_list()
+{
+	for (int i = 0; i < p_bullet_list.size(); i++)
+	{
+		BulletObject* p_bullet = p_bullet_list[i];
+		if (p_bullet->isDone)
+		{
+			p_bullet_list.erase(p_bullet_list.begin() + i);
+			if (p_bullet != NULL)
+			{
+				delete p_bullet;
+				p_bullet = NULL;
+			}
+		}
+	}
+
+}
+
+
+int CBigJason::Get_BigJason_Normal_bullet()
+{
+	int count = 0;
+	for (int i = 0; i < p_bullet_list.size(); i++)
+	{
+		if (dynamic_cast<BigJasonBullet*>(p_bullet_list[i]))
+		{
+			count += 1;
+		}
+	}
+	return count;
 }
 
 /*

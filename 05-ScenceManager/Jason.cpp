@@ -13,6 +13,7 @@
 #include "StateFALL.h"
 #include "StateJUMP.h"
 #include "StateCRAWL.h"
+#include "StateOPENCabin.h"
 #include "Brick.h"
 
 CJason* CJason::__instance = NULL;
@@ -36,9 +37,16 @@ void CJason::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	{
 		// Calculate dx, dy 
 		CGameObject::Update(dt);
-
 		// Simple fall down
 		vy += SOPHIA_GRAVITY * dt;
+
+		set_bullet_list();
+		for (int i = 0; i < p_bullet_list.size(); i++)
+		{
+			p_bullet_list[i]->Update(dt, coObjects);
+
+		}
+		
 		vector<LPCOLLISIONEVENT> coEvents;
 		vector<LPCOLLISIONEVENT> coEventsResult;
 
@@ -75,8 +83,7 @@ void CJason::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			//	x += nx*abs(rdx); 
 
 			// block every object first!
-			x += min_tx * dx + nx * 0.4f;
-			/*y += min_ty*dy + ny*0.4f;*/
+			//y += min_ty*dy + ny*0.4f;
 
 			if (nx != 0) vx = 0;
 			if (ny != 0) vy = 0;
@@ -85,7 +92,12 @@ void CJason::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				LPCOLLISIONEVENT e = coEventsResult[i];
 				if (dynamic_cast<CBrick*>(e->obj)) // if e->obj is Goomba 
 				{
+					x += min_tx * dx + nx * 0.4f;
 					y += min_ty * dy + ny * 0.4f;
+				}
+				else
+				{
+					x += dx;
 				}
 			}
 
@@ -96,7 +108,22 @@ void CJason::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 		}
 
-		currentState->Update();
+		if (jumpIntoCabin)
+		{
+			CSophia* sophia = INSTANCE_SOPHIA;
+			if (y + JASON_BIG_BBOX_HEIGHT >= sophia->y + SOPHIA_SMALL_BBOX_HEIGHT * 0.75)
+			{
+				jumpIntoCabin = false;
+				_ACTIVE[JASON] = false;
+				sophia->SetIsFrozen(false);
+				sophia->SetIsOpenCabin(true);
+				sophia->frameID = -1;
+				sophia->SwitchState(new StateOPENCabin(), NORMAL_STATE);
+			}
+			
+		}
+		else 
+			currentState->Update();
 
 
 		// clean up collision events
@@ -115,7 +142,13 @@ void CJason::Render()
 			currentAni->RenderFrame(frameID, x, y);
 		else
 			currentAni->Render(x, y);
-		RenderBoundingBox();
+
+		for (int i = 0; i < p_bullet_list.size(); i++)
+		{
+			p_bullet_list[i]->Render();
+
+		}
+		RenderBoundingBox(x,y);
 	}
 }
 #pragma region Xử lý phím
@@ -143,8 +176,43 @@ void CJason::OnKeyDown(int keycode)
 	case DIK_SPACE:
 
 		break;
+	case DIK_Z:
+	{
+		BulletObject* p_bullet = new BulletObject();
+		p_bullet = new JasonBullet(this->x, this->y);
+		if (this->nx == 1)
+		{
+			p_bullet->SetPosition(this->x + width + 15, this->y + height * 0.3);
+			p_bullet->Set_bullet_dir(this->nx);
+		}
+		else
+		{
+			p_bullet->SetPosition(this->x + width - 15, this->y + height * 0.3);
+			p_bullet->Set_bullet_dir(this->nx);
+		}
+		if (Get_Jason_Normal_bullet() <= 1)
+		{
+			p_bullet->Set_IsMove(true);
+			p_bullet_list.push_back(p_bullet);
+		}
+	}
+	break;
+	case DIK_Q:
+	{
+		CSophia* sophia = INSTANCE_SOPHIA;
+		if (IsCollidingObject(sophia))
+		{
+			nx = sophia->nx;
+			jumpIntoCabin = true;
+			ResetAtPos(sophia->x + SOPHIA_BIG_BBOX_WIDTH / 2 - JASON_BIG_BBOX_WIDTH / 2,
+				sophia->y - (SOPHIA_OPEN_CABIN_BBOX_HEIGHT - SOPHIA_SMALL_BBOX_HEIGHT)
+				- JASON_BIG_BBOX_HEIGHT * 0.25);
+		}
+		break;
+	}
 	}
 }
+
 
 void CJason::OnKeyUp(int keycode)
 {
@@ -194,11 +262,62 @@ void CJason::Reset()
 	SetSpeed(0, 0);
 }
 
+void CJason::ResetAtPos(float _x, float _y)
+{
+	SetPosition(_x, _y);
+	SwitchState(new StateIDLE());
+	SetSpeed(0, 0);
+}
+
+int CJason::Get_Jason_Normal_bullet()
+{
+	int count = 0;
+	for (int i = 0; i < p_bullet_list.size(); i++)
+	{
+		if (dynamic_cast<JasonBullet*>(p_bullet_list[i]))
+		{
+			count += 1;
+		}
+	}
+	return count;
+}
+
+void CJason::set_bullet_list()
+{
+	for (int i = 0; i < p_bullet_list.size(); i++)
+	{
+		BulletObject* p_bullet = p_bullet_list[i];
+		if (p_bullet != NULL)
+		{
+			if (p_bullet->isDone)
+			{
+				p_bullet_list.erase(p_bullet_list.begin() + i);
+				if (p_bullet != NULL)
+				{
+					delete p_bullet;
+					p_bullet = NULL;
+				}
+
+			}
+		}
+
+	}
+}
+
 CJason* CJason::GetInstance()
 {
 	if (__instance == NULL) {
 		__instance = new CJason();
 	}
 	return __instance;
+}
+
+void CJason::Clear()
+{
+	if (__instance != NULL)
+	{
+		delete __instance;
+		__instance = NULL;
+	}
 }
 

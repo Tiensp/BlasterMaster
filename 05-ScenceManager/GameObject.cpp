@@ -12,9 +12,8 @@ CGameObject::CGameObject()
 {
 	x = y = 0;
 	vx = vy = 0;
-	ax = 0;
-	ay = 0;
 	nx = 1;	
+	objTag = NONE;
 }
 
 void CGameObject::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
@@ -27,6 +26,35 @@ void CGameObject::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 /*
 	Extension of original SweptAABB to deal with two moving objects
 */
+//void CGameObject::SetHp(int dameBullet)
+//{
+//	this->hp -= dameBullet;
+//	if (hp <= 0)
+//	{
+//		hp = 0;
+//	}
+//}
+bool CGameObject::IsCollidingObject(CGameObject* Obj)
+{
+	float ml, mt, mr, mb;		// moving object bbox
+	this->GetBoundingBox(ml, mt, mr, mb);
+
+	float sl, st, sr, sb;		// static object bbox
+	Obj->GetBoundingBox(sl, st, sr, sb);
+
+	//Check AABB first
+	/*LPSPRITE sprt = animationSet->at(0)->GetAnimationCurrentFrame(0)->GetSprite();
+	LPSPRITE coSprt = Obj->animationSet->at(0)->GetAnimationCurrentFrame(0)->GetSprite();*/
+	if (CGame::GetInstance()->IsCollidingAABB(
+		ml, mt, mr, mb,
+		sl, st, sr, sb))
+		return true;
+
+	//Swept AABB later
+	LPCOLLISIONEVENT e = SweptAABBEx(Obj);
+	bool isColliding = e->t > 0 && e->t <= 1;
+	return isColliding;
+}
 LPCOLLISIONEVENT CGameObject::SweptAABBEx(LPGAMEOBJECT coO)
 {
 	float sl, st, sr, sb;		// static object bbox
@@ -116,9 +144,9 @@ void CGameObject::FilterCollision(
 }
 
 
-void CGameObject::RenderBoundingBox()
+void CGameObject::RenderBoundingBox(float x_render, float y_render)
 {
-	D3DXVECTOR2 p(x, y);
+	D3DXVECTOR2 p(x_render, y_render);
 	RECT rect;
 
 	LPDIRECT3DTEXTURE9 bbox = CTextures::GetInstance()->Get(ID_TEX_BBOX);

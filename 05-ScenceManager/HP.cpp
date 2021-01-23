@@ -10,13 +10,13 @@ HP::HP(int _hp)
 void HP::Update()
 {
 	if (_ACTIVE[SOPHIA]) {
-		currentHP = CSophia::GetInstance()->GetHealth();
+		currentHP = INSTANCE_SOPHIA->GetHealth();
 	}
 	/*else if (_ACTIVE[JASON]) {
 		currentHP = playerSmall->health;
 	}*/
 	else if (_ACTIVE[BIG_JASON]) {
-		currentHP = CBigJason::GetInstance()->GetHealth();
+		currentHP = INSTANCE_BIGJASON->GetHealth();
 	}
 }
 

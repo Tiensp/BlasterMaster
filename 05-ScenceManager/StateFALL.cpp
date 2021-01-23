@@ -1,13 +1,19 @@
 #include "StateFALL.h"
+#include "StateFALLTurn.h"
 #include "StateTURN.h"
 #include "StateWALKING.h"
 #include "StateRAISEDGUN.h"
 #include "StateIDLE.h"
+#include "StateJUMP.h"
+#include "StateIDLEGunUP.h"
 
 StateFALL::StateFALL()
 {
-	CSophia* sophia = CSophia::GetInstance();
+	
+	CSophia* sophia = INSTANCE_SOPHIA;
+	sophia->renderFrame = false;
 	sophia->SetIsFalling(true);
+	sophia->SetIsJumping(false);
 
 	if (sophia->nx > 0)
 	{
@@ -17,68 +23,83 @@ StateFALL::StateFALL()
 	{
 		StateName = SOPHIA_FALL_LEFT;
 	}
+
 }
 
 void StateFALL::Update()
 {
-	CSophia* sophia = CSophia::GetInstance();
-	this->HandleKeyboard();
+	CSophia* sophia = INSTANCE_SOPHIA;
 	if (sophia->vy == 0)
 	{
 		sophia->SetIsFalling(false);
-		sophia->SwitchState(new StateIDLE());
+		if (!sophia->GetIsGunUp())
+			sophia->SwitchState(new StateIDLE(), WALK2IDLE);
+		else
+			sophia->SwitchState(new StateIDLEGunUP(), WALK2IDLE);
 	}
+	else
+		this->HandleKeyboard();
 }
 
 void StateFALL::HandleKeyboard()
 {
-	CSophia* sophia = CSophia::GetInstance();
+	CSophia* sophia = INSTANCE_SOPHIA;
 
-	/*if (_KEYCODE[DIK_RIGHT])
+	if (_KEYCODE[DIK_RIGHT])
 	{
-		if (_ACTIVE[SOPHIA])
+		if (_ACTIVE[SOPHIA] && !sophia->GetIsFrozen())
 		{
 			if (sophia->nx < 0)
 			{
-				sophia->SwitchState(new StateTURN());
+				sophia->SwitchState(new StateFALLTurn(), NORMAL_STATE);
 				sophia->currentAni->ResetCurrentFrame();
 			}
 			else
 			{
-				sophia->SwitchState(new StateWALKING());
-				sophia->currentAni->ResetCurrentFrame();
+				sophia->vx = SOPHIA_WALKING_SPEED;
 			}
 		}
 	}
 	else if (_KEYCODE[DIK_LEFT])
 	{
-		if (_ACTIVE[SOPHIA])
+		if (_ACTIVE[SOPHIA] && !sophia->GetIsFrozen())
 		{
 			if (sophia->nx > 0)
 			{
-				sophia->SwitchState(new StateTURN());
+				sophia->SwitchState(new StateFALLTurn(), NORMAL_STATE);
 				sophia->currentAni->ResetCurrentFrame();
 			}
 			else
 			{
-				sophia->SwitchState(new StateWALKING());
-				sophia->currentAni->ResetCurrentFrame();
+				sophia->vx = -SOPHIA_WALKING_SPEED;
 			}
 		}
 	}
 	else if (_KEYCODE[DIK_UP])
 	{
-		if (_ACTIVE[SOPHIA])
+		if (_ACTIVE[SOPHIA] && !sophia->GetIsFrozen())
 		{
-			sophia->SwitchState(new StateRAISEDGun());
-			sophia->currentAni->ResetCurrentFrame();
+			if (!sophia->GetIsGunUp())
+			{
+				sophia->SwitchState(new StateRAISEDGun(), NORMAL_STATE);
+				sophia->currentAni->ResetCurrentFrame();
+			}
+			else
+			{
+				sophia->SwitchState(new StateFALL(), NORMAL_STATE);
+				sophia->currentAni->ResetCurrentFrame();
+			}
 		}
 	}
 	else if (_KEYCODE[DIK_DOWN])
 	{
 	}
 	else
-		sophia->SwitchState(new StateFALL());*/
+	{
+		if (_ACTIVE[SOPHIA] && !sophia->GetIsFrozen())
+			sophia->SwitchState(new StateFALL(), NORMAL_STATE);
+	}
+		
 }
 
 StateFALL::~StateFALL()

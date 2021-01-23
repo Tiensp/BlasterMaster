@@ -7,7 +7,7 @@ StateCRAWL::StateCRAWL()
 {
 	if (_ACTIVE[JASON])
 	{
-		CJason* jason = CJason::GetInstance();
+		CJason* jason = INSTANCE_JASON;
 		jason->vx = 0;
 		if (jason->nx > 0)
 		{
@@ -27,7 +27,7 @@ void StateCRAWL::Update()
 
 void StateCRAWL::HandleKeyboard()
 {
-	CJason* jason = CJason::GetInstance();
+	CJason* jason = INSTANCE_JASON;
 	if (_KEYCODE[DIK_RIGHT])
 	{
 		jason->nx = 1;

@@ -1,0 +1,7 @@
+[SETTINGS]
+start	1
+#scene list
+[SCENES]
+0	text\Intro.txt
+1	text\Overworld.txt
+2	text\Overhead.txt
