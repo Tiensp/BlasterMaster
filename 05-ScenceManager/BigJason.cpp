@@ -71,8 +71,8 @@ void CBigJason::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, vector<CEnemyB
 		// No collision occured, proceed normally
 		if (coEvents.size() == 0)
 		{
-			x += dx;
-			y += dy;
+			/*x += dx;
+			y += dy;*/
 		}
 		else
 		{
@@ -413,6 +413,11 @@ void CBigJason::CheckCollisionWithBrick(vector<LPGAMEOBJECT>* coObjects)
 	}
 }
 
+void CBigJason::CheckCollisionWithThorn(vector<LPGAMEOBJECT>* coObjects)
+{
+	
+}
+
 void CBigJason::CheckCollisionWithEnemy(vector<LPGAMEOBJECT>* coObjects)
 {
 	vector<LPCOLLISIONEVENT> coEvents;
@@ -424,7 +429,7 @@ void CBigJason::CheckCollisionWithEnemy(vector<LPGAMEOBJECT>* coObjects)
 	ListEnemy.clear();
 	for (UINT i = 0; i < coObjects->size(); i++)
 	{
-		if (dynamic_cast<Enemy*>(coObjects->at(i)) || dynamic_cast<CEnemyBullet*>(coObjects->at(i)))
+		if (dynamic_cast<Enemy*>(coObjects->at(i)) || dynamic_cast<CEnemyBullet*>(coObjects->at(i))|| dynamic_cast<CThornOVH*>(coObjects->at(i)))
 			ListEnemy.push_back(coObjects->at(i));
 	}
 	for (int i = 0; i < ListEnemy.size(); i++)

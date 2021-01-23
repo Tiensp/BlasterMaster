@@ -91,6 +91,7 @@ public:
 	static CBigJason* GetInstance();
 	void Clear();
 	void CheckCollisionWithBrick(vector<LPGAMEOBJECT>* coObjects);
+	void CheckCollisionWithThorn(vector<LPGAMEOBJECT>* coObjects);
 	void CheckCollisionWithEnemy(vector<LPGAMEOBJECT>* coObjects);
 	void CheckCollisionWithItem(vector<LPGAMEOBJECT>* coObjects);
 	void Revival();

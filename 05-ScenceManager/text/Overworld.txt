@@ -4,12 +4,12 @@
 #		49 = Ladder, 85 = Item
 # Player extra_settings	isActive
 # Sophia
-0	600	1600	0	0
-#0	174	2890	0	1
+#0	600	1600	0	0
+0	174	2890	0	1
 # Jason
 1	92	2938	1	0
 # BigJason
-2	600	1700	2	1
+2	600	1700	2	0
 # Golem
 #SCENE 1
 4	1073	2757	4	0
