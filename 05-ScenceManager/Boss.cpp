@@ -50,6 +50,7 @@ CBoss::CBoss(float x, float y, LPGAMEOBJECT player)
 		CBossArm* arm = new CBossArm(this->x - 20, this->y + 10, 2, 0.027 + 0.0035 * (i + 1), 0.027 + 0.0035 * (i + 1));
 		listBossArm.push_back(arm);
 	}
+	objTag = BOSS_TAG;
 	objType = BOSS;
 
 }

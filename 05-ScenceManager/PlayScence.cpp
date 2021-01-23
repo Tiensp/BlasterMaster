@@ -150,6 +150,8 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		boss = new CBoss(x, y, sophia);		
 		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
 		boss->SetAnimationSet(ani_set);
+		bool active = atoi(tokens[4].c_str());
+		_ACTIVE[BOSS] = active;
 		AllObjs.push_back(boss);
 		break;
 	}
@@ -446,7 +448,7 @@ void CPlayScene::Load()
 	grid = new CGrid(map->GetMapWidth(), map->GetMapHeight());
 	for (int i = 0; i < AllObjs.size(); i++)
 	{
-		if (AllObjs.at(i)->objTag != PLAYER)
+		if (AllObjs.at(i)->objTag != PLAYER && AllObjs.at(i)->objTag != BOSS_TAG)
 			grid->AddObject(AllObjs.at(i));
 	}
 	//Thiết lập trạng thái, vị trí khởi đầu,... cho đối tượng đang active
@@ -464,6 +466,10 @@ void CPlayScene::Load()
 	{
 		bigJason->Reset();
 		grid->AddObject(bigJason);
+	}
+	if (_ACTIVE[BOSS])
+	{
+		grid->AddObject(boss);
 	}
 	//Sau khi active và khởi tạo xong xong đối tượng player thì khởi tạo thanh HUD 
 	hud = new HUD();
@@ -493,7 +499,37 @@ void CPlayScene::Update(DWORD dt)
 		{
 			bigJason->Update(dt, &coObjects, &listEnemyBullet);
 		}
-	/*	boss->Update(dt, &coObjects);*/
+		if (_ACTIVE[BOSS])
+		{
+			boss->Update(dt, &coObjects);
+			if (boss->Get_IsAtack() == true)
+			{
+				for (int i = 0; i < listEnemyBullet.size(); i++)
+				{
+					CEnemyBullet* p_bullet = listEnemyBullet[i];
+					if (p_bullet != NULL)
+					{
+						if (p_bullet->isDone)
+						{
+							listEnemyBullet.erase(listEnemyBullet.begin() + i);
+							if (p_bullet != NULL)
+							{
+								delete p_bullet;
+								p_bullet = NULL;
+							}
+						}
+					}
+				}
+				CEnemyBullet* p_bullet = new CEnemyBullet();
+				p_bullet = new BossBullet((boss->Get_x()) + 30, (boss->Get_y()) + 66, 1);
+				p_bullet->Set_IsMove(true);
+				if (listEnemyBullet.size() <= 4)
+				{
+					listEnemyBullet.push_back(p_bullet);
+				}
+
+			}
+		}
 
 		for (int i = 0; i < coObjects.size(); i++)
 		{
@@ -503,33 +539,7 @@ void CPlayScene::Update(DWORD dt)
 				coObjects.at(i)->Update(dt, &coObjects);
 			}
 		}
-		if (boss->Get_IsAtack()==true)
-		{
-			for (int i = 0; i < listEnemyBullet.size(); i++)
-			{
-				CEnemyBullet* p_bullet = listEnemyBullet[i];
-				if (p_bullet != NULL)
-				{
-					if (p_bullet->isDone)
-					{
-						listEnemyBullet.erase(listEnemyBullet.begin() + i);
-						if (p_bullet != NULL)
-						{
-							delete p_bullet;
-							p_bullet = NULL;
-						}
-					}
-				}
-			}
-			CEnemyBullet* p_bullet = new CEnemyBullet();
-			p_bullet = new BossBullet((boss->Get_x()) + 30, (boss->Get_y()) + 66, 1);
-			p_bullet->Set_IsMove(true);
-			if (listEnemyBullet.size() <= 4)
-			{
-				listEnemyBullet.push_back(p_bullet);
-			}
-			
-		}
+		
 		for (int i = 0; i < listEnemyBullet.size(); i++)
 		{
 			listEnemyBullet[i]->Update(dt, &coObjects);
@@ -586,7 +596,11 @@ void CPlayScene::Render()
 		{
 			bigJason->Render();
 		}
-		/*boss->Render();*/
+		if (_ACTIVE[BOSS])
+		{
+			boss->Render();
+		}
+		
 
 		for (int i = 0; i < listPortal.size(); i++)
 			listPortal[i]->Render();
@@ -645,6 +659,8 @@ void CPlayScene::ClassifyOBJECT(vector<LPGAMEOBJECT> obj)
 			break;
 		}
 		case PLAYER:
+			break;
+		case BOSS_TAG:
 			break;
 		default:
 		{

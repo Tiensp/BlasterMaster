@@ -45,7 +45,7 @@
 #80	1400	1160	80	4
 
 #BOSS
-#100	110	1785	100	
+100	110	1785	100	0
 
 # BRICK 
 # --- platform (hint: I created the list using Excel!) ----

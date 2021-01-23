@@ -73,6 +73,7 @@ extern enum ObjectTAG
 	PORTAL,
 	BULLET_ENEMIES,
 	LAVA,
+	BOSS_TAG
 };
 
 extern enum ObjectTYPE
