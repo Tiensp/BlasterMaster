@@ -2,6 +2,7 @@
 #include "GameObject.h"
 #include "State.h"
 #include "GameDefine.h"
+#include "BulletObject.h"
 
 #define BIG_JASON_WALKING_SPEED		0.09f 
 //0.1f
@@ -15,7 +16,7 @@
 #define BIG_JASON_STATE_WALKING_LEFT			103
 #define BIG_JASON_STATE_JUMP					104
 #define BIG_JASON_STATE_GUN_UP					105
-#define BIG_JASON_STATE_IDLE_GUN_UP			106
+#define BIG_JASON_STATE_IDLE_GUN_UP				106
 #define BIG_JASON_STATE_GUN_DOWN				107
 #define BIG_JASON_STATE_TURN					108
 #define BIG_JASON_STATE_DIE					130
@@ -47,8 +48,9 @@ protected:
 
 	float start_x;			// initial position of BigJason at scene
 	float start_y;
-
-	int health = 8;	// Máu nhân vật
+	int energy=7;
+	int health = 4;	// Máu nhân vật
+	vector<BulletObject*> p_bullet_list;
 public:
 	CBigJason();
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects = NULL);
@@ -65,16 +67,18 @@ public:
 
 	void SetHealth(int hp) { health = hp; }
 	int GetHealth() { return health; }
+	int GetEnergy() { return energy; }
 	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount64(); }
 
 	/* State */
 	void SwitchState(CState* state);
-
-
+	void set_bullet_list();
+	int Get_BigJason_Normal_bullet();
 	void Reset();
 
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	static CBigJason* GetInstance();
+	void Clear();
 	/* Variable */
 	CState* currentState;
 	CAnimation* currentAni;

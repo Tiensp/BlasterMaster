@@ -51,11 +51,99 @@ void CAnimation::Render(float x, float y, int alpha)
 	frames->at(currentFrame)->GetSprite()->Draw(x, y, alpha);
 }
 
+void CAnimation::Render(float x, float y, D3DCOLOR color)
+{
+	DWORD now = GetTickCount64();
+	if (currentFrame == -1)
+	{
+		currentFrame = 0;
+		lastFrameTime = now;
+	}
+	else
+	{
+		DWORD t = frames->at(currentFrame)->GetTime();
+		if (now - lastFrameTime > t)
+		{
+			currentFrame++;
+			lastFrameTime = now;
+			isComplete = (currentFrame == frames->size() - 1);		/* Da render den frame cuoi cua ani */
+			if (currentFrame == frames->size()) currentFrame = 0;
+		}
+	}
+
+	frames->at(currentFrame)->GetSprite()->Draw(x, y, color);
+}
+
 void CAnimation::RenderFrame(int frameID, float x, float y, int alpha) /* Render mot ani_frame theo id */
+{
+	if (frameID <= -1 || frameID >= frames->size())
+		frameID = 0;
+	frames->at(frameID)->GetSprite()->Draw(x, y, alpha);
+}
+
+void CAnimation::RenderFrame(int frameID, float x, float y, D3DCOLOR color)
 {
 	if (frameID == -1 || frameID >= frames->size())
 		frameID = 0;
-	frames->at(frameID)->GetSprite()->Draw(x, y, alpha);
+	frames->at(frameID)->GetSprite()->Draw(x, y, color);
+}
+
+void CAnimation::RenderThreeBullet(float x, float y, int alpha)
+{
+	DWORD now = GetTickCount64();
+	if (currentFrame == -1)
+	{
+		currentFrame = 0;
+		lastFrameTime = now;
+	}
+	else
+	{
+		DWORD t = frames->at(currentFrame)->GetTime();
+		if (now - lastFrameTime > t)
+		{
+			currentFrame++;
+			lastFrameTime = now;
+			isComplete = (currentFrame == frames->size() - 1);		/* Da render den frame cuoi cua ani */
+			if (currentFrame == frames->size()) currentFrame = 0;
+		}
+	}
+	if (currentFrame == 0)
+	{
+		frames->at(currentFrame)->GetSprite()->Draw(x, y, alpha);
+	}
+	else if (currentFrame == 1)
+	{
+		frames->at(currentFrame-1)->GetSprite()->Draw(x, y, alpha);
+		frames->at(currentFrame)->GetSprite()->Draw(x, y + 16, alpha);
+	}
+	else if (currentFrame == 2)
+	{
+		frames->at(currentFrame-2)->GetSprite()->Draw(x, y, alpha);
+		frames->at(currentFrame-1)->GetSprite()->Draw(x, y + 16, alpha);
+		frames->at(currentFrame)->GetSprite()->Draw(x, y+16*2, alpha);
+	}
+	else if (currentFrame == 3)
+	{
+		frames->at(currentFrame-3)->GetSprite()->Draw(x, y, alpha);
+		frames->at(currentFrame-2)->GetSprite()->Draw(x, y + 16, alpha);
+		frames->at(currentFrame-1)->GetSprite()->Draw(x, y + 16 * 2, alpha);
+		frames->at(currentFrame)->GetSprite()->Draw(x, y + 16*3, alpha);
+	}
+	else if (currentFrame == 4)
+	{
+		frames->at(currentFrame-3)->GetSprite()->Draw(x, y + 16, alpha);
+		frames->at(currentFrame-2)->GetSprite()->Draw(x, y + 16 * 2, alpha);
+		frames->at(currentFrame-1)->GetSprite()->Draw(x, y + 16 * 3, alpha);
+		frames->at(currentFrame)->GetSprite()->Draw(x, y + 16 * 4, alpha);
+	}
+	else if (currentFrame == 5)
+	{
+		frames->at(currentFrame-3)->GetSprite()->Draw(x, y + 16 * 2, alpha);
+		frames->at(currentFrame-2)->GetSprite()->Draw(x, y + 16 * 3, alpha);
+		frames->at(currentFrame-1)->GetSprite()->Draw(x, y + 16 * 4, alpha);
+		frames->at(currentFrame)->GetSprite()->Draw(x, y + 16 * 5, alpha);
+	}
+	/*frames->at(currentFrame)->GetSprite()->Draw(x, y, alpha);*/
 }
 
 int CAnimation::GetCurrentFrame()
@@ -66,6 +154,11 @@ int CAnimation::GetCurrentFrame()
 int CAnimation::GetLastFrame()	/* Get the last frame of ani */
 {
 	return frames->size() - 1;
+}
+
+int CAnimation::GetFrameTime(int frameID)
+{
+	return frames->at(frameID)->GetTime();
 }
 
 int CAnimation::GetAniTime()
@@ -79,6 +172,12 @@ int CAnimation::GetAniTime()
 bool CAnimation::IsFinalFrame()
 {
 	return currentFrame == frames->size() - 1;
+}
+
+RECT CAnimation::GetFrameRect(int id)
+{
+	RECT r = frames->at(id)->GetSprite()->GetRECT();
+	return r;
 }
 
 CAnimations * CAnimations::__instance = NULL;

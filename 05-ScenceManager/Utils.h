@@ -3,12 +3,14 @@
 #include <Windows.h>
 
 #include <signal.h>
-#include <string>
+#include <string.h>
 #include <stdio.h>
 #include <stdarg.h>
 #include <time.h>
 #include <stdlib.h>
 #include <vector>
+#include <string>
+#include <string>
 
 
 using namespace std;

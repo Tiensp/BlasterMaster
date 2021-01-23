@@ -1,7 +1,10 @@
 #pragma once
 #include "GameObject.h"
+#include "Enemy.h"
 #define GOLEM_ANI_WALKING_LEFT	1
 #define GOLEM_ANI_WALKING_RIGHT	0
+#define GOLEM_ANI_DEATH 2
+
 #define GOLEM_WALKING_SPEED 0.03f;
 #define	GOLEM_JUMPING_SPEED 0.163f;
 
@@ -13,16 +16,21 @@
 #define GOLEM_STATE_DIE 200
 #define GOLEM_STATE_JUMPING 300
 
-class CGolem : public CGameObject
+class CGolem : public Enemy
 {
-	bool isFolow;  //theo player 
-	LPGAMEOBJECT target;
+	bool isFolow; //theo player 
 
+	int timeToJumping;
 
+	bool isDoneDeath = false;
+	
+	bool isJumping;
 
+	
 
 public:
-	CGolem(float x, float y, LPGAMEOBJECT player);
+	CGolem(float x, float y, LPGAMEOBJECT player, int _typeItem);
+	~CGolem();
 	virtual void SetState(int state);
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);

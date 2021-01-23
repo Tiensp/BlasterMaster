@@ -61,6 +61,15 @@ public:
 	int nx;		//pháp tuyến theo chiều x (normal) 
 	int ny;		//hay còn gọi là hướng (direction)
 
+	int width;
+	int height;
+
+	
+
+	bool isDone = false;
+	
+
+
 	int state;
 
 	ObjectTAG objTag;	// Thẻ (tag) obj
@@ -70,6 +79,7 @@ public:
 	DWORD dt; 
 
 	LPANIMATION_SET animation_set;
+
 
 public: 
 	void SetPosition(float x, float y) { this->x = x, this->y = y; }
@@ -83,10 +93,13 @@ public:
 	
 	int GetState() { return this->state; }
 
-	void RenderBoundingBox();
+	void RenderBoundingBox(float x_render, float y_render);
 
 	void SetAnimationSet(LPANIMATION_SET ani_set) { animation_set = ani_set; }
 
+	
+	/*int Get_Hp() { return hp; }*/
+	bool IsCollidingObject(CGameObject* Obj);
 	LPCOLLISIONEVENT SweptAABBEx(LPGAMEOBJECT coO);
 	void CalcPotentialCollisions(vector<LPGAMEOBJECT> *coObjects, vector<LPCOLLISIONEVENT> &coEvents);
 	void FilterCollision(

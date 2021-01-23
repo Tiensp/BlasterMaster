@@ -3,27 +3,36 @@
 #include "Sophia.h"
 #include "Jason.h"
 #include "BigJason.h"
+#include "PlayScence.h"
 
-#define PULL_SCREEN_Y	28
+#define PULL_SCREEN_Y	44
 
-CCamera* CCamera::__intance = NULL;
+CCamera* CCamera::__instance = NULL;
 
 CCamera* CCamera::GetInstance()
 {
-	if (__intance == NULL)
+	if (__instance == NULL)
 	{
-		__intance = new CCamera(CGame::GetInstance()->GetScreenWidth(), 
-								CGame::GetInstance()->GetScreenWidth());
+		__instance = new CCamera(CAMERA_WIDTH, CAMERA_HEIGHT);
 	}
 		
-	return __intance;
+	return __instance;
+}
+
+void CCamera::Clear()
+{
+	if (__instance != NULL)
+	{
+		delete __instance;
+		__instance = NULL;
+	}
 }
 
 CCamera::CCamera(int width, int height)
 {
 	this->width = width;
 	this->height = height;
-
+	isSwitchScene = false;
 }
 
 CCamera::~CCamera()
@@ -72,9 +81,32 @@ void CCamera::SetPosition(const D3DXVECTOR2 &pos)
 bool CCamera::isContain(RECT rect)
 {
 	//Lấy biên giới hạn camera
-	RECT camRect = GetCamBound();
+	RECT camRect;
+	camRect.left = camPos.x;
+	camRect.top = camPos.y;
+	camRect.right = camPos.x + width;
+	camRect.bottom = camPos.y + height;
+
 	//Kiểm tra rect có giao với Camera hay không
 	if (rect.left > camRect.right || rect.right < camRect.left || rect.top > camRect.bottom || rect.bottom < camRect.top)
+	{
+		return false;
+	}
+
+	return true;
+}
+
+bool CCamera::isContain(D3DXVECTOR2 pos)
+{
+	//Lấy biên giới hạn camera
+	RECT camRect;
+	camRect.left = camPos.x;
+	camRect.top = camPos.y;
+	camRect.right = camPos.x + width;
+	camRect.bottom = camPos.y + height;
+
+	//Kiểm tra Pos có nằm trong Camera hay không
+	if (pos.x > camRect.right || pos.x < camRect.left || pos.y > camRect.bottom || pos.y < camRect.top)
 	{
 		return false;
 	}
@@ -93,48 +125,93 @@ RECT CCamera::GetCamBound()
 
 void CCamera::Update()
 {
-	if (_ACTIVE[SOPHIA])
-		CSophia::GetInstance()->GetPosition(camPos.x, camPos.y);
-	else if (_ACTIVE[JASON])
+	if (!isSwitchScene)
 	{
-		CJason::GetInstance()->GetPosition(camPos.x, camPos.y);
+		D3DXVECTOR2 playerPos;
+		if (_ACTIVE[SOPHIA] && !INSTANCE_SOPHIA->GetIsFrozen())
+			INSTANCE_SOPHIA->GetPosition(playerPos.x, playerPos.y);
+		else if (_ACTIVE[JASON])
+		{
+			INSTANCE_JASON->GetPosition(playerPos.x, playerPos.y);
+		}
+		else if (_ACTIVE[BIG_JASON])
+			INSTANCE_BIGJASON->GetPosition(playerPos.x, playerPos.y);
+
+		if (playerPos.x > camPos.x + width / 2)
+			camPos.x += playerPos.x - (camPos.x + width / 2);
+		else if (playerPos.x < camPos.x + width / 3)
+			camPos.x -= (camPos.x + width / 3) - playerPos.x;
+
+		if (playerPos.y > camPos.y + height * 0.75)
+			camPos.y += playerPos.y - (camPos.y + height * 0.75);
+		else if (playerPos.y < camPos.y + height / 4)
+			camPos.y -= (camPos.y + height / 4) - playerPos.y;
+
+		/*
+			Kiểm tra xem Camera có bị vượt ra ngoài map không
+			Vượt quá giới hạn thì đặt lại vị trí Camera
+
+			Tọa độ biên trái và biên trên chắc chắn là tọa độ pos(0,0)
+			Cách xét tọa độ biên phải và biên dưới là tùy theo mỗi người
+			Ở đây, tọa độ giới hạn của cam được tính theo:
+				+ Tọa độ Biên phải - Độ dài Camera
+				+ Tọa độ Biên dưới - Chiều cao Camera
+		*/
+		if (camPos.x < camBound.left)
+			camPos.x = camBound.left;
+
+		if (camPos.y < camBound.top)
+			camPos.y = camBound.top;
+
+		if (camPos.x > camBound.right - width)
+			camPos.x = camBound.right - width;
+
+		if (camPos.y > camBound.bottom - height)
+			camPos.y = camBound.bottom - height;
 	}
-	else if (_ACTIVE[BIG_JASON])
-		CBigJason::GetInstance()->GetPosition(camPos.x, camPos.y);
+	else //CODE SWITCH SCENE AREA
+	{
+		D3DXVECTOR2 playerPos;
+		if (_ACTIVE[SOPHIA] && !INSTANCE_SOPHIA->GetIsFrozen())
+			INSTANCE_SOPHIA->GetPosition(playerPos.x, playerPos.y);
+		else if (_ACTIVE[JASON])
+		{
+			INSTANCE_JASON->GetPosition(playerPos.x, playerPos.y);
+		}
+		else if (_ACTIVE[BIG_JASON])
+			INSTANCE_BIGJASON->GetPosition(playerPos.x, playerPos.y);
 
-	camPos.x -= width / 2;
-	camPos.y -= height / 2;
-	/*
-		Kiểm tra xem Camera có bị vượt ra ngoài map không
-		Vượt quá giới hạn thì đặt lại vị trí Camera
+		CPlayScene* playScene = ((CPlayScene*)CGame::GetInstance()->GetCurrentScene());
+		MiniScene* miniScene = playScene->GetlistScenes().at(playScene->currentMiniScene);
 
-		Tọa độ biên trái và biên trên chắc chắn là tọa độ pos(0,0) 
-		Cách xét tọa độ biên phải và biên dưới là tùy theo mỗi người
-		Ở đây, tọa độ giới hạn của cam được tính theo:
-			+ Tọa độ Biên phải - Độ dài Camera
-			+ Tọa độ Biên dưới - Chiều cao Camera
-	*/
-	if (camPos.x < camBound.left)
-		camPos.x = camBound.left;
+		if (playerPos.y != camPos.y + height * 0.75 
+			&& camPos.y > camBound.top 
+			&& camPos.y < camBound.bottom
+			&& camPos.y > miniScene->y
+			&& camPos.y < miniScene->y + miniScene->height
+			)
+			if (playerPos.y < camPos.y + height * 0.75)
+				camPos.y -= 2.0f;
+			else
+				camPos.y += 2.0f;
 
-	if (camPos.y < camBound.top)
-		camPos.y = camBound.top;
-	/* 
-		Khi đặt lại camPos nếu vượt qua camBound sẽ dẫn đến việc không render hết được map
-		nguyên nhân do độ kích thước map đôi lúc không chia hết cho kích thước camera
-		nên ở đây mình + Pull screen (có thể theo chiều x or y) để có thể nhìn thấy toàn bộ map
-	*/
-	if (camPos.x > camBound.right - width)
-		camPos.x = camBound.right - width;
-
-	if (camPos.y > camBound.bottom - height + PULL_SCREEN_Y)
-		camPos.y = camBound.bottom - height + PULL_SCREEN_Y;
+		if (camPos.x != SwitchScenePos.x)
+			if (camPos.x > SwitchScenePos.x)
+				camPos.x -= 2.0f;
+			else
+				camPos.x += 2.0f;
+		else
+		{
+			isSwitchScene = false;
+			SetCamBound(miniScene->x, miniScene->y, miniScene->width, miniScene->height);
+		}
+	}
 }
 
-void CCamera::SetCamBound(float mapWidth, float mapHeight)
+void CCamera::SetCamBound(float x, float y, float mapWidth, float mapHeight)
 {
-	camBound.left = 0;
-	camBound.top = 0;
-	camBound.right = mapWidth;
-	camBound.bottom = mapHeight;
+	camBound.left = x;
+	camBound.top = y;
+	camBound.right = x + mapWidth;
+	camBound.bottom = y + mapHeight;
 }

@@ -1,0 +1,116 @@
+[OBJECTS]
+# type	x	y	ani_set_id	extra_settings per object type
+# type: 0 = Sophia, 1 = Jason, 2 = BigJason , 3 = Brick, 4 = Golem, 5 = Domes, 52 = portal, 53 = sceneInf, 54 = SelectBulletScr
+# Player extra_settings	isActive
+# Sophia
+#0	0	0	0	1
+# Jason
+#1	0	0	1	0
+# BigJason
+2	110	1875	2	1
+# Golem
+#4	1300	1120	4
+#4	1100	1120	4
+# Domes
+#5	1050	1100	5
+#5	1200	1075	5
+# Worms
+#6	1060	1060	6
+# Floaters
+#7	110	2938	7
+# Skulls
+#8	1180	1120	8
+# Insect
+#9	130	1120	9
+# Orbs
+#10	110	2938	10
+# Ship
+#11	1180	1120	11
+# Eyeballs
+#12	1180	1120	12
+# Teleporters
+#13	1180	1120	13
+# Cannons
+#14	250	2938	14
+# Rock OVH
+#93	1180	1120	93
+#93	1140	1120	93
+
+
+#Item
+#80	150	2938	80	0
+#80	1250	1160	80	1
+#80	1300	1160	80	2
+#80	1350	1160	80	3
+#80	1400	1160	80	4
+
+#BOSS
+#100	110	1785	100	
+
+# BRICK 
+# --- platform (hint: I created the list using Excel!) ----
+# ID	X	Y	ani_set_id	width	height
+
+
+# Lava
+# ID	X	Y	ani_set_id	width	height
+#90	1120	1182	90	64	16
+
+# Thorn OVERWORLD
+# ID	X	Y	ani_set_id	width	height
+#91	1180	1120	91	320	16
+
+
+# Thorn OVERHEAD
+# ID	X	Y	ani_set_id	width	height
+#92	1180	1120	92	320	16
+
+
+
+# --- SCENE PORTAL ----
+#tex_ID	x	y	scene portal des_scene dir	type	x_des	y_des	ani_set
+
+#======Scene INFO========
+#ID	X	Y	AniSet	SceneID	W	H (Scene không có aniset nên để số linh tinh cho vui thôi)
+53	0	1792	50	0	256	256
+53	256	1792	50	1	256	256
+53	512	1792	50	2	256	256
+53	768	1792	50	3	256	256
+53	1024	1792	50	4	256	256
+53	1280	1792	50	5	256	256
+53	0	1536	50	6	256	256
+53	256	1536	50	7	256	256
+53	512	1536	50	8	256	256
+53	768	1536	50	9	256	256
+53	1024	1536	50	10	256	256
+53	1280	1536	50	11	256	256
+53	0	1280	50	12	256	256
+53	256	1280	50	13	256	256
+53	512	1280	50	14	256	256
+53	768	1280	50	15	256	256
+53	1024	1280	50	16	256	256
+53	1280	1280	50	17	256	256
+53	0	1024	50	18	256	256
+53	256	1024	50	19	256	256
+53	512	1024	50	20	256	256
+53	768	1024	50	21	256	256
+53	1024	1024	50	22	256	256
+53	0	768	50	23	256	256
+53	256	768	50	24	256	256
+53	512	768	50	25	256	256
+53	768	768	50	26	256	256
+53	1024	768	50	27	256	256
+53	1280	768	50	28	256	512
+53	0	0	50	29	512	256
+53	512	0	50	30	512	512
+53	768	0	50	31	1024	768
+53	0	256	50	32	512	512
+53	512	512	50	33	256	256
+53	768	512	50	34	256	256
+
+[MAP]
+#id		pathMatrix			pathTileSet
+2	textures\Map\mapAreaOverhead.txt	textures\Map\mapAreaOverhead.png
+
+
+

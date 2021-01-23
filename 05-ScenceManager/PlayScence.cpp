@@ -8,9 +8,10 @@
 #include "Portal.h"
 
 
+
 using namespace std;
 
-CPlayScene::CPlayScene(int id, LPCWSTR filePath):
+CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
 	CScene(id, filePath)
 {
 	key_handler = new CPlayScenceKeyHandler(this);
@@ -22,109 +23,44 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):
 */
 
 #define SCENE_SECTION_UNKNOWN -1
-#define SCENE_SECTION_TEXTURES 2
-#define SCENE_SECTION_SPRITES 3
-#define SCENE_SECTION_ANIMATIONS 4
-#define SCENE_SECTION_ANIMATION_SETS	5
-#define SCENE_SECTION_OBJECTS	6
-#define SCENE_SECTION_MAP	7
+#define SCENE_SECTION_OBJECTS	0
+#define SCENE_SECTION_MAP	1
 
 #define OBJECT_TYPE_SOPHIA	0
-#define OBJECT_TYPE_BRICK	3
 #define OBJECT_TYPE_JASON	1
+#define OBJECT_TYPE_BIG_JASON 2
+#define OBJECT_TYPE_BRICK	3
 #define OBJECT_TYPE_GOLEM	4
 #define	OBJECT_TYPE_DOMES	5
-#define OBJECT_TYPE_BIG_JASON 2
+#define OBJECT_TYPE_WORMS 6
+#define OBJECT_TYPE_FLOATERS 7
+#define OBJECT_TYPE_SKULLS 8
+#define OBJECT_TYPE_INSECT 9
+#define OBJECT_TYPE_ORB 10
+#define OBJECT_TYPE_SHIP 11
+#define OBJECT_TYPE_EYEBALL 12
+#define OBJECT_TYPE_TELEPORTER 13
+#define OBJECT_TYPE_CANNON 14
+#define OBJECT_TYPE_ITEM 85
+#define OBJECT_TYPE_BOMB 190
+#define OBJECT_TYPE_LADDER 49
 
-#define OBJECT_TYPE_PORTAL	50
+#define OBJECT_TYPE_LAVA 90
+#define OBJECT_TYPE_THORN_OVERWORLD 91
+#define OBJECT_TYPE_THORN_OVERHEAD 92
+#define OBJECT_TYPE_ROCK_OVERHEAD 93
+
+#define OBJECT_TYPE_BOSS 100
+
+
+#define OBJECT_TYPE_PORTAL	84
+#define OBJECT_TYPE_SCENE 53
 
 #define MAX_SCENE_LINE 1024
 
 
-void CPlayScene::_ParseSection_TEXTURES(string line)
-{
-	vector<string> tokens = split(line);
-
-	if (tokens.size() < 5) return; // skip invalid lines
-
-	int texID = atoi(tokens[0].c_str());
-	wstring path = ToWSTR(tokens[1]);
-	int R = atoi(tokens[2].c_str());
-	int G = atoi(tokens[3].c_str());
-	int B = atoi(tokens[4].c_str());
-
-	CTextures::GetInstance()->Add(texID, path.c_str(), D3DCOLOR_XRGB(R, G, B));
-}
-
-void CPlayScene::_ParseSection_SPRITES(string line)
-{
-	vector<string> tokens = split(line);
-
-	if (tokens.size() < 6) return; // skip invalid lines
-
-	int ID = atoi(tokens[0].c_str());
-	int l = atoi(tokens[1].c_str());
-	int t = atoi(tokens[2].c_str());
-	int r = atoi(tokens[3].c_str());
-	int b = atoi(tokens[4].c_str());
-	int texID = atoi(tokens[5].c_str());
-
-	LPDIRECT3DTEXTURE9 tex = CTextures::GetInstance()->Get(texID);
-	if (tex == NULL)
-	{
-		DebugOut(L"[ERROR] Texture ID %d not found!\n", texID);
-		return; 
-	}
-
-	CSprites::GetInstance()->Add(ID, l, t, r, b, tex);
-}
-
-void CPlayScene::_ParseSection_ANIMATIONS(string line)
-{
-	vector<string> tokens = split(line);
-
-	if (tokens.size() < 3) return; // skip invalid lines - an animation must at least has 1 frame and 1 frame time
-
-	//DebugOut(L"--> %s\n",ToWSTR(line).c_str());
-
-	LPANIMATION ani = new CAnimation();
-
-	int ani_id = atoi(tokens[0].c_str());
-	for (int i = 1; i < tokens.size(); i += 2)	// why i+=2 ?  sprite_id | frame_time  
-	{
-		int sprite_id = atoi(tokens[i].c_str());
-		int frame_time = atoi(tokens[i+1].c_str());
-		ani->Add(sprite_id, frame_time);
-	}
-
-	CAnimations::GetInstance()->Add(ani_id, ani);
-}
-
-void CPlayScene::_ParseSection_ANIMATION_SETS(string line)
-{
-	vector<string> tokens = split(line);
-
-	if (tokens.size() < 2) return; // skip invalid lines - an animation set must at least id and one animation id
-
-	int ani_set_id = atoi(tokens[0].c_str());
-
-	LPANIMATION_SET s = new CAnimationSet();
-
-	CAnimations *animations = CAnimations::GetInstance();
-
-	for (int i = 1; i < tokens.size(); i++)
-	{
-		int ani_id = atoi(tokens[i].c_str());
-		
-		LPANIMATION ani = animations->Get(ani_id);
-		s->push_back(ani);
-	}
-
-	CAnimationSets::GetInstance()->Add(ani_set_id, s);
-}
-
 /*
-	Parse a line in section [OBJECTS] 
+	Parse a line in section [OBJECTS]
 */
 void CPlayScene::_ParseSection_OBJECTS(string line)
 {
@@ -140,29 +76,32 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 
 	int ani_set_id = atoi(tokens[3].c_str());
 
-	CAnimationSets * animation_sets = CAnimationSets::GetInstance();
+	CAnimationSets* animation_sets = CAnimationSets::GetInstance();
 
-	CGameObject *obj = NULL;
+	CGameObject* obj = NULL;
 
 	switch (object_type)
 	{
 	case OBJECT_TYPE_SOPHIA:
+	{
+		if (sophia != NULL)
 		{
-			if (sophia != NULL)
-			{
-				DebugOut(L"[ERROR] SOPHIA object was created before!\n");
-				return;
-			}
-
-
-			obj = CSophia::GetInstance(); 
-			sophia = (CSophia*)obj;
-			sophia->SetStartPos(x, y);
-			bool active = atoi(tokens[4].c_str());
-			_ACTIVE[SOPHIA] = active;
-			DebugOut(L"[INFO] SOPHIA object created!\n");
+			DebugOut(L"[ERROR] SOPHIA object was created before!\n");
+			return;
 		}
-		break;
+
+
+		obj = INSTANCE_SOPHIA;
+		sophia = (CSophia*)obj;
+		sophia->SetStartPos(x, y);
+		bool active = atoi(tokens[4].c_str());
+		_ACTIVE[SOPHIA] = active;
+		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
+		obj->SetAnimationSet(ani_set);
+		AllObjs.push_back(obj);
+		DebugOut(L"[INFO] SOPHIA object created!\n");
+	}
+	break;
 	case OBJECT_TYPE_JASON:
 	{
 		if (jason != NULL)
@@ -171,60 +110,274 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 			return;
 		}
 
-		obj = CJason::GetInstance();
+		obj = INSTANCE_JASON;
 		jason = (CJason*)obj;
 		jason->SetStartPos(x, y);
 		bool active = atoi(tokens[4].c_str());
 		_ACTIVE[JASON] = active;
+
+		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
+		obj->SetAnimationSet(ani_set);
+		AllObjs.push_back(obj);
 		DebugOut(L"[INFO] JASON object created!\n");
 	}
 	break;
 	case OBJECT_TYPE_BIG_JASON:
+	{
+		if (bigJason != NULL)
 		{
-			if (bigJason != NULL)
-			{
-				DebugOut(L"[ERROR] BIG JASON object was created before!\n");
-				return;
-			}
-
-			obj = CBigJason::GetInstance();
-			bigJason = (CBigJason*)obj;
-			bigJason->SetStartPos(x, y);
-			bool active = atoi(tokens[4].c_str());
-			_ACTIVE[BIG_JASON] = active;
-			DebugOut(L"[INFO] BIG JASON object created!\n");
+			DebugOut(L"[ERROR] BIG JASON object was created before!\n");
+			return;
 		}
-		break;
+
+		obj = INSTANCE_BIGJASON;
+		bigJason = (CBigJason*)obj;
+		bigJason->SetStartPos(x, y);
+		bool active = atoi(tokens[4].c_str());
+		_ACTIVE[BIG_JASON] = active;
+
+		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
+		obj->SetAnimationSet(ani_set);
+		AllObjs.push_back(obj);
+		DebugOut(L"[INFO] BIG JASON object created!\n");
+	}
+	break;
 	case OBJECT_TYPE_BRICK:
 	{
 		float w = atof(tokens[4].c_str());
 		float h = atof(tokens[5].c_str());
 		obj = new CBrick(x, y, w, h);
+		obj->SetPosition(x, y);
+		AllObjs.push_back(obj);
+		break;
+	}
+	case OBJECT_TYPE_LADDER:
+	{
+		float w = atof(tokens[4].c_str());
+		float h = atof(tokens[5].c_str());
+		obj = new CLadder(x, y, w, h);
+		obj->SetPosition(x, y);
+		AllObjs.push_back(obj);
+		break;
+	}
+	case OBJECT_TYPE_GOLEM:
+	{
+		int itemType = atoi(tokens[4].c_str());
+		obj = new CGolem(x, y, sophia, itemType);
+		obj->SetPosition(x, y);
+		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
+		obj->SetAnimationSet(ani_set);
+		AllObjs.push_back(obj);
+
+		break;
+
+	}
+	case OBJECT_TYPE_DOMES:
+	{
+
+		int itemType = atoi(tokens[4].c_str());
+		obj = new CDomes(x, y, 999999, 999999, sophia, itemType);
+		obj->SetPosition(x, y);
+		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
+		obj->SetAnimationSet(ani_set);
+		AllObjs.push_back(obj);
+		break;
+
+	}
+	case OBJECT_TYPE_WORMS:
+	{
+		int itemType = atoi(tokens[4].c_str());
+		obj = new CWorm(x, y, sophia, itemType);
+		obj->SetPosition(x, y);
+		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
+		obj->SetAnimationSet(ani_set);
+		AllObjs.push_back(obj);
+		break;
 	}
 	break;
-	case OBJECT_TYPE_GOLEM: obj = new CGolem(x,y, /*bigJason*/sophia); break;
-	case OBJECT_TYPE_DOMES: obj = new CDomes(x, y, /*bigJason*/sophia); break;
-
-	case OBJECT_TYPE_PORTAL:
-		{	
-			float r = atof(tokens[4].c_str());
-			float b = atof(tokens[5].c_str());
-			int scene_id = atoi(tokens[6].c_str());
-			obj = new CPortal(x, y, r, b, scene_id);
-		}
+	case OBJECT_TYPE_FLOATERS:
+	{
+		int itemType = atoi(tokens[4].c_str());
+		obj = new CFloaters(x, y, sophia, itemType);
+		obj->SetPosition(x, y);
+		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
+		obj->SetAnimationSet(ani_set);
+		AllObjs.push_back(obj);
 		break;
+	}
+	case OBJECT_TYPE_SKULLS:
+	{
+		int itemType = atoi(tokens[4].c_str());
+		obj = new CSkull(x, y, sophia, itemType);
+		obj->SetPosition(x, y);
+		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
+		obj->SetAnimationSet(ani_set);
+		AllObjs.push_back(obj);
+		break;
+	}
+	case OBJECT_TYPE_BOMB:
+	{
+		obj = new CBomb(x, y);
+		obj->SetPosition(x, y);
+		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
+		obj->SetAnimationSet(ani_set);
+		AllObjs.push_back(obj);
+		break;
+	}
+	case OBJECT_TYPE_INSECT:
+	{
+		int itemType = atoi(tokens[4].c_str());
+		obj = new CInsect(x, y, sophia, itemType);
+		obj->SetPosition(x, y);
+		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
+		obj->SetAnimationSet(ani_set);
+		AllObjs.push_back(obj);
+		break;
+	}
+	case OBJECT_TYPE_ORB:
+	{
+		int itemType = atoi(tokens[4].c_str());
+		obj = new COrb(x, y, sophia, itemType);
+		obj->SetPosition(x, y);
+		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
+		obj->SetAnimationSet(ani_set);
+		AllObjs.push_back(obj);
+		break;
+	}
+	case OBJECT_TYPE_SHIP:
+	{
+		int itemType = atoi(tokens[4].c_str());
+		obj = new CShip(x, y, sophia, itemType);
+		obj->SetPosition(x, y);
+		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
+		obj->SetAnimationSet(ani_set);
+		AllObjs.push_back(obj);
+		break;
+	}
+
+	case OBJECT_TYPE_EYEBALL:
+	{
+		int itemType = atoi(tokens[4].c_str());
+		obj = new CEyeballs(x, y, sophia, itemType);
+		obj->SetPosition(x, y);
+		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
+		obj->SetAnimationSet(ani_set);
+		AllObjs.push_back(obj);
+		break;
+	}
+
+	case OBJECT_TYPE_TELEPORTER:
+	{
+		int itemType = atoi(tokens[4].c_str());
+		obj = new CTeleporter(x, y, sophia, itemType);
+		obj->SetPosition(x, y);
+		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
+		obj->SetAnimationSet(ani_set);
+		/*	AllObjs.push_back(obj);*/
+		break;
+	}
+
+	case OBJECT_TYPE_CANNON:
+	{
+		int itemType = atoi(tokens[4].c_str());
+		obj = new CCannon(x, y, sophia, itemType);
+		obj->SetPosition(x, y);
+		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
+		obj->SetAnimationSet(ani_set);
+		AllObjs.push_back(obj);
+		break;
+	}
+
+	case OBJECT_TYPE_LAVA:
+	{
+		float w = atof(tokens[4].c_str());
+		float h = atof(tokens[5].c_str());
+		obj = new CLava(x, y, w, h);
+		obj->SetPosition(x, y);
+		AllObjs.push_back(obj);
+		break;
+	}
+
+	case OBJECT_TYPE_THORN_OVERWORLD:
+	{
+		float w = atof(tokens[4].c_str());
+		float h = atof(tokens[5].c_str());
+		obj = new CThornOVW(x, y, w, h);
+		obj->SetPosition(x, y);
+		AllObjs.push_back(obj);
+		break;
+	}
+
+	case OBJECT_TYPE_THORN_OVERHEAD:
+	{
+		float w = atof(tokens[4].c_str());
+		float h = atof(tokens[5].c_str());
+		obj = new CThornOVH(x, y, w, h);
+		obj->SetPosition(x, y);
+		objects.push_back(obj);
+		break;
+	}
+
+	case OBJECT_TYPE_ROCK_OVERHEAD:
+	{
+		obj = new CRockOVH(x, y, 16, 16);
+		obj->SetPosition(x, y);
+		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
+		obj->SetAnimationSet(ani_set);
+		AllObjs.push_back(obj);
+		break;
+	}
+	case OBJECT_TYPE_ITEM:
+	{
+		int type = atoi(tokens[4].c_str());
+		obj = new CItem(type);
+		obj->SetPosition(x, y);
+		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
+		obj->SetAnimationSet(ani_set);
+		AllObjs.push_back(obj);
+		break;
+	}
+	case OBJECT_TYPE_PORTAL:
+	{
+		int sceneID = atoi(tokens[3].c_str());
+		int porID = atoi(tokens[4].c_str());
+		int desScene = atoi(tokens[5].c_str());
+		int dir = atoi(tokens[6].c_str());
+		int type = atoi(tokens[7].c_str());
+		float xDes = atof(tokens[8].c_str());
+		float yDes = atof(tokens[9].c_str());
+		ani_set_id = atoi(tokens[10].c_str());
+		obj = new CPortal(x, y, sceneID, porID, desScene, dir, type, xDes, yDes);
+		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
+		obj->SetAnimationSet(ani_set);
+		AllObjs.push_back(obj);
+		break;
+	}
+	case OBJECT_TYPE_SCENE:
+	{
+		int sceneID = atoi(tokens[4].c_str());
+		int width = atoi(tokens[5].c_str());
+		int height = atoi(tokens[6].c_str());
+		MiniScene* miniS = new MiniScene(sceneID, x, y, width, height);
+		listScenes.push_back(miniS);
+		break;
+	}
+	case OBJECT_TYPE_BOSS:
+	{
+		obj = new CBoss(x, y, sophia);
+		obj->SetPosition(x, y);
+		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
+		obj->SetAnimationSet(ani_set);
+		AllObjs.push_back(obj);
+		break;
+	}
 	default:
 		DebugOut(L"[ERR] Invalid object type: %d\n", object_type);
 		return;
 	}
 
 	// General object setup
-	obj->SetPosition(x, y);
 
-	LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
-
-	obj->SetAnimationSet(ani_set);
-	objects.push_back(obj);
 }
 
 void CPlayScene::_ParseSection_MAP(string line)
@@ -259,17 +412,6 @@ void CPlayScene::Load()
 		string line(str);
 
 		if (line[0] == '#') continue;	// skip comment lines	
-
-		if (line == "[TEXTURES]") { section = SCENE_SECTION_TEXTURES; continue; }
-		if (line == "[SPRITES]") {
-			section = SCENE_SECTION_SPRITES; continue;
-		}
-		if (line == "[ANIMATIONS]") {
-			section = SCENE_SECTION_ANIMATIONS; continue;
-		}
-		if (line == "[ANIMATION_SETS]") {
-			section = SCENE_SECTION_ANIMATION_SETS; continue;
-		}
 		if (line == "[OBJECTS]") {
 			section = SCENE_SECTION_OBJECTS; continue;
 		}
@@ -283,10 +425,6 @@ void CPlayScene::Load()
 		//
 		switch (section)
 		{
-		case SCENE_SECTION_TEXTURES: _ParseSection_TEXTURES(line); break;
-		case SCENE_SECTION_SPRITES: _ParseSection_SPRITES(line); break;
-		case SCENE_SECTION_ANIMATIONS: _ParseSection_ANIMATIONS(line); break;
-		case SCENE_SECTION_ANIMATION_SETS: _ParseSection_ANIMATION_SETS(line); break;
 		case SCENE_SECTION_OBJECTS: _ParseSection_OBJECTS(line); break;
 		case SCENE_SECTION_MAP: _ParseSection_MAP(line); break;
 		}
@@ -294,58 +432,143 @@ void CPlayScene::Load()
 
 	f.close();
 
-	CTextures::GetInstance()->Add(ID_TEX_BBOX, L"textures\\bbox.png", D3DCOLOR_XRGB(255, 255, 255));
+	DebugOut(L"[INFO] Done loading scene objects %s\n", sceneFilePath);
 
-	DebugOut(L"[INFO] Done loading scene resources %s\n", sceneFilePath);
-	
 	// Khởi tạo camera
+	currentMiniScene = 0;
+	MiniScene* miniScene = listScenes.at(currentMiniScene);
 	camera = CCamera::GetInstance();
-	camera->SetCamBound(map->GetMapWidth(), map->GetMapHeight());
+	camera->SetCamBound(miniScene->x, miniScene->y, miniScene->width, miniScene->height);
+	camera->SetPosition(D3DXVECTOR2(miniScene->x, miniScene->y));
+
+	grid = new CGrid(map->GetMapWidth(), map->GetMapHeight());
+	for (int i = 0; i < AllObjs.size(); i++)
+	{
+		if (AllObjs.at(i)->objTag != PLAYER)
+			grid->AddObject(AllObjs.at(i));
+	}
+
 
 	//Thiết lập trạng thái, vị trí khởi đầu,... cho đối tượng đang active
 	if (_ACTIVE[SOPHIA])
+	{
 		sophia->Reset();
+		grid->AddObject(sophia);
+	}
 	else if (_ACTIVE[JASON])
+	{
 		jason->Reset();
+		grid->AddObject(jason);
+	}
 	else if (_ACTIVE[BIG_JASON])
+	{
 		bigJason->Reset();
+		grid->AddObject(bigJason);
+	}
 	//Sau khi active và khởi tạo xong xong đối tượng player thì khởi tạo thanh HUD 
 	hud = new HUD();
-	
+	hudEnergy = new HUDEnergy();
+
 }
 
 void CPlayScene::Update(DWORD dt)
 {
 	// We know that Sophia is the first object in the list hence we won't add him into the colliable object list
 	// TO-DO: This is a "dirty" way, need a more organized way 
-
-	vector<LPGAMEOBJECT> coObjects;
-	for (size_t i = 1; i < objects.size(); i++)
+	if (!isSelectBulletScr)
 	{
-		coObjects.push_back(objects[i]);
-	}
+		
+		vector<LPGAMEOBJECT> coObjects = grid->GetActiveObj();
+		ClassifyOBJECT(coObjects);
 
-	for (size_t i = 0; i < objects.size(); i++)
+		if (_ACTIVE[SOPHIA] && !sophia->GetIsFrozen())
+		{
+			sophia->Update(dt, &coObjects);
+		}
+		else if (_ACTIVE[JASON])
+		{
+			jason->Update(dt, &coObjects);
+		}
+		else if (_ACTIVE[BIG_JASON])
+		{
+			bigJason->Update(dt, &coObjects);
+		}
+
+		for (int i = 0; i < coObjects.size(); i++)
+		{
+			if (!dynamic_cast<CBrick*>(coObjects.at(i)) && !dynamic_cast<CPortal*>(coObjects.at(i)) &&
+				!dynamic_cast<CLadder*>(coObjects.at(i)) && coObjects.at(i)->objTag != PLAYER)
+			{
+				coObjects.at(i)->Update(dt, &coObjects);
+			}
+		}
+		for (int i = 0; i < listItem.size(); i++)
+		{
+			grid->AddObject(listItem.at(i));
+		}
+
+		// skip the rest if scene was already unloaded (Sophia::Update might trigger PlayScene::Unload)
+		//if (sophia == NULL && jason == NULL && bigJason == NULL) return;
+
+			// Update camera to follow player
+		camera->Update();
+		//Update HUD
+		hud->Update();
+		hudEnergy->Update();
+		//Grid Update
+		grid->Update(coObjects);
+	}
+	else
 	{
-		objects[i]->Update(dt, &coObjects);
+		/// Update màn hình chọn đạn
+
 	}
-
-	// skip the rest if scene was already unloaded (Sophia::Update might trigger PlayScene::Unload)
-	//if (sophia == NULL && jason == NULL && bigJason == NULL) return;
-
-	// Update camera to follow player
-	camera->Update();
-	//Update HUD
-	hud->Update();
 
 }
 
 void CPlayScene::Render()
 {
-	map->DrawMap();
-	for (int i = 0; i < objects.size(); i++)
-		objects[i]->Render();
-	hud->Render();
+	if (!isSelectBulletScr)
+	{
+		map->DrawMap();
+		for (int i = 0; i < objects.size(); i++)
+			objects[i]->Render();
+		for (int i = 0; i < listEnemies.size(); i++)
+			listEnemies[i]->Render();
+		// Thứ tự Render của Player chỉ sau Portal và Enemy
+		if (_ACTIVE[SOPHIA])
+		{
+			sophia->Render();
+		}
+
+		if (_ACTIVE[JASON])
+		{
+			jason->Render();
+		}
+
+		if (_ACTIVE[BIG_JASON])
+		{
+			bigJason->Render();
+		}
+
+		for (int i = 0; i < listPortal.size(); i++)
+			listPortal[i]->Render();
+		/*for (int i = 0; i < listBullet.size(); i++)
+			listBullet[i]->Render();*/
+			/*for (int i = 0; i < bulletFloater.size(); i++)
+				bulletFloater[i]->Render();*/
+		hud->Render();
+		hudEnergy->Render();
+
+	}
+	else
+	{
+		/// Render màn hình chọn đạn
+		D3DXVECTOR2 camPos = camera->GetCamPos();
+		LPANIMATION_SET aniSet = CAnimationSets::GetInstance()->Get(SELECT_BULLET);
+		aniSet->at(currentSELECT)->Render(camPos.x, camPos.y);
+	}
+
 }
 
 /*
@@ -353,74 +576,287 @@ void CPlayScene::Render()
 */
 void CPlayScene::Unload()
 {
-	for (int i = 0; i < objects.size(); i++)
-		delete objects[i];
-
-	objects.clear();
-	sophia = NULL;
-	jason = NULL;
-	bigJason = NULL;
+	delete map;
 	map = NULL;
-	camera = NULL;
 
+	camera->Clear();
+
+	delete hud;
+	hud = NULL;
+	delete hudEnergy;
+	hudEnergy = NULL;
 	DebugOut(L"[INFO] Scene %s unloaded! \n", sceneFilePath);
+}
+
+void CPlayScene::ClassifyOBJECT(vector<LPGAMEOBJECT> obj)
+{
+	objects.clear();
+	listEnemies.clear();
+	listPortal.clear();
+	for (int i = 0; i < obj.size(); i++)
+	{
+		switch (obj.at(i)->objTag)
+		{
+		case ENEMY:
+		{
+			listEnemies.push_back(obj.at(i));
+			break;
+		}
+		case PORTAL:
+		{
+			listPortal.push_back(obj.at(i));
+			break;
+		}
+		case PLAYER:
+			break;
+		default:
+		{
+			objects.push_back(obj.at(i));
+			break;
+		}
+		}
+	}
 }
 
 void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 {
-	DebugOut(L"[INFO] KeyDown: %d\n", KeyCode);
-	switch (KeyCode)
+	/// KIỂM TRA XEM CÓ PHẢI ĐANG LÀ MÀN HÌNH CHỌN ĐẠN KHÔNG ?
+	if (!((CPlayScene*)scence)->isSelectBulletScr)
 	{
-	case DIK_I:
+		CSophia* sophia = ((CPlayScene*)scence)->GetSophia();
+		CJason* jason = ((CPlayScene*)scence)->GetJason();
+		CBigJason* bigJason = ((CPlayScene*)scence)->GetBigJason();
+		DebugOut(L"[INFO] KeyDown: %d\n", KeyCode);
+		switch (KeyCode)
+		{
+		case DIK_I:
 		{
 			_ACTIVE[SOPHIA] = true;
 			_ACTIVE[JASON] = false;
 			_ACTIVE[BIG_JASON] = false;
-			CSophia::GetInstance()->Reset();
+			sophia->Reset();
 		}
 		break;
-	case DIK_O:
+		case DIK_O:
 		{
 			_ACTIVE[SOPHIA] = false;
 			_ACTIVE[JASON] = true;
 			_ACTIVE[BIG_JASON] = false;
-			CJason::GetInstance()->Reset();
+			jason->Reset();
 		}
 		break;
-	case DIK_P:
+		case DIK_P:
 		{
 			_ACTIVE[SOPHIA] = false;
 			_ACTIVE[JASON] = false;
 			_ACTIVE[BIG_JASON] = true;
-			CBigJason::GetInstance()->Reset();
+			bigJason->Reset();
 		}
 		break;
+		case DIK_M:
+		{
+			CCamera* camera = CCamera::GetInstance();
+			camera->isSwitchScene = true;
+			D3DXVECTOR2 camPos = camera->GetCamPos();
+			camera->SwitchScenePos = D3DXVECTOR2(camPos.x - camera->GetWidth(), camPos.y);
+			break;
+		}
+		case DIK_N:
+		{
+			CCamera* camera = CCamera::GetInstance();
+			camera->isSwitchScene = true;
+			D3DXVECTOR2 camPos = camera->GetCamPos();
+			camera->SwitchScenePos = D3DXVECTOR2(camPos.x + camera->GetWidth(), camPos.y);
+			break;
+		}
+		/// Bấm W: Thì mở màn hình tạm dừng - chọn đạn
+		case DIK_W:
+		{
+			((CPlayScene*)scence)->isSelectBulletScr = true;
+			break;
+		}
+		///  
+		case DIK_NUMPAD0:
+		{
+			_ACTIVE[SOPHIA] = false;
+			_ACTIVE[JASON] = false;
+			CGame::GetInstance()->SwitchScene(2);
+			CPlayScene* plScene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
+			plScene->currentMiniScene = 0;
+			MiniScene* miniScene = plScene->GetlistScenes().at(plScene->currentMiniScene);
+			CCamera::GetInstance()->SetCamBound(miniScene->x, miniScene->y, miniScene->width, miniScene->height);
+			CCamera::GetInstance()->SetPosition(D3DXVECTOR2(miniScene->x, miniScene->y));
 
+			break;
+		}
+		case DIK_NUMPAD1:
+		{
+			_ACTIVE[SOPHIA] = false;
+			_ACTIVE[JASON] = false;
+			CGame::GetInstance()->SwitchScene(2);
+			CPlayScene* plScene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
+			plScene->currentMiniScene = 2;
+			MiniScene* miniScene = plScene->GetlistScenes().at(plScene->currentMiniScene);
+			CCamera::GetInstance()->SetCamBound(miniScene->x, miniScene->y, miniScene->width, miniScene->height);
+			CCamera::GetInstance()->SetPosition(D3DXVECTOR2(miniScene->x, miniScene->y));
+
+			break;
+		}
+		case DIK_NUMPAD2:
+		{
+			_ACTIVE[SOPHIA] = false;
+			_ACTIVE[JASON] = false;
+			CGame::GetInstance()->SwitchScene(2);
+			CPlayScene* plScene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
+			plScene->currentMiniScene = 14;
+			MiniScene* miniScene = plScene->GetlistScenes().at(plScene->currentMiniScene);
+			CCamera::GetInstance()->SetCamBound(miniScene->x, miniScene->y, miniScene->width, miniScene->height);
+			CCamera::GetInstance()->SetPosition(D3DXVECTOR2(miniScene->x, miniScene->y));
+
+			break;
+		}
+		case DIK_NUMPAD3:
+		{
+			_ACTIVE[SOPHIA] = false;
+			_ACTIVE[JASON] = false;
+			CGame::GetInstance()->SwitchScene(2);
+			CPlayScene* plScene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
+			plScene->currentMiniScene = 26;
+			MiniScene* miniScene = plScene->GetlistScenes().at(plScene->currentMiniScene);
+			CCamera::GetInstance()->SetCamBound(miniScene->x, miniScene->y, miniScene->width, miniScene->height);
+			CCamera::GetInstance()->SetPosition(D3DXVECTOR2(miniScene->x, miniScene->y));
+
+			break;
+		}
+		case DIK_NUMPAD4:
+		{
+			_ACTIVE[SOPHIA] = false;
+			_ACTIVE[JASON] = false;
+			CGame::GetInstance()->SwitchScene(2);
+			CPlayScene* plScene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
+			plScene->currentMiniScene = 28;
+			MiniScene* miniScene = plScene->GetlistScenes().at(plScene->currentMiniScene);
+			CCamera::GetInstance()->SetCamBound(miniScene->x, miniScene->y, miniScene->width, miniScene->height);
+			CCamera::GetInstance()->SetPosition(D3DXVECTOR2(miniScene->x, miniScene->y));
+
+			break;
+		}
+		case DIK_NUMPAD5:
+		{
+			_ACTIVE[SOPHIA] = false;
+			_ACTIVE[JASON] = false;
+			CGame::GetInstance()->SwitchScene(2);
+			CPlayScene* plScene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
+			plScene->currentMiniScene = 29;
+			MiniScene* miniScene = plScene->GetlistScenes().at(plScene->currentMiniScene);
+			CCamera::GetInstance()->SetCamBound(miniScene->x, miniScene->y, miniScene->width, miniScene->height);
+			CCamera::GetInstance()->SetPosition(D3DXVECTOR2(miniScene->x, miniScene->y));
+
+			break;
+		}
+		case DIK_NUMPAD6:
+		{
+			_ACTIVE[SOPHIA] = false;
+			_ACTIVE[JASON] = false;
+			CGame::GetInstance()->SwitchScene(2);
+			CPlayScene* plScene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
+			plScene->currentMiniScene = 31;
+			MiniScene* miniScene = plScene->GetlistScenes().at(plScene->currentMiniScene);
+			CCamera::GetInstance()->SetCamBound(miniScene->x, miniScene->y, miniScene->width, miniScene->height);
+			CCamera::GetInstance()->SetPosition(D3DXVECTOR2(miniScene->x, miniScene->y));
+
+			break;
+		}
+		case DIK_NUMPAD7:
+		{
+			_ACTIVE[SOPHIA] = false;
+			_ACTIVE[JASON] = false;
+			CGame::GetInstance()->SwitchScene(2);
+			CPlayScene* plScene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
+			plScene->currentMiniScene = 32;
+			MiniScene* miniScene = plScene->GetlistScenes().at(plScene->currentMiniScene);
+			CCamera::GetInstance()->SetCamBound(miniScene->x, miniScene->y, miniScene->width, miniScene->height);
+			CCamera::GetInstance()->SetPosition(D3DXVECTOR2(miniScene->x, miniScene->y));
+
+			break;
+		}
+		case DIK_NUMPAD8:
+		{
+			_ACTIVE[SOPHIA] = false;
+			_ACTIVE[JASON] = false;
+			CGame::GetInstance()->SwitchScene(2);
+			((CPlayScene*)scence)->currentMiniScene = 0;
+
+			break;
+		}
+		case DIK_NUMPAD9:
+		{
+			_ACTIVE[SOPHIA] = false;
+			_ACTIVE[JASON] = false;
+			CGame::GetInstance()->SwitchScene(2);
+			((CPlayScene*)scence)->currentMiniScene = 0;
+
+			break;
+		}
+		}
+
+		////////// KEY DOWN ///////////
+		if (_ACTIVE[SOPHIA] && !sophia->GetIsFrozen())
+		{
+			CSophia* sophia = ((CPlayScene*)scence)->GetSophia();
+			_KEYCODE[KeyCode] = true;
+			if (!sophia->GetIsAutoGo())
+				sophia->OnKeyDown(KeyCode);
+		}
+		else if (_ACTIVE[JASON])
+		{
+			CJason* jason = ((CPlayScene*)scence)->GetJason();
+			_KEYCODE[KeyCode] = true;
+			jason->OnKeyDown(KeyCode);
+		}
+		else if (_ACTIVE[BIG_JASON])
+		{
+			CBigJason* bigJason = ((CPlayScene*)scence)->GetBigJason();
+			_KEYCODE[KeyCode] = true;
+			bigJason->OnKeyDown(KeyCode);
+		}
 	}
-	if (_ACTIVE[SOPHIA])
+	else // SELECT BULLET SCREEN
 	{
-		CSophia* sophia = ((CPlayScene*)scence)->GetSophia();
-		_KEYCODE[KeyCode] = true;
-		sophia->OnKeyDown(KeyCode);
+		switch (KeyCode)
+		{
+		case DIK_RIGHT:
+		{
+			CPlayScene* plScene = ((CPlayScene*)scence);
+			if (plScene->currentSELECT != 2)
+			{
+				plScene->currentSELECT++;
+			}
+			break;
+		}
+		case DIK_LEFT:
+		{
+			CPlayScene* plScene = ((CPlayScene*)scence);
+			if (plScene->currentSELECT != 0)
+			{
+				plScene->currentSELECT--;
+			}
+			break;
+		}
+		case DIK_W:
+		{
+			((CPlayScene*)scence)->isSelectBulletScr = false;
+			break;
+		}
+		}
 	}
-	else if (_ACTIVE[JASON])
-	{
-		CJason* jason = ((CPlayScene*)scence)->GetJason();
-		_KEYCODE[KeyCode] = true;
-		jason->OnKeyDown(KeyCode);
-	}
-	else if (_ACTIVE[BIG_JASON])
-	{
-		CBigJason* bigJason = ((CPlayScene*)scence)->GetBigJason();
-		_KEYCODE[KeyCode] = true;
-		bigJason->OnKeyDown(KeyCode);
-	}
+
 }
 
 void CPlayScenceKeyHandler::OnKeyUp(int KeyCode)
 {
 	DebugOut(L"[INFO] KeyUp: %d\n", KeyCode);
-	
+
 	if (_ACTIVE[SOPHIA])
 	{
 		CSophia* sophia = ((CPlayScene*)scence)->GetSophia();
@@ -441,9 +877,9 @@ void CPlayScenceKeyHandler::OnKeyUp(int KeyCode)
 	}
 }
 
-void CPlayScenceKeyHandler::KeyState(BYTE *states)
+void CPlayScenceKeyHandler::KeyState(BYTE* states)
 {
-	
+
 
 	// disable control key when Sophia die 
 	/*if (sophia->GetState() == SOPHIA_STATE_DIE) return;*/
