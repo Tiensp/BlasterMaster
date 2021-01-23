@@ -71,6 +71,7 @@ public:
 	int GetHealth() { return health; }
 	int GetEnergy() { return energy; }
 	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount64(); }
+	void SetHealthWithBullet(int dame) { health -= dame; }
 
 	/* State */
 	void SwitchState(CState* state);

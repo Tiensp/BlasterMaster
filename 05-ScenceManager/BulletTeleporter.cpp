@@ -72,6 +72,24 @@ void BulletTeleporter::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		}
 	}
 
+	if (this->x - target->x <= 0)
+	{
+		nx = 1;
+	}
+	else if (this->x - target->x > 0)
+	{
+		nx = -1;
+	}
+
+	if (this->y - target->y <= 0)
+	{
+		ny = 1;
+	}
+	else if (this->x - target->x > 0)
+	{
+		ny = -1;
+	}
+
 
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
@@ -90,24 +108,6 @@ void BulletTeleporter::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	{
 		x += dx;
 		y += dy;
-
-		if (this->x - target->x <= 0)
-		{
-			nx = 1;
-		}
-		else if (this->x - target->x > 0)
-		{
-			nx = -1;
-		}
-
-		if (this->y - target->y <= 0)
-		{
-			ny = 1;
-		}
-		else if (this->x - target->x > 0)
-		{
-			ny = -1;
-		}
 	}
 	else //có va chạm
 	{

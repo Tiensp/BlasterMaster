@@ -125,13 +125,12 @@ void CEyeballs::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			//x += min_tx * dx + nx * 0.4f;  //cập nhật lại vị trí x
 			//y += min_ty * dy + ny * 0.4f;	// cập nhật lại vị trí y  để tránh bị hụt xuống
 
-			// block every object first!
 			{
 				for (UINT i = 0; i < coEventsResult.size(); i++)
 				{
 					LPCOLLISIONEVENT e = coEventsResult[i];
 
-					if (dynamic_cast<CBrick*>(e->obj)) // if e->obj is Goomba 
+					if (dynamic_cast<CBrick*>(e->obj)) 
 					{
 
 						CBrick* brick = dynamic_cast<CBrick*>(e->obj);

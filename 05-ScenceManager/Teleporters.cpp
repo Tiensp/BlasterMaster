@@ -49,7 +49,7 @@ void CTeleporter::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	if (hp <= 0)
 		isDeath = true;
 
-	timer += 5;
+	timer += 10;
 
 	//CheckCollisionWithRock(coObjects);
 
@@ -65,28 +65,24 @@ void CTeleporter::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		}
 	}
 
-
-	if (timer == 1500)
+	if (timer == 1000)
 	{
 		if (this->GetState() == TELEPORTER_ANI_GRAY_MODE_ON)
 		{
 			this->SetState(TELEPORTER_ANI_GRAY_MODE_OFF);
-		}
-		/*else if (this->GetState() == TELEPORTER_ANI_GRAY_MODE_OFF)
-		{
-			if (teleporter_bullet == NULL)
+
+			/*if (teleporter_bullet == NULL)
 			{
 				teleporter_bullet = new BulletTeleporter(this->x, this->y, this->target);
 				teleporter_bullet->SetPosition(this->x + width + 10, this->y + height + 15);
 				teleporter_bullet->Set_bullet_dir(this->nx, this->ny);
 				teleporter_bullet->Set_IsMove(true);
-			}
-			this->SetState(TELEPORTER_ANI_GRAY_MODE_ON);
-		}*/
-		timer = 1500;
+			}*/
+		}
+		timer = 1000;
 	}
 
-	else if (timer == 1550)
+	else if (timer == 1050)
 	{
 		int r = RandomPosition();
 
@@ -127,9 +123,9 @@ void CTeleporter::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 		}
 
-		timer = 1550;
+		timer = 1050;
 	}
-	else if (timer == 1600) {
+	else if (timer == 1100) {
 		if (this->GetState() == TELEPORTER_ANI_TELEPORT) {
 
 			if (this->new_x - this->old_x > 0 && this->new_y - this->old_y == 0) {
@@ -158,9 +154,9 @@ void CTeleporter::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			}
 		}
 
-		timer = 1600;
+		timer = 1100;
 	}
-	else if (timer == 1650) {
+	else if (timer == 1150) {
 
 		if (this->GetState() == TELEPORTER_ANI_TELEPORT1) {
 
@@ -182,9 +178,9 @@ void CTeleporter::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			}
 		}
 
-		timer = 1650;
+		timer = 1150;
 	}
-	else if (timer == 1700) {
+	else if (timer == 1200) {
 
 		if (this->GetState() == TELEPORTER_ANI_TELEPORT2) {
 
@@ -206,9 +202,9 @@ void CTeleporter::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			}
 		}
 
-		timer = 1700;
+		timer = 1200;
 	}
-	else if (timer == 1750) {
+	else if (timer == 1250) {
 
 		if (this->GetState() == TELEPORTER_ANI_TELEPORT3) {
 
@@ -238,7 +234,7 @@ void CTeleporter::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					this->SetState(TELEPORTER_ANI_GRAY_MODE_OFF);
 				}
 
-				timer = 1520;
+				timer = 1020;
 
 			}
 			else {
@@ -276,54 +272,67 @@ void CTeleporter::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			}*/
 		}
 	}
-}
-
-bool CTeleporter::CheckCollisionWithRock(vector<LPGAMEOBJECT>* coObjects) {
 
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
 
 	coEvents.clear();
 
-	vector<LPGAMEOBJECT> ListRockOVH;
-	ListRockOVH.clear();
 
-	for (UINT i = 0; i < coObjects->size(); i++)
+
+	// turn off collision when die 
+	//nếu không chết thì kiểm tra toàn bộ va chạm với các đối tượng khác
+	CalcPotentialCollisions(coObjects, coEvents);
+
+	// reset untouchable timer if untouchable time has passed
+
+	// No collision occured, proceed normally
+
+	if (coEvents.size() == 0)  //nếu không có va chạm, update bình thường
 	{
-		if (dynamic_cast<CRockOVH*>(coObjects->at(i)))
-		{
-			ListRockOVH.push_back(coObjects->at(i));
-		}
-
+		x += dx;
+		y += dy;
+		
 	}
-
-	for (int i = 0; i < ListRockOVH.size(); i++)
+	else //có va chạm
 	{
-		if (this->IsCollidingObject(ListRockOVH.at(i)))
+		float min_tx, min_ty, nx = 0, ny = 0;
+		float rdx = 0;
+		float rdy = 0;
+
+		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);  // sắp xếp lại các sự kiện va chạm đầu tiên theo trục x, y 
+
 		{
-			isCollision = true;
+			for (UINT i = 0; i < coEventsResult.size(); i++)
+			{
+				LPCOLLISIONEVENT e = coEventsResult[i];
+
+				if (dynamic_cast<CBrick*>(e->obj)) // if e->obj is Goomba 
+				{
+					if (e->nx != 0) {
+						if (e->nx > 0) {
+							this->SetPosition(this->x - 50, this->y);
+						}
+						else if (e->nx <= 0) {
+							this->SetPosition(this->x + 50, this->y);
+						}
+					}
+					else if (e->ny != 0) {
+						if (e->ny > 0) {
+							this->SetPosition(this->x, this->y - 50);
+						}
+						else if (e->ny <= 0) {
+							this->SetPosition(this->x, this->y + 50);
+						}
+					}
+				}
+				else {
+					x += dx;
+					y += dy;
+				}
+			}
 		}
 	}
-
-	if (!isCollision)
-	{
-		CalcPotentialCollisions(&ListRockOVH, coEvents);
-
-		if (coEvents.size() == 0)
-		{
-			isCollision = false;
-		}
-		else
-		{
-			isCollision = true;
-		}
-
-	}
-
-	if (isCollision)
-		return true;
-	return false;
-
 }
 
 int CTeleporter::RandomPosition()

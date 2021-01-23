@@ -21,13 +21,13 @@ void CEnemyBullet::CheckCollisionWithPlayer(vector<LPGAMEOBJECT>* coObjects)
 	vector<LPGAMEOBJECT> ListEnemy;
 	ListEnemy.clear();
 	for (UINT i = 0; i < coObjects->size(); i++)
-		if (dynamic_cast<CSophia*>(coObjects->at(i)))
+		if (dynamic_cast<CSophia*>(coObjects->at(i)) || dynamic_cast<CBigJason*>(coObjects->at(i)))
 		{
 			ListEnemy.push_back(coObjects->at(i));
 		}
 	for (UINT i = 0; i < ListEnemy.size() && isColideUsingAABB == false; i++)
 	{
-		if (this->IsCollidingObject(ListEnemy.at(i)))
+		if (this->IsCollidingObject(dynamic_cast<CSophia*>(ListEnemy.at(i))))
 		{
 			isColideUsingAABB = true;
 			CSophia* sophia = dynamic_cast<CSophia*>(ListEnemy.at(i));
@@ -57,7 +57,9 @@ void CEnemyBullet::CheckCollisionWithPlayer(vector<LPGAMEOBJECT>* coObjects)
 
 			// TODO: This is a very ugly designed function!!!!
 			FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
+
 			LPCOLLISIONEVENT e = coEventsResult[0];
+
 			CSophia* sophia = dynamic_cast<CSophia*>(e->obj);
 			sophia->SetHealthWithBullet(bulletDame);
 			this->isDone = true;

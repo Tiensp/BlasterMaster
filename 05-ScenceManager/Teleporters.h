@@ -40,10 +40,6 @@ public:
 	virtual void Render();
 
 	int RandomPosition();
-
-	void CheckCollisionWithBrick(vector<LPGAMEOBJECT>* coObjects);
-	bool CheckCollisionWithRock(vector<LPGAMEOBJECT>* coObjects);
-
 	void flowPlayer(LPGAMEOBJECT player);
 };
 
